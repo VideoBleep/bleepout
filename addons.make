@@ -1,3 +1,4 @@
 ofxNetwork
 ofxBox2d
 ofxLibwebsockets
+ofxXmlSettings

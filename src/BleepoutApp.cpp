@@ -9,50 +9,18 @@
 #include "BleepoutApp.h"
 
 
-void BleepoutApp::setup(){
+void BleepoutApp::setup() {
   
 }
 
-void BleepoutApp::update(){
-  
+void BleepoutApp::update() {
+  if (_roundController) {
+    _roundController->update();
+  }
 }
 
-void BleepoutApp::draw(){
-  
-}
-
-void BleepoutApp::keyPressed(int key){
-  
-}
-
-void BleepoutApp::keyReleased(int key){
-  
-}
-
-void BleepoutApp::mouseMoved(int x, int y ){
-  
-}
-
-void BleepoutApp::mouseDragged(int x, int y, int button){
-  
-}
-
-void BleepoutApp::mousePressed(int x, int y, int button){
-  
-}
-
-void BleepoutApp::mouseReleased(int x, int y, int button){
-  
-}
-
-void BleepoutApp::windowResized(int w, int h){
-  
-}
-
-void BleepoutApp::gotMessage(ofMessage msg){
-  
-}
-
-void BleepoutApp::dragEvent(ofDragInfo dragInfo){
-  
+void BleepoutApp::draw() {
+  if (_roundController) {
+    _roundController->draw();
+  }
 }

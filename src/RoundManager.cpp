@@ -8,6 +8,16 @@
 
 #include "RoundManager.h"
 
-void RoundManager::draw() {
+void RoundController::setup() {
+  _box2d.init();
+  _box2d.createGround();
+  //...
+}
+
+void RoundController::draw() {
+  //...
+}
+
+void RoundController::update() {
   //...
 }
