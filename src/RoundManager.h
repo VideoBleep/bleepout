@@ -16,9 +16,12 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Brick.h"
+#include "RoundConfig.h"
 
 class RoundController {
 public:
+  RoundController(RoundConfig config,
+                  ofPtr<PlayerManager> playerManager);
   void setup();
   void draw();
   void update();
@@ -28,6 +31,7 @@ private:
   std::vector<ofPtr<Brick> >  _bricks;
   ofPtr<PlayerManager> _playerManager;
   ofxBox2d _box2d;
+  RoundConfig _config;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

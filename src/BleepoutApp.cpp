@@ -10,7 +10,9 @@
 
 
 void BleepoutApp::setup() {
-  
+  _config.reset(new BleepoutConfig());
+  // load config....
+  ofSetFrameRate(_config->fps());
 }
 
 void BleepoutApp::update() {

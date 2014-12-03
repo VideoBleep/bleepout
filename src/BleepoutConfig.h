@@ -13,8 +13,14 @@
 
 class BleepoutConfig {
 public:
+  static const BleepoutConfig& getInstance();
+  
   void loadFile(const std::string& path);
   void saveFile(const std::string& path);
+  
+  int fps() const { return _fps; }
+private:
+  int _fps;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

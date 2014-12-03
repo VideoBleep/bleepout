@@ -12,7 +12,7 @@
 #include <ofMain.h>
 #include "PlayerManager.h"
 #include "RoundManager.h"
-
+#include "BleepoutConfig.h"
 
 class BleepoutApp : public ofBaseApp {
 public:
@@ -35,7 +35,10 @@ public:
 //  void gotMessage(ofMessage msg) override{}
   
   ofPtr<PlayerManager> playerManager() { return _playerManager; }
+  
+  const BleepoutConfig& config() const { return *_config; }
 private:
+  ofPtr<BleepoutConfig> _config;
   ofPtr<PlayerManager> _playerManager;
   ofPtr<RoundController> _roundController;
 };
