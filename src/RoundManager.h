@@ -21,15 +21,19 @@
 class RoundController {
 public:
   RoundController(RoundConfig config,
-                  ofPtr<PlayerManager> playerManager);
+                  PlayerManager& playerManager);
   void setup();
   void draw();
   void update();
 private:
+  void addBrick(ofVec2f center);
+  void addBall(ofVec2f center);
+  void addPaddle(ofVec2f center, Player& player);
+private:
   std::vector<ofPtr<Paddle> > _paddles;
   std::vector<ofPtr<Ball> >   _balls;
   std::vector<ofPtr<Brick> >  _bricks;
-  ofPtr<PlayerManager> _playerManager;
+  PlayerManager& _playerManager;
   ofxBox2d _box2d;
   RoundConfig _config;
 };

@@ -14,15 +14,15 @@
 
 class Paddle {
 public:
-  Paddle(ofPtr<Player> player)
+  Paddle(Player& player)
   :_player(player) {};
 
   ofxBox2dRect& rect() { return _rect; };
   
-  Player* player() { return _player.get(); };
+  Player& player() { return _player; };
 
 private:
-  ofPtr<Player> _player;
+  Player& _player;
   ofxBox2dRect _rect;
 };
 

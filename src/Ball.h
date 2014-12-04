@@ -15,12 +15,13 @@
 
 class Ball {
 public:
-  ofxBox2dCircle& circle();
+  ofxBox2dCircle& circle() { return _circle; }
   ofPtr<Player>& lastPlayer() { return _lastPlayer; }
   void setLastPlayer(ofPtr<Player> player) {
     _lastPlayer = player;
   }
 private:
+  ofxBox2dCircle _circle;
   ofPtr<Player> _lastPlayer;
 };
 

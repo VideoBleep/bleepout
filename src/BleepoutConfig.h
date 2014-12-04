@@ -37,11 +37,23 @@ public:
   float brickGap() const { return _brickGap; }
   const ofVec2f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
+  float ballDensity() const { return _ballDensity; }
+  float ballBounce() const { return _ballBounce; }
+  float ballFriction() const { return _ballFriction; }
+  float paddleDensity() const { return _paddleDensity; }
+  float paddleBounce() const { return _paddleBounce; }
+  float paddleFriction() const { return _paddleFriction; }
 private:
   ofVec2f _brickSize;
   float _brickGap;
   ofVec2f _paddleSize;
+  float _ballDensity;
+  float _ballBounce;
+  float _ballFriction;
   float _ballRadius;
+  float _paddleDensity;
+  float _paddleBounce;
+  float _paddleFriction;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

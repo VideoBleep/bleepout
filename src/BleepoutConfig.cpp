@@ -40,6 +40,12 @@ void RoundConfig::loadFile(const std::string &path) {
   _paddleSize.x = settings.getValue("settings:paddleSizeX", 150.0f);
   _paddleSize.y = settings.getValue("settings:paddleSizeY", 25.0f);
   _ballRadius = settings.getValue("settings:ballRadius", 10.0f);
+  _ballDensity = settings.getValue("settings:ballDensity", 3.0f);
+  _ballBounce = settings.getValue("settings:ballBounce", 1.0f);
+  _ballFriction = settings.getValue("settings:ballFriction", 0.0f);
+  _paddleDensity = settings.getValue("settings:paddleDensity", 30.0f);
+  _paddleBounce = settings.getValue("settings:paddleBounce", 0.5f);
+  _paddleFriction = settings.getValue("settings:paddleFriction", 0.9f);
   //...
 }
 
@@ -51,6 +57,13 @@ void RoundConfig::saveFile(const std::string &path) const {
   settings.setValue("settings:paddleSizeX", _paddleSize.x);
   settings.setValue("settings:paddleSizeY", _paddleSize.y);
   settings.setValue("settings:ballRadius", _ballRadius);
+  settings.setValue("settings:ballDensity", _ballDensity);
+  settings.setValue("settings:ballBounce", _ballBounce);
+  settings.setValue("settings:ballFriction", _ballFriction);
+  settings.setValue("settings:paddleDensity", _paddleDensity);
+  settings.setValue("settings:paddleBounce", _paddleBounce);
+  settings.setValue("settings:paddleFriction", _paddleFriction);
+
   //...
   settings.save(path);
 

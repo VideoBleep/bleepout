@@ -14,7 +14,10 @@
 
 class Brick {
 public:
-  ofxBox2dRect& rect();
+  Brick() {}
+  ofxBox2dRect& rect() { return _rect; };
+private:
+  ofxBox2dRect _rect;
 };
 
 #endif /* defined(__bleepout__Brick__) */
