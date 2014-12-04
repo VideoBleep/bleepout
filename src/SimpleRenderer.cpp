@@ -8,6 +8,10 @@
 
 #include "SimpleRenderer.h"
 
+void SimpleRenderer::draw(RoundController &round) {
+  ofBackground(255, 255, 255);
+  RendererBase::draw(round);
+}
 
 void SimpleRenderer::drawBrick(RoundController& round, Brick &brick) {
   brick.rect().draw();
