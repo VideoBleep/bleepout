@@ -10,11 +10,14 @@
 #define __bleepout__Ball__
 
 #include "Player.h"
+#include "GameObject.h"
 #include <ofMain.h>
 #include <ofxBox2d.h>
 
-class Ball {
+class Ball : public GameObject {
 public:
+  Ball() : GameObject(GAME_OBJECT_BALL) {}
+  
   ofxBox2dCircle& circle() { return _circle; }
   ofPtr<Player>& lastPlayer() { return _lastPlayer; }
   void setLastPlayer(ofPtr<Player> player) {

@@ -18,10 +18,13 @@
 #include "Brick.h"
 #include "BleepoutConfig.h"
 
+class RendererBase;
+
 class RoundController {
 public:
   RoundController(RoundConfig config,
-                  PlayerManager& playerManager);
+                  PlayerManager& playerManager,
+                  RendererBase& renderer);
   void setup();
   void draw();
   void update();
@@ -29,6 +32,9 @@ private:
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
   void addPaddle(ofVec2f center, Player& player);
+  
+  void contactStart(ofxBox2dContactArgs& e);
+  void contactEnd(ofxBox2dContactArgs& e);
 private:
   std::vector<ofPtr<Paddle> > _paddles;
   std::vector<ofPtr<Ball> >   _balls;
@@ -36,6 +42,7 @@ private:
   PlayerManager& _playerManager;
   ofxBox2d _box2d;
   RoundConfig _config;
+  RendererBase& _renderer;
 };
 
 #endif /* defined(__bleepout__RoundController__) */
