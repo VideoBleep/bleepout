@@ -102,28 +102,30 @@ void RoundController::contactStart(ofxBox2dContactArgs &e) {
   if (objA == NULL || objB == NULL)
     return;
   if (objA->type() == GAME_OBJECT_BALL) {
-    Ball* ball = static_cast<Ball*>(objA);
-    if (objB->type() == GAME_OBJECT_BRICK) {
-      Brick* brick = static_cast<Brick*>(objB);
-      ballHitBrick(*ball, *brick);
-    } else if (objB->type() == GAME_OBJECT_PADDLE) {
-      Paddle* paddle = static_cast<Paddle*>(objB);
-      ballHitPaddle(*ball, *paddle);
-    }
+    ballHitObject(static_cast<Ball&>(*objA), *objB);
   } else if (objB->type() == GAME_OBJECT_BALL) {
-    Ball* ball = static_cast<Ball*>(objB);
-    if (objA->type() == GAME_OBJECT_BRICK) {
-      Brick* brick = static_cast<Brick*>(objA);
-      ballHitBrick(*ball, *brick);
-    } else if (objA->type() == GAME_OBJECT_PADDLE) {
-      Paddle* paddle = static_cast<Paddle*>(objA);
-      ballHitPaddle(*ball, *paddle);
-    }
+    ballHitObject(static_cast<Ball&>(*objB), *objA);
   }
 }
 
 void RoundController::contactEnd(ofxBox2dContactArgs &e) {
   //...
+}
+
+void RoundController::ballHitObject(Ball &ball, GameObject &obj) {
+  switch (obj.type()) {
+    case GAME_OBJECT_BRICK:
+      ballHitBrick(ball, static_cast<Brick&>(obj));
+      break;
+    case GAME_OBJECT_PADDLE:
+      ballHitPaddle(ball, static_cast<Paddle&>(obj));
+      break;
+    case GAME_OBJECT_BALL:
+      // ????? insanity ensues
+      break;
+    default:
+      break;
+  }
 }
 
 void RoundController::ballHitBrick(Ball &ball, Brick &brick) {

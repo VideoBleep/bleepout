@@ -46,6 +46,7 @@ private:
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
   
+  void ballHitObject(Ball& ball, GameObject& obj);
   void ballHitBrick(Ball& ball, Brick& brick);
   void ballHitPaddle(Ball& ball, Paddle& paddle);
 private:
