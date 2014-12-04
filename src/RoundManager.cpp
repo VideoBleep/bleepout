@@ -10,6 +10,25 @@
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
+
+namespace {
+  
+  static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
+    ofVec2f pos;
+    //...
+    throw NotImplementedException("getPaddleStartPosition");
+    return pos;
+  }
+  static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
+    ofVec2f pos;
+    //...
+    throw NotImplementedException("getBallStartPosition");
+    return pos;
+  }
+  
+}
+
+
 RoundController::RoundController(RoundConfig config,
                                  PlayerManager& playerManager,
                                  RendererBase& renderer)
@@ -17,24 +36,6 @@ RoundController::RoundController(RoundConfig config,
     _playerManager(playerManager),
     _renderer(renderer) {
 }
-
-namespace {
-
-static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
-  ofVec2f pos;
-  //...
-  throw NotImplementedException("getPaddleStartPosition");
-  return pos;
-}
-static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
-  ofVec2f pos;
-  //...
-  throw NotImplementedException("getBallStartPosition");
-  return pos;
-}
-
-}
-
 void RoundController::setup() {
   _box2d.init();
   _box2d.createGround();
@@ -70,7 +71,7 @@ void RoundController::addBrick(ofVec2f center) {
   ofPtr<Brick> brick(new Brick);
   brick->rect().setup(_box2d.getWorld(), rect);
   brick->rect().setData(brick.get());
-  _bricks.push_back(brick);
+  _bricks.add(brick);
 }
 
 void RoundController::addBall(ofVec2f center) {
@@ -78,7 +79,7 @@ void RoundController::addBall(ofVec2f center) {
   ball->circle().setup(_box2d.getWorld(), center, _config.ballRadius());
   ball->circle().setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
   ball->circle().setData(ball.get());
-  _balls.push_back(ball);
+  _balls.add(ball);
 }
 
 void RoundController::addPaddle(ofVec2f center, Player &player) {
@@ -88,5 +89,6 @@ void RoundController::addPaddle(ofVec2f center, Player &player) {
   paddle->rect().setup(_box2d.getWorld(), rect);
   paddle->rect().setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
   paddle->rect().setData(paddle.get());
-  _paddles.push_back(paddle);
+  
+  _paddles.add(paddle);
 }

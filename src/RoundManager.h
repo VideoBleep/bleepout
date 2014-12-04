@@ -17,6 +17,8 @@
 #include "Ball.h"
 #include "Brick.h"
 #include "BleepoutConfig.h"
+#include "GameObject.h"
+#include "GameObjectCollection.h"
 
 class RendererBase;
 
@@ -36,13 +38,14 @@ private:
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
 private:
-  std::vector<ofPtr<Paddle> > _paddles;
-  std::vector<ofPtr<Ball> >   _balls;
-  std::vector<ofPtr<Brick> >  _bricks;
+  GameObjectCollection<Paddle> _paddles;
+  GameObjectCollection<Ball>   _balls;
+  GameObjectCollection<Brick>  _bricks;
   PlayerManager& _playerManager;
   ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
+
 };
 
 #endif /* defined(__bleepout__RoundController__) */

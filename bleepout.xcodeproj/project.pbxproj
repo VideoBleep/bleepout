@@ -171,6 +171,7 @@
 		32B33A921A2FFCF200A2EA9F /* RendererBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererBase.h; sourceTree = "<group>"; };
 		32B33A941A3004DE00A2EA9F /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
 		32B33A951A3004DE00A2EA9F /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
+		32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObjectCollection.h; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		32F95B431A2EB2CF008913CC /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		32F95B451A2EB2CF008913CC /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
@@ -460,6 +461,7 @@
 				32FA9F8D1A2EA80900F420D4 /* RoundManager.h */,
 				32FA9F8F1A2EA84100F420D4 /* BleepoutApp.cpp */,
 				32FA9F901A2EA84100F420D4 /* BleepoutApp.h */,
+				32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */,
 			);
 			name = core;
 			sourceTree = "<group>";
