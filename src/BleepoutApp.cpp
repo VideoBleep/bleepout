@@ -25,6 +25,7 @@ void BleepoutApp::setup() {
   _roundController.reset(new RoundController(roundConfig,
                                              *_playerManager,
                                              *_renderer));
+  _roundController->setup();
 }
 
 void BleepoutApp::update() {

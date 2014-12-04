@@ -14,15 +14,22 @@
 namespace {
   
   static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
+    
     ofVec2f pos;
+    pos.y = ofGetHeight() - (config.brickSize().y / 2);
+    float halfWidth = config.brickSize().x;
+    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
     //...
-    throw NotImplementedException("getPaddleStartPosition");
+//    throw NotImplementedException("getPaddleStartPosition");
     return pos;
   }
   static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
     ofVec2f pos;
+    pos.y = ofGetHeight() / 2;
+    float halfWidth = config.brickSize().x;
+    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
     //...
-    throw NotImplementedException("getBallStartPosition");
+//    throw NotImplementedException("getBallStartPosition");
     return pos;
   }
   
