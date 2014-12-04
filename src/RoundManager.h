@@ -16,7 +16,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Brick.h"
-#include "RoundConfig.h"
+#include "BleepoutConfig.h"
 
 class RoundController {
 public:
