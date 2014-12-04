@@ -30,6 +30,14 @@ public:
   void setup();
   void draw();
   void update();
+  
+  const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
+  const GameObjectCollection<Ball>& balls() const { return _balls; }
+  const GameObjectCollection<Brick>& bricks() const { return _bricks; }
+  GameObjectCollection<Paddle>& paddles() { return _paddles; }
+  GameObjectCollection<Ball>& balls() { return _balls; }
+  GameObjectCollection<Brick>& bricks() { return _bricks; }
+
 private:
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
@@ -37,6 +45,9 @@ private:
   
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
+  
+  void ballHitBrick(Ball& ball, Brick& brick);
+  void ballHitPaddle(Ball& ball, Paddle& paddle);
 private:
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;

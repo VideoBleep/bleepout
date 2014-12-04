@@ -18,6 +18,7 @@ public:
   Brick() : GameObject(GAME_OBJECT_BRICK) {}
   
   ofxBox2dRect& rect() { return _rect; };
+  const ofxBox2dRect& rect() const { return _rect; }
 private:
   ofxBox2dRect _rect;
 };

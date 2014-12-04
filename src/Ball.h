@@ -11,6 +11,7 @@
 
 #include "Player.h"
 #include "GameObject.h"
+#include "Common.h"
 #include <ofMain.h>
 #include <ofxBox2d.h>
 
@@ -19,13 +20,15 @@ public:
   Ball() : GameObject(GAME_OBJECT_BALL) {}
   
   ofxBox2dCircle& circle() { return _circle; }
-  ofPtr<Player>& lastPlayer() { return _lastPlayer; }
-  void setLastPlayer(ofPtr<Player> player) {
+  const ofxBox2dCircle& circle() const { return _circle; }
+  
+  Player* lastPlayer() { return _lastPlayer; }
+  void setLastPlayer(Player* player) {
     _lastPlayer = player;
   }
 private:
   ofxBox2dCircle _circle;
-  ofPtr<Player> _lastPlayer;
+  Player* _lastPlayer;
 };
 
 #endif /* defined(__bleepout__Ball__) */

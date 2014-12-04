@@ -36,6 +36,7 @@ RoundController::RoundController(RoundConfig config,
     _playerManager(playerManager),
     _renderer(renderer) {
 }
+
 void RoundController::setup() {
   _box2d.init();
   _box2d.createGround();
@@ -52,16 +53,6 @@ void RoundController::setup() {
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
   }
-  //...
-}
-
-void RoundController::draw() {
-  _renderer.draw(*this);
-  //...
-}
-
-void RoundController::update() {
-  _box2d.update();
   //...
 }
 
@@ -91,4 +82,54 @@ void RoundController::addPaddle(ofVec2f center, Player &player) {
   paddle->rect().setData(paddle.get());
   
   _paddles.add(paddle);
+}
+
+void RoundController::draw() {
+  _renderer.draw(*this);
+  //...
+}
+
+void RoundController::update() {
+  _box2d.update();
+  //...
+}
+
+void RoundController::contactStart(ofxBox2dContactArgs &e) {
+  if (e.a == NULL || e.b == NULL)
+    return;
+  GameObject* objA = static_cast<GameObject*>(e.a->GetBody()->GetUserData());
+  GameObject* objB = static_cast<GameObject*>(e.b->GetBody()->GetUserData());
+  if (objA == NULL || objB == NULL)
+    return;
+  if (objA->type() == GAME_OBJECT_BALL) {
+    Ball* ball = static_cast<Ball*>(objA);
+    if (objB->type() == GAME_OBJECT_BRICK) {
+      Brick* brick = static_cast<Brick*>(objB);
+      ballHitBrick(*ball, *brick);
+    } else if (objB->type() == GAME_OBJECT_PADDLE) {
+      Paddle* paddle = static_cast<Paddle*>(objB);
+      ballHitPaddle(*ball, *paddle);
+    }
+  } else if (objB->type() == GAME_OBJECT_BALL) {
+    Ball* ball = static_cast<Ball*>(objB);
+    if (objA->type() == GAME_OBJECT_BRICK) {
+      Brick* brick = static_cast<Brick*>(objA);
+      ballHitBrick(*ball, *brick);
+    } else if (objA->type() == GAME_OBJECT_PADDLE) {
+      Paddle* paddle = static_cast<Paddle*>(objA);
+      ballHitPaddle(*ball, *paddle);
+    }
+  }
+}
+
+void RoundController::contactEnd(ofxBox2dContactArgs &e) {
+  //...
+}
+
+void RoundController::ballHitBrick(Ball &ball, Brick &brick) {
+  //...
+}
+
+void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {
+  ball.setLastPlayer(&(paddle.player()));
 }

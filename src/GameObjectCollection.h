@@ -18,6 +18,8 @@
 template<typename T>
 class GameObjectCollection {
 public:
+  typedef std::vector<ofPtr<T> > vector_type;
+  
   int size() const { return _list.size(); }
   
   ofPtr<T>& operator[](int i) { return _list[i]; }
@@ -42,6 +44,14 @@ public:
     _idIndexLookup.erase(id);
     _list.erase(_list.begin() + index);
   }
+  
+  inline const vector_type& list() const { return _list; }
+  
+  inline typename vector_type::iterator begin() { return _list.begin(); }
+  inline typename vector_type::const_iterator begin() const { return _list.begin(); }
+
+  inline typename vector_type::iterator end() { return _list.end(); }
+  inline typename vector_type::const_iterator end() const { return _list.end(); }
   
 private:
   std::vector<ofPtr<T> > _list;

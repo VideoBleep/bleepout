@@ -17,7 +17,8 @@ class Paddle : public GameObject {
 public:
   Paddle(Player& player) : GameObject(GAME_OBJECT_PADDLE), _player(player) {}
 
-  ofxBox2dRect& rect() { return _rect; };
+  ofxBox2dRect& rect() { return _rect; }
+  const ofxBox2dRect& rect() const { return _rect; }
   
   Player& player() { return _player; };
 
