@@ -10,14 +10,15 @@
 #define __bleepout__Paddle__
 
 #include "Player.h"
+#include "GameObject.h"
 #include <ofxBox2d.h>
 
-class Paddle {
+class Paddle : public GameObject {
 public:
-  Paddle(Player& player)
-  :_player(player) {};
+  Paddle(Player& player) : GameObject(GAME_OBJECT_PADDLE), _player(player) {}
 
-  ofxBox2dRect& rect() { return _rect; };
+  ofxBox2dRect& rect() { return _rect; }
+  const ofxBox2dRect& rect() const { return _rect; }
   
   Player& player() { return _player; };
 

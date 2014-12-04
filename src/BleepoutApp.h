@@ -13,6 +13,7 @@
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
+#include "RendererBase.h"
 
 class BleepoutApp : public ofBaseApp {
 public:
@@ -41,6 +42,7 @@ private:
   ofPtr<BleepoutConfig> _config;
   ofPtr<PlayerManager> _playerManager;
   ofPtr<RoundController> _roundController;
+  ofPtr<RendererBase> _renderer;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

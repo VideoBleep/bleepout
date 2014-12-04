@@ -7,3 +7,9 @@
 //
 
 #include "PlayerManager.h"
+
+ofPtr<Player> PlayerManager::addPlayer() {
+  ofPtr<Player> player(new Player());
+  _players.add(player);
+  return player;
+}

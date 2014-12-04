@@ -13,22 +13,16 @@
 #include <ofMain.h>
 #include <map>
 #include <vector>
+#include "GameObjectCollection.h"
 
 class PlayerManager {
 public:
-  ofPtr<Player> getPlayer(PlayerId id) {
-    return _playerIdMap[id];
-  }
+  GameObjectCollection<Player>& players() { return _players; }
+  const GameObjectCollection<Player>& players() const { return _players; }
   
-  std::size_t size() { return _playerList.size(); }
-  
-  Player& getPlayerAtIndex(std::size_t i) {
-    return *(_playerList.at(i).get());
-  }
-  
+  ofPtr<Player> addPlayer();
 private:
-  std::map<PlayerId, ofPtr<Player> > _playerIdMap;
-  std::vector<ofPtr<Player> > _playerList;
+  GameObjectCollection<Player> _players;
 };
 
 #endif /* defined(__bleepout__PlayerManager__) */

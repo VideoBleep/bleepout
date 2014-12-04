@@ -11,11 +11,14 @@
 
 #include <ofMain.h>
 #include <ofxBox2d.h>
+#include "GameObject.h"
 
-class Brick {
+class Brick : public GameObject {
 public:
-  Brick() {}
+  Brick() : GameObject(GAME_OBJECT_BRICK) {}
+  
   ofxBox2dRect& rect() { return _rect; };
+  const ofxBox2dRect& rect() const { return _rect; }
 private:
   ofxBox2dRect _rect;
 };
