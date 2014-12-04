@@ -1,4 +1,4 @@
-//
+ //
 //  SimpleRenderer.h
 //  bleepout
 //
@@ -14,7 +14,9 @@
 
 class SimpleRenderer : public RendererBase {
 public:
-  virtual void draw(RoundController& round) override;
+  virtual ~SimpleRenderer() {}
+  //void draw(RoundController& round) override;
+protected:
   virtual void drawBrick(RoundController& round, Brick& brick) override;
   virtual void drawPaddle(RoundController& round, Paddle& paddle) override;
   virtual void drawBall(RoundController& round, Ball& ball) override;

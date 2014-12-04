@@ -45,9 +45,9 @@ void RoundController::setup() {
   ofAddListener(_box2d.contactStartEvents, this, &RoundController::contactStart);
   ofAddListener(_box2d.contactEndEvents, this, &RoundController::contactEnd);
   
-  int numPlayers = _playerManager.size();
+  int numPlayers = _playerManager.players().size();
   for (int i = 0; i < numPlayers; i++) {
-    Player& player = _playerManager.getPlayerAtIndex(i);
+    Player& player = *(_playerManager.players()[i]);
     ofVec2f paddleCenter = getPaddleStartPosition(i, numPlayers, _config);
     addPaddle(paddleCenter, player);
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);

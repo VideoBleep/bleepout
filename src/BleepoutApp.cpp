@@ -7,6 +7,7 @@
 //
 
 #include "BleepoutApp.h"
+#include "SimpleRenderer.h"
 
 
 void BleepoutApp::setup() {
@@ -16,6 +17,14 @@ void BleepoutApp::setup() {
   ofSetLogLevel(_config->logLevel());
   ofDisableAntiAliasing();
   ofSetVerticalSync(_config->vsync());
+  _renderer.reset(new SimpleRenderer);
+  _playerManager.reset(new PlayerManager);
+  _playerManager->addPlayer();
+  _playerManager->addPlayer();
+  RoundConfig roundConfig;
+  _roundController.reset(new RoundController(roundConfig,
+                                             *_playerManager,
+                                             *_renderer));
 }
 
 void BleepoutApp::update() {
