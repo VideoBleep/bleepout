@@ -137,6 +137,7 @@ void RoundController::ballHitObject(Ball &ball, GameObject &obj) {
 
 void RoundController::ballHitBrick(Ball &ball, Brick &brick) {
   //...
+  //notifyBallHitBrick(
 }
 
 void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {

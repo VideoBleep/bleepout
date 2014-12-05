@@ -9,13 +9,13 @@
 #ifndef __bleepout__Player__
 #define __bleepout__Player__
 
-typedef int PlayerId;
+#include "GameObject.h"
 
-class Player {
+
+class Player : public GameObject {
 public:
-  PlayerId id() const { return _id; }
+  Player() : GameObject(GAME_OBJECT_PLAYER) {}
 private:
-  PlayerId _id;
 };
 
 #endif /* defined(__bleepout__Player__) */

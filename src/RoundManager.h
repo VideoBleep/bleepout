@@ -19,10 +19,11 @@
 #include "BleepoutConfig.h"
 #include "GameObject.h"
 #include "GameObjectCollection.h"
+#include "GameEvents.h"
 
 class RendererBase;
 
-class RoundController {
+class RoundController : public RoundEventSender {
 public:
   RoundController(RoundConfig config,
                   PlayerManager& playerManager,
