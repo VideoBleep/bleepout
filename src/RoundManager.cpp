@@ -68,7 +68,7 @@ void RoundController::addBrick(ofVec2f center) {
   rect.setFromCenter(center, _config.brickSize().x, _config.brickSize().y);
   ofPtr<Brick> brick(new Brick);
   brick->rect().setup(_box2d.getWorld(), rect);
-  brick->rect().setData(brick.get());
+  brick->rect().setData(&(brick->key()));
   _bricks.add(brick);
 }
 
@@ -76,7 +76,7 @@ void RoundController::addBall(ofVec2f center) {
   ofPtr<Ball> ball(new Ball);
   ball->circle().setup(_box2d.getWorld(), center, _config.ballRadius());
   ball->circle().setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
-  ball->circle().setData(ball.get());
+  ball->circle().setData(&(ball->key()));
   _balls.add(ball);
 }
 
@@ -86,9 +86,24 @@ void RoundController::addPaddle(ofVec2f center, Player &player) {
   rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
   paddle->rect().setup(_box2d.getWorld(), rect);
   paddle->rect().setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
-  paddle->rect().setData(paddle.get());
+  paddle->rect().setData(&(paddle->key()));
   
   _paddles.add(paddle);
+}
+
+ofPtr<GameObject> RoundController::getObject(const GameObjectKey &key) {
+  switch (key.type) {
+    case GAME_OBJECT_BALL:
+      return ofPtr<GameObject>(_balls.getById(key.id));
+    case GAME_OBJECT_BRICK:
+      return ofPtr<GameObject>(_bricks.getById(key.id));
+    case GAME_OBJECT_PADDLE:
+      return ofPtr<GameObject>(_paddles.getById(key.id));
+    case GAME_OBJECT_PLAYER:
+      return ofPtr<GameObject>(_playerManager.players().getById(key.id));
+    default:
+      return ofPtr<GameObject>();
+  }
 }
 
 void RoundController::draw() {
@@ -104,13 +119,17 @@ void RoundController::update() {
 void RoundController::contactStart(ofxBox2dContactArgs &e) {
   if (e.a == NULL || e.b == NULL)
     return;
-  GameObject* objA = static_cast<GameObject*>(e.a->GetBody()->GetUserData());
-  GameObject* objB = static_cast<GameObject*>(e.b->GetBody()->GetUserData());
-  if (objA == NULL || objB == NULL)
+  GameObjectKey* keyA = static_cast<GameObjectKey*>(e.a->GetBody()->GetUserData());
+  GameObjectKey* keyB = static_cast<GameObjectKey*>(e.a->GetBody()->GetUserData());
+  if (keyA == NULL || keyB == NULL)
     return;
-  if (objA->type() == GAME_OBJECT_BALL) {
+  ofPtr<GameObject> objA = getObject(*keyA);
+  ofPtr<GameObject> objB = getObject(*keyB);
+  if (!objA || !objB)
+    return;
+  if (keyA->type == GAME_OBJECT_BALL) {
     ballHitObject(static_cast<Ball&>(*objA), *objB);
-  } else if (objB->type() == GAME_OBJECT_BALL) {
+  } else if (keyB->type == GAME_OBJECT_BALL) {
     ballHitObject(static_cast<Ball&>(*objB), *objA);
   }
 }

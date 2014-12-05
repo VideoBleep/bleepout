@@ -17,19 +17,26 @@ enum GameObjectType {
 };
 typedef int GameObjectId;
 
+struct GameObjectKey {
+  const GameObjectType type;
+  const GameObjectId id;
+  GameObjectKey(GameObjectType t, GameObjectId i) : type(t), id(i) {}
+};
+
 class GameObject {
 public:
   GameObject(GameObjectType t);
   
-  GameObjectType type() const { return _type; }
-  GameObjectId id() const { return _id; }
+  GameObjectType type() const { return _key.type; }
+  GameObjectId id() const { return _key.id; }
+  const GameObjectKey& key() const { return _key; }
+  GameObjectKey& key() { return _key; }
   bool alive() const { return _alive; }
   
   void kill() { _alive = false; }
   void revive() { _alive = true; }
 private:
-  const GameObjectType _type;
-  const GameObjectId _id;
+  GameObjectKey _key;
   bool _alive;
 };
 

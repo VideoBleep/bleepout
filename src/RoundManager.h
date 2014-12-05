@@ -50,6 +50,8 @@ private:
   void ballHitObject(Ball& ball, GameObject& obj);
   void ballHitBrick(Ball& ball, Brick& brick);
   void ballHitPaddle(Ball& ball, Paddle& paddle);
+  
+  ofPtr<GameObject> getObject(const GameObjectKey& key);
 private:
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;

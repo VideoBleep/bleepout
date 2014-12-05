@@ -14,4 +14,4 @@ static GameObjectId nextId() {
 }
 
 GameObject::GameObject(GameObjectType t)
-  : _type(t), _id(nextId()) {}
+  : _key(t, nextId()) {}
