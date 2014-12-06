@@ -14,7 +14,7 @@ void SimpleRenderer::draw(RoundController &round) {
 }
 
 void SimpleRenderer::drawBrick(RoundController& round, Brick &brick) {
-  auto rect = brick.rect();
+  auto& rect = brick.rect();
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(255, 0, 0);
   ofRect(rect.body->GetPosition().x, rect.body->GetPosition().y,
@@ -22,7 +22,7 @@ void SimpleRenderer::drawBrick(RoundController& round, Brick &brick) {
 }
 
 void SimpleRenderer::drawPaddle(RoundController& round, Paddle &paddle) {
-  auto rect = paddle.rect();
+  auto& rect = paddle.rect();
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(0, 255, 0);
   ofRect(rect.body->GetPosition().x, rect.body->GetPosition().y,
