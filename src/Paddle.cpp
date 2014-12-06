@@ -8,6 +8,15 @@
 
 #include "Paddle.h"
 
+Paddle::Paddle(Player& player)
+: GameObject(GAME_OBJECT_PADDLE), _player(player) {
+  ofLogVerbose() << "Create Paddle";
+}
+
+Paddle::~Paddle() {
+  ofLogVerbose() << "Destroy Paddle";
+  _rect.destroy();
+}
 
 void Paddle::output(std::ostream &os) const {
   auto pos = _rect.body->GetPosition();

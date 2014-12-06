@@ -14,7 +14,8 @@
 
 class Player : public GameObject {
 public:
-  Player() : GameObject(GAME_OBJECT_PLAYER) {}
+  Player();
+  ~Player() override;
 private:
   void output(std::ostream& os) const override;
 };

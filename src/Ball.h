@@ -17,7 +17,8 @@
 
 class Ball : public GameObject {
 public:
-  Ball() : GameObject(GAME_OBJECT_BALL) {}
+  Ball();
+  ~Ball() override;
   
   ofxBox2dCircle& circle() { return _circle; }
   const ofxBox2dCircle& circle() const { return _circle; }

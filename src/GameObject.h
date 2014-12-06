@@ -28,6 +28,7 @@ struct GameObjectKey {
 class GameObject {
 public:
   GameObject(GameObjectType t);
+  virtual ~GameObject() {}
   
   GameObjectType type() const { return _key.type; }
   GameObjectId id() const { return _key.id; }

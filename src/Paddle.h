@@ -15,12 +15,13 @@
 
 class Paddle : public GameObject {
 public:
-  Paddle(Player& player) : GameObject(GAME_OBJECT_PADDLE), _player(player) {}
+  Paddle(Player& player);
+  ~Paddle() override;
 
   ofxBox2dRect& rect() { return _rect; }
   const ofxBox2dRect& rect() const { return _rect; }
   
-  Player& player() { return _player; };
+  Player& player() { return _player; }
   
   void output(std::ostream& os) const override;
 private:
