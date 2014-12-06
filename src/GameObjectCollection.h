@@ -18,54 +18,46 @@
 #include "GameObject.h"
 
 template<typename T>
-class GameObjectCollection {
+class GameObjectCollection : public std::vector<ofPtr<T> > {
 public:
-  typedef std::vector<ofPtr<T> > vector_type;
+//  int size() const { return _list.size(); }
   
-  int size() const { return _list.size(); }
+//  ofPtr<T>& operator[](int i) { return _list[i]; }
+//  const ofPtr<T>& operator[](int i) const { return _list[i]; }
   
-  ofPtr<T>& operator[](int i) { return _list[i]; }
-  const ofPtr<T>& operator[](int i) const { return _list[i]; }
+//  ofPtr<T> getById(GameObjectId id) {
+//    auto index = _idIndexLookup.at(id);
+//    return _list.at(index);
+//  }
+//  const T& getById(GameObjectId id) const {
+//    auto index = _idIndexLookup.at(id);
+//    return *(_list.at(index));
+//  }
   
-  ofPtr<T> getById(GameObjectId id) {
-    auto index = _idIndexLookup.at(id);
-    return _list.at(index);
-  }
-  const T& getById(GameObjectId id) const {
-    auto index = _idIndexLookup.at(id);
-    return *(_list.at(index));
-  }
+//  void add(ofPtr<T> obj) {
+//    _list.push_back(obj);
+////    _idIndexLookup[obj->id()] = _list.size() - 1;
+//  }
   
-  void add(ofPtr<T> obj) {
-    _list.push_back(obj);
-    _idIndexLookup[obj->id()] = _list.size() - 1;
-  }
+//  inline const vector_type& list() const { return _list; }
   
-  void removeById(GameObjectId id) {
-    auto index = _idIndexLookup.at(id);
-    _idIndexLookup.erase(id);
-    _list.erase(_list.begin() + index);
-  }
-  
-  inline const vector_type& list() const { return _list; }
-  
-  inline typename vector_type::iterator begin() { return _list.begin(); }
-  inline typename vector_type::const_iterator begin() const { return _list.begin(); }
+//  inline typename vector_type::iterator begin() { return _list.begin(); }
+//  inline typename vector_type::const_iterator begin() const { return _list.begin(); }
 
-  inline typename vector_type::iterator end() { return _list.end(); }
-  inline typename vector_type::const_iterator end() const { return _list.end(); }
+//  inline typename vector_type::iterator end() { return _list.end(); }
+//  inline typename vector_type::const_iterator end() const { return _list.end(); }
   
   void dumpToLog(const std::string& label) {
-    ofLogVerbose() << label << "(size:" << size() << ")";
-    for (auto& obj : _list) {
+    ofLogVerbose() << label << "(size:" << std::vector<ofPtr<T> >::size() << ")";
+    for (auto& obj : *this) {
       GameObject& o = *obj;
       ofLogVerbose() << "   " << (o);
     }
   }
   
 private:
-  std::vector<ofPtr<T> > _list;
-  std::map<GameObjectId, int > _idIndexLookup;
+//  std::vector<ofPtr<T> > _list;
+//  std::map<GameObjectId, int > _idIndexLookup;
 };
 
 #endif

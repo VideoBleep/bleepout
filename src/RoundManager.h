@@ -23,11 +23,15 @@
 
 class RendererBase;
 
-class RoundController : public RoundEventSender {
+class RoundController: public RoundEventSender
+{
 public:
   RoundController(RoundConfig config,
                   PlayerManager& playerManager,
                   RendererBase& renderer);
+  
+  ~RoundController();
+  
   void setup();
   void draw();
   void update();
@@ -40,6 +44,10 @@ public:
   GameObjectCollection<Brick>& bricks() { return _bricks; }
   
   void dumpToLog();
+  
+  void keyPressed(int key);
+  void mouseMoved(int x, int y );
+  void mouseDragged(int x, int y, int button);
 
 private:
   void generateBricks();
@@ -54,17 +62,15 @@ private:
   void ballHitObject(Ball& ball, GameObject& obj);
   void ballHitBrick(Ball& ball, Brick& brick);
   void ballHitPaddle(Ball& ball, Paddle& paddle);
-  
-  ofPtr<GameObject> getObject(const GameObjectKey& key);
-
 private:
-  GameObjectCollection<Paddle> _paddles;
-  GameObjectCollection<Ball>   _balls;
-  GameObjectCollection<Brick>  _bricks;
   PlayerManager& _playerManager;
   ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
+  ofPtr<ofxBox2dCircle> omghi;
+  GameObjectCollection<Paddle> _paddles;
+  GameObjectCollection<Ball>   _balls;
+  GameObjectCollection<Brick>  _bricks;
 
 };
 

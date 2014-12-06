@@ -15,11 +15,11 @@ Paddle::Paddle(Player& player)
 
 Paddle::~Paddle() {
   ofLogVerbose() << "Destroy Paddle";
-  _rect.destroy();
+  destroy();
 }
 
 void Paddle::output(std::ostream &os) const {
-  auto pos = _rect.body->GetPosition();
+  auto pos = body->GetPosition();
   os << "Paddle{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
   os << ", player:" << _player.id() << "}";
 }

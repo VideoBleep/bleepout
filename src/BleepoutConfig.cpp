@@ -46,8 +46,10 @@ void RoundConfig::loadFile(const std::string &path) {
   _ballBounce = settings.getValue("settings:ballBounce", 1.0f);
   _ballFriction = settings.getValue("settings:ballFriction", 0.0f);
   _paddleDensity = settings.getValue("settings:paddleDensity", 30.0f);
-  _paddleBounce = settings.getValue("settings:paddleBounce", 0.5f);
+  _paddleBounce = settings.getValue("settings:paddleBounce", 0.0f);
   _paddleFriction = settings.getValue("settings:paddleFriction", 0.9f);
+  _ballInitialVelocity.x = settings.getValue("settings:ballInitialVelocityX", 0.01f);
+  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 1.5f);
   //...
 }
 
@@ -65,6 +67,8 @@ void RoundConfig::saveFile(const std::string &path) const {
   settings.setValue("settings:paddleDensity", _paddleDensity);
   settings.setValue("settings:paddleBounce", _paddleBounce);
   settings.setValue("settings:paddleFriction", _paddleFriction);
+  settings.setValue("settings:ballInitialVelocityX", _ballInitialVelocity.x);
+  settings.setValue("settings:ballInitialVelocityY", _ballInitialVelocity.y);
 
   //...
   settings.save(path);

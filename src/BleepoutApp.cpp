@@ -12,6 +12,7 @@
 
 void BleepoutApp::setup() {
   _config.reset(new BleepoutConfig());
+  _config->loadFile(""); // ugly...
   // load config....
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
@@ -42,11 +43,18 @@ void BleepoutApp::draw() {
 }
 
 void BleepoutApp::keyPressed(int key) {
-  if (key == 'l') {
-    if (!_roundController) {
-      ofLogVerbose() << "No round exists";
-    } else {
-      _roundController->dumpToLog();
-    }
+  if (_roundController) {
+    _roundController->keyPressed(key);
+  }
+}
+
+void BleepoutApp::mouseMoved(int x, int y) {
+  if (_roundController) {
+    _roundController->mouseMoved(x, y);
+  }
+}
+void BleepoutApp::mouseDragged(int x, int y, int button) {
+  if (_roundController) {
+    _roundController->mouseDragged(x, y, button);
   }
 }

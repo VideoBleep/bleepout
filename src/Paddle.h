@@ -13,20 +13,16 @@
 #include "GameObject.h"
 #include <ofxBox2d.h>
 
-class Paddle : public GameObject {
+class Paddle : public GameObject, public ofxBox2dRect {
 public:
   Paddle(Player& player);
   ~Paddle() override;
-
-  ofxBox2dRect& rect() { return _rect; }
-  const ofxBox2dRect& rect() const { return _rect; }
   
   Player& player() { return _player; }
   
   void output(std::ostream& os) const override;
 private:
   Player& _player;
-  ofxBox2dRect _rect;
 };
 
 

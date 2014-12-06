@@ -10,13 +10,13 @@
 
 
 void RendererBase::draw(RoundController &round) {
-  for (ofPtr<Brick>& brick : round.bricks()) {
-    drawBrick(round, *brick);
+  for (int i = 0, count = round.bricks().size(); i < count; i++) {
+    drawBrick(round, *(round.bricks()[i].get()));
   }
-  for (ofPtr<Paddle>& paddle : round.paddles()) {
-    drawPaddle(round, *paddle);
+  for (int i = 0, count = round.paddles().size(); i < count; i++) {
+    drawPaddle(round, *(round.paddles()[i].get()));
   }
-  for (ofPtr<Ball>& ball : round.balls()) {
-    drawBall(round, *ball);
+  for (int i = 0, count = round.balls().size(); i < count; i++) {
+    drawBall(round, *(round.balls()[i].get()));
   }
 }

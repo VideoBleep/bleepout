@@ -15,11 +15,11 @@ Ball::Ball() : GameObject(GAME_OBJECT_BALL) {
 
 Ball::~Ball() {
   ofLogVerbose() << "Destroy Ball";
-  _circle.destroy();
+  destroy();
 }
 
 void Ball::output(std::ostream &os) const {
-  auto pos = _circle.body->GetPosition();
+  auto pos = body->GetPosition();
   os << "Ball{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
   os << ", curPlayer:";
   if (_lastPlayer)
