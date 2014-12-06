@@ -7,3 +7,9 @@
 //
 
 #include "Brick.h"
+
+
+void Brick::output(std::ostream &os) const {
+  auto pos = _rect.body->GetPosition();
+  os << "Brick{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")}";
+}

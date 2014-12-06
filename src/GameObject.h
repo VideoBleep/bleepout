@@ -9,6 +9,8 @@
 #ifndef __bleepout__GameObject__
 #define __bleepout__GameObject__
 
+#include <iostream>
+
 enum GameObjectType {
   GAME_OBJECT_BRICK,
   GAME_OBJECT_PADDLE,
@@ -35,9 +37,13 @@ public:
   
   void kill() { _alive = false; }
   void revive() { _alive = true; }
+  
+  virtual void output(std::ostream& os) const = 0;
 private:
   GameObjectKey _key;
   bool _alive;
 };
+
+std::ostream& operator<<(std::ostream& os, const GameObject& obj);
 
 #endif /* defined(__bleepout__GameObject__) */

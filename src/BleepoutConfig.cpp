@@ -33,7 +33,9 @@ void BleepoutConfig::saveFile(const std::string& path) const {
 }
 
 void RoundConfig::loadFile(const std::string &path) {
-  ofxXmlSettings settings(path);
+  ofxXmlSettings settings;
+  if (!path.empty())
+    settings.load(path);
   _brickSize.x = settings.getValue("settings:brickSizeX", 100.0f);
   _brickSize.y = settings.getValue("settings:brickSizeY", 20.0f);
   _brickGap = settings.getValue("settings:brickGap", 5.0f);

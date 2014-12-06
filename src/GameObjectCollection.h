@@ -12,6 +12,8 @@
 #include <vector>
 #include <map>
 #include <ofTypes.h>
+#include <iostream>
+#include <string>
 #include "Common.h"
 #include "GameObject.h"
 
@@ -52,6 +54,14 @@ public:
 
   inline typename vector_type::iterator end() { return _list.end(); }
   inline typename vector_type::const_iterator end() const { return _list.end(); }
+  
+  void dumpToLog(const std::string& label) {
+    ofLogVerbose() << label << "(size:" << size() << ")";
+    for (auto& obj : _list) {
+      GameObject& o = *obj;
+      ofLogVerbose() << "   " << (o);
+    }
+  }
   
 private:
   std::vector<ofPtr<T> > _list;

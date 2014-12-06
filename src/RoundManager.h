@@ -38,8 +38,12 @@ public:
   GameObjectCollection<Paddle>& paddles() { return _paddles; }
   GameObjectCollection<Ball>& balls() { return _balls; }
   GameObjectCollection<Brick>& bricks() { return _bricks; }
+  
+  void dumpToLog();
 
 private:
+  void generateBricks();
+  
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
   void addPaddle(ofVec2f center, Player& player);
@@ -52,6 +56,7 @@ private:
   void ballHitPaddle(Ball& ball, Paddle& paddle);
   
   ofPtr<GameObject> getObject(const GameObjectKey& key);
+
 private:
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;

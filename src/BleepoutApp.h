@@ -25,7 +25,7 @@ public:
   void update() override;
   void draw() override;
 
-//  void keyPressed(int key) override{}
+  void keyPressed(int key) override;
 //  void keyReleased(int key) override{}
 //  void mouseMoved(int x, int y ) override{}
 //  void mouseDragged(int x, int y, int button) override{}

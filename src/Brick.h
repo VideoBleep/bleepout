@@ -19,6 +19,8 @@ public:
   
   ofxBox2dRect& rect() { return _rect; };
   const ofxBox2dRect& rect() const { return _rect; }
+  
+  void output(std::ostream& os) const override;
 private:
   ofxBox2dRect _rect;
 };

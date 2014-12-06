@@ -7,3 +7,15 @@
 //
 
 #include "Ball.h"
+
+
+void Ball::output(std::ostream &os) const {
+  auto pos = _circle.body->GetPosition();
+  os << "Ball{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
+  os << ", curPlayer:";
+  if (_lastPlayer)
+    os << _lastPlayer->id();
+  else
+    os << "(none)";
+  os << "}";
+}

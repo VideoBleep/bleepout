@@ -22,6 +22,7 @@ void BleepoutApp::setup() {
   _playerManager->addPlayer();
   _playerManager->addPlayer();
   RoundConfig roundConfig;
+  roundConfig.loadFile(""); // this is ugly and should be changed at some point
   _roundController.reset(new RoundController(roundConfig,
                                              *_playerManager,
                                              *_renderer));
@@ -37,5 +38,15 @@ void BleepoutApp::update() {
 void BleepoutApp::draw() {
   if (_roundController) {
     _roundController->draw();
+  }
+}
+
+void BleepoutApp::keyPressed(int key) {
+  if (key == 'l') {
+    if (!_roundController) {
+      ofLogVerbose() << "No round exists";
+    } else {
+      _roundController->dumpToLog();
+    }
   }
 }

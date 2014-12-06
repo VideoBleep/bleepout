@@ -26,6 +26,7 @@ public:
   void setLastPlayer(Player* player) {
     _lastPlayer = player;
   }
+  void output(std::ostream& os) const override;
 private:
   ofxBox2dCircle _circle;
   Player* _lastPlayer;

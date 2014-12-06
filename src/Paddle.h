@@ -21,7 +21,8 @@ public:
   const ofxBox2dRect& rect() const { return _rect; }
   
   Player& player() { return _player; };
-
+  
+  void output(std::ostream& os) const override;
 private:
   Player& _player;
   ofxBox2dRect _rect;

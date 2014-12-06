@@ -16,7 +16,7 @@ namespace {
   static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
     
     ofVec2f pos;
-    pos.y = ofGetHeight() - (config.brickSize().y / 2);
+    pos.y = config.brickSize().y / 2;
     float halfWidth = config.brickSize().x;
     pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
     //...
@@ -60,6 +60,7 @@ void RoundController::setup() {
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
   }
+  
   //...
 }
 
@@ -161,4 +162,13 @@ void RoundController::ballHitBrick(Ball &ball, Brick &brick) {
 
 void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {
   ball.setLastPlayer(&(paddle.player()));
+}
+
+void RoundController::dumpToLog() {
+  ofLogVerbose() << "--BEGIN round state--";
+  _paddles.dumpToLog("Paddles");
+  _balls.dumpToLog("Balls");
+  _bricks.dumpToLog("Bricks");
+  _playerManager.players().dumpToLog("Players");
+  ofLogVerbose() << "--  END round state--";
 }
