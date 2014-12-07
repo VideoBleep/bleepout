@@ -10,6 +10,6 @@
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
-  _players.add(player);
+  _players.push_back(player);
   return player;
 }

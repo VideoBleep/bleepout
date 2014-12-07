@@ -7,3 +7,24 @@
 //
 
 #include "Ball.h"
+
+
+Ball::Ball() : GameObject(GAME_OBJECT_BALL) {
+  ofLogVerbose() << "Create Ball";
+}
+
+Ball::~Ball() {
+  ofLogVerbose() << "Destroy Ball";
+  destroy();
+}
+
+void Ball::output(std::ostream &os) const {
+  auto pos = body->GetPosition();
+  os << "Ball{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
+  os << ", curPlayer:";
+  if (_lastPlayer)
+    os << _lastPlayer->id();
+  else
+    os << "(none)";
+  os << "}";
+}

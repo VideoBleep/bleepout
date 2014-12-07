@@ -19,14 +19,19 @@
 #include "BleepoutConfig.h"
 #include "GameObject.h"
 #include "GameObjectCollection.h"
+#include "GameEvents.h"
 
 class RendererBase;
 
-class RoundController {
+class RoundController: public RoundEventSender
+{
 public:
   RoundController(RoundConfig config,
                   PlayerManager& playerManager,
                   RendererBase& renderer);
+  
+  ~RoundController();
+  
   void setup();
   void draw();
   void update();
@@ -37,11 +42,21 @@ public:
   GameObjectCollection<Paddle>& paddles() { return _paddles; }
   GameObjectCollection<Ball>& balls() { return _balls; }
   GameObjectCollection<Brick>& bricks() { return _bricks; }
+  
+  void dumpToLog();
+  
+  void keyPressed(int key);
+  void mouseMoved(int x, int y );
+  void mouseDragged(int x, int y, int button);
+  
+  void setPaddlePosition(GameObjectId playerId, float xPercent);
 
 private:
+  void generateBricks();
+  
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, Player& player);
+  void addPaddle(ofVec2f center, ofPtr<Player> player);
   
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
@@ -50,13 +65,13 @@ private:
   void ballHitBrick(Ball& ball, Brick& brick);
   void ballHitPaddle(Ball& ball, Paddle& paddle);
 private:
-  GameObjectCollection<Paddle> _paddles;
-  GameObjectCollection<Ball>   _balls;
-  GameObjectCollection<Brick>  _bricks;
   PlayerManager& _playerManager;
   ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
+  GameObjectCollection<Paddle> _paddles;
+  GameObjectCollection<Ball>   _balls;
+  GameObjectCollection<Brick>  _bricks;
 
 };
 

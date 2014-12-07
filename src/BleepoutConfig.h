@@ -43,6 +43,7 @@ public:
   float paddleDensity() const { return _paddleDensity; }
   float paddleBounce() const { return _paddleBounce; }
   float paddleFriction() const { return _paddleFriction; }
+  const ofVec2f& ballInitialVelocity() const { return _ballInitialVelocity; }
 private:
   ofVec2f _brickSize;
   float _brickGap;
@@ -54,6 +55,7 @@ private:
   float _paddleDensity;
   float _paddleBounce;
   float _paddleFriction;
+  ofVec2f _ballInitialVelocity;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

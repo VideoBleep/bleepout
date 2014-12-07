@@ -13,14 +13,12 @@
 #include <ofxBox2d.h>
 #include "GameObject.h"
 
-class Brick : public GameObject {
+class Brick : public GameObject, public ofxBox2dRect {
 public:
   Brick() : GameObject(GAME_OBJECT_BRICK) {}
   
-  ofxBox2dRect& rect() { return _rect; };
-  const ofxBox2dRect& rect() const { return _rect; }
+  void output(std::ostream& os) const override;
 private:
-  ofxBox2dRect _rect;
 };
 
 #endif /* defined(__bleepout__Brick__) */

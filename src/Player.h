@@ -9,13 +9,22 @@
 #ifndef __bleepout__Player__
 #define __bleepout__Player__
 
-typedef int PlayerId;
+#include "GameObject.h"
+#include <iostream>
+#include <ofTypes.h>
 
-class Player {
+class Paddle;
+
+class Player : public GameObject {
 public:
-  PlayerId id() const { return _id; }
+  Player();
+  ~Player() override;
+  void setPaddle(ofPtr<Paddle> paddle) { _paddle = paddle; }
+  ofPtr<Paddle> paddle() { return _paddle; }
 private:
-  PlayerId _id;
+  void output(std::ostream& os) const override;
+  
+  ofPtr<Paddle> _paddle;
 };
 
 #endif /* defined(__bleepout__Player__) */

@@ -10,6 +10,7 @@
 #define __bleepout__RendererBase__
 
 #include "RoundManager.h"
+#include "GameObjectCollection.h"
 #include "Brick.h"
 #include "Paddle.h"
 #include "Ball.h"
