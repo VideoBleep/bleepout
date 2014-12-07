@@ -19,14 +19,14 @@
 template<typename T>
 class BallHitObjectEventArgs {
 public:
-  BallHitObjectEventArgs(ofPtr<Ball> ball, ofPtr<T> object)
+  BallHitObjectEventArgs(Ball& ball, T& object)
   : _ball(ball), _object(object) { }
 
-  ofPtr<Ball> ball() { return _ball; }
-  ofPtr<T> object() { return _object; }
+  Ball& ball() { return _ball; }
+  T& object() { return _object; }
 private:
-  ofPtr<Ball> _ball;
-  ofPtr<T> _object;
+  Ball& _ball;
+  T& _object;
 };
 
 class PlayerEventArgs {
@@ -44,14 +44,8 @@ public:
   ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
   ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
 protected:
-  void notifyBallHitPaddle(ofPtr<Ball> ball, ofPtr<Paddle> paddle) {
-    BallHitPaddleEventArgs e(ball, paddle);
-    ofNotifyEvent(ballHitPaddleEvent, e);
-  }
-  void notifyBallHitBrick(ofPtr<Ball> ball, ofPtr<Brick> brick) {
-    BallHitBrickEventArgs e(ball, brick);
-    ofNotifyEvent(ballHitBrickEvent, e);
-  }
+  void notifyBallHitPaddle(Ball& ball, Paddle& paddle);
+  void notifyBallHitBrick(Ball& ball, Brick& brick);
 };
 
 #endif /* defined(__bleepout__GameEvents__) */
