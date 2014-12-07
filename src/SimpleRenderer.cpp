@@ -23,7 +23,7 @@ void SimpleRenderer::drawBrick(RoundController& round, Brick &brick) {
 void SimpleRenderer::drawPaddle(RoundController& round, Paddle &paddle) {
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(0, 255, 0);
-  ofRect(paddle.body->GetPosition().x, paddle.body->GetPosition().y,
+  ofRect(paddle.getPosition().x, paddle.getPosition().y,
          paddle.getWidth(), paddle.getHeight());
 }
 
