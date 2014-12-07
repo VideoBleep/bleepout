@@ -37,12 +37,8 @@ public:
   void draw();
   void update();
   
-  const GameObjectCollection<Paddle>& paddles() const { return _state.paddles(); }
-  const GameObjectCollection<Ball>& balls() const { return _state.balls(); }
-  const GameObjectCollection<Brick>& bricks() const { return _state.bricks(); }
-  GameObjectCollection<Paddle>& paddles() { return _state.paddles(); }
-  GameObjectCollection<Ball>& balls() { return _state.balls(); }
-  GameObjectCollection<Brick>& bricks() { return _state.bricks(); }
+  GameState& state() { return _state; }
+  const GameState& state() const { return _state; }
   
   void dumpToLog();
   
