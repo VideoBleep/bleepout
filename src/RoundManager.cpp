@@ -81,9 +81,13 @@ void RoundController::addBrick(ofVec2f center) {
   _bricks.push_back(brick);
 }
 
+static void setObjPhysics(ofxBox2dBaseShape* obj, PhysicsOptions vals) {
+  obj->setPhysics(vals.density, vals.bounce, vals.friction);
+}
+
 void RoundController::addBall(ofVec2f center) {
   ofPtr<Ball> ball(new Ball);
-  ball->setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
+  setObjPhysics(ball.get(), _config.ballPhysics());
   ball->setup(_box2d.getWorld(), center, _config.ballRadius());
   ball->setVelocity(_config.ballInitialVelocity());
   ball->setData(ball.get());
@@ -95,8 +99,8 @@ void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
   ofRectangle rect;
   player->setPaddle(paddle);
   rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
+  setObjPhysics(paddle.get(), _config.paddlePhysics());
   paddle->setup(_box2d.getWorld(), rect);
-  paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
   paddle->setData(paddle.get());
   
   _paddles.push_back(paddle);
