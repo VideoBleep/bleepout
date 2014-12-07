@@ -11,21 +11,16 @@
 
 
 void BleepoutApp::setup() {
-  _config.reset(new BleepoutConfig());
-  _config->loadFile(""); // ugly...
+  _config.loadFile(""); // ugly...
   // load config....
-  ofSetFrameRate(_config->fps());
-  ofSetLogLevel(_config->logLevel());
+  ofSetFrameRate(_config.fps());
+  ofSetLogLevel(_config.logLevel());
   ofDisableAntiAliasing();
-  ofSetVerticalSync(_config->vsync());
-  _renderer.reset(new SimpleRenderer);
-  _playerManager.reset(new PlayerManager);
-  _playerManager->addPlayer();
-  RoundConfig roundConfig;
+  ofSetVerticalSync(_config.vsync());
+
+  RoundConfig roundConfig(_config);
   roundConfig.loadFile(""); // this is ugly and should be changed at some point
-  _roundController.reset(new RoundController(roundConfig,
-                                             *_playerManager,
-                                             *_renderer));
+  _roundController.reset(new RoundController(roundConfig));
   _roundController->setup();
 }
 

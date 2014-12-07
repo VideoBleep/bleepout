@@ -13,8 +13,7 @@
 #include <string>
 
 class BleepoutConfig {
-public:
-  static const BleepoutConfig& getInstance();
+public:  BleepoutConfig();
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
@@ -28,8 +27,19 @@ private:
   bool _vsync;
 };
 
+struct PhysicsOptions {
+  float density;
+  float bounce;
+  float friction;
+
+  PhysicsOptions(float d, float b, float f)
+  : density(d), bounce(b), friction(f){}
+};
+
 class RoundConfig {
 public:
+  RoundConfig(const BleepoutConfig& appConfig);
+  
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
   
@@ -37,24 +47,19 @@ public:
   float brickGap() const { return _brickGap; }
   const ofVec2f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
-  float ballDensity() const { return _ballDensity; }
-  float ballBounce() const { return _ballBounce; }
-  float ballFriction() const { return _ballFriction; }
-  float paddleDensity() const { return _paddleDensity; }
-  float paddleBounce() const { return _paddleBounce; }
-  float paddleFriction() const { return _paddleFriction; }
+  PhysicsOptions ballPhysics() const { return _ballPhysics; }
+  PhysicsOptions paddlePhysics() const { return _paddlePhysics; }
   const ofVec2f& ballInitialVelocity() const { return _ballInitialVelocity; }
+  
+  const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
+  const BleepoutConfig& _appConfig;
   ofVec2f _brickSize;
   float _brickGap;
   ofVec2f _paddleSize;
-  float _ballDensity;
-  float _ballBounce;
-  float _ballFriction;
+  PhysicsOptions _ballPhysics;
+  PhysicsOptions _paddlePhysics;
   float _ballRadius;
-  float _paddleDensity;
-  float _paddleBounce;
-  float _paddleFriction;
   ofVec2f _ballInitialVelocity;
 };
 

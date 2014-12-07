@@ -10,139 +10,47 @@
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
+#include "SimpleRenderer.h"
 
-namespace {
-  
-  static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
-    
-    auto HEIGHT = ofGetHeight();
-    ofVec2f pos;
-    pos.y = ofGetHeight() - (config.brickSize().y);
-    float halfWidth = config.brickSize().x;
-    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    //...
-//    throw NotImplementedException("getPaddleStartPosition");
-    return pos;
-  }
-  static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
-    ofVec2f pos;
-    pos.y = ofGetHeight() / 2;
-    float halfWidth = config.brickSize().x;
-    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    //...
-//    throw NotImplementedException("getBallStartPosition");
-    return pos;
-  }
-  
-}
-
-
-RoundController::RoundController(RoundConfig config,
-                                 PlayerManager& playerManager,
-                                 RendererBase& renderer)
-  : _config(config),
-    _playerManager(playerManager),
-    _renderer(renderer) {
+RoundController::RoundController(RoundConfig config)
+  : _config(config) {
 }
 
 RoundController::~RoundController() {
 }
 
 void RoundController::setup() {
-  _box2d.init();
-  _box2d.setGravity(0, 0);
-  //  _box2d.createGround();
-  _box2d.createBounds(ofRectangle(5, 5, ofGetWidth() - 10, ofGetHeight() -10 ));
-  _box2d.setFPS(BleepoutConfig::getInstance().fps());
-  _box2d.registerGrabbing();
-  ofAddListener(_box2d.contactStartEvents, this, &RoundController::contactStart);
-  ofAddListener(_box2d.contactEndEvents, this, &RoundController::contactEnd);
+  //...
+  _state.players().push_back(ofPtr<Player>(new Player()));
   
+  _spaceController.reset(new SpaceController(_state, _config));
+  _logicController.reset(new LogicController(_state, _config));
+  _spaceController->setup();
+  _logicController->setup();
   
-  int numPlayers = _playerManager.players().size();
-  for (int i = 0; i < numPlayers; i++) {
-    ofPtr<Player> player = _playerManager.players()[i];
-    ofVec2f paddleCenter = getPaddleStartPosition(i, numPlayers, _config);
-    addPaddle(paddleCenter, player);
-    ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-    addBall(ballCenter);
-  }
-  
+  _renderer.reset(new SimpleRenderer());
   //...
 }
 
-void RoundController::addBrick(ofVec2f center) {
-  ofRectangle rect;
-  rect.setFromCenter(center, _config.brickSize().x, _config.brickSize().y);
-  ofPtr<Brick> brick(new Brick);
-  brick->setup(_box2d.getWorld(), rect);
-  brick->setData(&brick);
-  _bricks.push_back(brick);
-}
-
-void RoundController::addBall(ofVec2f center) {
-  ofPtr<Ball> ball(new Ball);
-  ball->setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
-  ball->setup(_box2d.getWorld(), center, _config.ballRadius());
-  ball->setVelocity(_config.ballInitialVelocity());
-  ball->setData(&ball);
-  _balls.push_back(ball);
-}
-
-void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
-  ofPtr<Paddle> paddle(new Paddle(player));
-  ofRectangle rect;
-  player->setPaddle(paddle);
-  rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
-  paddle->setup(_box2d.getWorld(), rect);
-  paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
-  paddle->setData(&paddle);
-  
-  _paddles.push_back(paddle);
-}
-
 void RoundController::draw() {
-  _renderer.draw(*this);
+  _renderer->draw(_state);
   //...
 }
 
 void RoundController::update() {
   //ofLogVerbose() << "OMG UPDATE!!!";
-  _box2d.update();  //...
+  _spaceController->update();
+  _logicController->update();
 }
 
 void RoundController::keyPressed(int key) {
   if (key == 'l') {
     dumpToLog();
   }
-  switch (key) {
-    case 'l':
-      dumpToLog();
-      break;
-    case OF_KEY_LEFT:
-      //...
-      if (_paddles.size() > 0) {
-        Paddle& paddle = *(_paddles[0]);
-        ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x - 5, pos.y);
-      }
-      break;
-    case OF_KEY_RIGHT:
-      //...
-      if (_paddles.size() > 0) {
-        Paddle& paddle = *(_paddles[0]);
-        ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x + 5, pos.y);
-      }
-      break;
-      
-    default:
-      break;
-  }
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
-  ofPtr<Player> player = _playerManager.players().getById(playerId);
+  ofPtr<Player> player = _state.players().getById(playerId);
   if (!player) {
     ofLogError() << "Player not found: " << playerId;
     return;
@@ -155,17 +63,17 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
   }
   
   ofVec2f pos = paddle->getPosition();
-  ofLogVerbose() << "Paddle position was " << pos;
+//  ofLogVerbose() << "Paddle position was " << pos;
   pos.x = xPercent * ofGetWidth();
-  ofLogVerbose() << "Setting paddle position to " << pos;
+//  ofLogVerbose() << "Setting paddle position to " << pos;
   paddle->setPosition(pos);
   //...
 }
 
 void RoundController::mouseMoved(int x, int y) {
   //...
-  if (_playerManager.players().size()) {
-    ofPtr<Player> player = *(_playerManager.players().begin());
+  if (_state.players().size()) {
+    ofPtr<Player> player = _state.players()[0];
     setPaddlePosition(player->id(), (float)x / ofGetWidth());
   }
 }
@@ -174,54 +82,8 @@ void RoundController::mouseDragged(int x, int y, int button) {
   //...
 }
 
-void RoundController::contactStart(ofxBox2dContactArgs &e) {
-  if (e.a == NULL || e.b == NULL)
-    return;
-  ofPtr<GameObject>& objA = *((ofPtr<GameObject>*)e.a->GetBody()->GetUserData());
-  ofPtr<GameObject>& objB = *((ofPtr<GameObject>*)e.b->GetBody()->GetUserData());
-  if (!objA || !objB)
-    return;
-  if (objA->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objA), *objB);
-  } else if (objB->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objB), *objA);
-  }
-}
-
-void RoundController::contactEnd(ofxBox2dContactArgs &e) {
-  //...
-}
-
-void RoundController::ballHitObject(Ball &ball, GameObject &obj) {
-  switch (obj.type()) {
-    case GAME_OBJECT_BRICK:
-      ballHitBrick(ball, static_cast<Brick&>(obj));
-      break;
-    case GAME_OBJECT_PADDLE:
-      ballHitPaddle(ball, static_cast<Paddle&>(obj));
-      break;
-    case GAME_OBJECT_BALL:
-      // ????? insanity ensues
-      break;
-    default:
-      break;
-  }
-}
-
-void RoundController::ballHitBrick(Ball &ball, Brick &brick) {
-  //...
-  //notifyBallHitBrick(
-}
-
-void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {
-  ball.setLastPlayer(paddle.player());
-}
-
 void RoundController::dumpToLog() {
   ofLogVerbose() << "--BEGIN round state--";
-  _paddles.dumpToLog("Paddles");
-  _balls.dumpToLog("Balls");
-  _bricks.dumpToLog("Bricks");
-  _playerManager.players().dumpToLog("Players");
+  _state.dumpToLog();
   ofLogVerbose() << "--  END round state--";
 }

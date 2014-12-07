@@ -19,7 +19,7 @@ Paddle::~Paddle() {
 }
 
 void Paddle::output(std::ostream &os) const {
-  auto pos = body->GetPosition();
+  auto pos = const_cast<Paddle*>(this)->getPosition();
   os << "Paddle{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
   if (_player)
     os << ", player:" << _player->id();

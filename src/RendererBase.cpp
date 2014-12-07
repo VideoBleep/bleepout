@@ -9,14 +9,14 @@
 #include "RendererBase.h"
 
 
-void RendererBase::draw(RoundController &round) {
-  for (int i = 0, count = round.bricks().size(); i < count; i++) {
-    drawBrick(round, *(round.bricks()[i].get()));
+void RendererBase::draw(RoundState &state) {
+  for (int i = 0, count = state.bricks().size(); i < count; i++) {
+    drawBrick(state, *(state.bricks()[i].get()));
   }
-  for (int i = 0, count = round.paddles().size(); i < count; i++) {
-    drawPaddle(round, *(round.paddles()[i].get()));
+  for (int i = 0, count = state.paddles().size(); i < count; i++) {
+    drawPaddle(state, *(state.paddles()[i].get()));
   }
-  for (int i = 0, count = round.balls().size(); i < count; i++) {
-    drawBall(round, *(round.balls()[i].get()));
+  for (int i = 0, count = state.balls().size(); i < count; i++) {
+    drawBall(state, *(state.balls()[i].get()));
   }
 }
