@@ -12,17 +12,18 @@
 #include "Player.h"
 #include "GameObject.h"
 #include <ofxBox2d.h>
+#include <ofTypes.h>
 
 class Paddle : public GameObject, public ofxBox2dRect {
 public:
-  Paddle(Player& player);
+  Paddle(ofPtr<Player> player);
   ~Paddle() override;
   
-  Player& player() { return _player; }
+  ofPtr<Player> player() { return _player; }
   
   void output(std::ostream& os) const override;
 private:
-  Player& _player;
+  ofPtr<Player> _player;
 };
 
 

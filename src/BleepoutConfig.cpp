@@ -16,9 +16,11 @@
 }
 
 void BleepoutConfig::loadFile(const std::string& path) {
-  ofxXmlSettings settings(path);
+  ofxXmlSettings settings;
+  if (!path.empty())
+    settings.load(path);
   _fps = settings.getValue("settings:fps", 30);
-  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", OF_LOG_NOTICE);
+  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", OF_LOG_VERBOSE);
   _vsync = settings.getValue("settings:vsync", true);
   //...
 }
@@ -45,11 +47,11 @@ void RoundConfig::loadFile(const std::string &path) {
   _ballDensity = settings.getValue("settings:ballDensity", 3.0f);
   _ballBounce = settings.getValue("settings:ballBounce", 1.0f);
   _ballFriction = settings.getValue("settings:ballFriction", 0.0f);
-  _paddleDensity = settings.getValue("settings:paddleDensity", 30.0f);
+  _paddleDensity = settings.getValue("settings:paddleDensity", 0.0f);
   _paddleBounce = settings.getValue("settings:paddleBounce", 0.0f);
   _paddleFriction = settings.getValue("settings:paddleFriction", 0.9f);
   _ballInitialVelocity.x = settings.getValue("settings:ballInitialVelocityX", 0.01f);
-  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 1.5f);
+  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 10.5f);
   //...
 }
 

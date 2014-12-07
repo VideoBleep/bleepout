@@ -48,13 +48,15 @@ public:
   void keyPressed(int key);
   void mouseMoved(int x, int y );
   void mouseDragged(int x, int y, int button);
+  
+  void setPaddlePosition(GameObjectId playerId, float xPercent);
 
 private:
   void generateBricks();
   
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, Player& player);
+  void addPaddle(ofVec2f center, ofPtr<Player> player);
   
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
@@ -67,7 +69,6 @@ private:
   ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
-  ofPtr<ofxBox2dCircle> omghi;
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;
   GameObjectCollection<Brick>  _bricks;

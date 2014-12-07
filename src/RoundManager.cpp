@@ -61,7 +61,7 @@ void RoundController::setup() {
   
   int numPlayers = _playerManager.players().size();
   for (int i = 0; i < numPlayers; i++) {
-    Player& player = *(_playerManager.players()[i]);
+    ofPtr<Player> player = _playerManager.players()[i];
     ofVec2f paddleCenter = getPaddleStartPosition(i, numPlayers, _config);
     addPaddle(paddleCenter, player);
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
@@ -89,9 +89,10 @@ void RoundController::addBall(ofVec2f center) {
   _balls.push_back(ball);
 }
 
-void RoundController::addPaddle(ofVec2f center, Player &player) {
+void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
   ofPtr<Paddle> paddle(new Paddle(player));
   ofRectangle rect;
+  player->setPaddle(paddle);
   rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
   paddle->setup(_box2d.getWorld(), rect);
   paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
@@ -140,8 +141,33 @@ void RoundController::keyPressed(int key) {
   }
 }
 
+void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
+  ofPtr<Player> player = _playerManager.players().getById(playerId);
+  if (!player) {
+    ofLogError() << "Player not found: " << playerId;
+    return;
+  }
+
+  ofPtr<Paddle> paddle = player->paddle();
+  if (!paddle) {
+    ofLogError() << "Unable to set paddle position for player: " << playerId;
+    return;
+  }
+  
+  ofVec2f pos = paddle->getPosition();
+  ofLogVerbose() << "Paddle position was " << pos;
+  pos.x = xPercent * ofGetWidth();
+  ofLogVerbose() << "Setting paddle position to " << pos;
+  paddle->setPosition(pos);
+  //...
+}
+
 void RoundController::mouseMoved(int x, int y) {
   //...
+  if (_playerManager.players().size()) {
+    ofPtr<Player> player = *(_playerManager.players().begin());
+    setPaddlePosition(player->id(), (float)x / ofGetWidth());
+  }
 }
 
 void RoundController::mouseDragged(int x, int y, int button) {
@@ -188,7 +214,7 @@ void RoundController::ballHitBrick(Ball &ball, Brick &brick) {
 }
 
 void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {
-  ball.setLastPlayer(&(paddle.player()));
+  ball.setLastPlayer(paddle.player());
 }
 
 void RoundController::dumpToLog() {
