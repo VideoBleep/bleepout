@@ -28,6 +28,8 @@
 		32324EBA1A2EA32100B51FCD /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32324EB81A2EA32100B51FCD /* Player.cpp */; };
 		325D3E7D1A34E095009529A2 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325D3E7B1A34E095009529A2 /* Wall.cpp */; };
 		325D3E801A34EDDD009529A2 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325D3E7E1A34EDDD009529A2 /* GameState.cpp */; };
+		325D3E831A34F9D9009529A2 /* SpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325D3E811A34F9D9009529A2 /* SpaceController.cpp */; };
+		3270227C1A35100F00F5DF43 /* LogicController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3270227A1A35100F00F5DF43 /* LogicController.cpp */; };
 		32B33A931A2FFCF200A2EA9F /* RendererBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */; };
 		32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A941A3004DE00A2EA9F /* GameObject.cpp */; };
 		32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */; };
@@ -174,6 +176,10 @@
 		325D3E7C1A34E095009529A2 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		325D3E7E1A34EDDD009529A2 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
 		325D3E7F1A34EDDD009529A2 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		325D3E811A34F9D9009529A2 /* SpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceController.cpp; sourceTree = "<group>"; };
+		325D3E821A34F9D9009529A2 /* SpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceController.h; sourceTree = "<group>"; };
+		3270227A1A35100F00F5DF43 /* LogicController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogicController.cpp; sourceTree = "<group>"; };
+		3270227B1A35100F00F5DF43 /* LogicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicController.h; sourceTree = "<group>"; };
 		32B33A8B1A2FF9D100A2EA9F /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererBase.cpp; sourceTree = "<group>"; };
 		32B33A921A2FFCF200A2EA9F /* RendererBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererBase.h; sourceTree = "<group>"; };
@@ -480,6 +486,10 @@
 				32FA9F901A2EA84100F420D4 /* BleepoutApp.h */,
 				32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */,
 				32B33A9F1A3137D800A2EA9F /* GameEvents.h */,
+				325D3E811A34F9D9009529A2 /* SpaceController.cpp */,
+				325D3E821A34F9D9009529A2 /* SpaceController.h */,
+				3270227A1A35100F00F5DF43 /* LogicController.cpp */,
+				3270227B1A35100F00F5DF43 /* LogicController.h */,
 			);
 			name = core;
 			sourceTree = "<group>";
@@ -979,6 +989,7 @@
 				32B33A931A2FFCF200A2EA9F /* RendererBase.cpp in Sources */,
 				32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */,
 				66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */,
+				3270227C1A35100F00F5DF43 /* LogicController.cpp in Sources */,
 				E2564CF7DDB3713772BB682E /* ofxUDPManager.cpp in Sources */,
 				B16C89D9CA996CA8FD860D81 /* ofxBox2d.cpp in Sources */,
 				32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */,
@@ -990,6 +1001,7 @@
 				DFACEC3A1E9D23315321D7EA /* ofxBox2dPolygon.cpp in Sources */,
 				B103DF2084E0F38D03E0E6F1 /* ofxBox2dRect.cpp in Sources */,
 				1B19FD7E51B73109C4AC02D9 /* b2BroadPhase.cpp in Sources */,
+				325D3E831A34F9D9009529A2 /* SpaceController.cpp in Sources */,
 				2F666321514A2075B12CE4EE /* b2CollideCircle.cpp in Sources */,
 				F387370DB571155BC1282B7D /* b2CollideEdge.cpp in Sources */,
 				298EAD2C029D9959F5B32246 /* b2CollidePolygon.cpp in Sources */,

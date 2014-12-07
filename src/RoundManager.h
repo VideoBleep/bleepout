@@ -13,23 +13,17 @@
 #include <ofxBox2d.h>
 #include <vector>
 #include "PlayerManager.h"
-#include "Paddle.h"
-#include "Ball.h"
-#include "Brick.h"
 #include "BleepoutConfig.h"
-#include "GameObject.h"
-#include "GameObjectCollection.h"
-#include "GameEvents.h"
 #include "GameState.h"
+#include "SpaceController.h"
+#include "LogicController.h"
 
 class RendererBase;
 
-class RoundController: public RoundEventSender
+class RoundController
 {
 public:
-  RoundController(RoundConfig config,
-                  PlayerManager& playerManager,
-                  RendererBase& renderer);
+  RoundController(RoundConfig config);
   
   ~RoundController();
   
@@ -37,8 +31,8 @@ public:
   void draw();
   void update();
   
-  GameState& state() { return _state; }
-  const GameState& state() const { return _state; }
+  RoundState& state() { return _state; }
+  const RoundState& state() const { return _state; }
   
   void dumpToLog();
   
@@ -49,24 +43,11 @@ public:
   void setPaddlePosition(GameObjectId playerId, float xPercent);
 
 private:
-  void generateBricks();
-  
-  void addBrick(ofVec2f center);
-  void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, ofPtr<Player> player);
-  
-  void contactStart(ofxBox2dContactArgs& e);
-  void contactEnd(ofxBox2dContactArgs& e);
-  
-  void ballHitObject(Ball& ball, GameObject& obj);
-  void ballHitBrick(Ball& ball, Brick& brick);
-  void ballHitPaddle(Ball& ball, Paddle& paddle);
-private:
-  PlayerManager& _playerManager;
-  ofxBox2d _box2d;
   RoundConfig _config;
-  RendererBase& _renderer;
-  GameState _state;
+  RoundState _state;
+  ofPtr<RendererBase> _renderer;
+  ofPtr<SpaceController> _spaceController;
+  ofPtr<LogicController> _logicController;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

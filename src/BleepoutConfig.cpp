@@ -10,18 +10,20 @@
 #include "BleepoutApp.h"
 #include <ofxXmlSettings.h>
 
-/*static*/ const BleepoutConfig& BleepoutConfig::getInstance() {
-  auto app = BleepoutApp::getApp();
-  return app->config();
+BleepoutConfig::BleepoutConfig()
+: _fps(30),
+_logLevel(OF_LOG_VERBOSE),
+_vsync(true) {
+  
 }
 
 void BleepoutConfig::loadFile(const std::string& path) {
   ofxXmlSettings settings;
   if (!path.empty())
     settings.load(path);
-  _fps = settings.getValue("settings:fps", 30);
-  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", OF_LOG_VERBOSE);
-  _vsync = settings.getValue("settings:vsync", true);
+  _fps = settings.getValue("settings:fps", _fps);
+  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", _logLevel);
+  _vsync = settings.getValue("settings:vsync", _vsync);
   //...
 }
 
@@ -59,14 +61,15 @@ static void writeVec2(ofxXmlSettings& settings, std::string prefix, ofVec2f vals
   settings.setValue(prefix + "Y", vals.y);
 }
 
-RoundConfig::RoundConfig()
+RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 : _brickSize(100.0f, 20.0f),
 _brickGap(5.0f),
 _paddleSize(150.0f, 25.0f),
 _ballRadius(10.0f),
 _ballPhysics(3.0f, 1.0f, 0.0f),
 _paddlePhysics(0.0f, 0.0f, 0.9f),
-_ballInitialVelocity(0.01f, 10.5f) { }
+_ballInitialVelocity(0.01f, 10.5f),
+_appConfig(appConfig) { }
 
 void RoundConfig::loadFile(const std::string &path) {
   ofxXmlSettings settings;

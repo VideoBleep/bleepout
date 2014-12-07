@@ -14,7 +14,11 @@
 
 class Wall : public GameObject, public ofxBox2dEdge {
 public:
-  Wall() : GameObject(GAME_OBJECT_WALL) {}
+  Wall(bool isExit) : GameObject(GAME_OBJECT_WALL), _isExit(isExit) {}
+  
+  bool isExit() const { return _isExit; }
+private:
+  bool _isExit;
 };
 
 

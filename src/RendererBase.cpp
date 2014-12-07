@@ -9,7 +9,7 @@
 #include "RendererBase.h"
 
 
-void RendererBase::draw(GameState &state) {
+void RendererBase::draw(RoundState &state) {
   for (int i = 0, count = state.bricks().size(); i < count; i++) {
     drawBrick(state, *(state.bricks()[i].get()));
   }

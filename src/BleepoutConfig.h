@@ -13,8 +13,7 @@
 #include <string>
 
 class BleepoutConfig {
-public:
-  static const BleepoutConfig& getInstance();
+public:  BleepoutConfig();
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
@@ -39,7 +38,7 @@ struct PhysicsOptions {
 
 class RoundConfig {
 public:
-  RoundConfig();
+  RoundConfig(const BleepoutConfig& appConfig);
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
@@ -51,7 +50,10 @@ public:
   PhysicsOptions ballPhysics() const { return _ballPhysics; }
   PhysicsOptions paddlePhysics() const { return _paddlePhysics; }
   const ofVec2f& ballInitialVelocity() const { return _ballInitialVelocity; }
+  
+  const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
+  const BleepoutConfig& _appConfig;
   ofVec2f _brickSize;
   float _brickGap;
   ofVec2f _paddleSize;

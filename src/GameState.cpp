@@ -8,10 +8,11 @@
 
 #include "GameState.h"
 
-void GameState::dumpToLog() {
-  ofLogVerbose() << "--BEGIN game state--";
+void RoundState::dumpToLog() {
+  ofLogVerbose() << "--BEGIN round state--";
   _paddles.dumpToLog("Paddles");
   _balls.dumpToLog("Balls");
   _bricks.dumpToLog("Bricks");
-  ofLogVerbose() << "--  END game state--";
+  _players.dumpToLog("Players");
+  ofLogVerbose() << "--  END round state--";
 }

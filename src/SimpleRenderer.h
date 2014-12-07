@@ -15,11 +15,11 @@
 class SimpleRenderer : public RendererBase {
 public:
   virtual ~SimpleRenderer() {}
-  virtual void draw(GameState& state) override;
+  virtual void draw(RoundState& state) override;
 protected:
-  virtual void drawBrick(GameState& state, Brick& brick) override;
-  virtual void drawPaddle(GameState& state, Paddle& paddle) override;
-  virtual void drawBall(GameState& state, Ball& ball) override;
+  virtual void drawBrick(RoundState& state, Brick& brick) override;
+  virtual void drawPaddle(RoundState& state, Paddle& paddle) override;
+  virtual void drawBall(RoundState& state, Ball& ball) override;
 };
 
 #endif /* defined(__bleepout__SimpleRenderer__) */
