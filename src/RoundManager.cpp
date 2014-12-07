@@ -78,7 +78,7 @@ void RoundController::addBrick(ofVec2f center) {
   ofPtr<Brick> brick(new Brick);
   brick->setup(_box2d.getWorld(), rect);
   brick->setData(brick.get());
-  _bricks.push_back(brick);
+  _state.bricks().push_back(brick);
 }
 
 static void setObjPhysics(ofxBox2dBaseShape* obj, PhysicsOptions vals) {
@@ -91,7 +91,7 @@ void RoundController::addBall(ofVec2f center) {
   ball->setup(_box2d.getWorld(), center, _config.ballRadius());
   ball->setVelocity(_config.ballInitialVelocity());
   ball->setData(ball.get());
-  _balls.push_back(ball);
+  _state.balls().push_back(ball);
 }
 
 void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
@@ -103,11 +103,11 @@ void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
   paddle->setup(_box2d.getWorld(), rect);
   paddle->setData(paddle.get());
   
-  _paddles.push_back(paddle);
+  _state.paddles().push_back(paddle);
 }
 
 void RoundController::draw() {
-  _renderer.draw(*this);
+  _renderer.draw(_state);
   //...
 }
 
@@ -119,30 +119,6 @@ void RoundController::update() {
 void RoundController::keyPressed(int key) {
   if (key == 'l') {
     dumpToLog();
-  }
-  switch (key) {
-    case 'l':
-      dumpToLog();
-      break;
-    case OF_KEY_LEFT:
-      //...
-      if (_paddles.size() > 0) {
-        Paddle& paddle = *(_paddles[0]);
-        ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x - 5, pos.y);
-      }
-      break;
-    case OF_KEY_RIGHT:
-      //...
-      if (_paddles.size() > 0) {
-        Paddle& paddle = *(_paddles[0]);
-        ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x + 5, pos.y);
-      }
-      break;
-      
-    default:
-      break;
   }
 }
 
@@ -185,7 +161,7 @@ void RoundController::contactStart(ofxBox2dContactArgs &e) {
   GameObject* objA = (GameObject*)e.a->GetBody()->GetUserData();
   GameObject* objB = (GameObject*)e.b->GetBody()->GetUserData();
   if (!objA || !objB) {
-    ofLogVerbose() << "Unable to extra game object from b2d body";
+    ofLogVerbose() << "Unable to extract game object from b2d body";
     return;
   }
   if (objA->type() == GAME_OBJECT_BALL) {
@@ -228,9 +204,7 @@ void RoundController::ballHitPaddle(Ball &ball, Paddle &paddle) {
 
 void RoundController::dumpToLog() {
   ofLogVerbose() << "--BEGIN round state--";
-  _paddles.dumpToLog("Paddles");
-  _balls.dumpToLog("Balls");
-  _bricks.dumpToLog("Bricks");
+  _state.dumpToLog();
   _playerManager.players().dumpToLog("Players");
   ofLogVerbose() << "--  END round state--";
 }

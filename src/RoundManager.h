@@ -20,6 +20,7 @@
 #include "GameObject.h"
 #include "GameObjectCollection.h"
 #include "GameEvents.h"
+#include "GameState.h"
 
 class RendererBase;
 
@@ -36,12 +37,12 @@ public:
   void draw();
   void update();
   
-  const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
-  const GameObjectCollection<Ball>& balls() const { return _balls; }
-  const GameObjectCollection<Brick>& bricks() const { return _bricks; }
-  GameObjectCollection<Paddle>& paddles() { return _paddles; }
-  GameObjectCollection<Ball>& balls() { return _balls; }
-  GameObjectCollection<Brick>& bricks() { return _bricks; }
+  const GameObjectCollection<Paddle>& paddles() const { return _state.paddles(); }
+  const GameObjectCollection<Ball>& balls() const { return _state.balls(); }
+  const GameObjectCollection<Brick>& bricks() const { return _state.bricks(); }
+  GameObjectCollection<Paddle>& paddles() { return _state.paddles(); }
+  GameObjectCollection<Ball>& balls() { return _state.balls(); }
+  GameObjectCollection<Brick>& bricks() { return _state.bricks(); }
   
   void dumpToLog();
   
@@ -69,10 +70,7 @@ private:
   ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
-  GameObjectCollection<Paddle> _paddles;
-  GameObjectCollection<Ball>   _balls;
-  GameObjectCollection<Brick>  _bricks;
-
+  GameState _state;
 };
 
 #endif /* defined(__bleepout__RoundController__) */
