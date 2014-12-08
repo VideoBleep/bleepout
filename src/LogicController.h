@@ -26,10 +26,6 @@ public:
   void onBallHitBall(BallHitBallEventArgs& e);
 
 private:
-  void playerBallOut(Player& player, Ball& ball);
-  void playerTakeBallOwnership(Player& player, Ball& ball);
-
-private:
   RoundState& _state;
   RoundConfig& _config;
 };

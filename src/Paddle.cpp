@@ -8,7 +8,7 @@
 
 #include "Paddle.h"
 
-Paddle::Paddle(ofPtr<Player> player)
+Paddle::Paddle(Player* player)
 : GameObject(GAME_OBJECT_PADDLE), _player(player) {
   ofLogVerbose() << "Create Paddle";
 }
@@ -19,6 +19,7 @@ Paddle::~Paddle() {
 }
 
 void Paddle::output(std::ostream &os) const {
+  // this shouldn't be necessary. getPosition should really be marked as const
   auto pos = const_cast<Paddle*>(this)->getPosition();
   os << "Paddle{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
   if (_player)

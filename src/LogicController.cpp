@@ -20,28 +20,35 @@ void LogicController::update() {
 }
 
 void LogicController::onBallHitPaddle(BallHitPaddleEventArgs &e) {
-  Player* previousPlayer = e.ball()->lastPlayer().get();
-  ofPtr<Player> player = e.object()->player();
-  e.ball()->setLastPlayer(player);
-  notifyBallOwnerChanged(e.ball(), player.get(), previousPlayer);
+  Player* previousPlayer = e.ball()->player();
+  Player* player = e.object()->player();
+  e.ball()->setPlayer(player);
+  notifyBallOwnerChanged(e.ball(), player, previousPlayer);
 }
 
 void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
+  Ball* ball = e.ball();
+  Brick* brick = e.object();
+  Player* player = ball->player();
+  
+  brick->kill();
+  notifyBrickDestroyed(brick, ball);
+  
+  if (player) {
+    player->addScore(brick->value());
+    notifyPlayerScoreChanged(player);
+  }
   //...
 }
 
 void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
-  Ball* ball = e.ball();
   Wall* wall = e.object();
   if (wall->isExit()) {
+    Ball* ball = e.ball();
+    Player* player = ball->player();
   }
 }
 
 void LogicController::onBallHitBall(BallHitBallEventArgs &e) {
   //...
-}
-
-void LogicController::playerBallOut(Player &player, Ball &ball) {
-  // ball destroyed!!!
-  //???
 }

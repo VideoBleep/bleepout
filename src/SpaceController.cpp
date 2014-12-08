@@ -50,7 +50,7 @@ void SpaceController::setup() {
   for (int i = 0; i < numPlayers; i++) {
     ofPtr<Player> player = _state.players()[i];
     ofVec2f paddleCenter = getPaddleStartPosition(i, numPlayers, _config);
-    addPaddle(paddleCenter, player);
+    addPaddle(paddleCenter, player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
   }
@@ -82,10 +82,10 @@ void SpaceController::addBall(ofVec2f center) {
   _state.balls().push_back(ball);
 }
 
-void SpaceController::addPaddle(ofVec2f center, ofPtr<Player> player) {
+void SpaceController::addPaddle(ofVec2f center, Player* player) {
   ofPtr<Paddle> paddle(new Paddle(player));
   ofRectangle rect;
-  player->setPaddle(paddle);
+  player->setPaddle(paddle.get());
   rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
   setObjPhysics(paddle.get(), _config.paddlePhysics());
   paddle->setup(_box2d.getWorld(), rect);

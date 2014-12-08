@@ -18,13 +18,22 @@ class Paddle;
 class Player : public GameObject {
 public:
   Player();
-  ~Player() override;
-  void setPaddle(ofPtr<Paddle> paddle) { _paddle = paddle; }
-  ofPtr<Paddle> paddle() { return _paddle; }
+  
+  void setPaddle(Paddle* paddle) { _paddle = paddle; }
+  Paddle* paddle() { return _paddle; }
+  
+  int score() const { return _score; }
+  
+  int addScore(int add) {
+    _score += add;
+    return _score;
+  }
+
 private:
   void output(std::ostream& os) const override;
   
-  ofPtr<Paddle> _paddle;
+  Paddle* _paddle;
+  int _score;
 };
 
 #endif /* defined(__bleepout__Player__) */

@@ -59,7 +59,7 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     return;
   }
 
-  ofPtr<Paddle> paddle = player->paddle();
+  Paddle* paddle = player->paddle();
   if (!paddle) {
     ofLogError() << "Unable to set paddle position for player: " << playerId;
     return;
