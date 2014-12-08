@@ -17,8 +17,6 @@ namespace {
     pos.y = ofGetHeight() - (config.brickSize().y);
     float halfWidth = config.brickSize().x;
     pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    //...
-    //    throw NotImplementedException("getPaddleStartPosition");
     return pos;
   }
   static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
@@ -26,8 +24,6 @@ namespace {
     pos.y = ofGetHeight() / 2;
     float halfWidth = config.brickSize().x;
     pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    //...
-    //    throw NotImplementedException("getBallStartPosition");
     return pos;
   }
   
@@ -112,9 +108,9 @@ void SpaceController::contactStart(ofxBox2dContactArgs &e) {
     return;
   }
   if (objA->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objA), *objB);
+    ballHitObject(static_cast<Ball*>(objA), objB);
   } else if (objB->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objB), *objA);
+    ballHitObject(static_cast<Ball*>(objB), objA);
   }
 }
 
@@ -122,30 +118,21 @@ void SpaceController::contactEnd(ofxBox2dContactArgs &e) {
   //...
 }
 
-void SpaceController::ballHitObject(Ball &ball, GameObject &obj) {
-  ofLogVerbose() << "pre-event: ball hit something: " << ball << " " << obj;
-  switch (obj.type()) {
+void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
+  switch (obj->type()) {
     case GAME_OBJECT_BRICK:
-      ballHitBrick(ball, static_cast<Brick&>(obj));
+      notifyBallHitBrick(ball, static_cast<Brick*>(obj));
       break;
     case GAME_OBJECT_PADDLE:
-      ballHitPaddle(ball, static_cast<Paddle&>(obj));
+      notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
       break;
     case GAME_OBJECT_BALL:
-      // ????? insanity ensues
+      notifyBallHitBall(ball, static_cast<Ball*>(obj));
       break;
+    case GAME_OBJECT_WALL:
+      notifyBallHitWall(ball, static_cast<Wall*>(obj));
     default:
       break;
   }
-}
-
-void SpaceController::ballHitBrick(Ball &ball, Brick &brick) {
-  //...
-  notifyBallHitBrick(ball, brick);
-}
-
-void SpaceController::ballHitPaddle(Ball &ball, Paddle &paddle) {
-  ball.setLastPlayer(paddle.player());
-  notifyBallHitPaddle(ball, paddle);
 }
 

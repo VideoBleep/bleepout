@@ -28,6 +28,9 @@ void RoundController::setup() {
   _spaceController->setup();
   _logicController->setup();
   
+  _spaceController->enableLogging(OF_LOG_NOTICE);
+  _spaceController->attachListener(*_logicController);
+  
   _renderer.reset(new SimpleRenderer());
   //...
 }

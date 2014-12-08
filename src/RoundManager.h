@@ -17,6 +17,7 @@
 #include "GameState.h"
 #include "SpaceController.h"
 #include "LogicController.h"
+#include "GameEvents.h"
 
 class RendererBase;
 
