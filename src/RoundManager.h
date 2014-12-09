@@ -24,7 +24,7 @@ class RendererBase;
 class RoundController
 {
 public:
-  RoundController(RoundConfig config);
+  explicit RoundController(RoundConfig config);
   
   ~RoundController();
   

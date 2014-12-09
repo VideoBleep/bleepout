@@ -23,10 +23,23 @@ public:
   Paddle* paddle() { return _paddle; }
   
   int score() const { return _score; }
-  
-  int addScore(int add) {
+  int adjustScore(int add) {
     _score += add;
     return _score;
+  }
+  
+  int lives() const { return _lives; }
+  void setLives(int lives) {
+    if (lives <= 0) {
+      _lives = 0;
+      kill();
+    } else {
+      _lives = lives;
+    }
+  }
+  int adjustLives(int amount) {
+    setLives(_lives + amount);
+    return _lives;
   }
 
 private:
@@ -34,6 +47,7 @@ private:
   
   Paddle* _paddle;
   int _score;
+  int _lives;
 };
 
 #endif /* defined(__bleepout__Player__) */

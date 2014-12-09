@@ -35,7 +35,7 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
   notifyBrickDestroyed(brick, ball);
   
   if (player) {
-    player->addScore(brick->value());
+    player->adjustScore(brick->value());
     notifyPlayerScoreChanged(player);
   }
   //...
@@ -46,6 +46,16 @@ void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
   if (wall->isExit()) {
     Ball* ball = e.ball();
     Player* player = ball->player();
+    
+    notifyBallDestroyed(ball);
+    
+    if (player) {
+      player->adjustLives(-1);
+      notifyPlayerLivesChanged(player);
+      if (!player->alive()) {
+        notifyPlayerLost(player);
+      }
+    }
   }
 }
 

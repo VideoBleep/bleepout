@@ -21,7 +21,7 @@
 template<typename T>
 class ObjectEventArgs {
 public:
-  ObjectEventArgs(T* obj) : _object(obj) { }
+  explicit ObjectEventArgs(T* obj) : _object(obj) { }
   
   T* object() { return _object; }
 private:
@@ -127,6 +127,7 @@ public:
   ofEvent<ObjectEventArgs<Ball> > ballDestroyedEvent;
   ofEvent<ObjectEventArgs<Ball> > ballRespawnedEvent;
   ofEvent<ObjectEventArgs<Player> > playerLostEvent;
+  ofEvent<ObjectEventArgs<Player> > playerLivesChangedEvent;
   ofEvent<ofEventArgs> roundEndedEvent;
   
 protected:
@@ -153,6 +154,10 @@ protected:
   void notifyPlayerLost(Player* player) {
     ObjectEventArgs<Player> e(player);
     ofNotifyEvent(playerLostEvent, e);
+  }
+  void notifyPlayerLivesChanged(Player* player) {
+    ObjectEventArgs<Player> e(player);
+    ofNotifyEvent(playerLivesChangedEvent, e);
   }
   void notifyRoundEnded() {
     ofEventArgs e;
