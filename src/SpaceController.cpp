@@ -38,8 +38,8 @@ void SpaceController::setup() {
   _world.setup();
   _world.disableMousePickingEvents();
   _world.disableGrabbing();
+  _world.setGravity(ofVec3f(0,0,0));
   _world.enableCollisionEvents();
-  _world.setGravity( ofVec3f(0, 25., 0) );
   ofAddListener(_world.COLLISION_EVENT, this, &SpaceController::onCollision);  
   
   int numPlayers = _state.players().size();
@@ -82,10 +82,11 @@ void SpaceController::addBall(ofVec3f center) {
     ofPtr<Ball> ball(new Ball);
     ball->init(_config.ballRadius());
     setObjPhysics(ball.get(), _config.ballPhysics());
-    ball->create(_world.world, center, 1.0);
-    ball->getRigidBody()->setLinearVelocity(of2bt(_config.ballInitialVelocity()));
+    ball->create(_world.world, center, 0.00001);
+    ball->getRigidBody()->setLinearVelocity(btVector3(30, 200, 0));
     ball->setData(ball.get());
     ball->setActivationState(DISABLE_DEACTIVATION);
+    ball->setDamping(0, 0);
     //ball->enableKinematic();
     ball->add();
     _state.balls().push_back(ball);;
@@ -96,10 +97,10 @@ void SpaceController::addPaddle(ofVec3f center, Player* player) {
     player->setPaddle(paddle.get());
     paddle->init(_config.paddleSize().x, _config.paddleSize().y, _config.paddleSize().y);
     setObjPhysics(paddle.get(), _config.paddlePhysics());
-    paddle->create(_world.world, center, 1.0);
+    paddle->create(_world.world, center, 0.0);
     paddle->setData(paddle.get());
     paddle->setActivationState(DISABLE_DEACTIVATION);
-    paddle->enableKinematic();
+    //paddle->enableKinematic();
     paddle->add();
     _state.paddles().push_back(paddle);
 }

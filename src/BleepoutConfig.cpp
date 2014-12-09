@@ -66,9 +66,9 @@ RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 _brickGap(5.0f),
 _paddleSize(150.0f, 25.0f),
 _ballRadius(10.0f),
-_ballPhysics(3.0f, 1.0f, 0.0f),
+_ballPhysics(0.0f, 1.0f, 0.0f),
 _paddlePhysics(0.0f, 0.0f, 0.9f),
-_ballInitialVelocity(0.01f, 10.5f),
+_ballInitialVelocity(0.0f, 300.5f),
 _appConfig(appConfig) { }
 
 void RoundConfig::loadFile(const std::string &path) {
