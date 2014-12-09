@@ -18,6 +18,8 @@
 class RendererBase {
 public:
   virtual ~RendererBase() {}
+    
+  virtual void init() {}
 
   virtual void draw(RoundController& round);
 

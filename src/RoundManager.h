@@ -20,6 +20,7 @@
 #include "GameObject.h"
 #include "GameObjectCollection.h"
 #include "GameEvents.h"
+#include "Physics.h"
 
 class RendererBase;
 
@@ -28,7 +29,8 @@ class RoundController: public RoundEventSender
 public:
   RoundController(RoundConfig config,
                   PlayerManager& playerManager,
-                  RendererBase& renderer);
+                  RendererBase& renderer,
+                  Physics& physics);
   
   ~RoundController();
   
@@ -54,21 +56,21 @@ public:
 private:
   void generateBricks();
   
-  void addBrick(ofVec2f center);
-  void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, ofPtr<Player> player);
+  void addBrick(ofVec3f center);
+  void addBall(ofVec3f center);
+  void addPaddle(ofVec3f center, ofPtr<Player> player);
   
-  void contactStart(ofxBox2dContactArgs& e);
-  void contactEnd(ofxBox2dContactArgs& e);
+  void collisionDetected(CollisionArgs& e);
   
   void ballHitObject(Ball& ball, GameObject& obj);
   void ballHitBrick(Ball& ball, Brick& brick);
   void ballHitPaddle(Ball& ball, Paddle& paddle);
 private:
   PlayerManager& _playerManager;
-  ofxBox2d _box2d;
   RoundConfig _config;
   RendererBase& _renderer;
+  Physics _physics;
+  
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;
   GameObjectCollection<Brick>  _bricks;

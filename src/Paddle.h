@@ -11,10 +11,10 @@
 
 #include "Player.h"
 #include "GameObject.h"
-#include <ofxBox2d.h>
+#include "PhysicsObject.h"
 #include <ofTypes.h>
 
-class Paddle : public GameObject, public ofxBox2dRect {
+class Paddle : public GameObject, public PhysicsObject {
 public:
   Paddle(ofPtr<Player> player);
   ~Paddle() override;

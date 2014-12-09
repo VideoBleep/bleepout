@@ -15,12 +15,11 @@ Paddle::Paddle(ofPtr<Player> player)
 
 Paddle::~Paddle() {
   ofLogVerbose() << "Destroy Paddle";
-  destroy();
 }
 
 void Paddle::output(std::ostream &os) const {
-  auto pos = body->GetPosition();
-  os << "Paddle{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
+  auto pos = getPosition();
+  os << "Paddle{id:" << id() << ", pos:" << pos << "}";
   if (_player)
     os << ", player:" << _player->id();
   else

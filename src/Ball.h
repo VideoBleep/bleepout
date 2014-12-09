@@ -11,11 +11,11 @@
 
 #include "Player.h"
 #include "GameObject.h"
+#include "PhysicsObject.h"
 #include "Common.h"
 #include <ofTypes.h>
-#include <ofxBox2d.h>
 
-class Ball : public GameObject, public ofxBox2dCircle {
+class Ball : public GameObject, public PhysicsObject {
 public:
   Ball();
   ~Ball() override;
@@ -25,6 +25,8 @@ public:
     _lastPlayer = player;
   }
   void output(std::ostream& os) const override;
+  float getRadius() const;
+  void setRadius(float newRadius);
 private:
   ofPtr<Player> _lastPlayer;
 };

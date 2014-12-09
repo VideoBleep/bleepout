@@ -39,25 +39,19 @@ namespace {
 
 RoundController::RoundController(RoundConfig config,
                                  PlayerManager& playerManager,
-                                 RendererBase& renderer)
+                                 RendererBase& renderer,
+                                 Physics& physics)
   : _config(config),
     _playerManager(playerManager),
-    _renderer(renderer) {
+    _renderer(renderer),
+    _physics(physics) {
 }
 
 RoundController::~RoundController() {
 }
 
 void RoundController::setup() {
-  _box2d.init();
-  _box2d.setGravity(0, 0);
-  //  _box2d.createGround();
-  _box2d.createBounds(ofRectangle(5, 5, ofGetWidth() - 10, ofGetHeight() -10 ));
-  _box2d.setFPS(BleepoutConfig::getInstance().fps());
-  _box2d.registerGrabbing();
-  ofAddListener(_box2d.contactStartEvents, this, &RoundController::contactStart);
-  ofAddListener(_box2d.contactEndEvents, this, &RoundController::contactEnd);
-  
+  ofAddListener(_physics.collisionEvent, this, &RoundController::collisionDetected);
   
   int numPlayers = _playerManager.players().size();
   for (int i = 0; i < numPlayers; i++) {
@@ -71,33 +65,29 @@ void RoundController::setup() {
   //...
 }
 
-void RoundController::addBrick(ofVec2f center) {
-  ofRectangle rect;
-  rect.setFromCenter(center, _config.brickSize().x, _config.brickSize().y);
+void RoundController::addBrick(ofVec3f center) {
   ofPtr<Brick> brick(new Brick);
-  brick->setup(_box2d.getWorld(), rect);
-  brick->setData(&brick);
+  brick->setPosition(center);
+  brick->setDimensions(_config.brickSize());
   _bricks.push_back(brick);
 }
 
-void RoundController::addBall(ofVec2f center) {
+void RoundController::addBall(ofVec3f center) {
   ofPtr<Ball> ball(new Ball);
-  ball->setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
-  ball->setup(_box2d.getWorld(), center, _config.ballRadius());
+  //ball->setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
+  ball->setPosition(center);
+  ball->setRadius(_config.ballRadius());
   ball->setVelocity(_config.ballInitialVelocity());
-  ball->setData(&ball);
+
   _balls.push_back(ball);
 }
 
-void RoundController::addPaddle(ofVec2f center, ofPtr<Player> player) {
+void RoundController::addPaddle(ofVec3f center, ofPtr<Player> player) {
   ofPtr<Paddle> paddle(new Paddle(player));
-  ofRectangle rect;
   player->setPaddle(paddle);
-  rect.setFromCenter(center, _config.paddleSize().x, _config.paddleSize().y);
-  paddle->setup(_box2d.getWorld(), rect);
-  paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
-  paddle->setData(&paddle);
-  
+  //paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
+  paddle->setPosition(center);
+  paddle->setDimensions(_config.paddleSize());
   _paddles.push_back(paddle);
 }
 
@@ -108,7 +98,10 @@ void RoundController::draw() {
 
 void RoundController::update() {
   //ofLogVerbose() << "OMG UPDATE!!!";
-  _box2d.update();  //...
+  for (auto& obj : paddles()) {
+    PhysicsObject& o = *obj;
+    o.update();
+  }
 }
 
 void RoundController::keyPressed(int key) {
@@ -124,7 +117,8 @@ void RoundController::keyPressed(int key) {
       if (_paddles.size() > 0) {
         Paddle& paddle = *(_paddles[0]);
         ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x - 5, pos.y);
+        pos.x -= 5;
+        paddle.setPosition(pos);
       }
       break;
     case OF_KEY_RIGHT:
@@ -132,7 +126,8 @@ void RoundController::keyPressed(int key) {
       if (_paddles.size() > 0) {
         Paddle& paddle = *(_paddles[0]);
         ofVec2f pos = paddle.getPosition();
-        paddle.setPosition(pos.x + 5, pos.y);
+        pos.x += 5;
+        paddle.setPosition(pos);
       }
       break;
       
@@ -174,25 +169,17 @@ void RoundController::mouseDragged(int x, int y, int button) {
   //...
 }
 
-void RoundController::contactStart(ofxBox2dContactArgs &e) {
+void RoundController::collisionDetected(CollisionArgs &e) {
   if (e.a == NULL || e.b == NULL)
     return;
-  ofPtr<GameObject>& objA = *((ofPtr<GameObject>*)e.a->GetBody()->GetUserData());
-  ofPtr<GameObject>& objB = *((ofPtr<GameObject>*)e.b->GetBody()->GetUserData());
-  if (!objA || !objB)
-    return;
-  if (objA->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objA), *objB);
-  } else if (objB->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*objB), *objA);
+  if (e.a->type() == GAME_OBJECT_BALL) {
+    ballHitObject(static_cast<Ball&>(*e.a), *e.b);
+  } else if (e.b->type() == GAME_OBJECT_BALL) {
+    ballHitObject(static_cast<Ball&>(*e.a), *e.b);
   }
 }
 
-void RoundController::contactEnd(ofxBox2dContactArgs &e) {
-  //...
-}
-
-void RoundController::ballHitObject(Ball &ball, GameObject &obj) {
+void RoundController::ballHitObject(Ball& ball, GameObject& obj) {
   switch (obj.type()) {
     case GAME_OBJECT_BRICK:
       ballHitBrick(ball, static_cast<Brick&>(obj));

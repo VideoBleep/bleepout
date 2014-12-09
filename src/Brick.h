@@ -10,10 +10,10 @@
 #define __bleepout__Brick__
 
 #include <ofMain.h>
-#include <ofxBox2d.h>
 #include "GameObject.h"
+#include "PhysicsObject.h"
 
-class Brick : public GameObject, public ofxBox2dRect {
+class Brick : public GameObject, public PhysicsObject {
 public:
   Brick() : GameObject(GAME_OBJECT_BRICK) {}
   

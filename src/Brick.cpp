@@ -10,6 +10,6 @@
 
 
 void Brick::output(std::ostream &os) const {
-  auto pos = body->GetPosition();
-  os << "Brick{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")}";
+  auto pos = getPosition();
+  os << "Brick{id:" << id() << ", pos:" << pos << "}";
 }
