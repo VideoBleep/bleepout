@@ -7,42 +7,72 @@
 //
 
 #include "GameEvents.h"
-#include <ofMain.h>
+#include <ofLog.h>
 
-
-void CollisionEventSource::notifyBallHitPaddle(Ball &ball, Paddle &paddle) {
-  BallHitPaddleEventArgs e(ball, paddle);
-  ofNotifyEvent(ballHitPaddleEvent, e);
+template<typename EventType>
+static void logEvent(ofLogLevel level, const char* name, const EventType& e) {
+  ofLog log(level);
+  log << "EVENT{" << name << "}: ";
+  std::ostringstream sstr;
+  e.output(sstr);
+  log << sstr.str();
 }
 
-void CollisionEventSource::notifyBallHitBrick(Ball &ball, Brick &brick) {
-  BallHitBrickEventArgs e(ball, brick);
-  ofNotifyEvent(ballHitBrickEvent, e);
+#define EVENT_LOGGER_CALLBACK(EventName, ArgsType) \
+  void on##EventName(ArgsType& e) { \
+    logEvent(_level, #EventName, e);\
+  }
+
+class CollisionEventLogger {
+public:
+  CollisionEventLogger(ofLogLevel level) : _level(level) { }
+
+  EVENT_LOGGER_CALLBACK(BallHitPaddle, BallHitPaddleEventArgs);
+  EVENT_LOGGER_CALLBACK(BallHitBrick, BallHitBrickEventArgs);
+  EVENT_LOGGER_CALLBACK(BallHitWall, BallHitWallEventArgs);
+  EVENT_LOGGER_CALLBACK(BallHitBall, BallHitBallEventArgs);
+private:
+  ofLogLevel _level;
+};
+
+void CollisionEventSource::enableLogging(ofLogLevel level) {
+  disableLogging();
+  _logger.reset(new CollisionEventLogger(level));
+  attachListener(*_logger);
 }
 
-void CollisionEventSource::notifyBallHitWall(Ball &ball, Wall &wall) {
-  BallHitWallEventArgs e(ball, wall);
-  ofNotifyEvent(ballHitWallEvent, e);
+void CollisionEventSource::disableLogging() {
+  if (_logger)
+    detachListener(*_logger);
+  _logger.reset();
 }
 
-void CollisionEventSource::notifyBallHitBall(Ball &ball, Ball &otherBall) {
-  BallHitBallEventArgs e(ball, otherBall);
-  ofNotifyEvent(ballHitBallEvent, e);
+class RoundStateEventLogger {
+public:
+  RoundStateEventLogger(ofLogLevel level) : _level(level) { }
+  
+  EVENT_LOGGER_CALLBACK(BallOwnerChanged, BallOwnerChangedEventArgs);
+  EVENT_LOGGER_CALLBACK(BrickDestroyed, BrickDestroyedEventArgs);
+  EVENT_LOGGER_CALLBACK(PlayerScoreChanged, PlayerEventArgs);
+  EVENT_LOGGER_CALLBACK(BallDestroyed, BallEventArgs);
+  EVENT_LOGGER_CALLBACK(BallRespawned, BallEventArgs);
+  EVENT_LOGGER_CALLBACK(PlayerLost, PlayerEventArgs);
+  EVENT_LOGGER_CALLBACK(PlayerLivesChanged, PlayerEventArgs);
+  EVENT_LOGGER_CALLBACK(RoundEnded, EmptyEventArgs);
+private:
+  ofLogLevel _level;
+};
+
+void RoundStateEventSource::enableLogging(ofLogLevel level) {
+  disableLogging();
+  _logger.reset(new RoundStateEventLogger(level));
+  attachListener(*_logger);
 }
 
-void CollisionLogger::onBallHitPaddle(BallHitPaddleEventArgs &e) {
-  ofLogVerbose() << "EVENT: ballHitPaddle: " << e.ball() << " " << e.object();
+void RoundStateEventSource::disableLogging() {
+  if (_logger)
+    detachListener(*_logger);
+  _logger.reset();
 }
 
-void CollisionLogger::onBallHitBrick(BallHitBrickEventArgs &e) {
-  ofLogVerbose() << "EVENT: ballHitBrick: " << e.ball() << " " << e.object();
-}
-
-void CollisionLogger::onBallHitWall(BallHitWallEventArgs &e) {
-  ofLogVerbose() << "EVENT: ballHitWall: " << e.ball() << " " << e.object();
-}
-
-void CollisionLogger::onBallHitBall(BallHitBallEventArgs &e) {
-  ofLogVerbose() << "EVENT: ballHitBall: " << e.ball() << " " << e.object();
-}
 

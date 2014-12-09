@@ -20,13 +20,14 @@ public:
   Ball();
   ~Ball() override;
   
-  ofPtr<Player> lastPlayer() { return _lastPlayer; }
-  void setLastPlayer(ofPtr<Player> player) {
-    _lastPlayer = player;
-  }
+  Player* player() { return _player; }
+  void setPlayer(Player* player) { _player = player; }
+
   void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "ball"; }
 private:
-  ofPtr<Player> _lastPlayer;
+  Player* _player;
 };
 
 #endif /* defined(__bleepout__Ball__) */

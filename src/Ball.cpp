@@ -21,9 +21,9 @@ Ball::~Ball() {
 void Ball::output(std::ostream &os) const {
   auto pos = body->GetPosition();
   os << "Ball{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
-  os << ", curPlayer:";
-  if (_lastPlayer)
-    os << _lastPlayer->id();
+  os << ", player:";
+  if (_player)
+    os << _player->id();
   else
     os << "(none)";
   os << "}";

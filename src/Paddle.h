@@ -16,14 +16,16 @@
 
 class Paddle : public GameObject, public ofxBox2dRect {
 public:
-  Paddle(ofPtr<Player> player);
+  Paddle(Player* player);
   ~Paddle() override;
   
-  ofPtr<Player> player() { return _player; }
+  Player* player() { return _player; }
   
   void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "paddle"; }
 private:
-  ofPtr<Player> _player;
+  Player* _player;
 };
 
 

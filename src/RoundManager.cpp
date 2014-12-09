@@ -28,6 +28,11 @@ void RoundController::setup() {
   _spaceController->setup();
   _logicController->setup();
   
+  _logicController->enableLogging(OF_LOG_NOTICE);
+  
+  _spaceController->enableLogging(OF_LOG_NOTICE);
+  _spaceController->attachListener(*_logicController);
+  
   _renderer.reset(new SimpleRenderer());
   //...
 }
@@ -56,16 +61,14 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     return;
   }
 
-  ofPtr<Paddle> paddle = player->paddle();
+  Paddle* paddle = player->paddle();
   if (!paddle) {
     ofLogError() << "Unable to set paddle position for player: " << playerId;
     return;
   }
   
   ofVec2f pos = paddle->getPosition();
-//  ofLogVerbose() << "Paddle position was " << pos;
   pos.x = xPercent * ofGetWidth();
-//  ofLogVerbose() << "Setting paddle position to " << pos;
   paddle->setPosition(pos);
   //...
 }

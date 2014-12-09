@@ -26,14 +26,12 @@ private:
   
   void addBrick(ofVec2f center);
   void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, ofPtr<Player> player);
+  void addPaddle(ofVec2f center, Player* player);
   
   void contactStart(ofxBox2dContactArgs& e);
   void contactEnd(ofxBox2dContactArgs& e);
   
-  void ballHitObject(Ball& ball, GameObject& obj);
-  void ballHitBrick(Ball& ball, Brick& brick);
-  void ballHitPaddle(Ball& ball, Paddle& paddle);
+  void ballHitObject(Ball* ball, GameObject* obj);
 
 private:
   ofxBox2d _box2d;

@@ -17,13 +17,14 @@
 #include "GameState.h"
 #include "SpaceController.h"
 #include "LogicController.h"
+#include "GameEvents.h"
 
 class RendererBase;
 
 class RoundController
 {
 public:
-  RoundController(RoundConfig config);
+  explicit RoundController(RoundConfig config);
   
   ~RoundController();
   

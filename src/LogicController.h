@@ -13,12 +13,18 @@
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
 
-class LogicController {
+class LogicController : public RoundStateEventSource {
 public:
   LogicController(RoundState& state, RoundConfig& config);
   
   void setup();
   void update();
+  
+  void onBallHitPaddle(BallHitPaddleEventArgs& e);
+  void onBallHitBrick(BallHitBrickEventArgs& e);
+  void onBallHitWall(BallHitWallEventArgs& e);
+  void onBallHitBall(BallHitBallEventArgs& e);
+
 private:
   RoundState& _state;
   RoundConfig& _config;

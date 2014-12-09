@@ -15,10 +15,16 @@
 
 class Brick : public GameObject, public ofxBox2dRect {
 public:
-  Brick() : GameObject(GAME_OBJECT_BRICK) {}
+  Brick() : GameObject(GAME_OBJECT_BRICK), _value(1) {}
+  
+  int value() const { return _value; }
+  void setValue(int value) { _value = value; }
   
   void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "brick"; }
 private:
+  int _value;
 };
 
 #endif /* defined(__bleepout__Brick__) */
