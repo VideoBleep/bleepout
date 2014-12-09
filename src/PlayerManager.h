@@ -14,20 +14,42 @@
 #include <map>
 #include <vector>
 #include "GameObjectCollection.h"
-#include "PlayerSocket.h"
+#include "GameState.h"
+#include "ofxLibwebsockets.h"
+
+class RoundController;
 
 class PlayerManager {
 public:
-	PlayerManager();
-
-  GameObjectCollection<Player>& players() { return _players; }
-  const GameObjectCollection<Player>& players() const { return _players; }
-  PlayerSocket& socket() { return _socket; }
+	explicit PlayerManager(ofPtr<RoundController> roundController);
+	
+  RoundState& state() { return _state; }
 
   ofPtr<Player> addPlayer();
+
+  // Sockets Server
+  ofxLibwebsockets::Server server;
+
+  void setup();
+  void update();
+  void draw();
+  void gotMessage(ofMessage msg);
+
+  // Message queue (temporary?)
+  ofTrueTypeFont font;
+  vector<string> messages;
+
+  // Websocket event handlers
+  void onConnect(ofxLibwebsockets::Event& args);
+  void onOpen(ofxLibwebsockets::Event& args);
+  void onClose(ofxLibwebsockets::Event& args);
+  void onIdle(ofxLibwebsockets::Event& args);
+  void onMessage(ofxLibwebsockets::Event& args);
+  void onBroadcast(ofxLibwebsockets::Event& args);
+
 private:
-  GameObjectCollection<Player> _players;
-  PlayerSocket _socket;
+  RoundState _state;
+  ofPtr<RoundController> _roundController;
 };
 
 #endif /* defined(__bleepout__PlayerManager__) */

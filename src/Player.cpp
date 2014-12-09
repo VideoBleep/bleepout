@@ -20,3 +20,4 @@ Player::~Player() {
 void Player::output(std::ostream &os) const {
   os << "Player{id:" << id() << "}";
 }
+
