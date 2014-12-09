@@ -75,4 +75,25 @@ void RoundStateEventSource::disableLogging() {
   _logger.reset();
 }
 
+class PlayerEventLogger {
+public:
+  PlayerEventLogger(ofLogLevel level) : _level(level) { }
+  
+  EVENT_LOGGER_CALLBACK(PlayerAdded, PlayerEventArgs);
+  EVENT_LOGGER_CALLBACK(PlayerRemoved, PlayerEventArgs);
+private:
+  ofLogLevel _level;
+};
+
+void PlayerEventSource::enableLogging(ofLogLevel level) {
+  disableLogging();
+  _logger.reset(new PlayerEventLogger(level));
+  attachListener(*_logger);
+}
+
+void PlayerEventSource::disableLogging() {
+  if (_logger)
+    detachListener(*_logger);
+  _logger.reset();
+}
 
