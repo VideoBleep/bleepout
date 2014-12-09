@@ -8,7 +8,7 @@
 
 #include "Paddle.h"
 
-Paddle::Paddle(ofPtr<Player> player)
+Paddle::Paddle(Player* player)
 : GameObject(GAME_OBJECT_PADDLE), _player(player) {
   ofLogVerbose() << "Create Paddle";
 }
@@ -18,7 +18,7 @@ Paddle::~Paddle() {
 }
 
 void Paddle::output(std::ostream &os) const {
-  auto pos = getPosition();
+  ofVec3f pos = getPosition();
   os << "Paddle{id:" << id() << ", pos:" << pos << "}";
   if (_player)
     os << ", player:" << _player->id();

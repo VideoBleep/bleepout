@@ -16,15 +16,16 @@
 
 class Paddle : public GameObject, public ofxBulletBox {
 public:
-  Paddle(ofPtr<Player> player);
+  Paddle(Player* player);
   ~Paddle() override;
   
-  ofPtr<Player> player() { return _player; }
+  Player* player() { return _player; }
   
   void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "paddle"; }
 private:
-  static btBoxShape collisionShape;
-  ofPtr<Player> _player;
+  Player* _player;
 };
 
 

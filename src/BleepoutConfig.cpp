@@ -10,18 +10,20 @@
 #include "BleepoutApp.h"
 #include <ofxXmlSettings.h>
 
-/*static*/ const BleepoutConfig& BleepoutConfig::getInstance() {
-  auto app = BleepoutApp::getApp();
-  return app->config();
+BleepoutConfig::BleepoutConfig()
+: _fps(30),
+_logLevel(OF_LOG_NOTICE),
+_vsync(true) {
+  
 }
 
 void BleepoutConfig::loadFile(const std::string& path) {
   ofxXmlSettings settings;
   if (!path.empty())
     settings.load(path);
-  _fps = settings.getValue("settings:fps", 30);
-  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", OF_LOG_VERBOSE);
-  _vsync = settings.getValue("settings:vsync", true);
+  _fps = settings.getValue("settings:fps", _fps);
+  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", _logLevel);
+  _vsync = settings.getValue("settings:vsync", _vsync);
   //...
 }
 
@@ -30,50 +32,70 @@ void BleepoutConfig::saveFile(const std::string& path) const {
   settings.setValue("settings:fps", _fps);
   settings.setValue("settings:logLevel", (int)_logLevel);
   settings.setValue("settings:vsync", _vsync);
-  //...
   settings.save(path);
 }
+
+static void readPhysics(ofxXmlSettings& settings,
+                                  std::string prefix,
+                                  PhysicsOptions& vals) {
+  vals.density = settings.getValue(prefix + "Density", vals.density);
+  vals.bounce = settings.getValue(prefix + "Bounce", vals.bounce);
+  vals.friction = settings.getValue(prefix + "Friction", vals.friction);
+}
+
+static void writePhysics(ofxXmlSettings& settings,
+                         std::string prefix,
+                         const PhysicsOptions& options) {
+  settings.setValue(prefix + "Density", options.density);
+  settings.setValue(prefix + "Bounce", options.bounce);
+  settings.setValue(prefix + "Friction", options.friction);
+}
+
+static void readVec2f(ofxXmlSettings& settings, std::string prefix, ofVec2f& vals) {
+  vals.x = settings.getValue(prefix + "X", vals.x);
+  vals.y = settings.getValue(prefix + "Y", vals.y);
+}
+
+static void writeVec2(ofxXmlSettings& settings, std::string prefix, ofVec2f vals) {
+  settings.setValue(prefix + "X", vals.x);
+  settings.setValue(prefix + "Y", vals.y);
+}
+
+RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
+: _brickSize(100.0f, 20.0f),
+_brickGap(5.0f),
+_paddleSize(150.0f, 25.0f),
+_ballRadius(10.0f),
+_ballPhysics(3.0f, 1.0f, 0.0f),
+_paddlePhysics(0.0f, 0.0f, 0.9f),
+_ballInitialVelocity(0.01f, 10.5f),
+_appConfig(appConfig) { }
 
 void RoundConfig::loadFile(const std::string &path) {
   ofxXmlSettings settings;
   if (!path.empty())
     settings.load(path);
-  _brickSize.x = settings.getValue("settings:brickSizeX", 100.0f);
-  _brickSize.y = settings.getValue("settings:brickSizeY", 20.0f);
-  _brickGap = settings.getValue("settings:brickGap", 5.0f);
-  _paddleSize.x = settings.getValue("settings:paddleSizeX", 150.0f);
-  _paddleSize.y = settings.getValue("settings:paddleSizeY", 25.0f);
-  _ballRadius = settings.getValue("settings:ballRadius", 10.0f);
-  _ballDensity = settings.getValue("settings:ballDensity", 3.0f);
-  _ballBounce = settings.getValue("settings:ballBounce", 1.0f);
-  _ballFriction = settings.getValue("settings:ballFriction", 0.0f);
-  _paddleDensity = settings.getValue("settings:paddleDensity", 0.0f);
-  _paddleBounce = settings.getValue("settings:paddleBounce", 0.0f);
-  _paddleFriction = settings.getValue("settings:paddleFriction", 0.9f);
-  _ballInitialVelocity.x = settings.getValue("settings:ballInitialVelocityX", 0.01f);
-  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 100.5f);
+  readVec2f(settings, "settings:brickSize", _brickSize);
+  _brickGap = settings.getValue("settings:brickGap", _brickGap);
+  readVec2f(settings, "settings:paddleSize", _paddleSize);
+  _ballRadius = settings.getValue("settings:ballRadius", _ballRadius);
+  readPhysics(settings, "settings:ball", _ballPhysics);
+  readPhysics(settings, "settings:paddle", _paddlePhysics);
+  readVec2f(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
   //...
 }
 
 void RoundConfig::saveFile(const std::string &path) const {
   ofxXmlSettings settings;
-  settings.setValue("settings:brickSizeX", _brickSize.x);
-  settings.setValue("settings:brickSizeY", _brickSize.y);
+  writeVec2(settings, "settings:brickSize", _brickSize);
   settings.setValue("settings:brickGap", _brickGap);
-  settings.setValue("settings:paddleSizeX", _paddleSize.x);
-  settings.setValue("settings:paddleSizeY", _paddleSize.y);
+  writeVec2(settings, "settings:paddleSize", _paddleSize);
   settings.setValue("settings:ballRadius", _ballRadius);
-  settings.setValue("settings:ballDensity", _ballDensity);
-  settings.setValue("settings:ballBounce", _ballBounce);
-  settings.setValue("settings:ballFriction", _ballFriction);
-  settings.setValue("settings:paddleDensity", _paddleDensity);
-  settings.setValue("settings:paddleBounce", _paddleBounce);
-  settings.setValue("settings:paddleFriction", _paddleFriction);
-  settings.setValue("settings:ballInitialVelocityX", _ballInitialVelocity.x);
-  settings.setValue("settings:ballInitialVelocityY", _ballInitialVelocity.y);
+  writePhysics(settings, "settings:ball", _ballPhysics);
+  writePhysics(settings, "settings:paddle", _paddlePhysics);
+  writeVec2(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
 
   //...
   settings.save(path);
-
 }
 

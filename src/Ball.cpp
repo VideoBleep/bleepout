@@ -9,7 +9,10 @@
 #include "Ball.h"
 
 
-Ball::Ball() : GameObject(GAME_OBJECT_BALL) {
+Ball::Ball()
+: GameObject(GAME_OBJECT_BALL)
+, _player(NULL)
+{
   ofLogVerbose() << "Create Ball";
     
 }
@@ -21,9 +24,9 @@ Ball::~Ball() {
 void Ball::output(std::ostream &os) const {
   auto pos = getPosition();
   os << "Ball{id:" << id() << ", pos:" << pos << "}";
-  os << ", curPlayer:";
-  if (_lastPlayer)
-    os << _lastPlayer->id();
+  os << ", player:";
+  if (_player)
+    os << _player->id();
   else
     os << "(none)";
   os << "}";

@@ -10,16 +10,16 @@
 #define __bleepout__SimpleRenderer__
 
 #include "RendererBase.h"
-#include "RoundManager.h"
+#include "GameState.h"
 
 class SimpleRenderer : public RendererBase {
 public:
   virtual ~SimpleRenderer() {}
-  virtual void draw(RoundController& round) override;
+  virtual void draw(RoundState& state) override;
 protected:
-  virtual void drawBrick(RoundController& round, Brick& brick) override;
-  virtual void drawPaddle(RoundController& round, Paddle& paddle) override;
-  virtual void drawBall(RoundController& round, Ball& ball) override;
+  virtual void drawBrick(RoundState& state, Brick& brick) override;
+  virtual void drawPaddle(RoundState& state, Paddle& paddle) override;
+  virtual void drawBall(RoundState& state, Ball& ball) override;
 };
 
 #endif /* defined(__bleepout__SimpleRenderer__) */

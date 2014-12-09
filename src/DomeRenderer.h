@@ -16,11 +16,11 @@ class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
     virtual void init() override;
-    virtual void draw(RoundController& round) override;
+    virtual void draw(RoundState& round) override;
 protected:
-    virtual void drawBrick(RoundController& round, Brick& brick) override;
-    virtual void drawPaddle(RoundController& round, Paddle& paddle) override;
-    virtual void drawBall(RoundController& round, Ball& ball) override;
+    virtual void drawBrick(RoundState& round, Brick& brick) override;
+    virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
+    virtual void drawBall(RoundState& round, Ball& ball) override;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

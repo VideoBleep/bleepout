@@ -26,23 +26,14 @@ public:
   void draw() override;
 
   void keyPressed(int key) override;
-//  void keyReleased(int key) override{}
   void mouseMoved(int x, int y ) override;
   void mouseDragged(int x, int y, int button) override;
-//  void mousePressed(int x, int y, int button) override{}
-//  void mouseReleased(int x, int y, int button) override{}
-//  void windowResized(int w, int h) override{}
-//  void dragEvent(ofDragInfo dragInfo) override{}
-//  void gotMessage(ofMessage msg) override{}
-  
-  ofPtr<PlayerManager> playerManager() { return _playerManager; }
-  
-  const BleepoutConfig& config() const { return *_config; }
+  const BleepoutConfig& config() const { return _config; }
 private:
-  ofPtr<BleepoutConfig> _config;
-  ofPtr<PlayerManager> _playerManager;
+	ofPtr<PlayerManager> _playerManager;
+
+  BleepoutConfig _config;
   ofPtr<RoundController> _roundController;
-  ofPtr<RendererBase> _renderer;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

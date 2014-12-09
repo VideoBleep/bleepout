@@ -12,10 +12,12 @@
 #include <iostream>
 
 enum GameObjectType {
+  GAME_OBJECT_OTHER,
   GAME_OBJECT_BRICK,
   GAME_OBJECT_PADDLE,
   GAME_OBJECT_BALL,
-  GAME_OBJECT_PLAYER
+  GAME_OBJECT_PLAYER,
+  GAME_OBJECT_WALL
 };
 typedef int GameObjectId;
 

@@ -37,6 +37,10 @@
 		5B0E834B1A369EC30091AB99 /* ofxBulletSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E810A1A369EC20091AB99 /* ofxBulletSphere.cpp */; };
 		5B0E834C1A369EC30091AB99 /* ofxBulletStaticPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E810C1A369EC20091AB99 /* ofxBulletStaticPlane.cpp */; };
 		5B0E84101A36E1030091AB99 /* OrbitalTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E840E1A36E1030091AB99 /* OrbitalTrajectory.cpp */; };
+		5B0E841A1A37A7430091AB99 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E84121A37A7430091AB99 /* GameState.cpp */; };
+		5B0E841B1A37A7430091AB99 /* LogicController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E84141A37A7430091AB99 /* LogicController.cpp */; };
+		5B0E841C1A37A7430091AB99 /* SpaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E84161A37A7430091AB99 /* SpaceController.cpp */; };
+		5B0E841D1A37A7430091AB99 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E84181A37A7430091AB99 /* Wall.cpp */; };
 		5B557D691A35207F00967B7B /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B557D681A35207F00967B7B /* openFrameworksDebug.a */; };
 		5B94A4D71A35CFB5001CA6F5 /* DomeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B94A4D51A35CFB5001CA6F5 /* DomeRenderer.cpp */; };
 		66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C085E327DAB912CFA2A443D /* ofxTCPServer.cpp */; };
@@ -166,6 +170,14 @@
 		5B0E810D1A369EC20091AB99 /* ofxBulletStaticPlane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletStaticPlane.h; sourceTree = "<group>"; };
 		5B0E840E1A36E1030091AB99 /* OrbitalTrajectory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OrbitalTrajectory.cpp; sourceTree = "<group>"; };
 		5B0E840F1A36E1030091AB99 /* OrbitalTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrbitalTrajectory.h; sourceTree = "<group>"; };
+		5B0E84121A37A7430091AB99 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
+		5B0E84131A37A7430091AB99 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		5B0E84141A37A7430091AB99 /* LogicController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogicController.cpp; sourceTree = "<group>"; };
+		5B0E84151A37A7430091AB99 /* LogicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicController.h; sourceTree = "<group>"; };
+		5B0E84161A37A7430091AB99 /* SpaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceController.cpp; sourceTree = "<group>"; };
+		5B0E84171A37A7430091AB99 /* SpaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceController.h; sourceTree = "<group>"; };
+		5B0E84181A37A7430091AB99 /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
+		5B0E84191A37A7430091AB99 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		5B557D681A35207F00967B7B /* openFrameworksDebug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = openFrameworksDebug.a; path = ../of_v0.8.4_osx_release/libs/openFrameworksCompiled/lib/osx/openFrameworksDebug.a; sourceTree = "<group>"; };
 		5B94A4D51A35CFB5001CA6F5 /* DomeRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DomeRenderer.cpp; sourceTree = "<group>"; };
 		5B94A4D61A35CFB5001CA6F5 /* DomeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DomeRenderer.h; sourceTree = "<group>"; };
@@ -310,6 +322,8 @@
 				32324EB61A2EA08000B51FCD /* Ball.h */,
 				32324EB81A2EA32100B51FCD /* Player.cpp */,
 				32324EB91A2EA32100B51FCD /* Player.h */,
+				5B0E84191A37A7430091AB99 /* Wall.h */,
+				5B0E84181A37A7430091AB99 /* Wall.cpp */,
 			);
 			name = game_objects;
 			sourceTree = "<group>";
@@ -317,6 +331,8 @@
 		32B33A8F1A2FFC9100A2EA9F /* core */ = {
 			isa = PBXGroup;
 			children = (
+				5B0E84121A37A7430091AB99 /* GameState.cpp */,
+				5B0E84131A37A7430091AB99 /* GameState.h */,
 				32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */,
 				32FA9F891A2EA5BF00F420D4 /* PlayerManager.cpp */,
 				32FA9F8A1A2EA5BF00F420D4 /* PlayerManager.h */,
@@ -326,6 +342,10 @@
 				32FA9F901A2EA84100F420D4 /* BleepoutApp.h */,
 				32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */,
 				32B33A9F1A3137D800A2EA9F /* GameEvents.h */,
+				5B0E84161A37A7430091AB99 /* SpaceController.cpp */,
+				5B0E84171A37A7430091AB99 /* SpaceController.h */,
+				5B0E84141A37A7430091AB99 /* LogicController.cpp */,
+				5B0E84151A37A7430091AB99 /* LogicController.h */,
 			);
 			name = core;
 			sourceTree = "<group>";
@@ -727,7 +747,9 @@
 				32FA9F8E1A2EA80900F420D4 /* RoundManager.cpp in Sources */,
 				32FA9F941A2EB1FF00F420D4 /* BleepoutConfig.cpp in Sources */,
 				32F95B4C1A2EB2CF008913CC /* tinyxmlparser.cpp in Sources */,
+				5B0E841D1A37A7430091AB99 /* Wall.cpp in Sources */,
 				5B0E83481A369EC30091AB99 /* ofxBulletConvexShape.cpp in Sources */,
+				5B0E841B1A37A7430091AB99 /* LogicController.cpp in Sources */,
 				32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */,
 				32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */,
 				5B0E83441A369EC30091AB99 /* ofxBulletBaseShape.cpp in Sources */,
@@ -738,6 +760,7 @@
 				5B0E83491A369EC30091AB99 /* ofxBulletCustomShape.cpp in Sources */,
 				32324EBA1A2EA32100B51FCD /* Player.cpp in Sources */,
 				32324EB71A2EA08000B51FCD /* Ball.cpp in Sources */,
+				5B0E841C1A37A7430091AB99 /* SpaceController.cpp in Sources */,
 				32FA9F8B1A2EA5BF00F420D4 /* PlayerManager.cpp in Sources */,
 				32B33AA01A3137D800A2EA9F /* GameEvents.cpp in Sources */,
 				5B94A4D71A35CFB5001CA6F5 /* DomeRenderer.cpp in Sources */,
@@ -752,6 +775,7 @@
 				6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */,
 				F3AD9E2A2E56B6AF32A0BDAF /* Server.cpp in Sources */,
 				32324EB41A2EA04F00B51FCD /* Paddle.cpp in Sources */,
+				5B0E841A1A37A7430091AB99 /* GameState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

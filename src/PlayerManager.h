@@ -14,15 +14,61 @@
 #include <map>
 #include <vector>
 #include "GameObjectCollection.h"
+#include "GameState.h"
+#include "ofxLibwebsockets.h"
+#include "GameEvents.h"
 
-class PlayerManager {
+class RoundController;
+
+struct PlayerYawPitchRollMessage {
+	PlayerYawPitchRollMessage() {
+	}
+
+	PlayerYawPitchRollMessage(float y, float p, float r) {
+		yaw = y;
+		pitch = p;
+		roll = r;
+	}
+
+	ofPtr<Player> player;
+	float yaw;
+	float pitch;
+	float roll;
+};
+
+class PlayerManager : PlayerEventSource {
 public:
-  GameObjectCollection<Player>& players() { return _players; }
-  const GameObjectCollection<Player>& players() const { return _players; }
-  
+	explicit PlayerManager(ofPtr<RoundController> roundController);
+	
+  RoundState& state() { return _state; }
+
   ofPtr<Player> addPlayer();
+
+  // Sockets Server
+  ofxLibwebsockets::Server server;
+
+  void setup();
+  void update();
+  void draw();
+  void gotMessage(ofMessage msg);
+
+  // Message queue (temporary?)
+  ofTrueTypeFont font;
+  vector<string> messages;
+
+  // Websocket event handlers
+  void onConnect(ofxLibwebsockets::Event& args);
+  void onOpen(ofxLibwebsockets::Event& args);
+  void onClose(ofxLibwebsockets::Event& args);
+  void onIdle(ofxLibwebsockets::Event& args);
+  void onMessage(ofxLibwebsockets::Event& args);
+  void onBroadcast(ofxLibwebsockets::Event& args);
+
+  ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+
 private:
-  GameObjectCollection<Player> _players;
+  RoundState _state;
+  ofPtr<RoundController> _roundController;
 };
 
 #endif /* defined(__bleepout__PlayerManager__) */
