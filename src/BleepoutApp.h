@@ -43,7 +43,6 @@ private:
   ofPtr<PlayerManager> _playerManager;
   ofPtr<RoundController> _roundController;
   ofPtr<RendererBase> _renderer;
-  ofPtr<Physics> _physics;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

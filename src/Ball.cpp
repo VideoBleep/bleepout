@@ -11,6 +11,7 @@
 
 Ball::Ball() : GameObject(GAME_OBJECT_BALL) {
   ofLogVerbose() << "Create Ball";
+    
 }
 
 Ball::~Ball() {
@@ -28,10 +29,3 @@ void Ball::output(std::ostream &os) const {
   os << "}";
 }
 
-float Ball::getRadius() const {
-    return getDimensions().x;
-}
-
-void Ball::setRadius(float newRadius) {
-    setDimensions(ofVec3f(newRadius, newRadius, newRadius));
-}

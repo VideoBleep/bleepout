@@ -39,19 +39,22 @@ namespace {
 
 RoundController::RoundController(RoundConfig config,
                                  PlayerManager& playerManager,
-                                 RendererBase& renderer,
-                                 Physics& physics)
+                                 RendererBase& renderer)
   : _config(config),
     _playerManager(playerManager),
-    _renderer(renderer),
-    _physics(physics) {
+    _renderer(renderer) {
 }
 
 RoundController::~RoundController() {
 }
 
 void RoundController::setup() {
-  ofAddListener(_physics.collisionEvent, this, &RoundController::collisionDetected);
+  _world.setup();
+  _world.disableMousePickingEvents();
+  _world.disableGrabbing();
+  _world.enableCollisionEvents();
+  _world.setGravity( ofVec3f(0, 25., 0) );
+  ofAddListener(_world.COLLISION_EVENT, this, &RoundController::onCollision);
   
   int numPlayers = _playerManager.players().size();
   for (int i = 0; i < numPlayers; i++) {
@@ -67,27 +70,42 @@ void RoundController::setup() {
 
 void RoundController::addBrick(ofVec3f center) {
   ofPtr<Brick> brick(new Brick);
-  brick->setPosition(center);
-  brick->setDimensions(_config.brickSize());
+  brick->init(_config.brickSize().x, _config.brickSize().y, _config.brickSize().y);
+  brick->create(_world.world, center, 1.0);
+  brick->getRigidBody()->setGravity(btVector3(0, 0, 0));
+  brick->setData(&*brick);
+  brick->activate();
+  brick->add();
   _bricks.push_back(brick);
+}
+
+btVector3 of2bt(const ofVec3f& v) {
+    return btVector3(v.x, v.y, v.z);
 }
 
 void RoundController::addBall(ofVec3f center) {
   ofPtr<Ball> ball(new Ball);
-  //ball->setPhysics(_config.ballDensity(), _config.ballBounce(), _config.ballFriction());
-  ball->setPosition(center);
-  ball->setRadius(_config.ballRadius());
-  ball->setVelocity(_config.ballInitialVelocity());
-
+  ball->init(_config.ballRadius());
+  ball->setFriction(_config.ballFriction());
+  ball->create(_world.world, center, 1.0);
+  ball->getRigidBody()->setLinearVelocity(of2bt(_config.ballInitialVelocity()));
+  ball->setData(&*ball);
+  ball->setActivationState(DISABLE_DEACTIVATION);
+  //ball->enableKinematic();
+  ball->add();
   _balls.push_back(ball);
 }
 
 void RoundController::addPaddle(ofVec3f center, ofPtr<Player> player) {
   ofPtr<Paddle> paddle(new Paddle(player));
   player->setPaddle(paddle);
-  //paddle->setPhysics(_config.paddleBounce(), _config.paddleDensity(), _config.paddleFriction());
-  paddle->setPosition(center);
-  paddle->setDimensions(_config.paddleSize());
+  paddle->init(_config.paddleSize().x, _config.paddleSize().y, _config.paddleSize().y);
+  paddle->setFriction(_config.paddleFriction());
+  paddle->create(_world.world, center, 1.0);
+  paddle->setData(&*paddle);
+  paddle->setActivationState(DISABLE_DEACTIVATION);
+  paddle->enableKinematic();
+  paddle->add();
   _paddles.push_back(paddle);
 }
 
@@ -98,10 +116,10 @@ void RoundController::draw() {
 
 void RoundController::update() {
   //ofLogVerbose() << "OMG UPDATE!!!";
-  for (auto& obj : paddles()) {
-    PhysicsObject& o = *obj;
-    o.update();
+  for (auto& ball : balls()) {
+      // update orbital path
   }
+  _world.update();
 }
 
 void RoundController::keyPressed(int key) {
@@ -118,7 +136,7 @@ void RoundController::keyPressed(int key) {
         Paddle& paddle = *(_paddles[0]);
         ofVec2f pos = paddle.getPosition();
         pos.x -= 5;
-        paddle.setPosition(pos);
+        //paddle.setPosition(pos);
       }
       break;
     case OF_KEY_RIGHT:
@@ -127,7 +145,7 @@ void RoundController::keyPressed(int key) {
         Paddle& paddle = *(_paddles[0]);
         ofVec2f pos = paddle.getPosition();
         pos.x += 5;
-        paddle.setPosition(pos);
+        //paddle.setPosition(pos);
       }
       break;
       
@@ -136,7 +154,7 @@ void RoundController::keyPressed(int key) {
   }
 }
 
-void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
+void RoundController::setPaddlePosition(GameObjectId playerId, float radians) {
   ofPtr<Player> player = _playerManager.players().getById(playerId);
   if (!player) {
     ofLogError() << "Player not found: " << playerId;
@@ -151,10 +169,9 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
   
   ofVec2f pos = paddle->getPosition();
   ofLogVerbose() << "Paddle position was " << pos;
-  pos.x = xPercent * ofGetWidth();
-  ofLogVerbose() << "Setting paddle position to " << pos;
-  paddle->setPosition(pos);
-  //...
+  // TODO: calculate
+  //ofLogVerbose() << "Setting paddle position to " << pos;
+  //paddle->setPosition(pos);
 }
 
 void RoundController::mouseMoved(int x, int y) {
@@ -169,13 +186,17 @@ void RoundController::mouseDragged(int x, int y, int button) {
   //...
 }
 
-void RoundController::collisionDetected(CollisionArgs &e) {
-  if (e.a == NULL || e.b == NULL)
-    return;
-  if (e.a->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*e.a), *e.b);
-  } else if (e.b->type() == GAME_OBJECT_BALL) {
-    ballHitObject(static_cast<Ball&>(*e.a), *e.b);
+void RoundController::onCollision(ofxBulletCollisionData &cdata) {
+  if (cdata.userData1 == NULL || cdata.userData2 == NULL)
+      return;
+    
+  GameObject* obj1 = reinterpret_cast<GameObject*>(cdata.userData1);
+  GameObject* obj2 = reinterpret_cast<GameObject*>(cdata.userData2);
+    
+  if (obj1->type() == GAME_OBJECT_BALL) {
+    ballHitObject(static_cast<Ball&>(*obj1), *obj2);
+  } else if (obj2->type() == GAME_OBJECT_BALL) {
+    ballHitObject(static_cast<Ball&>(*obj2), *obj1);
   }
 }
 

@@ -51,7 +51,7 @@ void RoundConfig::loadFile(const std::string &path) {
   _paddleBounce = settings.getValue("settings:paddleBounce", 0.0f);
   _paddleFriction = settings.getValue("settings:paddleFriction", 0.9f);
   _ballInitialVelocity.x = settings.getValue("settings:ballInitialVelocityX", 0.01f);
-  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 10.5f);
+  _ballInitialVelocity.y = settings.getValue("settings:ballInitialVelocityY", 100.5f);
   //...
 }
 

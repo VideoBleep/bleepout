@@ -25,8 +25,7 @@ void BleepoutApp::setup() {
   roundConfig.loadFile(""); // this is ugly and should be changed at some point
   _roundController.reset(new RoundController(roundConfig,
                                              *_playerManager,
-                                             *_renderer,
-                                             *_physics));
+                                             *_renderer));
   _roundController->setup();
 }
 

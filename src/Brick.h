@@ -9,11 +9,10 @@
 #ifndef __bleepout__Brick__
 #define __bleepout__Brick__
 
-#include <ofMain.h>
 #include "GameObject.h"
-#include "PhysicsObject.h"
+#include <ofxBullet.h>
 
-class Brick : public GameObject, public PhysicsObject {
+class Brick : public GameObject, public ofxBulletBox {
 public:
   Brick() : GameObject(GAME_OBJECT_BRICK) {}
   

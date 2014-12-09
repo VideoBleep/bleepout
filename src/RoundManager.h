@@ -10,6 +10,7 @@
 #define __bleepout__RoundController__
 
 #include <ofMain.h>
+#include <ofxBullet.h>
 #include <vector>
 #include "PlayerManager.h"
 #include "Paddle.h"
@@ -19,7 +20,6 @@
 #include "GameObject.h"
 #include "GameObjectCollection.h"
 #include "GameEvents.h"
-#include "Physics.h"
 
 class RendererBase;
 
@@ -28,8 +28,7 @@ class RoundController: public RoundEventSender
 public:
   RoundController(RoundConfig config,
                   PlayerManager& playerManager,
-                  RendererBase& renderer,
-                  Physics& physics);
+                  RendererBase& renderer);
   
   ~RoundController();
   
@@ -59,7 +58,7 @@ private:
   void addBall(ofVec3f center);
   void addPaddle(ofVec3f center, ofPtr<Player> player);
   
-  void collisionDetected(CollisionArgs& e);
+  void onCollision(ofxBulletCollisionData& cdata);
   
   void ballHitObject(Ball& ball, GameObject& obj);
   void ballHitBrick(Ball& ball, Brick& brick);
@@ -68,8 +67,8 @@ private:
   PlayerManager& _playerManager;
   RoundConfig _config;
   RendererBase& _renderer;
-  Physics _physics;
-  
+  ofxBulletWorldRigid _world;
+    
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;
   GameObjectCollection<Brick>  _bricks;

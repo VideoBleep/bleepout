@@ -11,10 +11,10 @@
 
 #include "Player.h"
 #include "GameObject.h"
-#include "PhysicsObject.h"
 #include <ofTypes.h>
+#include <ofxBullet.h>
 
-class Paddle : public GameObject, public PhysicsObject {
+class Paddle : public GameObject, public ofxBulletBox {
 public:
   Paddle(ofPtr<Player> player);
   ~Paddle() override;
@@ -23,6 +23,7 @@ public:
   
   void output(std::ostream& os) const override;
 private:
+  static btBoxShape collisionShape;
   ofPtr<Player> _player;
 };
 

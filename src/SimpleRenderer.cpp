@@ -17,14 +17,14 @@ void SimpleRenderer::drawBrick(RoundController& round, Brick &brick) {
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(255, 0, 0);
   ofRect(brick.getPosition().x, brick.getPosition().y,
-         brick.getDimensions().x, brick.getDimensions().y);
+         brick.getSize().x, brick.getSize().y);
 }
 
 void SimpleRenderer::drawPaddle(RoundController& round, Paddle &paddle) {
   ofSetRectMode(OF_RECTMODE_CENTER);
   ofSetColor(0, 255, 0);
   ofRect(paddle.getPosition().x, paddle.getPosition().y,
-         paddle.getDimensions().x, paddle.getDimensions().y);
+         paddle.getSize().x, paddle.getSize().y);
 }
 
 void SimpleRenderer::drawBall(RoundController& round, Ball &ball) {

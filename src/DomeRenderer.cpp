@@ -17,14 +17,14 @@ void DomeRenderer::draw(RoundController &round) {
 void DomeRenderer::drawBrick(RoundController& round, Brick &brick) {
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofSetColor(255, 0, 0);
-    ofVec3f dims = brick.getDimensions();
+    ofVec3f dims = brick.getSize();
     ofDrawBox(brick.getPosition(), dims.x, dims.y, dims.z);
 }
 
 void DomeRenderer::drawPaddle(RoundController& round, Paddle &paddle) {
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofSetColor(0, 255, 0);
-    ofVec3f dims = paddle.getDimensions();
+    ofVec3f dims = paddle.getSize();
     ofDrawBox(paddle.getPosition(), dims.x, dims.y, dims.z);
 }
 

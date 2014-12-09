@@ -11,11 +11,11 @@
 
 #include "Player.h"
 #include "GameObject.h"
-#include "PhysicsObject.h"
 #include "Common.h"
 #include <ofTypes.h>
+#include <ofxBullet.h>
 
-class Ball : public GameObject, public PhysicsObject {
+class Ball : public GameObject, public ofxBulletSphere {
 public:
   Ball();
   ~Ball() override;
@@ -25,8 +25,7 @@ public:
     _lastPlayer = player;
   }
   void output(std::ostream& os) const override;
-  float getRadius() const;
-  void setRadius(float newRadius);
+
 private:
   ofPtr<Player> _lastPlayer;
 };
