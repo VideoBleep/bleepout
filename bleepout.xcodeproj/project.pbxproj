@@ -110,6 +110,16 @@
 		FA7300BAC71DAC1ABAF6EE15 /* b2Fixture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 774DDD1B3F05D3FDF0D37794 /* b2Fixture.cpp */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		32F610BF1A3672F300A27909 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E4B27C1510CBEB8E00536013;
+			remoteInfo = openFrameworks;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		E4C2427710CC5ABF004149E2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -483,6 +493,14 @@
 				32B33A9C1A301C3200A2EA9F /* SimpleRenderer.h */,
 			);
 			name = rendering;
+			sourceTree = "<group>";
+		};
+		32F610BC1A3672F300A27909 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				32F610C01A3672F300A27909 /* openFrameworksDebug.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		32F95B401A2EB2CF008913CC /* ofxXmlSettings */ = {
@@ -911,12 +929,28 @@
 			mainGroup = E4B69B4A0A3A1720003C02F2;
 			productRefGroup = E4B69B4A0A3A1720003C02F2;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 32F610BC1A3672F300A27909 /* Products */;
+					ProjectRef = E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E4B69B5A0A3A1756003C02F2 /* bleepout */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		32F610C01A3672F300A27909 /* openFrameworksDebug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = openFrameworksDebug.a;
+			remoteRef = 32F610BF1A3672F300A27909 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		E4B6FFFD0C3F9AB9008CF71C /* ShellScript */ = {
