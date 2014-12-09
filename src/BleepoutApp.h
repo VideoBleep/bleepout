@@ -30,6 +30,8 @@ public:
   void mouseDragged(int x, int y, int button) override;
   const BleepoutConfig& config() const { return _config; }
 private:
+	ofPtr<PlayerManager> _playerManager;
+
   BleepoutConfig _config;
   ofPtr<RoundController> _roundController;
 };

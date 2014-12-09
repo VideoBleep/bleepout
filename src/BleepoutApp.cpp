@@ -22,6 +22,11 @@ void BleepoutApp::setup() {
   roundConfig.loadFile(""); // this is ugly and should be changed at some point
   _roundController.reset(new RoundController(roundConfig));
   _roundController->setup();
+
+  // [jim] May not be in the correct place here, but putting it back temporarily to aid sockets integration
+  _playerManager.reset(new PlayerManager(_roundController));
+  _playerManager->addPlayer();
+	
 }
 
 void BleepoutApp::update() {

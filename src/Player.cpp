@@ -15,3 +15,4 @@ Player::Player() : GameObject(GAME_OBJECT_PLAYER) {
 void Player::output(std::ostream &os) const {
   os << "Player{id:" << id() << "}";
 }
+

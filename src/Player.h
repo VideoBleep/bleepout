@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include <iostream>
 #include <ofTypes.h>
+#include <Connection.h>
 
 class Paddle;
 
@@ -45,12 +46,15 @@ public:
   void output(std::ostream& os) const override;
   
   static const char* typeName() { return "player"; }
+  
+  ofPtr<ofxLibwebsockets::Connection> connection() { return _conn; }
 
 private:
   
   Paddle* _paddle;
   int _score;
   int _lives;
+  ofPtr<ofxLibwebsockets::Connection> _conn;
 };
 
 #endif /* defined(__bleepout__Player__) */
