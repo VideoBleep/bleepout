@@ -10,7 +10,6 @@
 #define __bleepout__RoundController__
 
 #include <ofMain.h>
-#include <ofxBox2d.h>
 #include <vector>
 #include "PlayerManager.h"
 #include "Paddle.h"
