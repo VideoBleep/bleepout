@@ -13,10 +13,14 @@
 #include <string>
 
 class BleepoutConfig {
-public:  BleepoutConfig();
+public:
+  BleepoutConfig();
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
   
   int fps() const { return _fps; }
   ofLogLevel logLevel() const { return _logLevel; }

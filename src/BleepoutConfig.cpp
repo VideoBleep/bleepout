@@ -9,6 +9,8 @@
 #include "BleepoutConfig.h"
 #include "BleepoutApp.h"
 #include <ofxXmlSettings.h>
+#include <json.h> // it's included as part of ofxLibwebsockets
+#include <fstream>
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
@@ -33,6 +35,20 @@ void BleepoutConfig::saveFile(const std::string& path) const {
   settings.setValue("settings:logLevel", (int)_logLevel);
   settings.setValue("settings:vsync", _vsync);
   settings.save(path);
+}
+
+void BleepoutConfig::saveJsonFile(std::string path) const {
+  path = ofToDataPath(path);
+  std::ifstream fis(path.c_str());
+  Json::Reader reader;
+  Json::Value root;
+  if (!reader.parse(fis, root)) {
+    ofLogError() << "error loading json from: " << path << ": " << reader.getFormattedErrorMessages();
+    //...??????
+    return;
+  }
+  
+  //...
 }
 
 static void readPhysics(ofxXmlSettings& settings,
