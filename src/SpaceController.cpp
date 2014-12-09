@@ -131,6 +131,7 @@ void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
       break;
     case GAME_OBJECT_WALL:
       notifyBallHitWall(ball, static_cast<Wall*>(obj));
+      break;
     default:
       break;
   }

@@ -10,13 +10,33 @@
 #define __bleepout__GameEvents__
 
 #include <ofTypes.h>
+#include <ofLog.h>
+#include <iostream>
 #include "GameObject.h"
 #include "Player.h"
 #include "Brick.h"
 #include "Paddle.h"
 #include "Ball.h"
 #include "Wall.h"
-#include <ofLog.h>
+
+template<typename T>
+void outputField(std::ostream& os, const char* label, const T* obj) {
+  os << label << ": ";
+  if (obj)
+    os << *obj;
+  else
+    os << "(null)";
+}
+
+template<typename T>
+void outputField(std::ostream& os, const T* obj) {
+  outputField(os, T::typeName(), obj);
+}
+
+class EmptyEventArgs {
+public:
+  void output(std::ostream& os) const { }
+};
 
 template<typename T>
 class ObjectEventArgs {
@@ -24,9 +44,22 @@ public:
   explicit ObjectEventArgs(T* obj) : _object(obj) { }
   
   T* object() { return _object; }
+  const T* object() const { return _object; }
+  
+  void output(std::ostream& os) const {
+    os << "(";
+    outputField(os, object());
+    os << ")";
+  }
 private:
   T* _object;
 };
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const ObjectEventArgs<T>& e) {
+  e.output(os);
+  return os;
+}
 
 template<typename T>
 class BallHitObjectEventArgs : public ObjectEventArgs<T> {
@@ -35,16 +68,31 @@ public:
   : _ball(ball), ObjectEventArgs<T>(object) { }
 
   Ball* ball() { return _ball; }
+  const Ball* ball() const { return _ball; }
+  
+  void output(std::ostream& os) const {
+    os << "(";
+    outputField(os, ball());
+    os << " ";
+    outputField(os, ObjectEventArgs<T>::object());
+    os << ")";
+  }
 private:
   Ball* _ball;
 };
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const BallHitObjectEventArgs<T>& e) {
+  e.output(os);
+  return os;
+}
 
 typedef BallHitObjectEventArgs<Paddle> BallHitPaddleEventArgs;
 typedef BallHitObjectEventArgs<Brick> BallHitBrickEventArgs;
 typedef BallHitObjectEventArgs<Wall> BallHitWallEventArgs;
 typedef BallHitObjectEventArgs<Ball> BallHitBallEventArgs;
 
-class CollisionLogger;
+class CollisionEventLogger;
 
 class CollisionEventSource {
 public:
@@ -57,15 +105,15 @@ public:
   void attachListener(Listener& listener) {
     ofAddListener(ballHitPaddleEvent, &listener, &Listener::onBallHitPaddle);
     ofAddListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
-    ofAddListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
     ofAddListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
+    ofAddListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
   }
   template<typename Listener>
-  void removeListener(Listener& listener) {
+  void detachListener(Listener& listener) {
     ofRemoveListener(ballHitPaddleEvent, &listener, &Listener::onBallHitPaddle);
     ofRemoveListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
-    ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
     ofRemoveListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
+    ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
   }
   
   void enableLogging(ofLogLevel level);
@@ -88,7 +136,7 @@ protected:
     ofNotifyEvent(ballHitBallEvent, e);
   }
 private:
-  ofPtr<CollisionLogger> _logger;
+  ofPtr<CollisionEventLogger> _logger;
 };
 
 class BallOwnerChangedEventArgs {
@@ -99,13 +147,33 @@ public:
   : _ball(ball), _player(player), _previousPlayer(previousPlayer) {}
 
   Ball* ball() { return _ball; }
+  const Ball* ball() const { return _ball; }
+
   Player* player() { return _player; }
+  const Player* player() const { return _player; }
+
   Player* previousPlayer() { return _previousPlayer; }
+  const Player* previousPlayer() const { return _previousPlayer; }
+
+  void output(std::ostream& os) const {
+    os << "(";
+    outputField(os, ball());
+    os << " ";
+    outputField(os, player());
+    os << " ";
+    outputField(os, "previousPlayer", previousPlayer());
+    os << ")";
+  }
 private:
   Ball* _ball;
   Player* _player;
   Player* _previousPlayer;
 };
+
+std::ostream& operator<<(std::ostream& os, const BallOwnerChangedEventArgs& e) {
+  e.output(os);
+  return os;
+}
 
 class BrickDestroyedEventArgs {
 public:
@@ -113,14 +181,32 @@ public:
   : _brick(brick), _ball(ball) { }
   
   Brick* brick() { return _brick; }
+  const Brick* brick() const { return _brick; }
   Ball* ball() { return _ball; }
+  const Ball* ball() const { return _ball; }
+  
+  void output(std::ostream& os) const {
+    os << "(";
+    outputField(os, brick());
+    os << " ";
+    outputField(os, ball());
+    os << ")";
+  }
 private:
   Brick* _brick;
   Ball* _ball;
 };
 
+std::ostream& operator<<(std::ostream& os, const BrickDestroyedEventArgs& e) {
+  e.output(os);
+  return os;
+}
+
 typedef ObjectEventArgs<Player> PlayerEventArgs;
 typedef ObjectEventArgs<Ball> BallEventArgs;
+
+class RoundStateEventLogger;
+
 
 class RoundStateEventSource {
 public:
@@ -131,8 +217,34 @@ public:
   ofEvent<BallEventArgs> ballRespawnedEvent;
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
-  ofEvent<ofEventArgs> roundEndedEvent;
+  ofEvent<EmptyEventArgs> roundEndedEvent;
   
+  void enableLogging(ofLogLevel level);
+  void disableLogging();
+  
+  template<typename Listener>
+  void attachListener(Listener& listener) {
+    ofAddListener(ballOwnerChangedEvent, &listener, &Listener::onBallOwnerChanged);
+    ofAddListener(brickDestroyedEvent, &listener, &Listener::onBrickDestroyed);
+    ofAddListener(playerScoreChangedEvent, &listener, &Listener::onPlayerScoreChanged);
+    ofAddListener(ballDestroyedEvent, &listener, &Listener::onBallDestroyed);
+    ofAddListener(ballRespawnedEvent, &listener, &Listener::onBallRespawned);
+    ofAddListener(playerLostEvent, &listener, &Listener::onPlayerLost);
+    ofAddListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
+    ofAddListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+  }
+  
+  template<typename Listener>
+  void detachListener(Listener& listener) {
+    ofRemoveListener(ballOwnerChangedEvent, &listener, &Listener::onBallOwnerChanged);
+    ofRemoveListener(brickDestroyedEvent, &listener, &Listener::onBrickDestroyed);
+    ofRemoveListener(playerScoreChangedEvent, &listener, &Listener::onPlayerScoreChanged);
+    ofRemoveListener(ballDestroyedEvent, &listener, &Listener::onBallDestroyed);
+    ofRemoveListener(ballRespawnedEvent, &listener, &Listener::onBallRespawned);
+    ofRemoveListener(playerLostEvent, &listener, &Listener::onPlayerLost);
+    ofRemoveListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
+    ofRemoveListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+  }
 protected:
   void notifyBallOwnerChanged(Ball* ball, Player* player, Player* previousPlayer) {
     BallOwnerChangedEventArgs e(ball, player, previousPlayer);
@@ -163,24 +275,44 @@ protected:
     ofNotifyEvent(playerLivesChangedEvent, e);
   }
   void notifyRoundEnded() {
-    ofEventArgs e;
+    EmptyEventArgs e;
     ofNotifyEvent(roundEndedEvent, e);
   }
+private:
+  ofPtr<RoundStateEventLogger> _logger;
 };
+
+class PlayerEventLogger;
 
 class PlayerEventSource {
 public:
-  ofEvent<PlayerEventArgs> playerAdded;
-  ofEvent<PlayerEventArgs> playerRemoved;
+  ofEvent<PlayerEventArgs> playerAddedEvent;
+  ofEvent<PlayerEventArgs> playerRemovedEvent;
+  
+  template<typename Listener>
+  void attachListener(Listener& listener) {
+    ofAddListener(playerAddedEvent, &listener, &Listener::onPlayerAdded);
+    ofAddListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
+  }
+  template<typename Listener>
+  void detachListener(Listener& listener) {
+    ofRemoveListener(playerAddedEvent, &listener, &Listener::onPlayerAdded);
+    ofRemoveListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
+  }
+  
+  void enableLogging(ofLogLevel level);
+  void disableLogging();
 protected:
   void notifyPlayerAdded(Player* player) {
     PlayerEventArgs e(player);
-    ofNotifyEvent(playerAdded, e);
+    ofNotifyEvent(playerAddedEvent, e);
   }
   void notifyPlayerRemoved(Player* player) {
     PlayerEventArgs e(player);
-    ofNotifyEvent(playerRemoved, e);
+    ofNotifyEvent(playerRemovedEvent, e);
   }
+private:
+  ofPtr<PlayerEventLogger> _logger;
 };
 
 #endif /* defined(__bleepout__GameEvents__) */

@@ -22,6 +22,8 @@ public:
   Player* player() { return _player; }
   
   void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "paddle"; }
 private:
   Player* _player;
 };

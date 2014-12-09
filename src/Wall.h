@@ -17,6 +17,8 @@ public:
   Wall(bool isExit) : GameObject(GAME_OBJECT_WALL), _isExit(isExit) {}
   
   bool isExit() const { return _isExit; }
+  
+  static const char* typeName() { return "wall"; }
 private:
   bool _isExit;
 };

@@ -41,9 +41,12 @@ public:
     setLives(_lives + amount);
     return _lives;
   }
+  
+  void output(std::ostream& os) const override;
+  
+  static const char* typeName() { return "player"; }
 
 private:
-  void output(std::ostream& os) const override;
   
   Paddle* _paddle;
   int _score;
