@@ -180,11 +180,6 @@ private:
   Ball* _ball;
 };
 
-std::ostream& operator<<(std::ostream& os, const BrickDestroyedEventArgs& e) {
-  e.output(os);
-  return os;
-}
-
 typedef ObjectEventArgs<Player> PlayerEventArgs;
 typedef ObjectEventArgs<Ball> BallEventArgs;
 
