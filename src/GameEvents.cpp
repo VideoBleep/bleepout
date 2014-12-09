@@ -7,7 +7,7 @@
 //
 
 #include "GameEvents.h"
-#include <ofMain.h>
+#include <ofLog.h>
 
 
 class CollisionLogger {

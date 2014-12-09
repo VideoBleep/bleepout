@@ -119,15 +119,18 @@ private:
   Ball* _ball;
 };
 
+typedef ObjectEventArgs<Player> PlayerEventArgs;
+typedef ObjectEventArgs<Ball> BallEventArgs;
+
 class RoundStateEventSource {
 public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
-  ofEvent<ObjectEventArgs<Player> > playerScoreChangedEvent;
-  ofEvent<ObjectEventArgs<Ball> > ballDestroyedEvent;
-  ofEvent<ObjectEventArgs<Ball> > ballRespawnedEvent;
-  ofEvent<ObjectEventArgs<Player> > playerLostEvent;
-  ofEvent<ObjectEventArgs<Player> > playerLivesChangedEvent;
+  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
+  ofEvent<BallEventArgs> ballDestroyedEvent;
+  ofEvent<BallEventArgs> ballRespawnedEvent;
+  ofEvent<PlayerEventArgs> playerLostEvent;
+  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
   ofEvent<ofEventArgs> roundEndedEvent;
   
 protected:
@@ -140,28 +143,43 @@ protected:
     ofNotifyEvent(brickDestroyedEvent, e);
   }
   void notifyPlayerScoreChanged(Player* player) {
-    ObjectEventArgs<Player> e(player);
+    PlayerEventArgs e(player);
     ofNotifyEvent(playerScoreChangedEvent, e);
   }
   void notifyBallDestroyed(Ball* ball) {
-    ObjectEventArgs<Ball> e(ball);
+    BallEventArgs e(ball);
     ofNotifyEvent(ballDestroyedEvent, e);
   }
   void notifyBallRespawned(Ball* ball) {
-    ObjectEventArgs<Ball> e(ball);
+    BallEventArgs e(ball);
     ofNotifyEvent(ballRespawnedEvent, e);
   }
   void notifyPlayerLost(Player* player) {
-    ObjectEventArgs<Player> e(player);
+    PlayerEventArgs e(player);
     ofNotifyEvent(playerLostEvent, e);
   }
   void notifyPlayerLivesChanged(Player* player) {
-    ObjectEventArgs<Player> e(player);
+    PlayerEventArgs e(player);
     ofNotifyEvent(playerLivesChangedEvent, e);
   }
   void notifyRoundEnded() {
     ofEventArgs e;
     ofNotifyEvent(roundEndedEvent, e);
+  }
+};
+
+class PlayerEventSource {
+public:
+  ofEvent<PlayerEventArgs> playerAdded;
+  ofEvent<PlayerEventArgs> playerRemoved;
+protected:
+  void notifyPlayerAdded(Player* player) {
+    PlayerEventArgs e(player);
+    ofNotifyEvent(playerAdded, e);
+  }
+  void notifyPlayerRemoved(Player* player) {
+    PlayerEventArgs e(player);
+    ofNotifyEvent(playerRemoved, e);
   }
 };
 
