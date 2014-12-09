@@ -56,17 +56,11 @@ private:
 };
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, const ObjectEventArgs<T>& e) {
-  e.output(os);
-  return os;
-}
-
-template<typename T>
 class BallHitObjectEventArgs : public ObjectEventArgs<T> {
 public:
   BallHitObjectEventArgs(Ball* ball, T* object)
   : _ball(ball), ObjectEventArgs<T>(object) { }
-
+  
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
   
@@ -80,12 +74,6 @@ public:
 private:
   Ball* _ball;
 };
-
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const BallHitObjectEventArgs<T>& e) {
-  e.output(os);
-  return os;
-}
 
 typedef BallHitObjectEventArgs<Paddle> BallHitPaddleEventArgs;
 typedef BallHitObjectEventArgs<Brick> BallHitBrickEventArgs;
@@ -145,16 +133,16 @@ public:
                             Player* player,
                             Player* previousPlayer)
   : _ball(ball), _player(player), _previousPlayer(previousPlayer) {}
-
+  
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
-
+  
   Player* player() { return _player; }
   const Player* player() const { return _player; }
-
+  
   Player* previousPlayer() { return _previousPlayer; }
   const Player* previousPlayer() const { return _previousPlayer; }
-
+  
   void output(std::ostream& os) const {
     os << "(";
     outputField(os, ball());
@@ -169,11 +157,6 @@ private:
   Player* _player;
   Player* _previousPlayer;
 };
-
-std::ostream& operator<<(std::ostream& os, const BallOwnerChangedEventArgs& e) {
-  e.output(os);
-  return os;
-}
 
 class BrickDestroyedEventArgs {
 public:
