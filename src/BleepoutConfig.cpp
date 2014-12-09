@@ -12,7 +12,7 @@
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
-_logLevel(OF_LOG_VERBOSE),
+_logLevel(OF_LOG_NOTICE),
 _vsync(true) {
   
 }
