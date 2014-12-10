@@ -67,7 +67,7 @@ public:
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
 private:
-  RoundState _state;
+  RoundState& _state;
   ofPtr<RoundController> _roundController;
 };
 
