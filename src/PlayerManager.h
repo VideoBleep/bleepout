@@ -16,10 +16,27 @@
 #include "GameObjectCollection.h"
 #include "GameState.h"
 #include "ofxLibwebsockets.h"
+#include "GameEvents.h"
 
 class RoundController;
 
-class PlayerManager {
+struct PlayerYawPitchRollMessage {
+	PlayerYawPitchRollMessage() {
+	}
+
+	PlayerYawPitchRollMessage(float y, float p, float r) {
+		yaw = y;
+		pitch = p;
+		roll = r;
+	}
+
+	ofPtr<Player> player;
+	float yaw;
+	float pitch;
+	float roll;
+};
+
+class PlayerManager : PlayerEventSource {
 public:
 	explicit PlayerManager(ofPtr<RoundController> roundController);
 	
@@ -47,8 +64,10 @@ public:
   void onMessage(ofxLibwebsockets::Event& args);
   void onBroadcast(ofxLibwebsockets::Event& args);
 
+  ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+
 private:
-  RoundState _state;
+  RoundState& _state;
   ofPtr<RoundController> _roundController;
 };
 

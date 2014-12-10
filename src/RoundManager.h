@@ -42,6 +42,7 @@ public:
   void mouseDragged(int x, int y, int button);
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);
+  void setPaddlePosition(PlayerYawPitchRollMessage ypr);
 
 private:
   RoundConfig _config;
