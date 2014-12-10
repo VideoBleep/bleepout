@@ -81,7 +81,7 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
   
   ofVec2f pos = paddle->getPosition();
   pos.x = xPercent * ofGetWidth();
-  paddle->setPosition(pos);
+  paddle->constrainTo(pos);
   //...
 }
 

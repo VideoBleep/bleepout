@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "Common.h"
+#include "OrbitalTrajectory.h"
 #include <ofTypes.h>
 #include <ofxBullet.h>
 
@@ -24,6 +25,10 @@ public:
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;
+    
+  OrbitalTrajectory trajectory;
+  void updatePositionFromTrajectory();
+  void bounce();
 
   static const char* typeName() { return "ball"; }
 private:

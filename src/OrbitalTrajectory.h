@@ -13,12 +13,16 @@
 
 class OrbitalTrajectory {
 public:
+    OrbitalTrajectory();
     OrbitalTrajectory(float radius, ofVec3f u, ofVec3f v, float speed = 0.02);
     
     void tick();
     
     float getRadius() const { return _r; }
     void setRadius(float r) { _r = r; }
+    
+    float getSpeed() const { return _speed; }
+    void setSpeed(float s) { _speed = s; }
     
     void setSquishFactor(float s) { _squishFactor = s; }
     

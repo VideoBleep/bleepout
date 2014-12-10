@@ -25,9 +25,7 @@ void LogicController::onBallHitPaddle(BallHitPaddleEventArgs &e) {
   e.ball()->setPlayer(player);
  
   // Does this belong here, or in SpaceController?
-  btVector3 v = e.ball()->getRigidBody()->getLinearVelocity();
-  v *= btVector3(1, -1, 1);
-  e.ball()->getRigidBody()->setLinearVelocity(v);
+  e.ball()->bounce();
     
   notifyBallOwnerChanged(e.ball(), player, previousPlayer);
 }

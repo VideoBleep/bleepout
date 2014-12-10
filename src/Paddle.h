@@ -21,11 +21,15 @@ public:
   
   Player* player() { return _player; }
   
+  void initConstraint(ofxBulletWorldRigid& world);
+  void constrainTo(const ofVec3f& v);
+    
   void output(std::ostream& os) const override;
   
   static const char* typeName() { return "paddle"; }
 private:
   Player* _player;
+  btGeneric6DofConstraint* _constraint;
 };
 
 
