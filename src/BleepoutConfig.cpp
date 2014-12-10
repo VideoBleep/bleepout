@@ -104,7 +104,22 @@ static bool readJsonVal(const Json::Value& obj, const char* property, PhysicsOpt
   return true;
 }
 
-static bool loadJsonObjectFile(std::string path, Json::Value* obj) {
+static Json::Value toJsonObj(const ofVec2f& val) {
+  Json::Value obj(Json::objectValue);
+  obj["x"] = val.x;
+  obj["y"] = val.y;
+  return obj;
+}
+
+static Json::Value toJsonObj(const PhysicsOptions& val) {
+  Json::Value obj(Json::objectValue);
+  obj["density"] = val.density;
+  obj["bounce"] = val.bounce;
+  obj["friction"] = val.friction;
+  return obj;
+}
+
+static bool readJsonObjectFile(std::string path, Json::Value* obj) {
   path = ofToDataPath(path);
   std::ifstream fis(path.c_str());
   Json::Reader reader;
@@ -118,9 +133,16 @@ static bool loadJsonObjectFile(std::string path, Json::Value* obj) {
   }
 }
 
+static void writeJsonFile(std::string path, const Json::Value& obj) {
+  path = ofToDataPath(path);
+  std::ofstream fos(path.c_str());
+  Json::StyledStreamWriter writer;
+  writer.write(fos, obj);
+}
+
 void BleepoutConfig::loadJsonFile(std::string path) {
   Json::Value root;
-  if (!loadJsonObjectFile(path, &root))
+  if (!readJsonObjectFile(path, &root))
     return;
   readJsonVal(root, "fps", &_fps);
   readJsonEnumVal(root, "logLevel", &_logLevel);
@@ -128,8 +150,11 @@ void BleepoutConfig::loadJsonFile(std::string path) {
 }
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
-  path = ofToDataPath(path);
-  //...
+  Json::Value root(Json::objectValue);
+  root["fps"] = _fps;
+  root["logLevel"] = (int)_logLevel;
+  root["vsync"] = _vsync;
+  writeJsonFile(path, root);
 }
 
 static void readPhysics(ofxXmlSettings& settings,
@@ -198,7 +223,7 @@ void RoundConfig::saveFile(const std::string &path) const {
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value root;
-  if (!loadJsonObjectFile(path, &root))
+  if (!readJsonObjectFile(path, &root))
     return;
   readJsonVal(root, "brickSize", &_brickSize);
   readJsonVal(root, "brickGap", &_brickGap);
@@ -207,5 +232,17 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(root, "ballPhysics", &_ballPhysics);
   readJsonVal(root, "paddlePhysics", &_paddlePhysics);
   readJsonVal(root, "ballInitialVelocity", &_ballInitialVelocity);
+}
+
+void RoundConfig::saveJsonFile(std::string path) const {
+  Json::Value root;
+  root["brickSize"] = toJsonObj(_brickSize);
+  root["brickGap"] = _brickGap;
+  root["paddleSize"] = toJsonObj(_paddleSize);
+  root["ballRadius"] = _ballRadius;
+  root["ballPhysics"] = toJsonObj(_ballPhysics);
+  root["paddlePhysics"] = toJsonObj(_paddlePhysics);
+  root["ballInitialVelocity"] = toJsonObj(_ballInitialVelocity);
+  writeJsonFile(path, root);
 }
 
