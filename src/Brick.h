@@ -10,11 +10,11 @@
 #define __bleepout__Brick__
 
 #include "GameObject.h"
-#include <ofxBullet.h>
+#include "PhysicsObject.h"
 
-class Brick : public GameObject, public ofxBulletBox {
+class Brick : public GameObject, public PhysicsObject {
 public:
-  Brick() : GameObject(GAME_OBJECT_BRICK), _value(1) {}
+  Brick() : GameObject(GAME_OBJECT_BRICK), PhysicsObject(CollisionBox), _value(1) {}
   
   int value() const { return _value; }
   void setValue(int value) { _value = value; }

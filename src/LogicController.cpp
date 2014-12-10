@@ -23,10 +23,6 @@ void LogicController::onBallHitPaddle(BallHitPaddleEventArgs &e) {
   Player* previousPlayer = e.ball()->player();
   Player* player = e.object()->player();
   e.ball()->setPlayer(player);
- 
-  // Does this belong here, or in SpaceController?
-  e.ball()->bounce();
-    
   notifyBallOwnerChanged(e.ball(), player, previousPlayer);
 }
 

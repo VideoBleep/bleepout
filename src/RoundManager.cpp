@@ -37,7 +37,9 @@ void RoundController::setup() {
 }
 
 void RoundController::draw() {
+    ofBackground(255, 255, 255);
   _renderer->draw(_state);
+  //_spaceController->drawDebug();
   //...
 }
 
@@ -61,7 +63,7 @@ void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {
 		return;
 	}
 
-	ofVec2f pos = paddle->getPosition();
+	ofVec3f pos = paddle->getPosition();
 	pos.x = ypr.yaw * ofGetWidth();
 	paddle->setPosition(pos);
 }
@@ -79,9 +81,9 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     return;
   }
   
-  ofVec2f pos = paddle->getPosition();
+  ofVec3f pos = paddle->getPosition();
   pos.x = xPercent * ofGetWidth();
-  paddle->constrainTo(pos);
+  paddle->setPosition(pos);
   //...
 }
 

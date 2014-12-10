@@ -11,12 +11,11 @@
 
 #include "Player.h"
 #include "GameObject.h"
+#include "PhysicsObject.h"
 #include "Common.h"
-#include "OrbitalTrajectory.h"
 #include <ofTypes.h>
-#include <ofxBullet.h>
 
-class Ball : public GameObject, public ofxBulletSphere {
+class Ball : public GameObject, public PhysicsObject {
 public:
   Ball();
   ~Ball() override;
@@ -25,10 +24,6 @@ public:
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;
-    
-  OrbitalTrajectory trajectory;
-  void updatePositionFromTrajectory();
-  void bounce();
 
   static const char* typeName() { return "ball"; }
 private:

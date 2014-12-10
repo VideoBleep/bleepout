@@ -11,25 +11,21 @@
 
 #include "Player.h"
 #include "GameObject.h"
+#include "PhysicsObject.h"
 #include <ofTypes.h>
-#include <ofxBullet.h>
 
-class Paddle : public GameObject, public ofxBulletBox {
+class Paddle : public GameObject, public PhysicsObject {
 public:
   Paddle(Player* player);
   ~Paddle() override;
   
   Player* player() { return _player; }
-  
-  void initConstraint(ofxBulletWorldRigid& world);
-  void constrainTo(const ofVec3f& v);
     
   void output(std::ostream& os) const override;
   
   static const char* typeName() { return "paddle"; }
 private:
   Player* _player;
-  btGeneric6DofConstraint* _constraint;
 };
 
 

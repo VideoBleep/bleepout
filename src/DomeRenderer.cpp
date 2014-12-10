@@ -29,6 +29,6 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
-    ofDrawSphere(ball.getPosition(), ball.getRadius());
+    ofDrawSphere(ball.getPosition(), ball.getSize().x);
     
 }

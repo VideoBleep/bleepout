@@ -9,7 +9,7 @@
 #include "SimpleRenderer.h"
 
 void SimpleRenderer::draw(RoundState &state) {
-  ofBackground(255, 255, 255);
+  //ofBackground(255, 255, 255);
   RendererBase::draw(state);
 }
 
@@ -28,5 +28,5 @@ void SimpleRenderer::drawPaddle(RoundState& state, Paddle &paddle) {
 }
 
 void SimpleRenderer::drawBall(RoundState& state, Ball &ball) {
-  ofCircle(ball.getPosition().x, ball.getPosition().y, ball.getRadius());
+  ofCircle(ball.getPosition().x, ball.getPosition().y, ball.getSize().x);
 }

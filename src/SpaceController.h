@@ -9,11 +9,10 @@
 #ifndef __bleepout__SpaceController__
 #define __bleepout__SpaceController__
 
-#include <ofxBullet.h>
-
 #include "GameState.h"
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
+#include "PhysicsWorld.h"
 
 class SpaceController : public CollisionEventSource {
 public:
@@ -21,6 +20,8 @@ public:
   
   void setup();
   void update();
+  void drawDebug();
+    
 private:
   void generateBricks();
   
@@ -28,12 +29,10 @@ private:
   void addBall(ofVec3f center);
   void addPaddle(ofVec3f center, Player* player);
   
-  void onCollision(ofxBulletCollisionData &cdata);
-  
   void ballHitObject(Ball* ball, GameObject* obj);
 
 private:
-  ofxBulletWorldRigid _world;
+  PhysicsWorld _world;
   RoundState& _state;
   RoundConfig& _config;
 };
