@@ -37,17 +37,98 @@ void BleepoutConfig::saveFile(const std::string& path) const {
   settings.save(path);
 }
 
-void BleepoutConfig::saveJsonFile(std::string path) const {
+static bool readJsonVal(const Json::Value& obj, const char* property, float* result) {
+  const Json::Value& val = obj[property];
+  if (!obj.isNumeric()) {
+    ofLogError() << "invalid type for property \"" << property << "\" (expected number): " << val.toStyledString();
+    return false;
+  }
+  *result = obj.asFloat();
+  return true;
+}
+
+static bool readJsonVal(const Json::Value& obj, const char* property, int* result) {
+  const Json::Value& val = obj[property];
+  if (!obj.isNumeric()) {
+    ofLogError() << "invalid type for property \"" << property << "\" (expected number): " << val.toStyledString();
+    return false;
+  }
+  *result = obj.asInt();
+  return true;
+}
+
+static bool readJsonVal(const Json::Value& obj, const char* property, bool* result) {
+  const Json::Value& val = obj[property];
+  if (!obj.isBool()) {
+    ofLogError() << "invalid type for property \"" << property << "\" (expected boolean): " << val.toStyledString();
+    return false;
+  }
+  *result = val.asBool();
+  return true;
+}
+
+template<typename TEnum>
+static bool readJsonEnumVal(const Json::Value& obj, const char* property, TEnum* result) {
+  int valueTemp;
+  if(!readJsonVal(obj, property, &valueTemp))
+    return false;
+  *result = (TEnum)valueTemp;
+  return true;
+}
+
+static bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result) {
+  const Json::Value& val = obj[property];
+  if (!obj.isObject()) {
+    ofLogError() << "invalid type for property \"" << property << "\" (expected object): " << val.toStyledString();
+    return false;
+  }
+  ofVec2f temp;
+  if (!readJsonVal(val, "x", &(temp.x)) || !readJsonVal(val, "y", &(temp.y)))
+    return false;
+  *result = temp;
+  return true;
+}
+
+static bool readJsonVal(const Json::Value& obj, const char* property, PhysicsOptions* result) {
+  const Json::Value& val = obj[property];
+  if (!obj.isObject()) {
+    ofLogError() << "invalid type for property \"" << property << "\" (expected object): " << val.toStyledString();
+    return false;
+  }
+  PhysicsOptions temp;
+  if (!readJsonVal(val, "density", &temp.density) ||
+      !readJsonVal(val, "bounce", &temp.bounce) ||
+      !readJsonVal(val, "friction", &temp.friction))
+    return false;
+  *result = temp;
+  return true;
+}
+
+static bool loadJsonObjectFile(std::string path, Json::Value* obj) {
   path = ofToDataPath(path);
   std::ifstream fis(path.c_str());
   Json::Reader reader;
-  Json::Value root;
-  if (!reader.parse(fis, root)) {
+  if (!reader.parse(fis, *obj)) {
     ofLogError() << "error loading json from: " << path << ": " << reader.getFormattedErrorMessages();
-    //...??????
-    return;
+    return false;
   }
-  
+  if (!obj->isObject()) {
+    ofLogError() << "config root is not object: " << obj->toStyledString();
+    return false;
+  }
+}
+
+void BleepoutConfig::loadJsonFile(std::string path) {
+  Json::Value root;
+  if (!loadJsonObjectFile(path, &root))
+    return;
+  readJsonVal(root, "fps", &_fps);
+  readJsonEnumVal(root, "logLevel", &_logLevel);
+  readJsonVal(root, "vsync", &_vsync);
+}
+
+void BleepoutConfig::saveJsonFile(std::string path) const {
+  path = ofToDataPath(path);
   //...
 }
 
@@ -113,5 +194,18 @@ void RoundConfig::saveFile(const std::string &path) const {
 
   //...
   settings.save(path);
+}
+
+void RoundConfig::loadJsonFile(std::string path) {
+  Json::Value root;
+  if (!loadJsonObjectFile(path, &root))
+    return;
+  readJsonVal(root, "brickSize", &_brickSize);
+  readJsonVal(root, "brickGap", &_brickGap);
+  readJsonVal(root, "paddleSize", &_paddleSize);
+  readJsonVal(root, "ballRadius", &_ballRadius);
+  readJsonVal(root, "ballPhysics", &_ballPhysics);
+  readJsonVal(root, "paddlePhysics", &_paddlePhysics);
+  readJsonVal(root, "ballInitialVelocity", &_ballInitialVelocity);
 }
 

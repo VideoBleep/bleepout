@@ -36,6 +36,7 @@ struct PhysicsOptions {
   float bounce;
   float friction;
 
+  PhysicsOptions() {}
   PhysicsOptions(float d, float b, float f)
   : density(d), bounce(b), friction(f){}
 };
@@ -46,6 +47,9 @@ public:
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
   
   const ofVec2f& brickSize() const { return _brickSize; }
   float brickGap() const { return _brickGap; }
