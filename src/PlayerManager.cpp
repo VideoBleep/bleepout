@@ -6,8 +6,11 @@
 //  
 //
 
+
 #include "PlayerManager.h"
 #include "RoundManager.h"
+
+std::string messageDelimiter = "|";
 
 PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
 	_roundController(roundController),
@@ -21,9 +24,6 @@ ofPtr<Player> PlayerManager::addPlayer() {
   _state.players().push_back(player);
   return player;
 }
-
-// -------------------WebSockets support
-
 
 void PlayerManager::setup(){
 
@@ -82,10 +82,26 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
 
-	// find player by comparing 
-	// Parse control message
+	ofPtr<Player> player = findPlayer(args.conn);
 
-	// if the prefix is ypr then we have a yaw-pitch-roll message
+	// Parse message
+	int pos = args.message.find(messageDelimiter);
+	std::string msgPrefix = args.message.substr(0, pos);
+	std::string msgData = args.message.substr(pos, args.message.length());
+
+	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
+	if (msgPrefix == "ypr") {
+		PlayerYawPitchRollMessage ypr;
+		ypr.player = player;
+		pos = msgData.find(messageDelimiter);
+		ypr.yaw = ofToFloat(msgData.substr(0, pos));
+		msgData.erase(0, pos + 1);
+		pos = msgData.find(messageDelimiter);
+		ypr.pitch = ofToFloat(msgData.substr(0, pos));
+		msgData.erase(0, pos + 1);
+		ypr.roll = ofToFloat(msgData);
+		_roundController->setPaddlePosition(ypr);
+	}
 	// if the prefix is but then we have a click message
 }
 
@@ -95,4 +111,15 @@ void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){
 
 void PlayerManager::gotMessage(ofMessage msg){
 	// cout << "got message " << msg << endl;
+}
+
+// Find player in collection based on connection (say that 10 times fast, sucka)
+ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
+	// find player by comparing connection
+	for (ofPtr<Player>& p : state().players()) {
+		if (*(p->connection()) == conn) {
+			return p;
+		}
+	}
+	return ofPtr<Player>();
 }

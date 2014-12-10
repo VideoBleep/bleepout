@@ -54,6 +54,18 @@ void RoundController::keyPressed(int key) {
   }
 }
 
+void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {
+	Paddle* paddle = ypr.player->paddle();
+	if (!paddle) {
+		ofLogError() << "Unable to set paddle position for player: " << ypr.player->id();
+		return;
+	}
+
+	ofVec2f pos = paddle->getPosition();
+	pos.x = ypr.yaw * ofGetWidth();
+	paddle->setPosition(pos);
+}
+
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
   ofPtr<Player> player = _state.players().getById(playerId);
   if (!player) {
