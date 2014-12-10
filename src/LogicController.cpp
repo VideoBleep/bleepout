@@ -19,11 +19,17 @@ void LogicController::update() {
   
 }
 
+void LogicController::initPlayer(Player &player) {
+  player.setLives(_config.playerInitialLives());
+}
+
 void LogicController::onBallHitPaddle(BallHitPaddleEventArgs &e) {
   Player* previousPlayer = e.ball()->player();
   Player* player = e.object()->player();
-  e.ball()->setPlayer(player);
-  notifyBallOwnerChanged(e.ball(), player, previousPlayer);
+  if (previousPlayer != player) {
+    e.ball()->setPlayer(player);
+    notifyBallOwnerChanged(e.ball(), player, previousPlayer);
+  }
 }
 
 void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
@@ -49,7 +55,7 @@ void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
     
     notifyBallDestroyed(ball);
     
-    if (player) {
+    if (player && _config.ballOutDecreasesLives()) {
       player->adjustLives(-1);
       notifyPlayerLivesChanged(player);
       if (!player->alive()) {
