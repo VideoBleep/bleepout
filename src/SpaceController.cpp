@@ -88,8 +88,8 @@ void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
       notifyBallHitBrick(ball, static_cast<Brick*>(obj));
       break;
     case GAME_OBJECT_PADDLE:
-      ball->bounce(); // maybe not the best method/place
       notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
+      ball->bounce(); // maybe not the best method/place
       break;
     case GAME_OBJECT_BALL:
       notifyBallHitBall(ball, static_cast<Ball*>(obj));
