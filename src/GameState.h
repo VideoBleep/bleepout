@@ -9,6 +9,8 @@
 #ifndef __bleepout__GameState__
 #define __bleepout__GameState__
 
+#include <iostream>
+
 #include "GameObject.h"
 #include "Paddle.H"
 #include "Brick.h"
@@ -31,8 +33,8 @@ public:
   GameObjectCollection<Brick>& bricks() { return _bricks; }
   GameObjectCollection<Wall>& walls() { return _walls; }
   GameObjectCollection<Player>& players() { return _players; }
-  
-  void dumpToLog();
+
+  void output(std::ostream& os) const;
 
 private:
   GameObjectCollection<Paddle> _paddles;

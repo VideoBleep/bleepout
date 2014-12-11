@@ -20,7 +20,8 @@ public:
   ~Paddle() override;
   
   Player* player() { return _player; }
-    
+  const Player* player() const { return _player; }
+  
   void output(std::ostream& os) const override;
   
   static const char* typeName() { return "paddle"; }

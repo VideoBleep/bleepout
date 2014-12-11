@@ -38,7 +38,7 @@ public:
     
     const BoundingBox& getBoundingBox() const { return boundingBox; }
 
-    const ofVec3f& getVelocity() const;
+    const ofVec3f& getVelocity() const { return velocity; }
     void setVelocity(const ofVec3f& v);
     
     bool isDynamic() const { return trajectory != NULL; }
@@ -61,6 +61,7 @@ protected:
     friend class GameObject;
     friend class PhysicsWorld;
     friend class PhysicsImpl;
+    friend void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj);
 };
 
 #endif /* defined(__bleepout__PhysicsObject__) */

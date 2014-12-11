@@ -9,10 +9,6 @@
 #include "Player.h"
 #include <ofMain.h>
 
-Player::Player() : GameObject(GAME_OBJECT_PLAYER) {
-}
-
-void Player::output(std::ostream &os) const {
-  os << "Player{id:" << id() << "}";
+Player::Player() : GameObject(GAME_OBJECT_PLAYER), _paddle(NULL), _score(0), _lives(3) {
 }
 

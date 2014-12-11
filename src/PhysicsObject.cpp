@@ -20,6 +20,7 @@ bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b) {
 PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)
 , world(NULL)
+, trajectory(NULL)
 {
     
 }

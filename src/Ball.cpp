@@ -21,19 +21,8 @@ Ball::Ball()
 }
 
 Ball::~Ball() {
-    ofLogVerbose() << "Destroy Ball";
-    delete trajectory;
-}
-
-void Ball::output(std::ostream &os) const {
-    auto pos = getPosition();
-    os << "Ball{id:" << id() << ", pos:" << pos << "}";
-    os << ", player:";
-    if (_player)
-        os << _player->id();
-    else
-        os << "(none)";
-        os << "}";
+  ofLogVerbose() << "Destroy Ball";
+  delete trajectory;
 }
 
 void Ball::bounce() {

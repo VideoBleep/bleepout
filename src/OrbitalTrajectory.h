@@ -10,6 +10,7 @@
 #define __bleepout__OrbitalTrajectory__
 
 #include <ofMain.h>
+#include <iostream>
 
 class OrbitalTrajectory {
 public:
@@ -30,6 +31,8 @@ public:
     
     void reflect(const ofVec3f& planeNormal);
     
+    void output(std::ostream& os) const;
+  
 protected:
     float _r;
     float _squishFactor;

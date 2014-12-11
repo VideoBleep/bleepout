@@ -22,6 +22,7 @@ public:
   
   void setPaddle(Paddle* paddle) { _paddle = paddle; }
   Paddle* paddle() { return _paddle; }
+  const Paddle* paddle() const { return _paddle; }
   
   int score() const { return _score; }
   int adjustScore(int add) {
