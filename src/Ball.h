@@ -21,6 +21,7 @@ public:
   ~Ball() override;
   
   Player* player() { return _player; }
+  const Player* player() const { return _player; }
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;

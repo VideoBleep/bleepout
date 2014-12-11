@@ -10,9 +10,18 @@
 #include <ofMain.h>
 #include <ofxBullet.h>
 
-//std::ostream& operator<<(std::ostream& os, const b2Vec2& vec) {
-//  return os << vec.x << "," << vec.y;
-//}
+void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
+  os << "position:(" << obj.getPosition() << ")"
+  << ", size:(" << obj.getSize() << ")"
+  << ", boundingBox:" << obj.getBoundingBox()
+  << ", velocity:" << obj.getVelocity()
+  << ", collisionShape:" << obj.collisionShape
+  << ", trajectory:";
+  if (obj.trajectory)
+    os << *(obj.trajectory);
+  else
+    os << "(none)";
+}
 
 std::ostream& operator<<(std::ostream& os, const GameObject& obj) {
   obj.output(os);
@@ -26,27 +35,38 @@ static void outputObjectId(std::ostream& os, const GameObject* obj) {
     os << "(none)";
 }
 
+static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
+  os << "id:" << obj.id();
+  if (!obj.alive())
+    os << ", dead";
+}
+
 void Brick::output(std::ostream &os) const {
-//  auto pos = body->GetPosition();
-//  os << "Brick{id:" << id() << ", pos:(" << pos << ")}";
+  os << "Brick{";
+  outputGameObjectFields(os, *this);
+  os << ", value:" << value()
+     << ", ";
+  outputPhysicsObjectFields(os, *this);
+  os << "}";
 }
 
 void Paddle::output(std::ostream &os) const {
-  // this shouldn't be necessary. getPosition should really be marked as const
-  auto pos = const_cast<Paddle*>(this)->getPosition();
-  os << "Paddle{id:" << id()
-     << ", pos:(" << pos << ")"
-     << ", player:";
-  outputObjectId(os, _player);
+  os << "Paddle{";
+  outputGameObjectFields(os, *this);
+  os << ", player:";
+  outputObjectId(os, player());
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
   os << "}";
 }
 
 void Ball::output(std::ostream &os) const {
-//  auto pos = body->GetPosition();
-  os << "Ball{id:" << id()
-//     << ", pos:(" << pos << ")"
-     << ", player:";
-  outputObjectId(os, _player);
+  os << "Ball{";
+  outputGameObjectFields(os, *this);
+  os << ", player:";
+  outputObjectId(os, player());
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
   os << "}";
 }
 
@@ -60,9 +80,12 @@ void Player::output(std::ostream &os) const {
 }
 
 void Wall::output(std::ostream &os) const {
-  os << "Wall{id:" << id();
+  os << "Wall{";
+  outputGameObjectFields(os, *this);
   if (isExit())
     os << ", exit";
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
   os << "}";
 }
 
@@ -110,5 +133,25 @@ void OrbitalTrajectory::output(std::ostream &os) const {
 
 std::ostream& operator<<(std::ostream& os, const OrbitalTrajectory& trajectory) {
   trajectory.output(os);
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const BoundingBox& box) {
+  return os << "BoundingBox{min:" << box.min
+            << ", max:" << box.max << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
+  switch (shape) {
+    case CollisionBox:
+      os << "CollisionBox";
+      break;
+    case CollisionSphere:
+      os << "CollisionSphere";
+      break;
+    default:
+      os << "unknown(" << (int)shape << ")";
+      break;
+  }
   return os;
 }
