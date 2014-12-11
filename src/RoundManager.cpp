@@ -11,6 +11,7 @@
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
 #include "SimpleRenderer.h"
+#include "Logging.h"
 
 RoundController::RoundController(RoundConfig config)
   : _config(config) {
@@ -34,6 +35,8 @@ void RoundController::setup() {
   _spaceController->attachListener(*_logicController);
   
   _renderer.reset(new SimpleRenderer());
+  
+  ofLog(OF_LOG_NOTICE) << _state;
   //...
 }
 
@@ -50,7 +53,7 @@ void RoundController::update() {
 
 void RoundController::keyPressed(int key) {
   if (key == 'l') {
-    dumpToLog();
+    dumpToLog(OF_LOG_NOTICE);
   }
 }
 
@@ -97,8 +100,8 @@ void RoundController::mouseDragged(int x, int y, int button) {
   //...
 }
 
-void RoundController::dumpToLog() {
-  ofLogVerbose() << "--BEGIN round state--";
-  _state.dumpToLog();
-  ofLogVerbose() << "--  END round state--";
+void RoundController::dumpToLog(ofLogLevel level) {
+  ofLog(level) << "--BEGIN round state--";
+  ofLog(level) << _state;
+  ofLog(level) << "--  END round state--";
 }

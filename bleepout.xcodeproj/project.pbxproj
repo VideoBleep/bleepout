@@ -34,6 +34,7 @@
 		32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A941A3004DE00A2EA9F /* GameObject.cpp */; };
 		32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */; };
 		32B33AA01A3137D800A2EA9F /* GameEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */; };
+		32DDDA6E1A3936D4005A5681 /* Logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32DDDA6C1A3936D4005A5681 /* Logging.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
 		32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */; };
@@ -180,6 +181,8 @@
 		32B33A9C1A301C3200A2EA9F /* SimpleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRenderer.h; sourceTree = "<group>"; };
 		32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEvents.cpp; sourceTree = "<group>"; };
 		32B33A9F1A3137D800A2EA9F /* GameEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEvents.h; sourceTree = "<group>"; };
+		32DDDA6C1A3936D4005A5681 /* Logging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logging.cpp; sourceTree = "<group>"; };
+		32DDDA6D1A3936D4005A5681 /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		32F95B431A2EB2CF008913CC /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		32F95B451A2EB2CF008913CC /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
@@ -854,6 +857,8 @@
 				32FA9F931A2EB1FF00F420D4 /* BleepoutConfig.h */,
 				32FA9F921A2EB1FF00F420D4 /* BleepoutConfig.cpp */,
 				32B33A8B1A2FF9D100A2EA9F /* Common.h */,
+				32DDDA6C1A3936D4005A5681 /* Logging.cpp */,
+				32DDDA6D1A3936D4005A5681 /* Logging.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1004,6 +1009,7 @@
 				DA846513DA696B1E8921BBC3 /* b2CircleShape.cpp in Sources */,
 				6DEA36329DE746459C62983F /* b2EdgeShape.cpp in Sources */,
 				32FA9F8E1A2EA80900F420D4 /* RoundManager.cpp in Sources */,
+				32DDDA6E1A3936D4005A5681 /* Logging.cpp in Sources */,
 				981EA7C2357295AE8501F4C6 /* b2PolygonShape.cpp in Sources */,
 				BB885F5F39C8DA070D80EF02 /* b2BlockAllocator.cpp in Sources */,
 				89F31F234274A62F3501E2EE /* b2Draw.cpp in Sources */,
