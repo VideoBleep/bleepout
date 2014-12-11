@@ -9,27 +9,30 @@
 #include "OrbitalTrajectory.h"
 
 
-OrbitalTrajectory::OrbitalTrajectory(float radius, ofVec3f u, ofVec3f v, float speed) {
-    _u = u.normalized();
-    _v = v.normalized();
-    _w = _u.getCrossed(v.normalized()).getCrossed(_u).normalized();
+OrbitalTrajectory::OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed) {
     _speed = speed;
-    _t = 0;
     _r = radius;
-    _position = _u * radius;
-    _squishFactor = 1.0;
+    calculateFromVectors(start, through);
+}
+
+void OrbitalTrajectory::calculateFromVectors(ofVec3f start, ofVec3f through) {
+    _u = start.normalized();
+    _v = through.normalized();
+    _w = _u.getCrossed(_v).getCrossed(_u).normalized();
+    _t = 0;
+    _position = _u * _r;
 }
     
 void OrbitalTrajectory::tick() {
     _t += _speed;
     _position = _r * (_u * cos(_t) + _w * sin(_t));
-    _position.y *= _squishFactor;
 }
 
 void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
-    _u = getPosition().normalized();
-    _w.y *= -1;
-    _t = 0;
-    //_u.normalize();
-    //_w.normalize();
+    ofVec3f orbitNormal = _u.crossed(_v);
+    orbitNormal.y *= -1;
+    ofVec3f start = getPosition();
+    ofVec3f through = _v.crossed(orbitNormal);
+    _speed *= -1;
+    calculateFromVectors(start, through);
 }

@@ -122,7 +122,6 @@ std::ostream& operator<<(std::ostream& os, const RoundState& state) {
 
 void OrbitalTrajectory::output(std::ostream &os) const {
   os << "OrbitalTrajectory{radius:" << getRadius()
-     << ", squish:" << _squishFactor
      << ", speed:" << getSpeed()
      << ", pos:" << getPosition()
      << ", u:" << _u

@@ -15,7 +15,9 @@
 class OrbitalTrajectory {
 public:
     OrbitalTrajectory();
-    OrbitalTrajectory(float radius, ofVec3f u, ofVec3f v, float speed = 0.02);
+    OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed = 0.02);
+    
+    void calculateFromVectors(ofVec3f start, ofVec3f through);
     
     void tick();
     
@@ -24,8 +26,6 @@ public:
     
     float getSpeed() const { return _speed; }
     void setSpeed(float s) { _speed = s; }
-    
-    void setSquishFactor(float s) { _squishFactor = s; }
     
     const ofVec3f& getPosition() const { return _position; }
     
@@ -39,7 +39,6 @@ public:
     
 protected:
     float _r;
-    float _squishFactor;
     
     ofVec3f _u;
     ofVec3f _v;

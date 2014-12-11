@@ -66,10 +66,9 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
             ofCircle(0, 0, 0, r);
             ofPopMatrix();
             
-            ofLine(ofVec3f::zero(), t->u() * r);
-            ofLine(ofVec3f::zero(), t->v() * r);
             ofFill();
-            ofDrawArrow(ofVec3f::zero(), t->w() * r * 0.25, 3);
+            ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
+            ofLine(ofVec3f::zero(), t->v() * r);
         }
     }
     
