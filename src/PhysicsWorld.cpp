@@ -6,9 +6,14 @@
 //
 //
 
+#define USE_BULLET_COLLISIONS 0
+
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
 #include "OrbitalTrajectory.h"
+
+#if USE_BULLET_COLLISIONS
+
 #include <ofxBullet.h>
 
 class PhysicsImpl {
@@ -148,6 +153,80 @@ public:
     }
     
 };
+
+#else
+
+class PhysicsImpl {
+public:
+    std::set<PhysicsObject*> objects;
+    
+    PhysicsImpl() {
+    }
+    
+    void addObject(PhysicsObject* obj) {
+        objects.insert(obj);
+    }
+    
+    void updateCollisionObject(PhysicsObject* obj) {
+    }
+    
+    void removeObject(PhysicsObject* obj) {
+        auto it = objects.find(obj);
+        if (it != objects.end()) {
+            objects.erase(it);
+        }
+    }
+    
+    ~PhysicsImpl() {
+    }
+    
+    void update() {
+        for (auto &obj : objects) {
+            if (obj->isDynamic()) {
+                obj->trajectory->tick();
+                obj->setPosition(obj->trajectory->getPosition());
+            }
+        }
+        performCollisionDetection();
+    }
+    
+    void drawDebug() {
+        for (auto const &obj : objects) {
+            ofSetColor(255, 0, 0);
+            BoundingBox bbox = obj->getBoundingBox();
+            ofRect(bbox.center.x, bbox.center.y, bbox.halfwidths.x * 2, bbox.halfwidths.y * 2);
+        }
+    }
+    
+    void performCollisionDetection() {
+        
+        // inefficient O(n^2) AABB for now
+        // replace with sweep-and-prune or quadtrees or whatever if Bullet never works right
+        auto iter1 = objects.begin();
+        while (iter1 != objects.end()) {
+            auto iter2 = iter1;
+            ++iter2;
+            while (iter2 != objects.end()) {
+                auto obj1 = *iter1;
+                auto obj2 = *iter2;
+                if (BoundingBox::testCollision(obj1->getBoundingBox(), obj2->getBoundingBox())) {
+                    static CollisionArgs args;
+                    args.a = obj1->thisGameObject;
+                    args.b = obj2->thisGameObject;
+                    ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                }
+                ++iter2;
+            }
+            ++iter1;
+        }
+    }
+    
+};
+
+
+
+
+#endif
 
 void PhysicsWorld::setup() {
     _impl.reset(new PhysicsImpl());

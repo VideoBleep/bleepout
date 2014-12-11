@@ -36,7 +36,7 @@ SpaceController::SpaceController(RoundState& state, RoundConfig & config)
 
 void SpaceController::setup() {
   _world.setup();
-  //ofAddListener(_world.COLLISION_EVENT, this, &SpaceController::onCollision);
+  ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
   
   int numPlayers = _state.players().size();
   for (int i = 0; i < numPlayers; i++) {
@@ -93,21 +93,13 @@ void SpaceController::drawDebug() {
     _world.drawDebug();
 }
 
-/*
-void SpaceController::onCollision(ofxBulletCollisionData &cdata) {
-    if (cdata.userData1 == NULL || cdata.userData2 == NULL)
-        return;
-    
-    GameObject* obj1 = reinterpret_cast<GameObject*>(cdata.userData1);
-    GameObject* obj2 = reinterpret_cast<GameObject*>(cdata.userData2);
-    
-    if (obj1->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(obj1), obj2);
-    } else if (obj2->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(obj2), obj1);
+void SpaceController::onCollision(CollisionArgs &cdata) {
+    if (cdata.a->type() == GAME_OBJECT_BALL) {
+        ballHitObject(static_cast<Ball*>(cdata.a), cdata.b);
+    } else if (cdata.b->type() == GAME_OBJECT_BALL) {
+        ballHitObject(static_cast<Ball*>(cdata.b), cdata.a);
     }
 }
-*/
 
 void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
   switch (obj->type()) {
@@ -115,6 +107,7 @@ void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
       notifyBallHitBrick(ball, static_cast<Brick*>(obj));
       break;
     case GAME_OBJECT_PADDLE:
+      ball->bounce(); // maybe not the best method/place
       notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
       break;
     case GAME_OBJECT_BALL:

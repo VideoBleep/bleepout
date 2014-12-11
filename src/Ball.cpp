@@ -17,6 +17,7 @@ Ball::Ball()
 {
     ofLogVerbose() << "Create Ball";
     trajectory = new OrbitalTrajectory(1000.0, ofVec3f(0, 1, 0), ofVec3f(-1, 0, 0), 0.04);
+    thisGameObject = this;
 }
 
 Ball::~Ball() {
@@ -35,17 +36,6 @@ void Ball::output(std::ostream &os) const {
         os << "}";
 }
 
-/*
-void Ball::updatePositionFromTrajectory() {
-    //trajectory.tick();
-    //setPosition(trajectory->getPosition());
-    
-    ofVec3f pos = getPosition();
-    pos.y += trajectory->getSpeed() * 10;
-    setPosition(pos);
-}
-
 void Ball::bounce() {
-    trajectory->setSpeed(-1 * trajectory->getSpeed());
+    trajectory->reflect(ofVec3f(1, -1, 1));
 }
-*/

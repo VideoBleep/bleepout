@@ -13,10 +13,12 @@
 
 class OrbitalTrajectory;
 class PhysicsWorld;
+class GameObject;
 
 struct BoundingBox {
-    ofVec3f min;
-    ofVec3f max;
+    ofVec3f center;
+    ofVec3f halfwidths;
+    static bool testCollision(const BoundingBox& a, const BoundingBox& b);
 };
 
 enum CollisionShape {
@@ -54,7 +56,9 @@ protected:
 
     OrbitalTrajectory* trajectory;
     PhysicsWorld* world;
+    GameObject* thisGameObject;
     
+    friend class GameObject;
     friend class PhysicsWorld;
     friend class PhysicsImpl;
 };

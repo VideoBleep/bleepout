@@ -29,6 +29,8 @@ private:
   void addBall(ofVec3f center);
   void addPaddle(ofVec3f center, Player* player);
   
+  void onCollision(CollisionArgs &cdata);
+    
   void ballHitObject(Ball* ball, GameObject* obj);
 
 private:

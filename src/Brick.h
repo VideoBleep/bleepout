@@ -14,7 +14,7 @@
 
 class Brick : public GameObject, public PhysicsObject {
 public:
-  Brick() : GameObject(GAME_OBJECT_BRICK), PhysicsObject(CollisionBox), _value(1) {}
+    Brick();
   
   int value() const { return _value; }
   void setValue(int value) { _value = value; }

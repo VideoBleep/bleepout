@@ -24,6 +24,7 @@ public:
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;
+  void bounce();
 
   static const char* typeName() { return "ball"; }
 private:

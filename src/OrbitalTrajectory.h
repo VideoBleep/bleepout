@@ -28,6 +28,8 @@ public:
     
     ofVec3f getPosition() const { return _position; }
     
+    void reflect(const ofVec3f& planeNormal);
+    
 protected:
     float _r;
     float _squishFactor;

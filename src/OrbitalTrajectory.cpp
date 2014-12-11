@@ -24,3 +24,11 @@ void OrbitalTrajectory::tick() {
     _position = _r * (_u * cos(_t) + _w * sin(_t));
     _position.y *= _squishFactor;
 }
+
+void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
+    _u = getPosition().normalized();
+    _w.y *= -1;
+    _t = 0;
+    //_u.normalize();
+    //_w.normalize();
+}
