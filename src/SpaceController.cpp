@@ -9,26 +9,12 @@
 #include "SpaceController.h"
 
 namespace {
-  
-  static ofVec2f getPaddleStartPosition(int i, int numPlayers, RoundConfig& config) {
     
-    auto HEIGHT = ofGetHeight();
-    ofVec2f pos;
-    pos.y = ofGetHeight() - (config.brickSize().y);
-    float halfWidth = config.brickSize().x;
-    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    return pos;
-  }
-  static ofVec2f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
-    ofVec2f pos;
-    pos.y = ofGetHeight() * 2;
-    float halfWidth = config.brickSize().x;
-    pos.x = ofMap((float)i, 0.0f, (float)numPlayers, halfWidth, ofGetWidth() - halfWidth);
-    return pos;
+  static ofVec3f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
+    return ofVec3f(0, config.domeRadius() + config.domeMargin());
   }
   
 }
-
 
 SpaceController::SpaceController(RoundState& state, RoundConfig & config)
 : _state(state), _config(config) {
@@ -41,8 +27,7 @@ void SpaceController::setup() {
   int numPlayers = _state.players().size();
   for (int i = 0; i < numPlayers; i++) {
     ofPtr<Player> player = _state.players()[i];
-    ofVec2f paddleCenter = getPaddleStartPosition(i, numPlayers, _config);
-    addPaddle(paddleCenter, player.get());
+    addPaddle(2 * PI * i / (numPlayers * 1.0), player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
   }
@@ -74,21 +59,17 @@ void SpaceController::addBall(ofVec3f center) {
     _state.balls().push_back(ball);;
 }
 
-void SpaceController::addPaddle(ofVec3f center, Player* player) {
+void SpaceController::addPaddle(float theta, Player* player) {
     ofPtr<Paddle> paddle(new Paddle(player));
     player->setPaddle(paddle.get());
     _world.addObject(paddle.get());
-    paddle->setPosition(center);
+    paddle->setPositionCylindrical(theta, _config.domeRadius() + _config.domeMargin(), _config.domeMargin());
     paddle->setSize(_config.paddleSize());
     _state.paddles().push_back(paddle);
 }
 
 void SpaceController::update() {
     _world.update();
-}
-
-void SpaceController::drawDebug() {
-    _world.drawDebug();
 }
 
 void SpaceController::onCollision(CollisionArgs &cdata) {

@@ -30,6 +30,29 @@ void PhysicsObject::setPosition(const ofVec3f& newPosition) {
     updateBoundingBox();
 }
 
+void PhysicsObject::setPositionCylindrical(float theta, float r, float z) {
+    position.x = r * cos(theta);
+    position.y = z;
+    position.z = r * sin(theta);
+    rotation = 2 * PI - theta;
+    updateBoundingBox();
+}
+
+void PhysicsObject::setPositionSpherical(float theta, float phi, float r) {
+    float r_sin_theta = r * sin(theta);
+    position.x = r_sin_theta * cos(phi),
+    position.y = r_sin_theta * sin(phi),
+    position.z = r * cos(theta);
+    rotation = 2 * PI - theta;
+    updateBoundingBox();
+}
+
+
+void PhysicsObject::setRotation(float theta) {
+    rotation = theta;
+    updateBoundingBox();
+}
+
 void PhysicsObject::setSize(const ofVec3f& newSize) {
     size = newSize;
     updateBoundingBox();
@@ -41,7 +64,16 @@ void PhysicsObject::setVelocity(const ofVec3f& v) {
 
 void PhysicsObject::updateBoundingBox() {
     boundingBox.center = position;
-    boundingBox.halfwidths = size / 2.0;
+    
+    float c = cos(rotation);
+    float s = sin(rotation);
+    float hx = size.x / 2.0;
+    float hz = size.z / 2.0;
+        
+    boundingBox.halfwidths.x = max(abs(hx * c + hz * s), abs(hx * c - hz * s));
+    boundingBox.halfwidths.y = size.y / 2.0;
+    boundingBox.halfwidths.z = max(abs(hx * s - hz * c), abs(hx * s + hz * c));
+    
     if (world) {
         world->updateCollisionObject(this);
     }

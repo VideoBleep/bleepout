@@ -33,6 +33,12 @@ public:
     const ofVec3f& getPosition() const { return position; }
     void setPosition(const ofVec3f& newPosition);
     
+    float getRotation() const { return rotation; }
+    void setRotation(float theta);
+    
+    void setPositionCylindrical(float theta, float r, float z);
+    void setPositionSpherical(float theta, float phi, float r);
+    
     const ofVec3f& getSize() const { return size; }
     void setSize(const ofVec3f& newSize);
     
@@ -48,6 +54,7 @@ protected:
     void updateBoundingBox();
     
     ofVec3f position;
+    float rotation;
     ofVec3f size;
     BoundingBox boundingBox;
     

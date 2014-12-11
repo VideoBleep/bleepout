@@ -15,7 +15,7 @@
 class SimpleRenderer : public RendererBase {
 public:
   virtual ~SimpleRenderer() {}
-  virtual void draw(RoundState& state) override;
+  virtual void draw(RoundState& state, RoundConfig& config) override;
 protected:
   virtual void drawBrick(RoundState& state, Brick& brick) override;
   virtual void drawPaddle(RoundState& state, Paddle& paddle) override;

@@ -15,7 +15,7 @@ void BleepoutApp::setup() {
   // load config....
   ofSetFrameRate(_config.fps());
   ofSetLogLevel(_config.logLevel());
-  ofDisableAntiAliasing();
+  //ofDisableAntiAliasing();
   ofSetVerticalSync(_config.vsync());
 
   RoundConfig roundConfig(_config);
@@ -47,11 +47,24 @@ void BleepoutApp::keyPressed(int key) {
   }
 }
 
+void BleepoutApp::mousePressed(int x, int y, int button) {
+    if (_roundController) {
+        _roundController->mousePressed(x, y, button);
+    }
+}
+
 void BleepoutApp::mouseMoved(int x, int y) {
   if (_roundController) {
     _roundController->mouseMoved(x, y);
   }
 }
+
+void BleepoutApp::mouseReleased(int x, int y, int button) {
+    if (_roundController) {
+        _roundController->mouseReleased(x, y, button);
+    }
+}
+
 void BleepoutApp::mouseDragged(int x, int y, int button) {
   if (_roundController) {
     _roundController->mouseDragged(x, y, button);

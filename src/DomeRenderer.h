@@ -11,16 +11,24 @@
 
 #include "RendererBase.h"
 #include "RoundManager.h"
+#include "TurntableCam.h"
 
 class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
-    virtual void init() override;
-    virtual void draw(RoundState& round) override;
+    virtual void setup() override;
+    virtual void draw(RoundState& round, RoundConfig& config) override;
+    
+    virtual void mousePressed(int x, int y, int button);
+    virtual void mouseReleased(int x, int y, int button);
+    virtual void mouseDragged(int x, int y, int button);
+
 protected:
     virtual void drawBrick(RoundState& round, Brick& brick) override;
     virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
     virtual void drawBall(RoundState& round, Ball& ball) override;
+    
+    ofxTurntableCam _cam;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

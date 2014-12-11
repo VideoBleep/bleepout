@@ -222,13 +222,15 @@ static void writeVec3f(ofxXmlSettings& settings, std::string prefix, ofVec3f val
 }
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
-: _brickSize(100.0f, 20.0f, 10.0f),
-_brickGap(5.0f),
-_paddleSize(150.0f, 25.0f, 10.0f),
-_ballRadius(10.0f),
+: _brickSize(20.0f, 5.0f, 5.0f),
+_brickGap(1.0f),
+_paddleSize(20.0f, 8.0f, 40.0f),
+_ballRadius(8.0f),
 _ballPhysics(0.0f, 1.0f, 0.0f),
 _paddlePhysics(0.0f, 0.0f, 0.9f),
-_ballInitialVelocity(0.0f, 300.5f, 0.0f),
+_ballInitialVelocity(0.0f, 30.5f, 0.0f),
+_domeRadius(150.0f),
+_domeMargin(20.0f),
 _appConfig(appConfig) { }
 
 void RoundConfig::loadFile(const std::string &path) {

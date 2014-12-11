@@ -8,9 +8,9 @@
 
 #include "SimpleRenderer.h"
 
-void SimpleRenderer::draw(RoundState &state) {
+void SimpleRenderer::draw(RoundState &state, RoundConfig& config) {
   //ofBackground(255, 255, 255);
-  RendererBase::draw(state);
+  RendererBase::draw(state, config);
 }
 
 void SimpleRenderer::drawBrick(RoundState& state, Brick &brick) {

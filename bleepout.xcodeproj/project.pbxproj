@@ -27,6 +27,7 @@
 		32FA9F941A2EB1FF00F420D4 /* BleepoutConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FA9F921A2EB1FF00F420D4 /* BleepoutConfig.cpp */; };
 		5B0DD8DD1A38484A00E8BBD1 /* PhysicsObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8D91A38484A00E8BBD1 /* PhysicsObject.cpp */; };
 		5B0DD8DE1A38484A00E8BBD1 /* PhysicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8DC1A38484A00E8BBD1 /* PhysicsWorld.cpp */; };
+		5B0DD8E31A3963C900E8BBD1 /* TurntableCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */; };
 		5B0E83411A369EC30091AB99 /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F01A369EC20091AB99 /* ofxBulletJoint.cpp */; };
 		5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F61A369EC20091AB99 /* ofxBulletWorldRigid.cpp */; };
 		5B0E83431A369EC30091AB99 /* GLDebugDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F91A369EC20091AB99 /* GLDebugDrawer.cpp */; };
@@ -146,6 +147,8 @@
 		5B0DD8DA1A38484A00E8BBD1 /* PhysicsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsObject.h; sourceTree = "<group>"; };
 		5B0DD8DB1A38484A00E8BBD1 /* PhysicsWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsWorld.h; sourceTree = "<group>"; };
 		5B0DD8DC1A38484A00E8BBD1 /* PhysicsWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsWorld.cpp; sourceTree = "<group>"; };
+		5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TurntableCam.cpp; sourceTree = "<group>"; };
+		5B0DD8E21A3963C900E8BBD1 /* TurntableCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableCam.h; sourceTree = "<group>"; };
 		5B0E80EC1A369EC20091AB99 /* ofxBulletCollisionData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletCollisionData.h; sourceTree = "<group>"; };
 		5B0E80ED1A369EC20091AB99 /* ofxBulletMousePickEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletMousePickEvent.h; sourceTree = "<group>"; };
 		5B0E80EE1A369EC20091AB99 /* ofxBulletRaycastData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletRaycastData.h; sourceTree = "<group>"; };
@@ -362,6 +365,8 @@
 		32B33A901A2FFCCC00A2EA9F /* rendering */ = {
 			isa = PBXGroup;
 			children = (
+				5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */,
+				5B0DD8E21A3963C900E8BBD1 /* TurntableCam.h */,
 				32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */,
 				32B33A921A2FFCF200A2EA9F /* RendererBase.h */,
 				32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */,
@@ -756,6 +761,7 @@
 				32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */,
 				66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */,
 				5B0E834C1A369EC30091AB99 /* ofxBulletStaticPlane.cpp in Sources */,
+				5B0DD8E31A3963C900E8BBD1 /* TurntableCam.cpp in Sources */,
 				E2564CF7DDB3713772BB682E /* ofxUDPManager.cpp in Sources */,
 				32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */,
 				32FA9F911A2EA84100F420D4 /* BleepoutApp.cpp in Sources */,

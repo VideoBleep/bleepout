@@ -14,14 +14,20 @@
 #include "Brick.h"
 #include "Paddle.h"
 #include "Ball.h"
+#include "BleepoutConfig.h"
 
 class RendererBase {
 public:
   virtual ~RendererBase() {}
     
-  virtual void init() {}
+  virtual void setup() {}
 
-  virtual void draw(RoundState& state);
+  virtual void draw(RoundState& state, RoundConfig& config);
+
+  virtual void mousePressed(int x, int y, int button) {}
+  virtual void mouseReleased(int x, int y, int button) {}
+  virtual void mouseDragged(int x, int y, int button) {}
+  virtual void mouseMoved(int x, int y) {}
 
 protected:
   virtual void drawBrick(RoundState& state, Brick& brick) = 0;

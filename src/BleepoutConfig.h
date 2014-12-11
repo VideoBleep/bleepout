@@ -58,6 +58,9 @@ public:
   PhysicsOptions ballPhysics() const { return _ballPhysics; }
   PhysicsOptions paddlePhysics() const { return _paddlePhysics; }
   const ofVec3f& ballInitialVelocity() const { return _ballInitialVelocity; }
+    
+  float domeRadius() const { return _domeRadius; }
+  float domeMargin() const { return _domeMargin; }
   
   const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
@@ -69,6 +72,9 @@ private:
   PhysicsOptions _paddlePhysics;
   float _ballRadius;
   ofVec3f _ballInitialVelocity;
+    
+  float _domeRadius;
+  float _domeMargin;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

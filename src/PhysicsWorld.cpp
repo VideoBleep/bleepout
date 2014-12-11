@@ -190,14 +190,6 @@ public:
         performCollisionDetection();
     }
     
-    void drawDebug() {
-        for (auto const &obj : objects) {
-            ofSetColor(255, 0, 0);
-            BoundingBox bbox = obj->getBoundingBox();
-            ofRect(bbox.center.x, bbox.center.y, bbox.halfwidths.x * 2, bbox.halfwidths.y * 2);
-        }
-    }
-    
     void performCollisionDetection() {
         
         // inefficient O(n^2) AABB for now
@@ -248,12 +240,6 @@ void PhysicsWorld::removeObject(PhysicsObject* obj) {
 void PhysicsWorld::update() {
     if (_impl.get()) {
         _impl->update();
-    }
-}
-
-void PhysicsWorld::drawDebug() {
-    if (_impl.get()) {
-        _impl->drawDebug();
     }
 }
 
