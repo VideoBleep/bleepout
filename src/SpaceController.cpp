@@ -46,8 +46,6 @@ void SpaceController::setup() {
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
   }
-  
-  _state.dumpToLog();
   //...
 
 }

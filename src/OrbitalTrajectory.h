@@ -10,6 +10,7 @@
 #define __bleepout__OrbitalTrajectory__
 
 #include <ofMain.h>
+#include <iostream>
 
 class OrbitalTrajectory {
 public:
@@ -27,7 +28,9 @@ public:
     void setSquishFactor(float s) { _squishFactor = s; }
     
     ofVec3f getPosition() const { return _position; }
-    
+  
+    void output(std::ostream& os) const;
+  
 protected:
     float _r;
     float _squishFactor;

@@ -23,7 +23,7 @@ template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {
   os << label << ": ";
   if (obj)
-    os << *obj;
+    obj->output(os);
   else
     os << "(null)";
 }

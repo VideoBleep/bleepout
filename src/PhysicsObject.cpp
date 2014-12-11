@@ -13,6 +13,7 @@
 PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)
 , world(NULL)
+, trajectory(NULL)
 {
     
 }

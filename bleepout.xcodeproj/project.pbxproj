@@ -12,6 +12,7 @@
 		32324EB41A2EA04F00B51FCD /* Paddle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32324EB21A2EA04F00B51FCD /* Paddle.cpp */; };
 		32324EB71A2EA08000B51FCD /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32324EB51A2EA08000B51FCD /* Ball.cpp */; };
 		32324EBA1A2EA32100B51FCD /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32324EB81A2EA32100B51FCD /* Player.cpp */; };
+		32624F741A39446B00B4B62D /* Logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32624F721A39446B00B4B62D /* Logging.cpp */; };
 		32B33A931A2FFCF200A2EA9F /* RendererBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */; };
 		32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A941A3004DE00A2EA9F /* GameObject.cpp */; };
 		32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */; };
@@ -111,6 +112,8 @@
 		32324EB61A2EA08000B51FCD /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
 		32324EB81A2EA32100B51FCD /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		32324EB91A2EA32100B51FCD /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		32624F721A39446B00B4B62D /* Logging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logging.cpp; sourceTree = "<group>"; };
+		32624F731A39446B00B4B62D /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
 		32B33A8B1A2FF9D100A2EA9F /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererBase.cpp; sourceTree = "<group>"; };
 		32B33A921A2FFCF200A2EA9F /* RendererBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererBase.h; sourceTree = "<group>"; };
@@ -640,6 +643,8 @@
 				32B33A901A2FFCCC00A2EA9F /* rendering */,
 				32FA9F931A2EB1FF00F420D4 /* BleepoutConfig.h */,
 				32FA9F921A2EB1FF00F420D4 /* BleepoutConfig.cpp */,
+				32624F721A39446B00B4B62D /* Logging.cpp */,
+				32624F731A39446B00B4B62D /* Logging.h */,
 				32B33A8B1A2FF9D100A2EA9F /* Common.h */,
 			);
 			path = src;
@@ -787,6 +792,7 @@
 				6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */,
 				F3AD9E2A2E56B6AF32A0BDAF /* Server.cpp in Sources */,
 				32324EB41A2EA04F00B51FCD /* Paddle.cpp in Sources */,
+				32624F741A39446B00B4B62D /* Logging.cpp in Sources */,
 				5B0E841A1A37A7430091AB99 /* GameState.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

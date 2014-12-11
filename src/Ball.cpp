@@ -15,24 +15,13 @@ Ball::Ball()
 , _player(NULL)
 , PhysicsObject(CollisionSphere)
 {
-    ofLogVerbose() << "Create Ball";
-    trajectory = new OrbitalTrajectory(1000.0, ofVec3f(0, 1, 0), ofVec3f(-1, 0, 0), 0.04);
+  ofLogVerbose() << "Create Ball";
+  trajectory = new OrbitalTrajectory(1000.0, ofVec3f(0, 1, 0), ofVec3f(-1, 0, 0), 0.04);
 }
 
 Ball::~Ball() {
-    ofLogVerbose() << "Destroy Ball";
-    delete trajectory;
-}
-
-void Ball::output(std::ostream &os) const {
-    auto pos = getPosition();
-    os << "Ball{id:" << id() << ", pos:" << pos << "}";
-    os << ", player:";
-    if (_player)
-        os << _player->id();
-    else
-        os << "(none)";
-        os << "}";
+  ofLogVerbose() << "Destroy Ball";
+  delete trajectory;
 }
 
 /*

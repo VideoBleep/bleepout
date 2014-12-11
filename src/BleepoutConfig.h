@@ -13,10 +13,14 @@
 #include <string>
 
 class BleepoutConfig {
-public:  BleepoutConfig();
+public:
+  BleepoutConfig();
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
   
   int fps() const { return _fps; }
   ofLogLevel logLevel() const { return _logLevel; }
@@ -32,6 +36,7 @@ struct PhysicsOptions {
   float bounce;
   float friction;
 
+  PhysicsOptions() {}
   PhysicsOptions(float d, float b, float f)
   : density(d), bounce(b), friction(f){}
 };
@@ -42,6 +47,9 @@ public:
   
   void loadFile(const std::string& path);
   void saveFile(const std::string& path) const;
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
   
   const ofVec3f& brickSize() const { return _brickSize; }
   float brickGap() const { return _brickGap; }
@@ -54,13 +62,13 @@ public:
   const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
   const BleepoutConfig& _appConfig;
-  ofVec2f _brickSize;
+  ofVec3f _brickSize;
   float _brickGap;
-  ofVec2f _paddleSize;
+  ofVec3f _paddleSize;
   PhysicsOptions _ballPhysics;
   PhysicsOptions _paddlePhysics;
   float _ballRadius;
-  ofVec2f _ballInitialVelocity;
+  ofVec3f _ballInitialVelocity;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

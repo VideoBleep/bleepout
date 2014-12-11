@@ -40,6 +40,4 @@ private:
   bool _alive;
 };
 
-std::ostream& operator<<(std::ostream& os, const GameObject& obj);
-
 #endif /* defined(__bleepout__GameObject__) */

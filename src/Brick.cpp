@@ -8,8 +8,3 @@
 
 #include "Brick.h"
 
-
-void Brick::output(std::ostream &os) const {
-  auto pos = getPosition();
-  os << "Brick{id:" << id() << ", pos:" << pos << "}";
-}

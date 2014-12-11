@@ -18,6 +18,8 @@ public:
   
   bool isExit() const { return _isExit; }
   
+  void output(std::ostream& os) const override;
+  
   static const char* typeName() { return "wall"; }
 private:
   bool _isExit;
