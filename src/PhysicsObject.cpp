@@ -26,25 +26,25 @@ PhysicsObject::PhysicsObject(CollisionShape shape)
 }
 
 const ofVec3f& PhysicsObject::getPosition() const {
-    if (trajectory) {
+    if (isDynamic()) {
         return trajectory->getPosition();
     } else {
-        return position;
+        return staticPosition;
     }
 }
 
 void PhysicsObject::setPosition(const ofVec3f& newPosition) {
-    if (trajectory) {
+    if (isDynamic()) {
         trajectory->setPosition(newPosition);
     } else {
-        position = newPosition;
+        staticPosition = newPosition;
     }
     updateBoundingBox();
 }
 
-void PhysicsObject::setPositionCylindrical(float r, float theta, float z) {
-    rotation = 2 * PI - theta;
-    setPosition(cylindricalToCartesian(r, theta, z));
+void PhysicsObject::setPositionCylindrical(float r, float phi, float z) {
+    rotation = 2 * PI - phi;
+    setPosition(cylindricalToCartesian(r, phi, z));
 }
 
 void PhysicsObject::setPositionSpherical(float r, float theta, float phi) {
@@ -52,8 +52,8 @@ void PhysicsObject::setPositionSpherical(float r, float theta, float phi) {
     setPosition(sphericalToCartesian(r, theta, phi));
 }
 
-void PhysicsObject::setRotation(float theta) {
-    rotation = theta;
+void PhysicsObject::setRotation(float phi) {
+    rotation = phi;
     updateBoundingBox();
 }
 
@@ -67,7 +67,7 @@ void PhysicsObject::setVelocity(const ofVec3f& v) {
 }
 
 void PhysicsObject::tick() {
-    if (trajectory) {
+    if (isDynamic()) {
         trajectory->tick();
         updateBoundingBox();
     }
@@ -76,15 +76,18 @@ void PhysicsObject::tick() {
 void PhysicsObject::updateBoundingBox() {
     boundingBox.center = getPosition();
     
-    float c = cos(rotation);
-    float s = sin(rotation);
-    float hx = size.x / 2.0;
-    float hz = size.z / 2.0;
+    if (rotation != 0 && collisionShape != CollisionSphere) {
+        float c = cos(rotation);
+        float s = sin(rotation);
+        float hx = size.x / 2.0;
+        float hz = size.z / 2.0;
+        boundingBox.halfwidths.x = max(abs(hx * c + hz * s), abs(hx * c - hz * s));
+        boundingBox.halfwidths.y = size.y / 2.0;
+        boundingBox.halfwidths.z = max(abs(hx * s - hz * c), abs(hx * s + hz * c));
+    } else {
+        boundingBox.halfwidths = size / 2.0;
+    }
         
-    boundingBox.halfwidths.x = max(abs(hx * c + hz * s), abs(hx * c - hz * s));
-    boundingBox.halfwidths.y = size.y / 2.0;
-    boundingBox.halfwidths.z = max(abs(hx * s - hz * c), abs(hx * s + hz * c));
-    
     if (world) {
         world->updateCollisionObject(this);
     }

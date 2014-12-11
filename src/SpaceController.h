@@ -27,7 +27,7 @@ private:
   
   void addBrick(ofVec3f center);
   void addBall(ofVec3f center);
-  void addPaddle(float theta, Player* player);
+  void addPaddle(float heading, Player* player);
   
   void onCollision(CollisionArgs &cdata);
     

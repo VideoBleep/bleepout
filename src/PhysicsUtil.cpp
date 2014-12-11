@@ -9,11 +9,11 @@
 #include "PhysicsUtil.h"
 
 
-ofVec3f cylindricalToCartesian(float r, float theta, float z) {
+ofVec3f cylindricalToCartesian(float r, float phi, float z) {
     ofVec3f p;
-    p.x = r * cos(theta);
+    p.x = r * cos(phi);
     p.y = z;
-    p.z = r * sin(theta);
+    p.z = r * sin(phi);
     return p;
 }
 
