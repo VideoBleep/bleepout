@@ -11,6 +11,7 @@
 
 OrbitalTrajectory::OrbitalTrajectory(float radius, ofVec3f u, ofVec3f v, float speed) {
     _u = u.normalized();
+    _v = v.normalized();
     _w = _u.getCrossed(v.normalized()).getCrossed(_u).normalized();
     _speed = speed;
     _t = 0;

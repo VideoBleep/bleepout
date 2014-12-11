@@ -10,8 +10,8 @@
 #define __bleepout__PhysicsObject__
 
 #include <ofMain.h>
+#include <OrbitalTrajectory.h>
 
-class OrbitalTrajectory;
 class PhysicsWorld;
 class GameObject;
 
@@ -49,6 +49,7 @@ public:
     
     bool isDynamic() const { return trajectory != NULL; }
     
+    const OrbitalTrajectory* getTrajectory() { return trajectory; }
     
 protected:
     void updateBoundingBox();

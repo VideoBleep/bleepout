@@ -27,17 +27,22 @@ public:
     
     void setSquishFactor(float s) { _squishFactor = s; }
     
-    ofVec3f getPosition() const { return _position; }
+    const ofVec3f& getPosition() const { return _position; }
     
     void reflect(const ofVec3f& planeNormal);
     
     void output(std::ostream& os) const;
-  
+
+    const ofVec3f& u() const { return _u; }
+    const ofVec3f& v() const { return _v; }
+    const ofVec3f& w() const { return _w; }
+    
 protected:
     float _r;
     float _squishFactor;
     
     ofVec3f _u;
+    ofVec3f _v;
     ofVec3f _w;
     float _t;
     float _speed;

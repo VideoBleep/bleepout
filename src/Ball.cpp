@@ -16,7 +16,7 @@ Ball::Ball()
 , PhysicsObject(CollisionSphere)
 {
     ofLogVerbose() << "Create Ball";
-    trajectory = new OrbitalTrajectory(160.0, ofVec3f(0, 1, 0), ofVec3f(-1, 0, 0), 0.04);
+    trajectory = new OrbitalTrajectory(170.0, ofVec3f(0, 1, 0), ofVec3f(ofRandom(-1,1), ofRandom(-1,1), ofRandom(-1,1)), 0.04);
     thisGameObject = this;
 }
 

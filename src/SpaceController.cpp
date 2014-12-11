@@ -30,6 +30,8 @@ void SpaceController::setup() {
     addPaddle(2 * PI * i / (numPlayers * 1.0), player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
     addBall(ballCenter);
+    addBall(ballCenter);
+    addBall(ballCenter);
   }
   //...
 
