@@ -19,6 +19,7 @@ public:
     virtual void setup() override;
     virtual void draw(RoundState& round, RoundConfig& config) override;
     
+    virtual void keyPressed(int key);
     virtual void mousePressed(int x, int y, int button);
     virtual void mouseReleased(int x, int y, int button);
     virtual void mouseDragged(int x, int y, int button);
@@ -29,6 +30,7 @@ protected:
     virtual void drawBall(RoundState& round, Ball& ball) override;
     
     ofxTurntableCam _cam;
+    bool _debugGraphics;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

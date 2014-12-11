@@ -15,7 +15,6 @@ void BleepoutApp::setup() {
   // load config....
   ofSetFrameRate(_config.fps());
   ofSetLogLevel(_config.logLevel());
-  //ofDisableAntiAliasing();
   ofSetVerticalSync(_config.vsync());
 
   RoundConfig roundConfig(_config);

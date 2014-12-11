@@ -13,9 +13,14 @@ void DomeRenderer::setup() {
     _cam.setRotation(0.66, 0.5);
     _cam.setupPerspective(false);
     ofEnableDepthTest();
+    _debugGraphics = false;
 }
 
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
+
+    ofSetColor(80, 80, 80);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + d for physics debugging info", 10, 20);
+    
     _cam.setDistance(config.domeRadius() * 2);
     _cam.begin();
     
@@ -32,23 +37,31 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
     
     RendererBase::draw(state, config);
     
-    for (auto const &obj : state.paddles()) {
-        ofSetColor(255, 0, 0);
-        ofNoFill();
-        BoundingBox bbox = obj->getBoundingBox();
-        ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
-                  bbox.halfwidths.x * 2, bbox.halfwidths.y * 2, bbox.halfwidths.z * 2);
-    }
-    
-    for (auto const &obj : state.balls()) {
-        ofSetColor(255, 0, 0);
-        ofNoFill();
-        BoundingBox bbox = obj->getBoundingBox();
-        ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
-                  bbox.halfwidths.x * 2, bbox.halfwidths.y * 2, bbox.halfwidths.z * 2);
+    if (_debugGraphics) {
+        for (auto const &obj : state.paddles()) {
+            ofSetColor(255, 0, 0);
+            ofNoFill();
+            BoundingBox bbox = obj->getBoundingBox();
+            ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
+                      bbox.halfwidths.x * 2, bbox.halfwidths.y * 2, bbox.halfwidths.z * 2);
+        }
+        
+        for (auto const &obj : state.balls()) {
+            ofSetColor(255, 0, 0);
+            ofNoFill();
+            BoundingBox bbox = obj->getBoundingBox();
+            ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
+                      bbox.halfwidths.x * 2, bbox.halfwidths.y * 2, bbox.halfwidths.z * 2);
+        }
     }
     
     _cam.end();
+}
+
+void DomeRenderer::keyPressed(int key) {
+    if (key == 'd') {
+        _debugGraphics = !_debugGraphics;
+    }
 }
 
 void DomeRenderer::mousePressed(int x, int y, int button) {

@@ -54,8 +54,12 @@ void RoundController::update() {
 }
 
 void RoundController::keyPressed(int key) {
-  if (key == 'l') {
-    dumpToLog(OF_LOG_NOTICE);
+  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+    _renderer->keyPressed(key);
+  } else {
+    if (key == 'l') {
+      dumpToLog(OF_LOG_NOTICE);
+    }
   }
 }
 
