@@ -156,11 +156,23 @@ public:
 
 #else
 
+
 class PhysicsImpl {
 public:
     std::set<PhysicsObject*> objects;
+
+    typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
+    ContactSet* newContacts;
+    ContactSet* oldContacts;
     
     PhysicsImpl() {
+        newContacts = new ContactSet();
+        oldContacts = new ContactSet();
+    }
+    
+    ~PhysicsImpl() {
+        delete newContacts;
+        delete oldContacts;
     }
     
     void addObject(PhysicsObject* obj) {
@@ -175,9 +187,6 @@ public:
         if (it != objects.end()) {
             objects.erase(it);
         }
-    }
-    
-    ~PhysicsImpl() {
     }
     
     void update() {
@@ -202,15 +211,21 @@ public:
                 auto obj1 = *iter1;
                 auto obj2 = *iter2;
                 if (BoundingBox::testCollision(obj1->getBoundingBox(), obj2->getBoundingBox())) {
-                    static CollisionArgs args;
-                    args.a = obj1->thisGameObject;
-                    args.b = obj2->thisGameObject;
-                    ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                    auto contact = std::make_pair(obj1, obj2);
+                    newContacts->insert(contact);
+                    if (oldContacts->find(contact) == oldContacts->end()) {
+                        static CollisionArgs args;
+                        args.a = obj1->thisGameObject;
+                        args.b = obj2->thisGameObject;
+                        ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                    }
                 }
                 ++iter2;
             }
             ++iter1;
         }
+        std::swap(oldContacts, newContacts);
+        newContacts->clear();
     }
     
 };
