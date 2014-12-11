@@ -39,9 +39,10 @@ void SpaceController::setup() {
 
 void SpaceController::addBrick(ofVec3f center) {
     ofPtr<Brick> brick(new Brick);
-    _world.addObject(brick.get());
     brick->setPosition(center);
     brick->setSize(_config.brickSize());
+
+    _world.addObject(brick.get());
     _state.bricks().push_back(brick);
 }
 
@@ -54,19 +55,25 @@ static void setObjPhysics(PhysicsObject* obj, PhysicsOptions vals) {
 
 void SpaceController::addBall(ofVec3f center) {
     ofPtr<Ball> ball(new Ball);
-    _world.addObject(ball.get());
-    ball->setPosition(center);
     ball->setSize(ofVec3f(_config.ballRadius(), _config.ballRadius(), _config.ballRadius()));
-
+    auto t = new OrbitalTrajectory();
+    t->setRadius(_config.domeRadius() + _config.domeMargin());
+    t->setSpeed(0.04);
+    float phi = ofRandom(2*PI);
+    t->initWithTwoPoints(PI/4, phi, -PI/4, phi + ofRandom(-PI/4, PI/4));
+    ball->setTrajectory(t);
+    
+    _world.addObject(ball.get());
     _state.balls().push_back(ball);;
 }
 
-void SpaceController::addPaddle(float theta, Player* player) {
+void SpaceController::addPaddle(float heading, Player* player) {
     ofPtr<Paddle> paddle(new Paddle(player));
     player->setPaddle(paddle.get());
-    _world.addObject(paddle.get());
-    paddle->setPositionCylindrical(theta, _config.domeRadius() + _config.domeMargin(), _config.domeMargin());
+    paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
     paddle->setSize(_config.paddleSize());
+
+    _world.addObject(paddle.get());
     _state.paddles().push_back(paddle);
 }
 

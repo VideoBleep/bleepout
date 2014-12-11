@@ -28,6 +28,7 @@
 		5B0DD8DD1A38484A00E8BBD1 /* PhysicsObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8D91A38484A00E8BBD1 /* PhysicsObject.cpp */; };
 		5B0DD8DE1A38484A00E8BBD1 /* PhysicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8DC1A38484A00E8BBD1 /* PhysicsWorld.cpp */; };
 		5B0DD8E31A3963C900E8BBD1 /* TurntableCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */; };
+		5B0DD8EB1A39CA8E00E8BBD1 /* PhysicsUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8E91A39CA8E00E8BBD1 /* PhysicsUtil.cpp */; };
 		5B0E83411A369EC30091AB99 /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F01A369EC20091AB99 /* ofxBulletJoint.cpp */; };
 		5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F61A369EC20091AB99 /* ofxBulletWorldRigid.cpp */; };
 		5B0E83431A369EC30091AB99 /* GLDebugDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F91A369EC20091AB99 /* GLDebugDrawer.cpp */; };
@@ -149,6 +150,8 @@
 		5B0DD8DC1A38484A00E8BBD1 /* PhysicsWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsWorld.cpp; sourceTree = "<group>"; };
 		5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TurntableCam.cpp; sourceTree = "<group>"; };
 		5B0DD8E21A3963C900E8BBD1 /* TurntableCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableCam.h; sourceTree = "<group>"; };
+		5B0DD8E91A39CA8E00E8BBD1 /* PhysicsUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsUtil.cpp; sourceTree = "<group>"; };
+		5B0DD8EA1A39CA8E00E8BBD1 /* PhysicsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsUtil.h; sourceTree = "<group>"; };
 		5B0E80EC1A369EC20091AB99 /* ofxBulletCollisionData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletCollisionData.h; sourceTree = "<group>"; };
 		5B0E80ED1A369EC20091AB99 /* ofxBulletMousePickEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletMousePickEvent.h; sourceTree = "<group>"; };
 		5B0E80EE1A369EC20091AB99 /* ofxBulletRaycastData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletRaycastData.h; sourceTree = "<group>"; };
@@ -527,6 +530,8 @@
 				5B0DD8DB1A38484A00E8BBD1 /* PhysicsWorld.h */,
 				5B0E840E1A36E1030091AB99 /* OrbitalTrajectory.cpp */,
 				5B0E840F1A36E1030091AB99 /* OrbitalTrajectory.h */,
+				5B0DD8E91A39CA8E00E8BBD1 /* PhysicsUtil.cpp */,
+				5B0DD8EA1A39CA8E00E8BBD1 /* PhysicsUtil.h */,
 			);
 			name = Physics;
 			sourceTree = "<group>";
@@ -780,6 +785,7 @@
 				5B0E834A1A369EC30091AB99 /* ofxBulletCylinder.cpp in Sources */,
 				32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */,
 				5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */,
+				5B0DD8EB1A39CA8E00E8BBD1 /* PhysicsUtil.cpp in Sources */,
 				5B0E83491A369EC30091AB99 /* ofxBulletCustomShape.cpp in Sources */,
 				32324EBA1A2EA32100B51FCD /* Player.cpp in Sources */,
 				32324EB71A2EA08000B51FCD /* Ball.cpp in Sources */,

@@ -17,9 +17,8 @@ public:
     OrbitalTrajectory();
     OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed = 0.02);
     
-    void calculateFromVectors(ofVec3f start, ofVec3f through);
-    
-    void tick();
+    void initWithTwoPoints(ofVec3f start, ofVec3f through);
+    void initWithTwoPoints(float theta1, float phi1, float theta2, float phi2);
     
     float getRadius() const { return _r; }
     void setRadius(float r) { _r = r; }
@@ -28,6 +27,7 @@ public:
     void setSpeed(float s) { _speed = s; }
     
     const ofVec3f& getPosition() const { return _position; }
+    void setPosition(const ofVec3f& position);
     
     void reflect(const ofVec3f& planeNormal);
     
@@ -38,6 +38,9 @@ public:
     const ofVec3f& w() const { return _w; }
     
 protected:
+    friend class PhysicsObject;
+    void tick();
+
     float _r;
     
     ofVec3f _u;

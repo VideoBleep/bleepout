@@ -70,9 +70,7 @@ void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {
 		return;
 	}
 
-	ofVec3f pos = paddle->getPosition();
-	pos.x = ypr.yaw * ofGetWidth();
-	paddle->setPosition(pos);
+    paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 2 * PI * ypr.yaw, _config.domeMargin());
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
@@ -88,7 +86,7 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     return;
   }
   
-  paddle->setPositionCylindrical(2 * PI * xPercent, _config.domeRadius() + _config.domeMargin(), _config.domeMargin());
+  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 2 * PI * xPercent, _config.domeMargin());
 }
 
 void RoundController::mousePressed(int x, int y, int button) {

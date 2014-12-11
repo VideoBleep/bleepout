@@ -7,20 +7,35 @@
 //
 
 #include "OrbitalTrajectory.h"
+#include "PhysicsUtil.h"
 
+OrbitalTrajectory::OrbitalTrajectory()
+: _r(1.0)
+, _speed(0.02)
+, _t(0)
+{
+}
 
 OrbitalTrajectory::OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed) {
     _speed = speed;
     _r = radius;
-    calculateFromVectors(start, through);
+    initWithTwoPoints(start, through);
 }
 
-void OrbitalTrajectory::calculateFromVectors(ofVec3f start, ofVec3f through) {
+void OrbitalTrajectory::initWithTwoPoints(ofVec3f start, ofVec3f through) {
     _u = start.normalized();
     _v = through.normalized();
     _w = _u.getCrossed(_v).getCrossed(_u).normalized();
     _t = 0;
     _position = _u * _r;
+}
+
+void OrbitalTrajectory::initWithTwoPoints(float theta1, float phi1, float theta2, float phi2) {
+    initWithTwoPoints(sphericalToCartesian(_r, theta1, phi1), sphericalToCartesian(_r, theta2, phi2));
+}
+
+void OrbitalTrajectory::setPosition(const ofVec3f& position) {
+    initWithTwoPoints(position, _v);
 }
     
 void OrbitalTrajectory::tick() {
@@ -35,5 +50,5 @@ void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
     orbitNormal.y *= -1;
     ofVec3f start = getPosition();
     ofVec3f through = _v.crossed(orbitNormal);
-    calculateFromVectors(start, through);
+    initWithTwoPoints(start, through);
 }

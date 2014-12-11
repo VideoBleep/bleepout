@@ -9,6 +9,7 @@
 #include "PhysicsObject.h"
 #include "OrbitalTrajectory.h"
 #include "PhysicsWorld.h"
+#include "PhysicsUtil.h"
 
 bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b) {
     bool x = std::fabs(a.center.x - b.center.x) <= (a.halfwidths.x + b.halfwidths.x);
@@ -20,33 +21,36 @@ bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b) {
 PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)
 , world(NULL)
-, trajectory(NULL)
 {
     
 }
 
+const ofVec3f& PhysicsObject::getPosition() const {
+    if (trajectory) {
+        return trajectory->getPosition();
+    } else {
+        return position;
+    }
+}
+
 void PhysicsObject::setPosition(const ofVec3f& newPosition) {
-    position = newPosition;
+    if (trajectory) {
+        trajectory->setPosition(newPosition);
+    } else {
+        position = newPosition;
+    }
     updateBoundingBox();
 }
 
-void PhysicsObject::setPositionCylindrical(float theta, float r, float z) {
-    position.x = r * cos(theta);
-    position.y = z;
-    position.z = r * sin(theta);
+void PhysicsObject::setPositionCylindrical(float r, float theta, float z) {
     rotation = 2 * PI - theta;
-    updateBoundingBox();
+    setPosition(cylindricalToCartesian(r, theta, z));
 }
 
-void PhysicsObject::setPositionSpherical(float theta, float phi, float r) {
-    float r_sin_theta = r * sin(theta);
-    position.x = r_sin_theta * cos(phi),
-    position.y = r_sin_theta * sin(phi),
-    position.z = r * cos(theta);
-    rotation = 2 * PI - theta;
-    updateBoundingBox();
+void PhysicsObject::setPositionSpherical(float r, float theta, float phi) {
+    rotation = 2 * PI - phi;
+    setPosition(sphericalToCartesian(r, theta, phi));
 }
-
 
 void PhysicsObject::setRotation(float theta) {
     rotation = theta;
@@ -62,8 +66,15 @@ void PhysicsObject::setVelocity(const ofVec3f& v) {
     velocity = v;
 }
 
+void PhysicsObject::tick() {
+    if (trajectory) {
+        trajectory->tick();
+        updateBoundingBox();
+    }
+}
+
 void PhysicsObject::updateBoundingBox() {
-    boundingBox.center = position;
+    boundingBox.center = getPosition();
     
     float c = cos(rotation);
     float s = sin(rotation);

@@ -192,8 +192,7 @@ public:
     void update() {
         for (auto &obj : objects) {
             if (obj->isDynamic()) {
-                obj->trajectory->tick();
-                obj->setPosition(obj->trajectory->getPosition());
+                obj->tick();
             }
         }
         performCollisionDetection();

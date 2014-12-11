@@ -30,14 +30,14 @@ class PhysicsObject {
 public:
     PhysicsObject(CollisionShape shape = CollisionBox);
     
-    const ofVec3f& getPosition() const { return position; }
+    const ofVec3f& getPosition() const;
     void setPosition(const ofVec3f& newPosition);
     
     float getRotation() const { return rotation; }
     void setRotation(float theta);
     
-    void setPositionCylindrical(float theta, float r, float z);
-    void setPositionSpherical(float theta, float phi, float r);
+    void setPositionCylindrical(float r, float theta, float z);
+    void setPositionSpherical(float r, float theta, float phi);
     
     const ofVec3f& getSize() const { return size; }
     void setSize(const ofVec3f& newSize);
@@ -48,8 +48,10 @@ public:
     void setVelocity(const ofVec3f& v);
     
     bool isDynamic() const { return trajectory != NULL; }
+    void tick();
     
-    const OrbitalTrajectory* getTrajectory() { return trajectory; }
+    OrbitalTrajectory* getTrajectory() { return trajectory.get(); }
+    void setTrajectory(OrbitalTrajectory* t) { trajectory.reset(t); }
     
 protected:
     void updateBoundingBox();
@@ -62,7 +64,7 @@ protected:
     ofVec3f velocity;
     CollisionShape collisionShape;
 
-    OrbitalTrajectory* trajectory;
+    ofPtr<OrbitalTrajectory> trajectory;
     PhysicsWorld* world;
     GameObject* thisGameObject;
     
