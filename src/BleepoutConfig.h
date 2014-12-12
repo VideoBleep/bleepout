@@ -39,8 +39,7 @@ public:
   const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
-  const ofVec3f& ballInitialVelocity() const { return _ballInitialVelocity; }
-    
+  
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
   
@@ -59,7 +58,6 @@ private:
   ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
-  ofVec3f _ballInitialVelocity;
     
   float _domeRadius;
   float _domeMargin;
