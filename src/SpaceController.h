@@ -32,7 +32,7 @@ private:
   
   void onCollision(CollisionArgs &cdata);
     
-  void ballHitObject(Ball* ball, GameObject* obj);
+  void ballHitObject(Ball* ball, GameObject* obj, ofVec3f normal);
 
 private:
   PhysicsWorld _world;

@@ -47,7 +47,10 @@ void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
     // mostly works for +y normal paddle bounces, ignoring planeNormal for now
     // sometimes trajectory is correct but ball motion is reversed so it seems to go through paddle.
     ofVec3f orbitNormal = _u.crossed(_v);
-    orbitNormal.y *= -1;
+    
+    float d = orbitNormal.dot(planeNormal);
+    orbitNormal -= 2 * d * planeNormal;
+    
     ofVec3f start = getPosition();
     ofVec3f through = _v.crossed(orbitNormal);
     initWithTwoPoints(start, through);

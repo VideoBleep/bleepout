@@ -15,10 +15,15 @@
 class PhysicsWorld;
 class GameObject;
 
+struct CollisionManifold {
+    ofVec3f normal;
+    float penetration;
+};
+
 struct BoundingBox {
     ofVec3f center;
     ofVec3f halfwidths;
-    static bool testCollision(const BoundingBox& a, const BoundingBox& b);
+    static bool testCollision(const BoundingBox& a, const BoundingBox& b, CollisionManifold* manifold = NULL);
 };
 
 enum CollisionShape {

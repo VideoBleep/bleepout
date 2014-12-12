@@ -25,7 +25,7 @@ public:
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;
-  void bounce();
+  void bounce(ofVec3f normal);
 
   static const char* typeName() { return "ball"; }
 private:

@@ -29,14 +29,15 @@ void SpaceController::setup() {
     ofPtr<Player> player = _state.players()[i];
     addPaddle(360 * i / (numPlayers * 1.0), player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-    addBall(30, ofRandom(360));
-    addBall(30, ofRandom(360));
-    addBall(30, ofRandom(360));
-    addBrick(45, ofRandom(360), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
+  }
+
+  addBall(30, ofRandom(360));
+  addBall(30, ofRandom(360));
+  addBall(30, ofRandom(360));
+  
+  for (int i = 0; i < 16; i++) {
     addBrick(45, ofRandom(360), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
   }
-  //...
-
 }
 
 void SpaceController::addBrick(float elevation, float heading, const ofColor& color) {
@@ -85,20 +86,21 @@ void SpaceController::update() {
 
 void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.a->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(cdata.a), cdata.b);
+        ballHitObject(static_cast<Ball*>(cdata.a), cdata.b, cdata.normal);
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(cdata.b), cdata.a);
+        ballHitObject(static_cast<Ball*>(cdata.b), cdata.a, -cdata.normal);
     }
 }
 
-void SpaceController::ballHitObject(Ball *ball, GameObject *obj) {
+void SpaceController::ballHitObject(Ball *ball, GameObject *obj, ofVec3f normal) {
   switch (obj->type()) {
     case GAME_OBJECT_BRICK:
       notifyBallHitBrick(ball, static_cast<Brick*>(obj));
+      ball->bounce(normal);
       break;
     case GAME_OBJECT_PADDLE:
       notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
-      ball->bounce(); // maybe not the best method/place
+      ball->bounce(normal); // maybe not the best method/place
       break;
     case GAME_OBJECT_BALL:
       notifyBallHitBall(ball, static_cast<Ball*>(obj));

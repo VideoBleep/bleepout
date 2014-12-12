@@ -23,8 +23,8 @@ Ball::~Ball() {
   ofLogVerbose() << "Destroy Ball";
 }
 
-void Ball::bounce() {
+void Ball::bounce(ofVec3f normal) {
     if (trajectory) {
-        trajectory->reflect(ofVec3f(0, 1, 0));
+        trajectory->reflect(normal);
     }
 }
