@@ -16,9 +16,6 @@ class BleepoutConfig {
 public:
   BleepoutConfig();
   
-  void loadFile(const std::string& path);
-  void saveFile(const std::string& path) const;
-  
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
@@ -44,9 +41,6 @@ struct PhysicsOptions {
 class RoundConfig {
 public:
   RoundConfig(const BleepoutConfig& appConfig);
-  
-  void loadFile(const std::string& path);
-  void saveFile(const std::string& path) const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
