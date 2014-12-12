@@ -49,13 +49,6 @@ void SpaceController::addBrick(float elevation, float heading, const ofColor& co
     _state.bricks().push_back(brick);
 }
 
-static void setObjPhysics(PhysicsObject* obj, PhysicsOptions vals) {
-    // todo: reimplement or eliminate?
-    // vals.friction
-    // vals.density
-    // vals.bounce
-}
-
 void SpaceController::addBall(float elevation, float heading) {
     ofPtr<Ball> ball(new Ball);
     ball->setSize(ofVec3f(_config.ballRadius(), _config.ballRadius(), _config.ballRadius()));
