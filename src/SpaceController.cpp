@@ -27,13 +27,13 @@ void SpaceController::setup() {
   int numPlayers = _state.players().size();
   for (int i = 0; i < numPlayers; i++) {
     ofPtr<Player> player = _state.players()[i];
-    addPaddle(2 * PI * i / (numPlayers * 1.0), player.get());
+    addPaddle(360 * i / (numPlayers * 1.0), player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-    addBall(PI/4, ofRandom(2*PI));
-    addBall(PI/4, ofRandom(2*PI));
-    addBall(PI/4, ofRandom(2*PI));
-    addBrick(PI/8, ofRandom(2*PI), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
-    addBrick(PI/8, ofRandom(2*PI), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
+    addBall(30, ofRandom(360));
+    addBall(30, ofRandom(360));
+    addBall(30, ofRandom(360));
+    addBrick(45, ofRandom(360), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
+    addBrick(45, ofRandom(360), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
   }
   //...
 
@@ -62,7 +62,7 @@ void SpaceController::addBall(float elevation, float heading) {
     auto t = new OrbitalTrajectory();
     t->setRadius(_config.domeRadius() + _config.domeMargin());
     t->setSpeed(0.04);
-    t->initWithTwoPoints(elevation, heading, -PI/4, heading + ofRandom(-PI/4, PI/4));
+    t->initWithTwoPoints(elevation, heading, -45, heading + ofRandom(-45, 45));
     ball->setTrajectory(t);
     
     _world.addObject(ball.get());

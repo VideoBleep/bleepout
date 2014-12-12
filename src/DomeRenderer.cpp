@@ -16,7 +16,7 @@ namespace {
         ofSetRectMode(OF_RECTMODE_CENTER);
         ofVec3f dims = object.getSize();
         ofTranslate(object.getPosition());
-        ofRotateY(object.getRotation() * 180/PI);
+        ofRotateY(object.getRotation());
         ofNoFill();
         ofSetColor(edgeColor);
         ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);

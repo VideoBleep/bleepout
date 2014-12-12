@@ -34,10 +34,10 @@ public:
     void setPosition(const ofVec3f& newPosition);
     
     float getRotation() const { return rotation; }
-    void setRotation(float phi);
+    void setRotation(float heading);
     
-    void setPositionCylindrical(float r, float phi, float z);
-    void setPositionSpherical(float r, float theta, float phi);
+    void setPositionCylindrical(float r, float heading, float z);
+    void setPositionSpherical(float r, float elevation, float heading);
     
     const ofVec3f& getSize() const { return size; }
     void setSize(const ofVec3f& newSize);

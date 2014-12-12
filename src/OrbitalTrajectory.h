@@ -18,7 +18,7 @@ public:
     OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed = 0.02);
     
     void initWithTwoPoints(ofVec3f start, ofVec3f through);
-    void initWithTwoPoints(float theta1, float phi1, float theta2, float phi2);
+    void initWithTwoPoints(float elevation1, float heading1, float elevation2, float heading2);
     
     float getRadius() const { return _r; }
     void setRadius(float r) { _r = r; }
