@@ -64,7 +64,7 @@ namespace {
                 ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
                 ofLine(ofVec3f::zero(), t->v() * r);
                 ofColor(128, 0, 0);
-                ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()) * r/4.0, 2);
+                ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()).normalize() * r/4.0, 2);
             }
         }
         ofPopStyle();

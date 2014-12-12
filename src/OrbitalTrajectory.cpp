@@ -28,6 +28,7 @@ void OrbitalTrajectory::initWithTwoPoints(ofVec3f start, ofVec3f through) {
     _w = _u.getCrossed(_v).getCrossed(_u).normalized();
     _t = 0;
     _position = _u * _r;
+    _lastPosition = _r * (_u * cos(-_speed) + _w * sin(-_speed));
 }
 
 void OrbitalTrajectory::initWithTwoPoints(float elevation1, float heading1, float elevation2, float heading2) {
@@ -39,19 +40,39 @@ void OrbitalTrajectory::setPosition(const ofVec3f& position) {
 }
     
 void OrbitalTrajectory::tick() {
+    _lastPosition = _position;
     _t += _speed;
     _position = _r * (_u * cos(_t) + _w * sin(_t));
 }
 
 void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
-    // mostly works for +y normal paddle bounces, ignoring planeNormal for now
-    // sometimes trajectory is correct but ball motion is reversed so it seems to go through paddle.
-    ofVec3f orbitNormal = _u.crossed(_v);
+    // solution 3
+    // reflect the orbit plane and calculate a new V from the reflected plane.
+    // not perfect, but close.
+    // sometimes trajectory ring is correct but direction is reversed so the ball seems to go through the paddle.
+
+//    ofVec3f orbitNormal = _u.getCrossed(_v);
+//    float d = orbitNormal.dot(planeNormal);
+//    orbitNormal -= 2 * d * planeNormal;
+//    
+//    ofVec3f newv = (_v * cos(_t) + _w * sin(_t)); // using this instead of _v seems to reduce number of reversed cases
+//
+//    ofVec3f start = getPosition();
+//    ofVec3f through = newv.crossed(orbitNormal);
+//    initWithTwoPoints(start, through);
+
+    // solution 4
+    // just reflect V
+    // faster, still often reversed but more predictably so, but likely not correct for non-horizontal bounces
     
-    float d = orbitNormal.dot(planeNormal);
-    orbitNormal -= 2 * d * planeNormal;
+//    float d = _v.dot(planeNormal);
+//    initWithTwoPoints(getPosition(), _v - 2 * d * planeNormal);
+
+    // solution 5
+    // reflect instantaneous velocity
     
-    ofVec3f start = getPosition();
-    ofVec3f through = _v.crossed(orbitNormal);
-    initWithTwoPoints(start, through);
+    ofVec3f vel = getInstantaneousVelocity();
+    float d = vel.dot(planeNormal);
+    ofVec3f reflectedVelocity = vel - 2 * d * planeNormal;
+    initWithTwoPoints(_position, _position + reflectedVelocity);
 }

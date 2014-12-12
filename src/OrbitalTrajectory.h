@@ -39,6 +39,8 @@ public:
     const ofVec3f& v() const { return _v; }
     const ofVec3f& w() const { return _w; }
     
+    ofVec3f getInstantaneousVelocity() const { return _position - _lastPosition; }
+    
 protected:
     friend class PhysicsObject;
     void tick();
@@ -52,6 +54,7 @@ protected:
     float _speed;
     
     ofVec3f _position;
+    ofVec3f _lastPosition;
 };
 
 #endif /* defined(__bleepout__OrbitalTrajectory__) */

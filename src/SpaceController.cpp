@@ -93,13 +93,14 @@ void SpaceController::ballHitObject(Ball *ball, GameObject *obj, ofVec3f normal)
       break;
     case GAME_OBJECT_PADDLE:
       notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
-      ball->bounce(normal); // maybe not the best method/place
+      ball->bounce(normal);
       break;
     case GAME_OBJECT_BALL:
       notifyBallHitBall(ball, static_cast<Ball*>(obj));
       break;
     case GAME_OBJECT_WALL:
       notifyBallHitWall(ball, static_cast<Wall*>(obj));
+      ball->bounce(normal);
       break;
     default:
       break;
