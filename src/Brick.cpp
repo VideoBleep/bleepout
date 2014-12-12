@@ -9,7 +9,10 @@
 #include "Brick.h"
 
 
-void Brick::output(std::ostream &os) const {
-  auto pos = body->GetPosition();
-  os << "Brick{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")}";
+Brick::Brick()
+: GameObject(GAME_OBJECT_BRICK)
+, PhysicsObject(CollisionBox)
+, _value(1)
+{
+    thisGameObject = this;
 }

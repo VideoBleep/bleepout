@@ -10,13 +10,15 @@
 #define __bleepout__Wall__
 
 #include "GameObject.h"
-#include <ofxBox2d.h>
+#include "PhysicsObject.h"
 
-class Wall : public GameObject, public ofxBox2dEdge {
+class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(bool isExit) : GameObject(GAME_OBJECT_WALL), _isExit(isExit) {}
+  Wall(bool isExit);
   
   bool isExit() const { return _isExit; }
+  
+  void output(std::ostream& os) const override;
   
   static const char* typeName() { return "wall"; }
 private:

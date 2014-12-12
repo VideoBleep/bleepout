@@ -7,3 +7,10 @@
 //
 
 #include "Wall.h"
+
+Wall::Wall(bool isExit)
+: GameObject(GAME_OBJECT_WALL)
+, _isExit(isExit)
+{
+    thisGameObject = this;
+}

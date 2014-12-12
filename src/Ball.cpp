@@ -7,24 +7,24 @@
 //
 
 #include "Ball.h"
+#include "OrbitalTrajectory.h"
 
 
-Ball::Ball() : GameObject(GAME_OBJECT_BALL) {
-  ofLogVerbose() << "Create Ball";
+Ball::Ball()
+: GameObject(GAME_OBJECT_BALL)
+, _player(NULL)
+, PhysicsObject(CollisionSphere)
+{
+    ofLogVerbose() << "Create Ball";
+    thisGameObject = this;
 }
 
 Ball::~Ball() {
   ofLogVerbose() << "Destroy Ball";
-  destroy();
 }
 
-void Ball::output(std::ostream &os) const {
-  auto pos = body->GetPosition();
-  os << "Ball{id:" << id() << ", pos:(" << pos.x << "," << pos.y << ")";
-  os << ", player:";
-  if (_player)
-    os << _player->id();
-  else
-    os << "(none)";
-  os << "}";
+void Ball::bounce() {
+    if (trajectory) {
+        trajectory->reflect(ofVec3f(0, 1, 0));
+    }
 }

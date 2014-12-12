@@ -11,20 +11,22 @@
 
 #include "Player.h"
 #include "GameObject.h"
+#include "PhysicsObject.h"
 #include "Common.h"
 #include <ofTypes.h>
-#include <ofxBox2d.h>
 
-class Ball : public GameObject, public ofxBox2dCircle {
+class Ball : public GameObject, public PhysicsObject {
 public:
   Ball();
   ~Ball() override;
   
   Player* player() { return _player; }
+  const Player* player() const { return _player; }
   void setPlayer(Player* player) { _player = player; }
 
   void output(std::ostream& os) const override;
-  
+  void bounce();
+
   static const char* typeName() { return "ball"; }
 private:
   Player* _player;

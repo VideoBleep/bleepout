@@ -16,9 +16,6 @@ class BleepoutConfig {
 public:
   BleepoutConfig();
   
-  void loadFile(const std::string& path);
-  void saveFile(const std::string& path) const;
-  
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
@@ -45,30 +42,33 @@ class RoundConfig {
 public:
   RoundConfig(const BleepoutConfig& appConfig);
   
-  void loadFile(const std::string& path);
-  void saveFile(const std::string& path) const;
-  
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
-  const ofVec2f& brickSize() const { return _brickSize; }
+  const ofVec3f& brickSize() const { return _brickSize; }
   float brickGap() const { return _brickGap; }
-  const ofVec2f& paddleSize() const { return _paddleSize; }
+  const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   PhysicsOptions ballPhysics() const { return _ballPhysics; }
   PhysicsOptions paddlePhysics() const { return _paddlePhysics; }
-  const ofVec2f& ballInitialVelocity() const { return _ballInitialVelocity; }
+  const ofVec3f& ballInitialVelocity() const { return _ballInitialVelocity; }
+    
+  float domeRadius() const { return _domeRadius; }
+  float domeMargin() const { return _domeMargin; }
   
   const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
   const BleepoutConfig& _appConfig;
-  ofVec2f _brickSize;
+  ofVec3f _brickSize;
   float _brickGap;
-  ofVec2f _paddleSize;
+  ofVec3f _paddleSize;
   PhysicsOptions _ballPhysics;
   PhysicsOptions _paddlePhysics;
   float _ballRadius;
-  ofVec2f _ballInitialVelocity;
+  ofVec3f _ballInitialVelocity;
+    
+  float _domeRadius;
+  float _domeMargin;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

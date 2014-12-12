@@ -9,7 +9,7 @@
 #include "RendererBase.h"
 
 
-void RendererBase::draw(RoundState &state) {
+void RendererBase::draw(RoundState &state, RoundConfig& config) {
   for (int i = 0, count = state.bricks().size(); i < count; i++) {
     drawBrick(state, *(state.bricks()[i].get()));
   }

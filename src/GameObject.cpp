@@ -15,7 +15,3 @@ static GameObjectId nextId() {
 
 GameObject::GameObject(GameObjectType t) : _type(t), _id(nextId()) { }
 
-std::ostream& operator<<(std::ostream& os, const GameObject& obj) {
-  obj.output(os);
-  return os;
-}
