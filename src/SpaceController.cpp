@@ -31,12 +31,18 @@ void SpaceController::setup() {
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
   }
 
-  addBall(30, ofRandom(360));
-  addBall(30, ofRandom(360));
-  addBall(30, ofRandom(360));
-  
-  for (int i = 0; i < 16; i++) {
-    addBrick(45, ofRandom(360), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
+  for (int i = 0; i < 5; i ++) {
+    addBall(30, ofRandom(360));
+  }
+    
+  int cols = 12;
+  int rows = 10;
+    
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      float s = i / (cols * 1.0);
+      addBrick(30 + 3 * j, s * 360, ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255));
+    }
   }
 }
 

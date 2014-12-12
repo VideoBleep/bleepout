@@ -46,31 +46,6 @@ void OrbitalTrajectory::tick() {
 }
 
 void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
-    // solution 3
-    // reflect the orbit plane and calculate a new V from the reflected plane.
-    // not perfect, but close.
-    // sometimes trajectory ring is correct but direction is reversed so the ball seems to go through the paddle.
-
-//    ofVec3f orbitNormal = _u.getCrossed(_v);
-//    float d = orbitNormal.dot(planeNormal);
-//    orbitNormal -= 2 * d * planeNormal;
-//    
-//    ofVec3f newv = (_v * cos(_t) + _w * sin(_t)); // using this instead of _v seems to reduce number of reversed cases
-//
-//    ofVec3f start = getPosition();
-//    ofVec3f through = newv.crossed(orbitNormal);
-//    initWithTwoPoints(start, through);
-
-    // solution 4
-    // just reflect V
-    // faster, still often reversed but more predictably so, but likely not correct for non-horizontal bounces
-    
-//    float d = _v.dot(planeNormal);
-//    initWithTwoPoints(getPosition(), _v - 2 * d * planeNormal);
-
-    // solution 5
-    // reflect instantaneous velocity
-    
     ofVec3f vel = getInstantaneousVelocity();
     float d = vel.dot(planeNormal);
     ofVec3f reflectedVelocity = vel - 2 * d * planeNormal;
