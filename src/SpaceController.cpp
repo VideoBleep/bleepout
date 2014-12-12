@@ -29,18 +29,21 @@ void SpaceController::setup() {
     ofPtr<Player> player = _state.players()[i];
     addPaddle(2 * PI * i / (numPlayers * 1.0), player.get());
     ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-    addBall(ballCenter);
-    addBall(ballCenter);
-    addBall(ballCenter);
+    addBall(PI/4, ofRandom(2*PI));
+    addBall(PI/4, ofRandom(2*PI));
+    addBall(PI/4, ofRandom(2*PI));
+    addBrick(PI/8, ofRandom(2*PI), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
+    addBrick(PI/8, ofRandom(2*PI), ofColor(ofRandom(128, 255), ofRandom(128, 255), ofRandom(128, 255)));
   }
   //...
 
 }
 
-void SpaceController::addBrick(ofVec3f center) {
+void SpaceController::addBrick(float elevation, float heading, const ofColor& color) {
     ofPtr<Brick> brick(new Brick);
-    brick->setPosition(center);
+    brick->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), elevation, heading);
     brick->setSize(_config.brickSize());
+    brick->setColor(color);
 
     _world.addObject(brick.get());
     _state.bricks().push_back(brick);
@@ -53,14 +56,13 @@ static void setObjPhysics(PhysicsObject* obj, PhysicsOptions vals) {
     // vals.bounce
 }
 
-void SpaceController::addBall(ofVec3f center) {
+void SpaceController::addBall(float elevation, float heading) {
     ofPtr<Ball> ball(new Ball);
     ball->setSize(ofVec3f(_config.ballRadius(), _config.ballRadius(), _config.ballRadius()));
     auto t = new OrbitalTrajectory();
     t->setRadius(_config.domeRadius() + _config.domeMargin());
     t->setSpeed(0.04);
-    float phi = ofRandom(2*PI);
-    t->initWithTwoPoints(PI/4, phi, -PI/4, phi + ofRandom(-PI/4, PI/4));
+    t->initWithTwoPoints(elevation, heading, -PI/4, heading + ofRandom(-PI/4, PI/4));
     ball->setTrajectory(t);
     
     _world.addObject(ball.get());

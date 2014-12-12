@@ -27,6 +27,13 @@ void SimpleRenderer::drawPaddle(RoundState& state, Paddle &paddle) {
          paddle.getSize().x, paddle.getSize().y);
 }
 
+void SimpleRenderer::drawWall(RoundState& round, Wall &wall) {
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  ofSetColor(128, 128, 128);
+  ofRect(wall.getPosition().x, wall.getPosition().y,
+         wall.getSize().x, wall.getSize().y);
+}
+
 void SimpleRenderer::drawBall(RoundState& state, Ball &ball) {
   ofCircle(ball.getPosition().x, ball.getPosition().y, ball.getSize().x);
 }

@@ -20,6 +20,7 @@ protected:
   virtual void drawBrick(RoundState& state, Brick& brick) override;
   virtual void drawPaddle(RoundState& state, Paddle& paddle) override;
   virtual void drawBall(RoundState& state, Ball& ball) override;
+  virtual void drawWall(RoundState& state, Wall& wall) override;
 };
 
 #endif /* defined(__bleepout__SimpleRenderer__) */
