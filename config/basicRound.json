@@ -1,0 +1,12 @@
+{
+  "brickSize": {"x": 20, "y": 5, "z": 5},
+  "paddleSize": {"x": 16, "y": 8, "z": 40},
+  "ballRadius": 8,
+  "domeRadius": 150,
+  "domeMargin": 20,
+  "playerColors": [
+    {"r": 127, "g": 0, "b": 0},
+    {"r": 127, "g": 0, "b": 127},
+    {"r": 127, "g": 255, "b": 0}
+  ]
+}
