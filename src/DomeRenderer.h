@@ -27,6 +27,7 @@ public:
 protected:
     virtual void drawBrick(RoundState& round, Brick& brick) override;
     virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
+    virtual void drawWall(RoundState& round, Wall& wall) override;
     virtual void drawBall(RoundState& round, Ball& ball) override;
     
     ofxTurntableCam _cam;

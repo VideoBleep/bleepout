@@ -30,8 +30,8 @@ void OrbitalTrajectory::initWithTwoPoints(ofVec3f start, ofVec3f through) {
     _position = _u * _r;
 }
 
-void OrbitalTrajectory::initWithTwoPoints(float theta1, float phi1, float theta2, float phi2) {
-    initWithTwoPoints(sphericalToCartesian(_r, theta1, phi1), sphericalToCartesian(_r, theta2, phi2));
+void OrbitalTrajectory::initWithTwoPoints(float elevation1, float heading1, float elevation2, float heading2) {
+    initWithTwoPoints(sphericalToCartesian(_r, elevation1, heading1), sphericalToCartesian(_r, elevation2, heading2));
 }
 
 void OrbitalTrajectory::setPosition(const ofVec3f& position) {

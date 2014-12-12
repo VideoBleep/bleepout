@@ -13,6 +13,7 @@
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
 #include "PhysicsWorld.h"
+#include <ofMain.h>
 
 class SpaceController : public CollisionEventSource {
 public:
@@ -25,8 +26,8 @@ public:
 private:
   void generateBricks();
   
-  void addBrick(ofVec3f center);
-  void addBall(ofVec3f center);
+  void addBrick(float elevation, float heading, const ofColor& color);
+  void addBall(float elevation, float heading);
   void addPaddle(float heading, Player* player);
   
   void onCollision(CollisionArgs &cdata);

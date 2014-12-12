@@ -11,7 +11,7 @@
 
 #include <ofMain.h>
 
-ofVec3f cylindricalToCartesian(float phi, float r, float z);
-ofVec3f sphericalToCartesian(float theta, float phi, float r);
+ofVec3f cylindricalToCartesian(float heading, float r, float z);
+ofVec3f sphericalToCartesian(float elevation, float heading, float r);
 
 #endif /* defined(__bleepout__PhysicsUtil__) */

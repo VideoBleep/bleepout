@@ -11,6 +11,7 @@
 
 #include "GameObject.h"
 #include "PhysicsObject.h"
+#include <ofMain.h>
 
 class Brick : public GameObject, public PhysicsObject {
 public:
@@ -21,9 +22,13 @@ public:
   
   void output(std::ostream& os) const override;
   
+  const ofColor& getColor() const { return _color; }
+  void setColor(const ofColor& color) { _color = color; }
+    
   static const char* typeName() { return "brick"; }
 private:
   int _value;
+  ofColor _color;
 };
 
 #endif /* defined(__bleepout__Brick__) */

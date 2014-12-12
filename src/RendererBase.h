@@ -34,6 +34,7 @@ protected:
   virtual void drawBrick(RoundState& state, Brick& brick) = 0;
   virtual void drawPaddle(RoundState& state, Paddle& paddle) = 0;
   virtual void drawBall(RoundState& state, Ball& ball) = 0;
+  virtual void drawWall(RoundState& state, Wall& wall) = 0;
 };
 
 #endif /* defined(__bleepout__RendererBase__) */

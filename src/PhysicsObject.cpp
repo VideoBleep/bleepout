@@ -42,18 +42,18 @@ void PhysicsObject::setPosition(const ofVec3f& newPosition) {
     updateBoundingBox();
 }
 
-void PhysicsObject::setPositionCylindrical(float r, float phi, float z) {
-    rotation = 2 * PI - phi;
-    setPosition(cylindricalToCartesian(r, phi, z));
+void PhysicsObject::setPositionCylindrical(float r, float heading, float z) {
+    rotation = 360 - heading;
+    setPosition(cylindricalToCartesian(r, heading, z));
 }
 
-void PhysicsObject::setPositionSpherical(float r, float theta, float phi) {
-    rotation = 2 * PI - phi;
-    setPosition(sphericalToCartesian(r, theta, phi));
+void PhysicsObject::setPositionSpherical(float r, float elevation, float heading) {
+    rotation = 360 - heading;
+    setPosition(sphericalToCartesian(r, elevation, heading));
 }
 
-void PhysicsObject::setRotation(float phi) {
-    rotation = phi;
+void PhysicsObject::setRotation(float heading) {
+    rotation = heading;
     updateBoundingBox();
 }
 
@@ -77,8 +77,9 @@ void PhysicsObject::updateBoundingBox() {
     boundingBox.center = getPosition();
     
     if (rotation != 0 && collisionShape != CollisionSphere) {
-        float c = cos(rotation);
-        float s = sin(rotation);
+        float phi = rotation * PI/180.0;
+        float c = cos(phi);
+        float s = sin(phi);
         float hx = size.x / 2.0;
         float hz = size.z / 2.0;
         boundingBox.halfwidths.x = max(abs(hx * c + hz * s), abs(hx * c - hz * s));

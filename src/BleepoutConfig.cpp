@@ -37,7 +37,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 }
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
-: _brickSize(20.0f, 5.0f, 5.0f),
+: _brickSize(5.0f, 5.0f, 20.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
 _domeRadius(150.0f),
