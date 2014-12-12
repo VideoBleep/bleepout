@@ -19,24 +19,6 @@ _vsync(true) {
   
 }
 
-void BleepoutConfig::loadFile(const std::string& path) {
-  ofxXmlSettings settings;
-  if (!path.empty())
-    settings.load(path);
-  _fps = settings.getValue("settings:fps", _fps);
-  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", _logLevel);
-  _vsync = settings.getValue("settings:vsync", _vsync);
-  //...
-}
-
-void BleepoutConfig::saveFile(const std::string& path) const {
-  ofxXmlSettings settings;
-  settings.setValue("settings:fps", _fps);
-  settings.setValue("settings:logLevel", (int)_logLevel);
-  settings.setValue("settings:vsync", _vsync);
-  settings.save(path);
-}
-
 static bool readJsonVal(const Json::Value& obj, const char* property, float* result) {
   const Json::Value& val = obj[property];
   if (!obj.isNumeric()) {
@@ -183,44 +165,6 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
   writeJsonFile(path, root);
 }
 
-static void readPhysics(ofxXmlSettings& settings,
-                        std::string prefix,
-                        PhysicsOptions& vals) {
-  vals.density = settings.getValue(prefix + "Density", vals.density);
-  vals.bounce = settings.getValue(prefix + "Bounce", vals.bounce);
-  vals.friction = settings.getValue(prefix + "Friction", vals.friction);
-}
-
-static void writePhysics(ofxXmlSettings& settings,
-                         std::string prefix,
-                         const PhysicsOptions& options) {
-  settings.setValue(prefix + "Density", options.density);
-  settings.setValue(prefix + "Bounce", options.bounce);
-  settings.setValue(prefix + "Friction", options.friction);
-}
-
-static void readVec2f(ofxXmlSettings& settings, std::string prefix, ofVec2f& vals) {
-  vals.x = settings.getValue(prefix + "X", vals.x);
-  vals.y = settings.getValue(prefix + "Y", vals.y);
-}
-
-static void readVec3f(ofxXmlSettings& settings, std::string prefix, ofVec3f& vals) {
-  vals.x = settings.getValue(prefix + "X", vals.x);
-  vals.y = settings.getValue(prefix + "Y", vals.y);
-  vals.z = settings.getValue(prefix + "Z", vals.z);
-}
-
-static void writeVec2f(ofxXmlSettings& settings, std::string prefix, ofVec2f vals) {
-  settings.setValue(prefix + "X", vals.x);
-  settings.setValue(prefix + "Y", vals.y);
-}
-
-static void writeVec3f(ofxXmlSettings& settings, std::string prefix, ofVec3f vals) {
-  settings.setValue(prefix + "X", vals.x);
-  settings.setValue(prefix + "Y", vals.y);
-  settings.setValue(prefix + "Z", vals.z);
-}
-
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 : _brickSize(20.0f, 5.0f, 5.0f),
 _brickGap(1.0f),
@@ -233,33 +177,6 @@ _domeRadius(150.0f),
 _domeMargin(20.0f),
 _appConfig(appConfig) { }
 
-void RoundConfig::loadFile(const std::string &path) {
-  ofxXmlSettings settings;
-  if (!path.empty())
-    settings.load(path);
-  readVec3f(settings, "settings:brickSize", _brickSize);
-  _brickGap = settings.getValue("settings:brickGap", _brickGap);
-  readVec3f(settings, "settings:paddleSize", _paddleSize);
-  _ballRadius = settings.getValue("settings:ballRadius", _ballRadius);
-  readPhysics(settings, "settings:ball", _ballPhysics);
-  readPhysics(settings, "settings:paddle", _paddlePhysics);
-  readVec3f(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
-  //...
-}
-
-void RoundConfig::saveFile(const std::string &path) const {
-  ofxXmlSettings settings;
-  writeVec3f(settings, "settings:brickSize", _brickSize);
-  settings.setValue("settings:brickGap", _brickGap);
-  writeVec3f(settings, "settings:paddleSize", _paddleSize);
-  settings.setValue("settings:ballRadius", _ballRadius);
-  writePhysics(settings, "settings:ball", _ballPhysics);
-  writePhysics(settings, "settings:paddle", _paddlePhysics);
-  writeVec3f(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
-  
-  //...
-  settings.save(path);
-}
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value root;
@@ -272,6 +189,8 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(root, "ballPhysics", &_ballPhysics);
   readJsonVal(root, "paddlePhysics", &_paddlePhysics);
   readJsonVal(root, "ballInitialVelocity", &_ballInitialVelocity);
+  readJsonVal(root, "domeRadius", &_domeRadius);
+  readJsonVal(root, "domeMargin", &_domeMargin);
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
@@ -283,6 +202,8 @@ void RoundConfig::saveJsonFile(std::string path) const {
   root["ballPhysics"] = toJsonObj(_ballPhysics);
   root["paddlePhysics"] = toJsonObj(_paddlePhysics);
   root["ballInitialVelocity"] = toJsonObj(_ballInitialVelocity);
+  root["domeRadius"] = _domeRadius;
+  root["domeMargin"] = _domeMargin;
   writeJsonFile(path, root);
 }
 
