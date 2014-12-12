@@ -10,7 +10,7 @@
 
 #include <fstream>
 
-bool readJsonObjectFile(std::string path, Json::Value* obj) {
+bool readJsonFile(std::string path, Json::Value* obj) {
   path = ofToDataPath(path);
   std::ifstream fis(path.c_str());
   Json::Reader reader;
@@ -118,19 +118,6 @@ bool readJsonVal(const Json::Value& obj, const char* property, ofVec3f* result) 
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, PhysicsOptions* result) {
-  const Json::Value* val = getTypedValue(obj, property, Json::objectValue);
-  if (val == NULL)
-    return false;
-  PhysicsOptions temp;
-  if (!readJsonVal(*val, "density", &temp.density) ||
-      !readJsonVal(*val, "bounce", &temp.bounce) ||
-      !readJsonVal(*val, "friction", &temp.friction))
-    return false;
-  *result = temp;
-  return true;
-}
-
 static bool readJsonValImpl(const Json::Value& val, const char* description, ofColor* result) {
   if (!val.isObject()) {
     ofLogError() << "invalid type for '" << description << "' "
@@ -181,14 +168,6 @@ Json::Value toJsonObj(const ofVec3f& val) {
   obj["x"] = val.x;
   obj["y"] = val.y;
   obj["z"] = val.z;
-  return obj;
-}
-
-Json::Value toJsonObj(const PhysicsOptions& val) {
-  Json::Value obj(Json::objectValue);
-  obj["density"] = val.density;
-  obj["bounce"] = val.bounce;
-  obj["friction"] = val.friction;
   return obj;
 }
 

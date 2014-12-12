@@ -21,7 +21,7 @@ _vsync(true) {
 
 void BleepoutConfig::loadJsonFile(std::string path) {
   Json::Value root;
-  if (!readJsonObjectFile(path, &root))
+  if (!readJsonFile(path, &root))
     return;
   readJsonVal(root, "fps", &_fps);
   readJsonEnumVal(root, "logLevel", &_logLevel);
@@ -38,11 +38,8 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 : _brickSize(20.0f, 5.0f, 5.0f),
-_brickGap(1.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
-_ballPhysics(0.0f, 1.0f, 0.0f),
-_paddlePhysics(0.0f, 0.0f, 0.9f),
 _ballInitialVelocity(0.0f, 30.5f, 0.0f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
@@ -50,14 +47,11 @@ _appConfig(appConfig) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value root;
-  if (!readJsonObjectFile(path, &root))
+  if (!readJsonFile(path, &root))
     return;
   readJsonVal(root, "brickSize", &_brickSize);
-  readJsonVal(root, "brickGap", &_brickGap);
   readJsonVal(root, "paddleSize", &_paddleSize);
   readJsonVal(root, "ballRadius", &_ballRadius);
-  readJsonVal(root, "ballPhysics", &_ballPhysics);
-  readJsonVal(root, "paddlePhysics", &_paddlePhysics);
   readJsonVal(root, "ballInitialVelocity", &_ballInitialVelocity);
   readJsonVal(root, "domeRadius", &_domeRadius);
   readJsonVal(root, "domeMargin", &_domeMargin);
@@ -67,11 +61,8 @@ void RoundConfig::loadJsonFile(std::string path) {
 void RoundConfig::saveJsonFile(std::string path) const {
   Json::Value root;
   root["brickSize"] = toJsonObj(_brickSize);
-  root["brickGap"] = _brickGap;
   root["paddleSize"] = toJsonObj(_paddleSize);
   root["ballRadius"] = _ballRadius;
-  root["ballPhysics"] = toJsonObj(_ballPhysics);
-  root["paddlePhysics"] = toJsonObj(_paddlePhysics);
   root["ballInitialVelocity"] = toJsonObj(_ballInitialVelocity);
   root["domeRadius"] = _domeRadius;
   root["domeMargin"] = _domeMargin;
