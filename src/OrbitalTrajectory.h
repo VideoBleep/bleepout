@@ -29,6 +29,8 @@ public:
     const ofVec3f& getPosition() const { return _position; }
     void setPosition(const ofVec3f& position);
     
+    float getTime() const { return _t; }
+    
     void reflect(const ofVec3f& planeNormal);
     
     void output(std::ostream& os) const;

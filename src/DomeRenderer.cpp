@@ -148,7 +148,8 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofNoFill();
     ofSetColor(0, 0, 0);
     ofTranslate(ball.getPosition());
-    ofRotateX(45);
+    ofRotateX(360 * ball.getTrajectory()->getTime());
+    ofRotateY(45);
     ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.1);
     ofFill();
     ofSetColor(255, 255, 255);
