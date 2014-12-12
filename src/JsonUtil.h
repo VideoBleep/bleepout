@@ -13,6 +13,7 @@
 #include <ofMain.h>
 #include <vector>
 #include "BleepoutConfig.h"
+#include "Common.h"
 
 bool readJsonVal(const Json::Value& obj, const char* property, float* result);
 bool readJsonVal(const Json::Value& obj, const char* property, int* result);
@@ -22,6 +23,7 @@ bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result);
 bool readJsonVal(const Json::Value& obj, const char* property, ofVec3f* result);
 bool readJsonVal(const Json::Value& obj, const char* property, ofColor* result);
 bool readJsonVal(const Json::Value& obj, const char* property, std::vector<ofColor>* result);
+bool readJsonVal(const Json::Value& obj, const char* property, ValueSpecifier* result);
 
 template<typename TEnum>
 bool readJsonEnumVal(const Json::Value& obj, const char* property, TEnum* result) {
@@ -35,6 +37,7 @@ bool readJsonEnumVal(const Json::Value& obj, const char* property, TEnum* result
 Json::Value toJsonObj(const ofVec2f& val);
 Json::Value toJsonObj(const ofVec3f& val);
 Json::Value toJsonObj(const ofColor& val);
+Json::Value toJsonObj(const ValueSpecifier& val);
 Json::Value toJsonArr(const std::vector<ofColor>& vals);
 
 bool readJsonFile(std::string path, Json::Value* obj);
