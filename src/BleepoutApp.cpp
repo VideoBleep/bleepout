@@ -7,7 +7,6 @@
 //
 
 #include "BleepoutApp.h"
-#include "SimpleRenderer.h"
 
 
 void BleepoutApp::setup() {

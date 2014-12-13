@@ -10,10 +10,5 @@
 
 Paddle::Paddle(Player* player)
 : GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
-  ofLogVerbose() << "Create Paddle";
   thisGameObject = this;
-}
-
-Paddle::~Paddle() {
-  ofLogVerbose() << "Destroy Paddle";
 }

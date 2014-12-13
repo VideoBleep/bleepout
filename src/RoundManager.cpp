@@ -10,7 +10,6 @@
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
-#include "SimpleRenderer.h"
 #include "DomeRenderer.h"
 #include "Logging.h"
 
@@ -50,8 +49,6 @@ void RoundController::draw() {
 }
 
 void RoundController::update() {
-  //ofLogVerbose() << "OMG UPDATE!!!";
-    
     _state.time = ofGetElapsedTimef();
 
     if (_state.time < 4) {
@@ -71,7 +68,6 @@ void RoundController::update() {
 void RoundController::keyPressed(int key) {
   if (ofGetKeyPressed(OF_KEY_COMMAND)) {
     _renderer->keyPressed(key);
-  } else {
     if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     }

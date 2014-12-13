@@ -17,10 +17,6 @@
 
 class BleepoutApp : public ofBaseApp {
 public:
-  static inline BleepoutApp* getApp() {
-    return (BleepoutApp*)ofGetAppPtr();
-  }
-  
   void setup() override;
   void update() override;
   void draw() override;

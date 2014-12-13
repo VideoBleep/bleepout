@@ -17,7 +17,6 @@
 class Paddle : public GameObject, public PhysicsObject {
 public:
   Paddle(Player* player);
-  ~Paddle() override;
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }
