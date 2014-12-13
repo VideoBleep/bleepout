@@ -110,7 +110,7 @@ void DomeRenderer::setup() {
     ofSetCircleResolution(64);
     ofClear(255,0);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
-    _cam.setRotation(0.66, 0.5);
+    _cam.setRotation(0.0, 0.66);
     _cam.setupPerspective(false);
 
     _debugGraphics = false;
@@ -122,9 +122,9 @@ void DomeRenderer::setup() {
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
 
     ofSetColor(80, 80, 80);
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, 20);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, ofGetHeight() - 35);
     
-    _cam.setDistance(config.domeRadius() * 2);
+    _cam.setDistance(config.domeRadius() * 2.1);
     _cam.begin();
     
     ofPushMatrix();
@@ -163,7 +163,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
                          state.message.size - (j * 1.5),
                          config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
                          20 - (j * 1.1),
-                         i * 120);
+                         30 + i * 120);
             }
         }
     }
