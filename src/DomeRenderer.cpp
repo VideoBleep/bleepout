@@ -32,6 +32,9 @@ namespace {
     void drawBoundingBoxes(GameObjectCollection<T> objects) {
         ofPushStyle();
         for (auto const &obj : objects) {
+            if (!obj->alive()) {
+                continue;
+            }
             ofSetColor(255, 0, 0);
             ofNoFill();
             BoundingBox bbox = obj->getBoundingBox();
@@ -45,6 +48,9 @@ namespace {
     void drawTrajectories(GameObjectCollection<T> objects) {
         ofPushStyle();
         for (auto const &obj : objects) {
+            if (!obj->alive()) {
+                continue;
+            }
             auto t = obj->getTrajectory();
             if (t) {
                 float r = t->getRadius();

@@ -10,6 +10,7 @@
 
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
+#include "GameObject.h"
 #include "OrbitalTrajectory.h"
 
 #if USE_BULLET_COLLISIONS
@@ -213,7 +214,11 @@ public:
                 // speed things up considerably by ignoring static-static collisions.
                 // will need to adjust this if collisions that involve a paddle and a non-ball become necessary
                 // (paddles are technically static, even though they move.)
-                    if (obj1->isDynamic() || obj2->isDynamic()) {
+                if ((obj1->isDynamic() || obj2->isDynamic()) &&
+                    obj1->thisGameObject->alive() &&
+                    obj2->thisGameObject->alive())
+                {
+                    
                     CollisionManifold m;
                     if (BoundingBox::testCollision(obj1->getBoundingBox(), obj2->getBoundingBox(), &m)) {
                         auto contact = std::make_pair(obj1, obj2);
