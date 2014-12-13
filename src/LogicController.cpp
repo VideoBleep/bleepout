@@ -33,10 +33,10 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
   Brick* brick = e.object();
   Player* player = ball->player();
   
-  brick->kill();
-  notifyBrickDestroyed(brick, ball);
-  
   if (player) {
+    brick->kill();
+    notifyBrickDestroyed(brick, ball);
+    
     player->adjustScore(brick->value());
     notifyPlayerScoreChanged(player);
   }
