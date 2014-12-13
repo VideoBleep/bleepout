@@ -79,7 +79,7 @@ void SpaceController::addBall(float elevation, float heading) {
     ball->setSize(ofVec3f(_config.ballRadius(), _config.ballRadius(), _config.ballRadius()));
     auto t = new OrbitalTrajectory();
     t->setRadius(_config.domeRadius() + _config.domeMargin());
-    t->setSpeed(0.04);
+    t->setSpeed(0.03);
     t->initWithTwoPoints(elevation, heading, -45, heading + ofRandom(-45, 45));
     ball->setTrajectory(t);
     
