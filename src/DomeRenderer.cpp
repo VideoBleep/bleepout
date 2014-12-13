@@ -107,9 +107,7 @@ namespace {
 
 void DomeRenderer::setup() {
     ofEnableDepthTest();
-    ofEnableAlphaBlending();
     ofSetCircleResolution(64);
-    ofClear(255,0);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
     _cam.setRotation(0.0, 0.66);
     _cam.setupPerspective(false);

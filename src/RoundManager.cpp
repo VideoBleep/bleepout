@@ -45,14 +45,13 @@ void RoundController::setup() {
 
 void RoundController::draw() {
   _renderer->draw(_state, _config);
-  //...
 }
 
 void RoundController::update() {
     _state.time = ofGetElapsedTimef();
 
     if (_state.time < 4) {
-        _state.message = RoundMessage("VideoBleep\n presents", ofColor(0, 0, 0), 12);
+        _state.message = RoundMessage("VideoBleep\n presents", ofColor(0, 0, 0), 12, 1);
     } else if (_state.time < 8) {
         _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 120, 240), 50, 4);
     } else if (_state.time < 12) {

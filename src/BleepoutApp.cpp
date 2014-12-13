@@ -23,6 +23,8 @@ void BleepoutApp::setup() {
   _playerManager.reset(new PlayerManager(_roundController));
   _playerManager->addPlayer();
 	
+  _syphonClient.setup();
+  _syphonClient.set("Composition", "Arena");
 }
 
 void BleepoutApp::update() {
@@ -32,8 +34,9 @@ void BleepoutApp::update() {
 }
 
 void BleepoutApp::draw() {
+  _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
   if (_roundController) {
-    _roundController->draw();
+   _roundController->draw();
   }
 }
 
