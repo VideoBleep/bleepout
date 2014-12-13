@@ -15,14 +15,23 @@
  */
 class Pulser {
 public:
+  Pulser() : _interval(0) { }
   Pulser(float interval) : _interval(interval) { }
   
   bool update(float time) {
     if ((time - _lastPulseTime) >= _interval) {
-      _lastPulseTime = time;
+      pulse(time);
       return true;
     }
     return false;
+  }
+  
+  void setInterval(float interval) {
+    _interval = interval;
+  }
+  
+  void pulse(float time) {
+    _lastPulseTime = time;
   }
 private:
   float _interval;
@@ -31,21 +40,45 @@ private:
 
 class SpinPulser {
 public:
-  SpinPulser(ofVec3f minRate, ofVec3f maxRate,
-             float changeInterval, ofVec3f startValue = ofVec3f())
-  : _minRate(minRate), _maxRate(maxRate), _value(startValue), _changePulser(changeInterval) {
+  SpinPulser() {}
+  SpinPulser(ofVec3f minRate, ofVec3f maxRate, float changeInterval, ofVec3f startValue = ofVec3f()) {
+    setup(minRate, maxRate, changeInterval, startValue);
+  }
+  
+  void setup(ofVec3f minRate, ofVec3f maxRate, float changeInterval, ofVec3f startValue = ofVec3f()) {
+    setRange(minRate, maxRate);
+    setPulseInterval(changeInterval);
+    setValue(startValue);
     updateRate();
   }
   
-  const ofVec3f& update(float time, float frameRate) {
+  const ofVec3f& update(float time, float rate) {
     if (_changePulser.update(time)) {
       updateRate();
     }
-    _value += _rate * frameRate;
+    _value += _rate * rate;
     return _value;
   }
   
   const ofVec3f& value() const { return _value; }
+  
+  void pulse(float time) {
+    _changePulser.pulse(time);
+    updateRate();
+  }
+  
+  void setRange(ofVec3f minRate, ofVec3f maxRate) {
+    _minRate = minRate;
+    _maxRate = maxRate;
+  }
+  
+  void setPulseInterval(float interval) {
+    _changePulser.setInterval(interval);
+  }
+  
+  void setValue(ofVec3f value) {
+    _value = value;
+  }
   
 private:
   void updateRate() {
@@ -62,82 +95,84 @@ private:
   ofVec3f _maxRate;
 };
 
-static void drawRingSet(ofVec3f axis, int count, float radius, float startAngle, float endAngle) {
-  ofPushMatrix();
-  ofPushStyle();
-
-  ofNoFill();
-  ofSetLineWidth(0.4f);
-  ofSetColor(127, 0, 0);
-  ofRotate(startAngle, axis.x, axis.y, axis.z);
-  float step = (endAngle - startAngle) / count;
-  for (int i = 0 ; i < count; ++i) {
-    ofRotate(step, axis.x, axis.y, axis.z);
-    ofCircle(0, 0, 0, radius);
-  }
-  
-  ofPopStyle();
-  ofPopMatrix();
-}
-
-static void drawRingSet_2(ofVec3f rotations, ofVec3f rotationRanges, int count, float radius) {
-  ofPushMatrix();
-  ofPushStyle();
-  
-  ofNoFill();
-  ofSetLineWidth(0.4f);
-  ofSetColor(127, 0, 0);
-  
+// there's definitely a better way to do this...
+static void rotate3d(ofVec3f rotations) {
   ofRotateX(rotations.x);
   ofRotateY(rotations.y);
   ofRotateZ(rotations.z);
+}
+
+class RingSet {
+public:
+  RingSet() { }
   
-  ofVec3f rotationStep = rotationRanges / count;
-  for (int i = 0; i < count; ++i) {
-    ofRotateX(rotationStep.x);
-    ofRotateY(rotationStep.y);
-    ofRotateZ(rotationStep.z);
-    ofCircle(0, 0, 0, radius);
+  void setup(SpinPulser spinPulser, SpinPulser spreadPulser, ofVec3f spreadOffset, int count, float radiusScale, float lineWidth, ofColor color) {
+    _spinPulser = spinPulser;
+    _spreadPulser = spreadPulser;
+    _spreadOffset = spreadOffset;
+    _count = count;
+    _radiusScale = radiusScale;
+    _lineWidth = lineWidth;
+    _color = color;
   }
   
-  ofPopStyle();
-  ofPopMatrix();
-}
+  void draw(RoundConfig config) {
+    float radius = config.domeRadius() * _radiusScale;
+    float totalElapsed = ofGetElapsedTimef();
+    float rate = ofGetFrameRate();
+    ofPushMatrix();
+    ofPushStyle();
+    
+    ofNoFill();
+    ofSetLineWidth(_lineWidth);
+    ofSetColor(_color);
+    
+    _spinPulser.update(totalElapsed, rate);
+    _spreadPulser.update(totalElapsed, rate);
+    
+    rotate3d(_spinPulser.value());
+    
+    ofVec3f rotationStep = (_spreadOffset + _spreadPulser.value()) / _count;
+    for (int i = 0; i < _count; ++i) {
+      rotate3d(rotationStep);
+      ofCircle(0, 0, 0, radius);
+    }
+    
+    ofPopStyle();
+    ofPopMatrix();
+  }
+private:
+  SpinPulser _spinPulser;
+  SpinPulser _spreadPulser;
+  ofVec3f _spreadOffset;
+  int _count;
+  float _radiusScale;
+  ofColor _color;
+  float _lineWidth;
+};
 
 class RendererExtrasImpl {
 private:
-  float _lastFrameTime;
-  ofVec3f _axis1;
-  float _angleOffset;
-  ofVec3f _rotationRates;
-  ofVec3f _rotations;
-  ofPtr<SpinPulser> _spinPulser;
+  RingSet _ringSet1;
+  RingSet _ringSet2;
 public:
   RendererExtrasImpl() {
-    _axis1.set(0, 1, 0.3);
-    _lastFrameTime = ofGetElapsedTimef();
-    _angleOffset = 0.0f;
-    _rotationRates.set(0.1, 0.3, 0.4);
-    _rotations.set(0, 0, 0);
-    _spinPulser.reset(new SpinPulser(ofVec3f(0.01), ofVec3f(0.3), 200.0f));
+    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f),
+                    ofVec3f(20), 30, 1.95, 0.4, ofColor(127, 0, 63));
+    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f),
+                    ofVec3f(60), 100, 2, 0.2, ofColor(0, 127, 0, 63));
   }
   void draw(RoundState state, RoundConfig config) {
     ofPushMatrix();
     ofPushStyle();
     
     float totalElapsed = ofGetElapsedTimef();
-    float timeChange = totalElapsed - _lastFrameTime;
-    _lastFrameTime = totalElapsed;
-
     float rate = ofGetFrameRate();
-    //_axis1.rotate(rate / 20.0f, ofVec3f(0, 0.2, 1));
     
-    _rotations += _rotationRates * rate;
-    
-    drawRingSet_2(_spinPulser->update(totalElapsed, rate), _rotationRates * rate, 30, config.domeRadius() * 1.95f);
-    
-    _angleOffset += rate / 20.0f;
-//    drawRingSet(_axis1, 30, config.domeRadius() * 1.95f, _angleOffset, 360.0f + _angleOffset);
+    _ringSet1.draw(config);
+    _ringSet2.draw(config);
     
     ofPopStyle();
     ofPopMatrix();
