@@ -53,7 +53,6 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(root, "ballRadius", &_ballRadius);
   readJsonVal(root, "domeRadius", &_domeRadius);
   readJsonVal(root, "domeMargin", &_domeMargin);
-  readJsonVal(root, "playerColors", &_playerColors);
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
@@ -63,6 +62,5 @@ void RoundConfig::saveJsonFile(std::string path) const {
   root["ballRadius"] = _ballRadius;
   root["domeRadius"] = _domeRadius;
   root["domeMargin"] = _domeMargin;
-  root["playerColors"] = toJsonArr(_playerColors);
   writeJsonFile(path, root);
 }

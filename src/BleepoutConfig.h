@@ -43,15 +43,6 @@ public:
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
   
-  const std::vector<ofColor>& playerColors() const { return _playerColors; }
-  
-  const ofColor& getPlayerColor(int i) const {
-    if (_playerColors.empty() || i >= _playerColors.size()) {
-      return ofColor::black;
-    }
-    return _playerColors[i];
-  }
-  
   const BleepoutConfig& appConfig() const { return _appConfig; }
 private:
   const BleepoutConfig& _appConfig;
@@ -61,8 +52,6 @@ private:
     
   float _domeRadius;
   float _domeMargin;
-  
-  std::vector<ofColor> _playerColors;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */
