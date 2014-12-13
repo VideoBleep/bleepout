@@ -7,6 +7,7 @@
 //
 
 #include "DomeRenderer.h"
+#include "PhysicsUtil.h"
 
 namespace {
     void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor) {
@@ -23,6 +24,28 @@ namespace {
         ofFill();
         ofSetColor(fillColor);
         ofDrawBox(ofVec3f::zero(), dims.x, dims.y, dims.z);
+        
+        ofPopStyle();
+        ofPopMatrix();
+    }
+    
+    void drawText(string text, ofColor color, ofTrueTypeFont& font, float size, float radius, float elevation, float heading) {
+        ofPushMatrix();
+        ofPushStyle();
+        
+        ofVec3f pos = sphericalToCartesian(radius, elevation, heading);
+        ofTranslate(pos);
+        ofRotateY(360 - heading - 90);
+        ofRotateX(elevation);
+        
+        float scale = size/(font.getSize() * 1.0);
+        ofScale(scale, scale);
+
+        ofRectangle rect = font.getStringBoundingBox(text, 0, 0);
+        ofTranslate(-rect.width/2, -rect.height/2, 0);
+        
+        ofSetColor(color);
+        font.drawString(text, 0, 0);
         
         ofPopStyle();
         ofPopMatrix();
@@ -77,6 +100,7 @@ namespace {
         }
         ofPopStyle();
     }
+    
 }
 
 
@@ -88,6 +112,8 @@ void DomeRenderer::setup() {
     ofSetCircleResolution(64);
     _debugGraphics = false;
     _drawTrajectories = false;
+    
+    _font.loadFont("PixelSplitter-Bold.ttf", 50);
 }
 
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
@@ -119,6 +145,18 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
         drawTrajectories(state.balls(), ofColor(255, 0, 0), true);
     } else if (_drawTrajectories) {
         drawTrajectories(state.balls(), ofColor(180, 180, 200), false);
+    }
+    
+    if (state.message.text.length()) {
+        for (int i = 0; i < 3; i++) {
+            drawText(state.message.text,
+                     state.message.color,
+                     _font,
+                     state.message.size,
+                     config.domeRadius() + config.domeMargin() * 1.25,
+                     20,
+                     i * 120);
+        }
     }
     
     _cam.end();

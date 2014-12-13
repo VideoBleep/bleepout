@@ -19,6 +19,14 @@
 #include "Wall.h"
 #include "GameObjectCollection.h"
 
+struct RoundMessage {
+    RoundMessage() {}
+    RoundMessage(string t, const ofColor& c, float sz) : text(t), color(c), size(sz) {}
+    string text;
+    ofColor color;
+    float size;
+};
+
 class RoundState {
 public:
 
@@ -35,6 +43,9 @@ public:
   GameObjectCollection<Player>& players() { return _players; }
 
   void output(std::ostream& os) const;
+    
+  RoundMessage message;
+  float time;
 
 private:
   GameObjectCollection<Paddle> _paddles;

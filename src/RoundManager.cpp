@@ -33,7 +33,10 @@ void RoundController::setup() {
   
   _spaceController->enableLogging(OF_LOG_NOTICE);
   _spaceController->attachListener(*_logicController);
-  
+    
+  _state.message.text = "START";
+  _state.message.color = ofColor(255, 0, 0);
+    
   _renderer.reset(new DomeRenderer());
   _renderer->setup();
   
@@ -48,6 +51,18 @@ void RoundController::draw() {
 
 void RoundController::update() {
   //ofLogVerbose() << "OMG UPDATE!!!";
+    
+    _state.time = ofGetElapsedTimef();
+
+    if (_state.time < 4) {
+        _state.message = RoundMessage("VideoBleep\n presents", ofColor(0, 0, 0), 12);
+    } else if (_state.time < 8) {
+        _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 0, 255), 50);
+    } else if (_state.time < 12) {
+        _state.message = RoundMessage("START", ofColor(255, 0, 0), 25);
+    } else {
+        _state.message.text = "";
+    }
 
   _spaceController->update();
   _logicController->update();
