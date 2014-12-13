@@ -13,6 +13,7 @@
 #include "RoundManager.h"
 #include "TurntableCam.h"
 #include <ofTrueTypeFont.h>
+#include "RendererExtras.h"
 
 class DomeRenderer : public RendererBase {
 public:
@@ -36,6 +37,7 @@ protected:
     bool _drawTrajectories;
     
     ofTrueTypeFont _font;
+    RendererExtras _extras;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */
