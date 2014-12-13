@@ -14,6 +14,7 @@ void BleepoutApp::setup() {
   ofSetFrameRate(_config.fps());
   ofSetLogLevel(_config.logLevel());
   ofSetVerticalSync(_config.vsync());
+  ofSetBackgroundAuto(false);
 
   RoundConfig roundConfig(_config);
   _roundController.reset(new RoundController(roundConfig));
@@ -34,6 +35,7 @@ void BleepoutApp::update() {
 }
 
 void BleepoutApp::draw() {
+  ofBackground(0, 0, 0);
   _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
   if (_roundController) {
    _roundController->draw();
