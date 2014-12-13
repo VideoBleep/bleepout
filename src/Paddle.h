@@ -22,6 +22,8 @@ public:
   const Player* player() const { return _player; }
   
   void output(std::ostream& os) const override;
+    
+  virtual const ofColor& getColor() const override;
   
   static const char* typeName() { return "paddle"; }
 private:

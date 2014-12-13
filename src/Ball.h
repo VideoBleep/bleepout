@@ -13,7 +13,6 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 #include "Common.h"
-#include <ofTypes.h>
 
 class Ball : public GameObject, public PhysicsObject {
 public:
@@ -24,6 +23,8 @@ public:
   const Player* player() const { return _player; }
   void setPlayer(Player* player) { _player = player; }
 
+  virtual const ofColor& getColor() const override;
+    
   void output(std::ostream& os) const override;
   void bounce(ofVec3f normal);
 

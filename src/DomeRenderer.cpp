@@ -197,7 +197,7 @@ void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
 }
 
 void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
-    drawBoxObject(paddle, ofColor(0, 0, 0), ofColor(0, 200, 60));
+    drawBoxObject(paddle, ofColor(0, 0, 0), paddle.getColor());
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
@@ -209,11 +209,12 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofPushStyle();
     
     ofNoFill();
-    ofSetColor(0, 0, 0);
     ofTranslate(ball.getPosition());
     ofRotateX(360 * ball.getTrajectory()->getTime());
     ofRotateY(45);
-    ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.1);
+    ofSetLineWidth(3.0);
+    ofSetColor(ball.getColor());
+    ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
     ofFill();
     ofSetColor(255, 255, 255);
     ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
