@@ -30,10 +30,6 @@ public:
     return ofPtr<T>();
   }
   
-  void add(ofPtr<T> obj) {
-    push_back(obj);
-  }
-  
   inline typename VectorType::iterator begin() { return VectorType::begin(); }
   inline typename VectorType::const_iterator begin() const { return VectorType::begin(); }
   
@@ -47,10 +43,6 @@ public:
       ofLog(level) << "   " << (o);
     }
   }
-  
-private:
-  //  std::vector<ofPtr<T> > _list;
-  //  std::map<GameObjectId, int > _idIndexLookup;
 };
 
 #endif

@@ -156,58 +156,6 @@ bool readJsonVal(const Json::Value& obj, const char* property, std::vector<ofCol
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, ValueSpecifier* result) {
-  const Json::Value& val = obj["property"];
-  if (val.isNull()) {
-    ofLogError() << "property not found '" << property << "'";
-    return false;
-  }
-  if (val.isNumeric()) {
-    *result = ValueSpecifier::createConstant(val.asFloat());
-    return true;
-  }
-  Json::Value min;
-  Json::Value max;
-  Json::Value isRandom(Json::nullValue);
-  if (val.isArray()) {
-    if (val.size() != 2) {
-      ofLogError() << "Invalid number of values for property '" << property << "'";
-      return false;
-    }
-    min = val[0];
-    max = val[1];
-  } else if (val.isObject()) {
-    min = val["min"];
-    max = val["max"];
-    isRandom = val["random"];
-    if (!isRandom.isNull() || !isRandom.isBool()) {
-      ofLogError() << "Invalid type for property '" << property << ".random' "
-      << "(expected bool or null): " << isRandom.toStyledString();
-      return false;
-    }
-  } else {
-    ofLogError() << "Invalid type for property '" << property << "' "
-      << "(expected number or array or object): " << val.toStyledString();
-    return false;
-  }
-  if (!min.isNumeric()) {
-    ofLogError() << "Invalid type for property '" << property << "'[0] "
-    << "(expected number): " << min.toStyledString();
-    return false;
-  }
-  if (!max.isNumeric()) {
-    ofLogError() << "Invalid type for property '" << property << "'[0] "
-    << "(expected number): " << max.toStyledString();
-    return false;
-  }
-  if (isRandom.asBool()) {
-    *result = ValueSpecifier::createRandom(min.asFloat(), max.asFloat());
-  } else {
-    *result = ValueSpecifier::createRange(min.asFloat(), max.asFloat());
-  }
-  return true;
-}
-
 Json::Value toJsonObj(const ofVec2f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
@@ -229,26 +177,6 @@ Json::Value toJsonObj(const ofColor& val) {
   obj["g"] = val.g;
   obj["b"] = val.b;
   return obj;
-}
-
-Json::Value toJsonObj(const ValueSpecifier& val) {
-  if (val.isConstant())
-    return Json::Value((double)val.minValue());
-  if (val.isRange()) {
-    Json::Value arr(Json::arrayValue);
-    arr.resize(2);
-    arr[0] = Json::Value(val.minValue());
-    arr[1] = Json::Value(val.maxValue());
-    return arr;
-  }
-  if (val.isRandom()) {
-    Json::Value obj(Json::objectValue);
-    obj["random"] = true;
-    obj["min"] = val.minValue();
-    obj["max"] = val.maxValue();
-    return obj;
-  }
-  return Json::Value(Json::nullValue);
 }
 
 Json::Value toJsonArr(const std::vector<ofColor>& vals) {
