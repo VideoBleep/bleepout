@@ -21,16 +21,18 @@ SpaceController::SpaceController(RoundState& state, RoundConfig & config)
 : _state(state), _config(config) {
 }
 
+void SpaceController::addInitialPaddles() {
+    int numPlayers = _state.players().size();
+    for (int i = 0; i < numPlayers; i++) {
+        ofPtr<Player> player = _state.players()[i];
+        addPaddle(360 * i / (numPlayers * 1.0), player.get());
+        ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
+    }
+}
+
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
-  
-  int numPlayers = _state.players().size();
-  for (int i = 0; i < numPlayers; i++) {
-    ofPtr<Player> player = _state.players()[i];
-    addPaddle(360 * i / (numPlayers * 1.0), player.get());
-    ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-  }
 
   for (int i = 0; i < 5; i ++) {
     addBall(30, ofRandom(360));

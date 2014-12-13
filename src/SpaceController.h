@@ -23,6 +23,8 @@ public:
   void update();
   void drawDebug();
     
+  void addInitialPaddles();
+    
 private:
   void generateBricks();
   

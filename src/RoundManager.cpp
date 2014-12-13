@@ -21,9 +21,7 @@ RoundController::~RoundController() {
 }
 
 void RoundController::setup() {
-  //...
-  _state.players().push_back(ofPtr<Player>(new Player()));
-  
+   
   _spaceController.reset(new SpaceController(_state, _config));
   _logicController.reset(new LogicController(_state, _config));
   _spaceController->setup();
@@ -50,14 +48,17 @@ void RoundController::draw() {
 void RoundController::update() {
     _state.time = ofGetElapsedTimef();
 
-    if (_state.time < 4) {
-        _state.message = RoundMessage("VideoBleep\n presents", ofColor(0, 0, 0), 12, 1);
-    } else if (_state.time < 8) {
+    if (_state.time < 3) {
+        _state.message = RoundMessage("VideoBleep\n presents", ofColor(255, 255, 255), 12);
+    } else if (_state.time < 7.5) {
         _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 120, 240), 50, 4);
-    } else if (_state.time < 12) {
+    } else if (_state.time < 10) {
         _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
     } else {
         _state.message.text = "";
+        if (_state.paddles().size() == 0) {
+            _spaceController->addInitialPaddles();
+        }
     }
 
   _spaceController->update();
