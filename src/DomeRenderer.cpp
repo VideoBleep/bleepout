@@ -19,6 +19,7 @@ namespace {
         ofTranslate(object.getPosition());
         ofRotateY(object.getRotation());
         ofNoFill();
+        ofSetLineWidth(1.5);
         ofSetColor(edgeColor);
         ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
         ofFill();
@@ -200,7 +201,7 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    drawBoxObject(wall, ofColor(180, 180, 180), ofColor(100, 100, 100));
+    drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
 }
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {

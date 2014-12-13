@@ -56,7 +56,7 @@ void RoundController::update() {
     } else if (_state.time < 8) {
         _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 120, 240), 50, 4);
     } else if (_state.time < 12) {
-        _state.message = RoundMessage("START", ofColor(0, 255, 0), 25);
+        _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
     } else {
         _state.message.text = "";
     }
