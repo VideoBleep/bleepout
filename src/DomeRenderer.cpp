@@ -45,7 +45,7 @@ namespace {
     }
     
     template<typename T>
-    void drawTrajectories(GameObjectCollection<T> objects) {
+    void drawTrajectories(GameObjectCollection<T> objects, const ofColor& color, bool showVectors) {
         ofPushStyle();
         for (auto const &obj : objects) {
             if (!obj->alive()) {
@@ -54,6 +54,8 @@ namespace {
             auto t = obj->getTrajectory();
             if (t) {
                 float r = t->getRadius();
+
+                ofSetColor(color);
                 
                 ofPushMatrix();
                 ofVec3f normal(0, 0, -1);
@@ -61,16 +63,16 @@ namespace {
                 ofVec3f axis = normal.crossed(orbitNormal);
                 float angle = acos(normal.dot(orbitNormal));
                 ofRotate(angle * 180/PI, axis.x, axis.y, axis.z);
-                ofSetColor(255, 0, 0);
                 ofNoFill();
                 ofCircle(0, 0, 0, r);
                 ofPopMatrix();
                 
-                ofFill();
-                ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
-                ofLine(ofVec3f::zero(), t->v() * r);
-                ofColor(128, 0, 0);
-                ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()).normalize() * r/4.0, 2);
+                if (showVectors) {
+                    ofFill();
+                    ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
+                    ofLine(ofVec3f::zero(), t->v() * r);
+                    ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()).normalize() * r/4.0, 2);
+                }
             }
         }
         ofPopStyle();
@@ -85,12 +87,13 @@ void DomeRenderer::setup() {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _debugGraphics = false;
+    _drawTrajectories = false;
 }
 
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
 
     ofSetColor(80, 80, 80);
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + d for physics debugging info", 10, 20);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, 20);
     
     _cam.setDistance(config.domeRadius() * 2);
     _cam.begin();
@@ -113,7 +116,9 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
         drawBoundingBoxes(state.paddles());
         drawBoundingBoxes(state.bricks());
         drawBoundingBoxes(state.walls());
-        drawTrajectories(state.balls());
+        drawTrajectories(state.balls(), ofColor(255, 0, 0), true);
+    } else if (_drawTrajectories) {
+        drawTrajectories(state.balls(), ofColor(180, 180, 200), false);
     }
     
     _cam.end();
@@ -122,6 +127,8 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
 void DomeRenderer::keyPressed(int key) {
     if (key == 'd') {
         _debugGraphics = !_debugGraphics;
+    } else if (key == 't') {
+        _drawTrajectories = !_drawTrajectories;
     }
 }
 

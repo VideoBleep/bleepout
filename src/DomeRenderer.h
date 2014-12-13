@@ -32,6 +32,7 @@ protected:
     
     ofxTurntableCam _cam;
     bool _debugGraphics;
+    bool _drawTrajectories;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */
