@@ -21,10 +21,12 @@
 
 struct RoundMessage {
     RoundMessage() {}
-    RoundMessage(string t, const ofColor& c, float sz) : text(t), color(c), size(sz) {}
+    RoundMessage(string t, const ofColor& c, float sz = 50, int trail = 0)
+        : text(t), color(c), size(sz), trails(trail) {}
     string text;
     ofColor color;
     float size;
+    int trails;
 };
 
 class RoundState {

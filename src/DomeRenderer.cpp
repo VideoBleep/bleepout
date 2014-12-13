@@ -45,7 +45,7 @@ namespace {
         ofTranslate(-rect.width/2, -rect.height/2, 0);
         
         ofSetColor(color);
-        font.drawString(text, 0, 0);
+        font.drawStringAsShapes(text, 0, 0);
         
         ofPopStyle();
         ofPopMatrix();
@@ -105,15 +105,18 @@ namespace {
 
 
 void DomeRenderer::setup() {
+    ofEnableDepthTest();
+    ofEnableAlphaBlending();
+    ofSetCircleResolution(64);
+    ofClear(255,0);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
     _cam.setRotation(0.66, 0.5);
     _cam.setupPerspective(false);
-    ofEnableDepthTest();
-    ofSetCircleResolution(64);
+
     _debugGraphics = false;
     _drawTrajectories = false;
     
-    _font.loadFont("PixelSplitter-Bold.ttf", 50);
+    _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
 }
 
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
@@ -149,13 +152,19 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
     
     if (state.message.text.length()) {
         for (int i = 0; i < 3; i++) {
-            drawText(state.message.text,
-                     state.message.color,
-                     _font,
-                     state.message.size,
-                     config.domeRadius() + config.domeMargin() * 1.25,
-                     20,
-                     i * 120);
+            for (int j = 0; j < state.message.trails + 1; j++) {
+                ofColor color = state.message.color;
+                float h, s, b;
+                color.getHsb(h, s, b);
+                color.setHsb(h + j * 16, s, b + j * 32);
+                drawText(state.message.text,
+                         color,
+                         _font,
+                         state.message.size - (j * 1.5),
+                         config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
+                         20 - (j * 1.1),
+                         i * 120);
+            }
         }
     }
     
