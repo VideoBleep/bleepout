@@ -15,6 +15,8 @@
 
 class BleepoutConfig {
 public:
+  static BleepoutConfig createTestConfig();
+  
   BleepoutConfig();
   
   void loadJsonFile(std::string path);
@@ -23,10 +25,15 @@ public:
   int fps() const { return _fps; }
   ofLogLevel logLevel() const { return _logLevel; }
   bool vsync() const { return _vsync; }
+  
+  const std::string& syphonServerName() const { return _syphonServerName; }
+  const std::string syphonAppName() const { return _syphonAppName; }
 private:
   int _fps;
   ofLogLevel _logLevel;
   bool _vsync;
+  std::string _syphonServerName;
+  std::string _syphonAppName;
 };
 
 struct BrickSpec {

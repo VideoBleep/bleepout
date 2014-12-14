@@ -19,6 +19,13 @@ _vsync(true) {
   
 }
 
+BleepoutConfig BleepoutConfig::createTestConfig() {
+  BleepoutConfig config;
+  config._syphonServerName = "Composition";
+  config._syphonAppName = "Arena";
+  return config;
+}
+
 void BleepoutConfig::loadJsonFile(std::string path) {
   Json::Value root;
   if (!readJsonFile(path, &root))
@@ -26,6 +33,8 @@ void BleepoutConfig::loadJsonFile(std::string path) {
   readJsonVal(root, "fps", &_fps);
   readJsonEnumVal(root, "logLevel", &_logLevel);
   readJsonVal(root, "vsync", &_vsync);
+  readJsonVal(root, "syphonServer", &_syphonServerName);
+  readJsonVal(root, "syphonApp", &_syphonAppName);
 }
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
@@ -33,6 +42,8 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
   root["fps"] = _fps;
   root["logLevel"] = (int)_logLevel;
   root["vsync"] = _vsync;
+  root["syphonServer"] = _syphonServerName;
+  root["syphonApp"] = _syphonAppName;
   writeJsonFile(path, root);
 }
 

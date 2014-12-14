@@ -91,6 +91,14 @@ bool readJsonVal(const Json::Value& obj, const char* property, bool* result) {
   return true;
 }
 
+bool readJsonVal(const Json::Value& obj, const char* property, std::string* result) {
+  const Json::Value* val = getTypedValue(obj, property, Json::stringValue);
+  if (val == NULL)
+    return false;
+  *result = val->asString();
+  return true;
+}
+
 bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result) {
   const Json::Value* val = getTypedValue(obj, property, Json::objectValue);
   if (val == NULL)
