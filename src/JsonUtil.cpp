@@ -128,6 +128,77 @@ bool readJsonVal(const Json::Value& val, ofColor* result) {
 }
 
 template<>
+bool readJsonVal(const Json::Value& val, BrickSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  BrickSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading) ||
+      !readJsonVal(val["color"], &temp.color))
+    return false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  BrickRingSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["color"], &temp.color) ||
+      !readJsonVal(val["count"], &temp.count) ||
+      !readJsonVal(val["phase"], &temp.phase))
+    return false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, WallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  WallSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading) ||
+      !readJsonVal(val["size"], &temp.size))
+    return false;
+  if (!readJsonVal(val["isExit"], &temp.isExit))
+      temp.isExit = false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, CurvedWallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  CurvedWallSpec temp;
+  if (!readJsonVal(val["elevation1"], &temp.elevation1) ||
+      !readJsonVal(val["heading1"], &temp.heading1) ||
+      !readJsonVal(val["elevation2"], &temp.elevation2) ||
+      !readJsonVal(val["heading2"], &temp.heading2) ||
+      !readJsonVal(val["width"], &temp.width))
+    return false;
+  if (!readJsonVal(val["isExit"], &temp.isExit))
+    temp.isExit = false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, BallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  BallSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading))
+    return false;
+  *result = temp;
+  return true;
+}
+
+template<>
 Json::Value toJsonVal(const ofVec2f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
@@ -151,16 +222,6 @@ Json::Value toJsonVal(const ofColor& val) {
   obj["g"] = val.g;
   obj["b"] = val.b;
   return obj;
-} 
-
-template<>
-Json::Value toJsonVal(const std::vector<ofColor>& vals) {
-  Json::Value arr(Json::arrayValue);
-  arr.resize(vals.size());
-  for (Json::ArrayIndex i = 0; i < vals.size(); i++) {
-    arr[i] = toJsonVal(vals[i]);
-  }
-  return arr;
 }
 
 template<typename T>
