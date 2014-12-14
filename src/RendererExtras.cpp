@@ -19,11 +19,11 @@ static void rotate3d(ofVec3f rotations) {
 
 class RingSet {
 private:
-  class RingChange : public UnaryFunction<Nothing, Nothing> {
+  class RingChange : public TimedFunc {
   public:
     RingChange(RingSet& ringSet, ofColor color, float lineWidth)
     : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
-    Nothing operator()(Nothing) {
+    virtual void operator()(TimedActionArgs args) override {
       _ringSet.color().set(_color);
       _ringSet.setLineWidth(_lineWidth);
       return Nothing();
@@ -77,7 +77,7 @@ public:
   float lineWidth() const { return _lineWidth; }
   void setLineWidth(float lineWidth) { _lineWidth = lineWidth; }
   
-  UnaryFunction<Nothing, Nothing>* newChange(ofColor color, float lineWidth) {
+  TimedFunc* newChange(ofColor color, float lineWidth) {
     return new RingChange(*this, color, lineWidth);
   }
 private:
@@ -96,7 +96,7 @@ private:
   RingSet _ringSet1;
   RingSet _ringSet2;
   RingSet _ringSet3;
-  ofPtr<Timed<Nothing, Nothing>::Action> _action;
+  ofPtr<TimedAction> _action;
 public:
   RendererExtrasImpl() {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
@@ -111,7 +111,7 @@ public:
   }
   void update() {
     if (_action) {
-      if (_action->update(ofGetElapsedTimef(), Nothing(), NULL)) {
+      if (_action->update()) {
         _action.reset();
       }
     }
@@ -135,8 +135,8 @@ public:
       _ringSet1.color().setHueAngle(_ringSet1.color().getHueAngle() + 20);
       ofColor newColor(_ringSet1.color());
       newColor.setHueAngle((newColor.getHueAngle() + 30));
-      ofPtr<UnaryFunction<Nothing, Nothing> > fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
-      _action.reset(new Timed<Nothing, Nothing>::FunctorAction(ofGetElapsedTimef() + 5.0f, fn));
+      ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
+      _action.reset(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn));
     }
   }
 };

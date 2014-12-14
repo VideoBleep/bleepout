@@ -10,120 +10,86 @@
 #define bleepout_Timing_h
 
 #include "Common.h"
+#include <list>
 
-template<typename Arg, typename Result>
-struct Timed {
+struct TimedActionArgs {
+  float time;
+  float fps;
+  float percentage;
   
-  class Action {
-  public:
-    virtual Result call(Arg arg) = 0;
-    
-    operator bool() const { return called(); }
-    
-    virtual bool called() const = 0;
-    
-    virtual bool update(float time, Arg arg, Result* result) = 0;
-  };
+  TimedActionArgs(float t, float f)
+  : time(t), fps(f), percentage(0) { }
   
-  class SimpleAction : public Action {
-  protected:
-    SimpleAction(float triggerTime)
-    : _triggerTime(triggerTime), _called(false) { }
-    
-    virtual bool called() const override {
-      return _called;
-    }
-    
-    virtual bool update(float time, Arg arg, Result* result) override  {
-      if (_called || time < _triggerTime)
-        return false;
-      *result = this->call(arg);
-      _called = true;
-      return true;
-    }
-  protected:
-    bool _called;
-    float _triggerTime;
-  };
+  static TimedActionArgs now();
+};
+
+typedef UnaryAction<TimedActionArgs> TimedFunc;
+
+class TimedAction {
+public:
+  virtual bool done() const = 0;
+  virtual bool update(TimedActionArgs args) = 0;
+  bool update() {
+    return update(TimedActionArgs::now());
+  }
+};
+
+class OnceAction : public TimedAction {
+public:
+  static TimedAction* newOnceAction(float triggerTime,
+                                    ofPtr<TimedFunc> fn);
+
+  OnceAction(float triggerTime)
+  : _triggerTime(triggerTime), _called(false) { }
   
-  class FunctorAction : public SimpleAction {
-  public:
-    typedef UnaryFunction<Arg, Result> Func;
-    
-    FunctorAction(float triggerTime, ofPtr<Func> f)
-    : SimpleAction(triggerTime), _function(f) { }
-    
-    virtual Result call(Arg arg) override { return (*_function)(arg); }
-  private:
-    ofPtr<Func> _function;
-  };
+  virtual bool done() const override { return _called; }
   
-  class ActionSpan : public Action {
-  public:
-    typedef BinaryFunction<Arg, float, Result> Func;
-    
-    ActionSpan(float start, float end, ofPtr<Func> fn)
-    :_startTime(start), _endTime(end), _started(false), _ended(false),
-    _function(fn) { }
-    
-    Result call(float position, Arg arg) { return (*_function)(arg); }
-    
-    bool started() const { return _started; }
-    virtual bool called() const override { return _ended; }
-    
-    virtual bool update(float time, Arg arg, Result* result) override {
-      if (_ended)
-        return false;
-      if (!_started && time >= _startTime)
-        _started = true;
-      if (_started && time >= _endTime) {
-        _ended = true;
-        return true;
-      }
-      float position = ofMap(time, _startTime, _endTime, 0, 1);
-      *result = call(position, arg);
-      return true;
-    }
-    
-  private:
-    float _startTime;
-    float _endTime;
-    bool _started;
-    bool _ended;
-    const ofPtr<Func> _function;
-  };
+  virtual void call(TimedActionArgs args) = 0;
   
-  class ActionSet : public Action {
-  public:
-    ActionSet& add(ofPtr<Action> action) {
-      _actions.push_back(action);
-      return *this;
-    }
-    ActionSet& operator+=(ofPtr<Action> action) {
-      return add(action);
-    }
-    
-    bool update(float time, Arg arg, Result* result) {
-      if (_actions.empty())
-        return true;
-      bool allDead = true;
-      for (auto i = _actions.begin();
-           i != _actions.end();
-           i++) {
-        ofPtr<Action>& action = *i;
-        if (action.update(time, arg, result)) {
-          i = _actions.erase(i);
-        } else {
-          allDead = false;
-        }
-      }
-      return allDead;
-    }
-    
-  private:
-    std::list<ofPtr<Action> > _actions;
-  };
+  virtual bool update(TimedActionArgs args) override;
+protected:
+  bool _called;
+  float _triggerTime;
+};
+
+class DurationAction : public TimedAction {
+public:
+  static DurationAction*
+  newDurationAction(float start, float end, ofPtr<TimedFunc> fn);
   
+
+  DurationAction(float start, float end)
+  : _startTime(start), _endTime(end) { }
+  
+  virtual void call(TimedActionArgs args) = 0;
+  
+  bool started() const { return _started; }
+  virtual bool done() const override { return _ended; }
+  
+  virtual bool update(TimedActionArgs args) override;
+  
+private:
+  float _startTime;
+  float _endTime;
+  bool _started;
+  bool _ended;
+};
+
+class TimedActionSet : public TimedAction {
+public:
+  TimedActionSet(bool autoRemove = true)
+  : _autoRemove(autoRemove) { }
+  
+  void add(ofPtr<TimedAction> action) {
+    _actions.push_back(action);
+  }
+  
+  virtual bool done() const override;
+  
+  virtual bool update(TimedActionArgs args) override;
+private:
+  bool _autoRemove;
+  std::list<ofPtr<TimedAction> > _actions;
 };
 
 /**
@@ -203,13 +169,6 @@ protected:
   T _minRate;
   T _maxRate;
 };
-
-template<>
-void ValuePulser<ofVec3f>::updateRate() {
-  _rate.x = ofRandom(_minRate.x, _maxRate.x);
-  _rate.y = ofRandom(_minRate.y, _maxRate.y);
-  _rate.z = ofRandom(_minRate.z, _maxRate.z);
-}
 
 typedef ValuePulser<ofVec3f> SpinPulser;
 

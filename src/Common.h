@@ -80,4 +80,16 @@ public:
   virtual Result operator()(Arg1, Arg2) = 0;
 };
 
+template<typename Arg>
+class UnaryAction {
+public:
+  virtual void operator()(Arg) = 0;
+};
+
+template<typename Arg1, typename Arg2>
+class BinaryAction {
+public:
+  virtual void operator()(Arg1, Arg2) = 0;
+};
+
 #endif
