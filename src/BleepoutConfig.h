@@ -50,6 +50,36 @@ struct BrickRingSpec {
   : elevation(e), count(n), phase(p), color(c) { }
 };
 
+struct WallSpec {
+  float elevation;
+  float heading;
+  ofVec3f size;
+  
+  WallSpec() { }
+  WallSpec(float e, float h, ofVec3f s)
+  : elevation(e), heading(h), size(s) { }
+};
+
+struct CurvedWallSpec {
+  float elevation1;
+  float heading1;
+  float elevation2;
+  float heading2;
+  float width;
+  CurvedWallSpec() { }
+  CurvedWallSpec(float e1, float h1, float e2, float h2, float w)
+  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w) { }
+};
+
+struct BallSpec {
+  float elevation;
+  float heading;
+  
+  BallSpec() { }
+  BallSpec(float e, float h)
+  : elevation(e), heading(h) { }
+};
+
 class RoundConfig {
 public:
   
