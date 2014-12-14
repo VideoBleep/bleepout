@@ -48,24 +48,13 @@ void SpaceController::setup() {
 }
 
 void SpaceController::addBrick(const BrickSpec &brickSpec) {
-  ofPtr<Brick> brick(new Brick);
-  brick->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), brickSpec.elevation, brickSpec.heading);
-  brick->setSize(_config.brickSize());
-  brick->setColor(brickSpec.color);
-  
+  ofPtr<Brick> brick(new Brick(&_config, &brickSpec));
   _world.addObject(brick.get());
   _state.bricks().push_back(brick);
 }
 
 void SpaceController::addBall(const BallSpec &ballSpec) {
-  ofPtr<Ball> ball(new Ball);
-  ball->setSize(ofVec3f(_config.ballRadius(), _config.ballRadius(), _config.ballRadius()));
-  auto t = new OrbitalTrajectory();
-  t->setRadius(_config.domeRadius() + _config.domeMargin());
-  t->setSpeed(0.03);
-  t->initWithTwoPoints(ballSpec.elevation, ballSpec.heading, -45, ballSpec.heading + ofRandom(-45, 45));
-  ball->setTrajectory(t);
-  
+  ofPtr<Ball> ball(new Ball(&_config, &ballSpec));
   _world.addObject(ball.get());
   _state.balls().push_back(ball);
 }
@@ -81,9 +70,7 @@ void SpaceController::addPaddle(float heading, Player* player) {
 }
 
 void SpaceController::addWall(const WallSpec &wallSpec) {
-  ofPtr<Wall> wall(new Wall(wallSpec.isExit));
-  wall->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), wallSpec.elevation, wallSpec.heading);
-  wall->setSize(wallSpec.size);
+  ofPtr<Wall> wall(new Wall(&_config, &wallSpec));
   _world.addObject(wall.get());
   _state.walls().push_back(wall);
 }

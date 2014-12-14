@@ -14,10 +14,12 @@
 #include "PhysicsObject.h"
 #include "Common.h"
 
+class RoundConfig;
+class BallSpec;
+
 class Ball : public GameObject, public PhysicsObject {
 public:
-  Ball();
-  ~Ball() override;
+  Ball(const RoundConfig* config = NULL, const BallSpec* spec = NULL);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }

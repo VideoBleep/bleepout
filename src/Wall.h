@@ -12,9 +12,12 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 
+class RoundConfig;
+class WallSpec;
+
 class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(bool isExit = false);
+  Wall(const RoundConfig* config = NULL, const WallSpec* spec = NULL);
   
   bool isExit() const { return _isExit; }
   
