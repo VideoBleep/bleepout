@@ -11,6 +11,10 @@
 
 #include <ofMath.h>
 
+#ifdef TARGET_OSX
+#define ENABLE_SYPHON
+#endif
+
 class ValueSpecifier {
 public:
   enum Mode {

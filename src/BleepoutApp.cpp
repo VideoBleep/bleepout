@@ -25,9 +25,11 @@ void BleepoutApp::setup() {
   // [jim] May not be in the correct place here, but putting it back temporarily to aid sockets integration
   _playerManager.reset(new PlayerManager(_roundController));
   _playerManager->addPlayer();
-	
+  
+#ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonClient.set(_config.syphonServerName(), _config.syphonAppName());
+#endif // ENABLE_SYPHON
 }
 
 void BleepoutApp::update() {
