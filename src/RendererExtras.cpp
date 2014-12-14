@@ -183,8 +183,8 @@ public:
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 255, 63));
     _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 100, 2, 0.2, ofColor(255, 127, 0, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
+                    ofVec3f(60), 100, 2, 0.2, ofColor(0, 127, 0, 63));
+    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.9, ofColor(0, 255, 127, 63));
   }
@@ -198,10 +198,10 @@ public:
   void draw(RoundState state, RoundConfig config) {
     ofPushMatrix();
     ofPushStyle();
-    
+
     float totalElapsed = ofGetElapsedTimef();
     float rate = ofGetFrameRate();
-    
+
     _ringSet1.draw(config);
     _ringSet2.draw(config);
     _ringSet3.draw(config);
