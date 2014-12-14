@@ -9,6 +9,7 @@
 #include "RendererExtras.h"
 #include <ofMain.h>
 #include "Timing.h"
+#include "Animations.h"
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -133,9 +134,11 @@ private:
   RingSet _ringSet2;
   RingSet _ringSet3;
   TimedActionSet _actions;
+  AnimationManager _animations;
 public:
-  RendererExtrasImpl()
-  : _actions(true) {
+  RendererExtrasImpl(const RoundConfig& config)
+  : _actions(true)
+  , _animations(config) {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
@@ -146,10 +149,13 @@ public:
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
+  void setup(RoundStateEventSource& eventSource) {
+    _animations.attach(eventSource);
+  }
   void update() {
     _actions.update(TimedActionArgs::now());
   }
-  void draw(const RoundState& state, const RoundConfig& config) {
+  void draw(RoundState& state, const RoundConfig& config) {
     ofPushMatrix();
     ofPushStyle();
     
@@ -159,6 +165,8 @@ public:
     _ringSet1.draw(config);
     _ringSet2.draw(config);
     _ringSet3.draw(config);
+    
+    _animations.draw();
     
     ofPopStyle();
     ofPopMatrix();
@@ -182,8 +190,9 @@ public:
   }
 };
 
-void RendererExtras::setup() {
-  _impl.reset(new RendererExtrasImpl());
+void RendererExtras::setup(const RoundConfig& config, RoundStateEventSource& eventSource) {
+  _impl.reset(new RendererExtrasImpl(config));
+  _impl->setup(eventSource);
 }
 
 void RendererExtras::update() {
@@ -191,7 +200,7 @@ void RendererExtras::update() {
     _impl->update();
 }
 
-void RendererExtras::draw(const RoundState& state, const RoundConfig& config) {
+void RendererExtras::draw(RoundState& state, const RoundConfig& config) {
   if (_impl)
     _impl->draw(state, config);
 }

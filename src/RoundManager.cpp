@@ -33,7 +33,7 @@ void RoundController::setup() {
   _state.message.color = ofColor(255, 0, 0);
     
   _renderer.reset(new DomeRenderer());
-  _renderer->setup();
+  _renderer->setup(*this);
   
   ofLog(OF_LOG_NOTICE) << _state;
   //...

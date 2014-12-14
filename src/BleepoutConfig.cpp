@@ -53,6 +53,7 @@ RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 : _brickSize(7.0f, 5.0f, 17.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
+_brickFadeTime(0.4f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
 _appConfig(appConfig) { }
@@ -64,6 +65,7 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(obj["brickSize"], &_brickSize);
   readJsonVal(obj["paddleSize"], &_paddleSize);
   readJsonVal(obj["ballRadius"], &_ballRadius);
+  readJsonVal(obj["brickFadeTime"], &_brickFadeTime);
   readJsonVal(obj["domeRadius"], &_domeRadius);
   readJsonVal(obj["domeMargin"], &_domeMargin);
   readJsonArr(obj["balls"], &_balls);
@@ -78,6 +80,7 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["brickSize"] = ::toJsonVal(_brickSize);
   obj["paddleSize"] = ::toJsonVal(_paddleSize);
   obj["ballRadius"] = _ballRadius;
+  obj["brickFadeTime"] = _brickFadeTime;
   obj["domeRadius"] = _domeRadius;
   obj["domeMargin"] = _domeMargin;
   obj["balls"] = toJsonArr(_balls);

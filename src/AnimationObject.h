@@ -12,11 +12,14 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 
+class RoundConfig;
+
 class AnimationObject : public GameObject {
 public:
   AnimationObject() : GameObject(GAME_OBJECT_ANIMATION) {}
   
   virtual void update(float time) = 0;
+  virtual void draw(const RoundConfig& config) = 0;
 private:
 };
 

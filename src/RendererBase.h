@@ -16,11 +16,13 @@
 #include "Ball.h"
 #include "BleepoutConfig.h"
 
+class RoundController;
+
 class RendererBase {
 public:
   virtual ~RendererBase() {}
     
-  virtual void setup() {}
+  virtual void setup(RoundController& roundController) {}
 
   virtual void update() {}
   virtual void draw(RoundState& state, RoundConfig& config);

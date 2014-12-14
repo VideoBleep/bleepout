@@ -56,7 +56,7 @@ public:
   newDurationAction(float start, float end, ofPtr<TimedFunc> fn);
 
   DurationAction(float start, float end)
-  : _startTime(start), _endTime(end) { }
+  : _startTime(start), _endTime(end), _started(false), _ended(false) { }
   
   virtual void call(TimedActionArgs args) = 0;
   
