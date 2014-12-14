@@ -16,7 +16,7 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config.vsync());
   ofSetBackgroundAuto(false);
 
-  RoundConfig roundConfig(_config);
+  RoundConfig roundConfig = RoundConfig::createTestConfig(_config);
   _roundController.reset(new RoundController(roundConfig));
   _roundController->setup();
 

@@ -31,9 +31,7 @@ private:
   void addPaddle(float heading, Player* player);
   
   void addBrick(const BrickSpec& brickSpec);
-  void addBrickRing(const BrickRingSpec& ringSpec);
   void addWall(const WallSpec& wallSpec);
-  void addCurvedWall(const CurvedWallSpec& curveSpec);
   void addBall(const BallSpec& ballSpec);
   
   void onCollision(CollisionArgs &cdata);

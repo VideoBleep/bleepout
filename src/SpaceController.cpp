@@ -33,31 +33,18 @@ void SpaceController::addInitialPaddles() {
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
-
-  for (int i = 0; i < 5; i ++) {
-    addBall(BallSpec(30, ofRandom(360)));
+  
+  for (const BallSpec& ball : _config.balls()) {
+    addBall(ball);
   }
-    
-  int cols = 12;
-  int rows = 10;
-    
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      float s = i / (cols * 1.0);
-      addBrick(BrickSpec(30 + 3 * j,
-               s * 360 + j * 2 + ((i % 2) ? 5 : -5),
-                          ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255)));
-    }
+  
+  for (const BrickSpec& brick : _config.allBricks()) {
+    addBrick(brick);
   }
-    
-  for (int i = 0; i < 6; i++) {
-    addCurvedWall(CurvedWallSpec(30, i * 60 + 15, 70, i * 60 + 45, 10));
+  
+  for (const WallSpec& wall : _config.allWalls()) {
+    addWall(wall);
   }
-
-  addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
-  addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
-  addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
-
 }
 
 void SpaceController::addBrick(const BrickSpec &brickSpec) {
@@ -68,12 +55,6 @@ void SpaceController::addBrick(const BrickSpec &brickSpec) {
   
   _world.addObject(brick.get());
   _state.bricks().push_back(brick);
-}
-
-void SpaceController::addBrickRing(const BrickRingSpec& ringSpec) {
-  for (int i = 0; i < ringSpec.count; i++) {
-    addBrick(BrickSpec(ringSpec.elevation, i * 360 / (ringSpec.count * 1.0) + ringSpec.phase, ringSpec.color));
-  }
 }
 
 void SpaceController::addBall(const BallSpec &ballSpec) {
@@ -105,22 +86,6 @@ void SpaceController::addWall(const WallSpec &wallSpec) {
   wall->setSize(wallSpec.size);
   _world.addObject(wall.get());
   _state.walls().push_back(wall);
-}
-
-void SpaceController::addCurvedWall(const CurvedWallSpec &curveSpec) {
-  float r = _config.domeRadius() + _config.domeMargin();
-  float theta = curveSpec.elevation1;
-  float phi = curveSpec.heading1;
-  float dtheta = curveSpec.elevation2 - curveSpec.elevation1;
-  float dphi = curveSpec.heading2 - curveSpec.heading1;
-  int steps = floor(max((r * dtheta * PI/180.0) / curveSpec.width, (r * dphi * PI/180.0) / curveSpec.width));
-  dtheta /= steps * 1.0;
-  dphi /= steps * 1.0;
-  for (int i = 0; i < steps; i++) {
-    addWall(WallSpec(theta, phi, ofVec3f(curveSpec.width)));
-    theta += dtheta;
-    phi += dphi;
-  }
 }
 
 void SpaceController::update() {
