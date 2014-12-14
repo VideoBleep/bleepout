@@ -9,8 +9,8 @@
 #ifndef bleepout_Common_h
 #define bleepout_Common_h
 
-#include <ofMath.h>
 #include <ofMain.h>
+#include <functional>
 
 #ifdef TARGET_OSX
 #define ENABLE_SYPHON
@@ -63,6 +63,74 @@ private:
   Mode _mode;
   float _minVal;
   float _maxVal;
+};
+
+template<typename Arg, typename Result>
+class DelayedAction {
+public:
+  DelayedAction(Result (*f)(Arg), float triggerTime)
+  : _triggerTime(triggerTime),
+  _function(std::ptr_fun(f)),
+  _called(false) { }
+  
+  Result call(Arg arg) { return _function(arg); }
+  
+  operator bool() const { return _called; }
+  
+  bool update(float time, Arg arg, Result* result) {
+    if (_called || time < _triggerTime)
+      return false;
+    *result = call(arg);
+    _called = true;
+    return true;
+  }
+private:
+  float _triggerTime;
+  bool _called;
+  const std::pointer_to_unary_function<Arg, Result> _function;
+};
+
+template<typename Arg, typename Result>
+class DelayedActionSpan {
+public:
+  DelayedActionSpan(ofPtr<std::binary_function<Arg, float, Result> > fn, float start, float end)
+  :_startTime(start), _endTime(end), _started(false), _ended(false),
+  _function(fn) { }
+  
+  Result call(float position, Arg arg) { return (*_function)(arg); }
+  
+  operator bool() const { return _ended; }
+  
+  bool started() const { return _started; }
+  bool ended() const { return _ended; }
+  
+  bool update(float time, Arg arg, Result* result) {
+    if (_ended)
+      return false;
+    if (!_started && time >= _startTime)
+      _started = true;
+    if (_started && time >= _endTime) {
+      _ended = true;
+      return true;
+    }
+    float position = ofMap(time, _startTime, _endTime, 0, 1);
+    *result = call(position, arg);
+    return true;
+  }
+  
+private:
+  float _startTime;
+  float _endTime;
+  bool _started;
+  bool _ended;
+  const ofPtr<std::binary_function<Arg, float, Result> > _function;
+};
+
+template<typename Arg, typename Result>
+class DelayedActionQueue {
+public:
+private:
+  
 };
 
 #endif
