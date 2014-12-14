@@ -14,7 +14,12 @@
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
+#include "Common.h"
+
+
+#ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
+#endif // ENABLE_SYPHON
 
 class BleepoutApp : public ofBaseApp {
 public:
@@ -28,12 +33,16 @@ public:
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
   const BleepoutConfig& config() const { return _config; }
+  
+  void dumpConfig(ofLogLevel level) const;
 private:
 	ofPtr<PlayerManager> _playerManager;
 
   BleepoutConfig _config;
   ofPtr<RoundController> _roundController;
+#ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
+#endif // ENABLE_SYPHON
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

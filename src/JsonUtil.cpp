@@ -33,137 +33,181 @@ void writeJsonFile(std::string path, const Json::Value& obj) {
   writer.write(fos, obj);
 }
 
-static const Json::Value* getNumeric(const Json::Value& obj, const char* property) {
-  if (!obj.isMember(property)) {
-    ofLogError() << "property not found '" << property << "'";
-    return NULL;
-  }
-  const Json::Value& val = obj[property];
-  if (!val.isNumeric()) {
-    ofLogError() << "invalid type for '" << property << "' "
-                 << "(expected number): " << val.toStyledString();
-  }
-  return &val;
-}
-
-static const Json::Value* getTypedValue(const Json::Value& obj, const char* property, Json::ValueType type) {
-  if (!obj.isMember(property)) {
-    ofLogError() << "property not found '" << property << "'";
-    return NULL;
-  }
-  const Json::Value& val = obj[property];
-  if (val.type() != type) {
-    ofLogError() << "invalid type for '" << property << "' "
-                 << "(expected " << type << "): " << val.toStyledString();
-  }
-  return &val;
-}
-
-bool readJsonVal(const Json::Value& obj, const char* property, float* result) {
-  const Json::Value* val = getNumeric(obj, property);
-  if (val == NULL)
+bool assertType(const Json::Value& val, Json::ValueType type) {
+  if (!val.isConvertibleTo(type) || val.isNull()) {
+    ofLogError() << "cannot conver value to " << type << ": " << val;
     return false;
-  *result = val->asFloat();
+  }
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, int* result) {
-  const Json::Value* val = getNumeric(obj, property);
-  if (val == NULL)
+template<typename T>
+static bool readJsonValImpl(const Json::Value& val, T* result, Json::ValueType type, T (Json::Value::*converter)() const) {
+  if (!assertType(val, type))
     return false;
-  *result = val->asInt();
+  *result = (T)(val.*converter)();
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, unsigned char* result) {
-  const Json::Value* val = getNumeric(obj, property);
-  if (val == NULL)
+template<>
+bool readJsonVal(const Json::Value& val, float* result) {
+  if (!assertType(val, Json::realValue))
     return false;
-  *result = (unsigned char)(val->asInt());
+  *result = val.asFloat();
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, bool* result) {
-  const Json::Value* val = getTypedValue(obj, property, Json::booleanValue);
-  if (val == NULL)
+template<>
+bool readJsonVal(const Json::Value& val, int* result) {
+  if (!assertType(val, Json::intValue))
     return false;
-  *result = val->asBool();
+  *result = val.asInt();
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result) {
-  const Json::Value* val = getTypedValue(obj, property, Json::objectValue);
-  if (val == NULL)
+template<>
+bool readJsonVal(const Json::Value& val, unsigned char* result) {
+  if (!assertType(val, Json::intValue))
+    return false;
+  *result = (unsigned char)val.asInt();
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, bool* result) {
+  if (!assertType(val, Json::booleanValue))
+    return false;
+  *result = val.asBool();
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, std::string* result) {
+  if (!assertType(val, Json::booleanValue))
+    return false;
+  *result = val.asString();
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, ofVec2f* result) {
+  if (!assertType(val, Json::objectValue))
     return false;
   ofVec2f temp;
-  if (!readJsonVal(*val, "x", &(temp.x)) ||
-      !readJsonVal(*val, "y", &(temp.y))) {
+  if (!readJsonVal(val["x"], &temp.x) ||
+      !readJsonVal(val["y"], &temp.y))
     return false;
-  }
   *result = temp;
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, ofVec3f* result) {
-  const Json::Value* val = getTypedValue(obj, property, Json::objectValue);
-  if (val == NULL)
+template<>
+bool readJsonVal(const Json::Value& val, ofVec3f* result) {
+  if (!assertType(val, Json::objectValue))
     return false;
   ofVec3f temp;
-  if (!readJsonVal(*val, "x", &(temp.x)) ||
-      !readJsonVal(*val, "y", &(temp.y)) ||
-      !readJsonVal(*val, "z", &(temp.z))) {
+  if (!readJsonVal(val["x"], &temp.x) ||
+      !readJsonVal(val["y"], &temp.y) ||
+      !readJsonVal(val["z"], &temp.z))
     return false;
-  }
   *result = temp;
   return true;
 }
 
-static bool readJsonValImpl(const Json::Value& val, const char* description, ofColor* result) {
-  if (!val.isObject()) {
-    ofLogError() << "invalid type for '" << description << "' "
-                 << "(expected object): " << val.toStyledString();
+template<>
+bool readJsonVal(const Json::Value& val, ofColor* result) {
+  if (!assertType(val, Json::objectValue))
     return false;
-  }
   ofColor temp;
-  if (!readJsonVal(val, "r", &temp.r) ||
-      !readJsonVal(val, "g", &temp.g) ||
-      !readJsonVal(val, "b", &temp.b)) {
+  if (!readJsonVal(val["r"], &temp.r) ||
+      !readJsonVal(val["g"], &temp.g) ||
+      !readJsonVal(val["b"], &temp.b))
     return false;
-  }
   *result = temp;
   return true;
 }
 
-bool readJsonVal(const Json::Value& obj, const char* property, ofColor* result) {
-  const Json::Value* val = getTypedValue(obj, property, Json::objectValue);
-  if (val == NULL)
+template<>
+bool readJsonVal(const Json::Value& val, BrickSpec* result) {
+  if (!assertType(val, Json::objectValue))
     return false;
-  return readJsonValImpl(val, property, result);
-}
-
-bool readJsonVal(const Json::Value& obj, const char* property, std::vector<ofColor>* result) {
-  const Json::Value* arr = getTypedValue(obj, property, Json::arrayValue);
-  std::vector<ofColor> tempVals;
-  for (Json::ArrayIndex i = 0; i < arr->size(); i++) {
-    ofColor tempVal;
-    if (!readJsonValImpl((*arr)[i], property, &tempVal)) {
-      return false;
-    }
-    tempVals.push_back(tempVal);
-  }
-  result->clear();
-  result->swap(tempVals);
+  BrickSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading) ||
+      !readJsonVal(val["color"], &temp.color))
+    return false;
+  *result = temp;
   return true;
 }
 
-Json::Value toJsonObj(const ofVec2f& val) {
+template<>
+bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  BrickRingSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["color"], &temp.color) ||
+      !readJsonVal(val["count"], &temp.count) ||
+      !readJsonVal(val["phase"], &temp.phase))
+    return false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, WallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  WallSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading) ||
+      !readJsonVal(val["size"], &temp.size))
+    return false;
+  if (!readJsonVal(val["isExit"], &temp.isExit))
+      temp.isExit = false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, CurvedWallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  CurvedWallSpec temp;
+  if (!readJsonVal(val["elevation1"], &temp.elevation1) ||
+      !readJsonVal(val["heading1"], &temp.heading1) ||
+      !readJsonVal(val["elevation2"], &temp.elevation2) ||
+      !readJsonVal(val["heading2"], &temp.heading2) ||
+      !readJsonVal(val["width"], &temp.width))
+    return false;
+  if (!readJsonVal(val["isExit"], &temp.isExit))
+    temp.isExit = false;
+  *result = temp;
+  return true;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, BallSpec* result) {
+  if (!assertType(val, Json::objectValue))
+    return false;
+  BallSpec temp;
+  if (!readJsonVal(val["elevation"], &temp.elevation) ||
+      !readJsonVal(val["heading"], &temp.heading))
+    return false;
+  *result = temp;
+  return true;
+}
+
+template<>
+Json::Value toJsonVal(const ofVec2f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
   obj["y"] = val.y;
   return obj;
 }
 
-Json::Value toJsonObj(const ofVec3f& val) {
+template<>
+Json::Value toJsonVal(const ofVec3f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
   obj["y"] = val.y;
@@ -171,7 +215,8 @@ Json::Value toJsonObj(const ofVec3f& val) {
   return obj;
 }
 
-Json::Value toJsonObj(const ofColor& val) {
+template<>
+Json::Value toJsonVal(const ofColor& val) {
   Json::Value obj(Json::objectValue);
   obj["r"] = val.r;
   obj["g"] = val.g;
@@ -179,11 +224,56 @@ Json::Value toJsonObj(const ofColor& val) {
   return obj;
 }
 
-Json::Value toJsonArr(const std::vector<ofColor>& vals) {
-  Json::Value arr(Json::arrayValue);
-  arr.resize(vals.size());
-  for (Json::ArrayIndex i = 0; i < vals.size(); i++) {
-    arr[i] = toJsonObj(vals[i]);
-  }
-  return arr;
+template<typename T>
+Json::Value toJsonVal(const T& val) {
+  return Json::Value(val);
+}
+
+template<>
+Json::Value toJsonVal(const BrickSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  obj["color"] = toJsonVal(spec.color);
+  return obj;
+}
+
+template<>
+Json::Value toJsonVal(const BrickRingSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["color"] = toJsonVal(spec.color);
+  obj["count"] = spec.count;
+  obj["phase"] = spec.phase;
+  return obj;
+}
+
+template<>
+Json::Value toJsonVal(const WallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  obj["size"] = toJsonVal(spec.size);
+  obj["isExit"] = toJsonVal(spec.isExit);
+  return obj;
+}
+
+template<>
+Json::Value toJsonVal(const CurvedWallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation1"] = spec.elevation1;
+  obj["heading1"] = spec.heading1;
+  obj["elevation2"] = spec.elevation2;
+  obj["heading2"] = spec.heading2;
+  obj["width"] = toJsonVal(spec.width);
+  obj["isExit"] = toJsonVal(spec.isExit);
+  return obj;
+}
+
+template<>
+Json::Value toJsonVal(const BallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  return obj;
 }
