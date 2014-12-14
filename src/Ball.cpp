@@ -8,20 +8,24 @@
 
 #include "Ball.h"
 #include "OrbitalTrajectory.h"
+#include "BleepoutConfig.h"
 
-
-Ball::Ball()
+Ball::Ball(const RoundConfig* config /*= NULL*/, const BallSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_BALL)
 , _player(NULL)
 , PhysicsObject(CollisionSphere)
 {
-    ofLogVerbose() << "Create Ball";
     thisGameObject = this;
     _color = ofColor(220, 220, 220);
-}
-
-Ball::~Ball() {
-  ofLogVerbose() << "Destroy Ball";
+    if (config && spec) {
+        this->setSize(ofVec3f(config->ballRadius()));
+        auto t = new OrbitalTrajectory();
+        t->setRadius(config->domeRadius() + config->domeMargin());
+        t->setSpeed(0.03);
+        t->initWithTwoPoints(spec->elevation, spec->heading, -14,
+                             spec->heading + ofRandom(-45, 45));
+        this->setTrajectory(t);
+    }
 }
 
 void Ball::bounce(ofVec3f normal) {
