@@ -19,6 +19,7 @@ class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
     virtual void setup() override;
+    virtual void update() override;
     virtual void draw(RoundState& round, RoundConfig& config) override;
     
     virtual void keyPressed(int key);

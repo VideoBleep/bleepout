@@ -119,6 +119,10 @@ void DomeRenderer::setup() {
     _extras.setup();
 }
 
+void DomeRenderer::update() {
+  _extras.update();
+}
+
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
     
     _cam.setDistance(config.domeRadius() * 2.1);
@@ -178,6 +182,8 @@ void DomeRenderer::keyPressed(int key) {
         _debugGraphics = !_debugGraphics;
     } else if (key == 't') {
         _drawTrajectories = !_drawTrajectories;
+    } else {
+      _extras.keyPressed(key);
     }
 }
 

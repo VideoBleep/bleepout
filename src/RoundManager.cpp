@@ -63,6 +63,7 @@ void RoundController::update() {
 
   _spaceController->update();
   _logicController->update();
+  _renderer->update();
 }
 
 void RoundController::keyPressed(int key) {
