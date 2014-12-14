@@ -29,9 +29,6 @@ class TimedAction {
 public:
   virtual bool done() const = 0;
   virtual bool update(TimedActionArgs args) = 0;
-  bool update() {
-    return update(TimedActionArgs::now());
-  }
 };
 
 class OnceAction : public TimedAction {
@@ -87,6 +84,8 @@ public:
   virtual bool done() const override;
   
   virtual bool update(TimedActionArgs args) override;
+  
+  int size() const { return _actions.size(); }
 private:
   bool _autoRemove;
   std::list<ofPtr<TimedAction> > _actions;

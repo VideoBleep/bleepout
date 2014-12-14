@@ -96,9 +96,10 @@ private:
   RingSet _ringSet1;
   RingSet _ringSet2;
   RingSet _ringSet3;
-  ofPtr<TimedAction> _action;
+  TimedActionSet _actions;
 public:
-  RendererExtrasImpl() {
+  RendererExtrasImpl()
+  : _actions(true) {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
@@ -110,11 +111,7 @@ public:
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
   void update() {
-    if (_action) {
-      if (_action->update()) {
-        _action.reset();
-      }
-    }
+    _actions.update(TimedActionArgs::now());
   }
   void draw(RoundState state, RoundConfig config) {
     ofPushMatrix();
@@ -136,7 +133,7 @@ public:
       ofColor newColor(_ringSet1.color());
       newColor.setHueAngle((newColor.getHueAngle() + 30));
       ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
-      _action.reset(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn));
+      _actions.add(ofPtr<TimedAction>(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn)));
     }
   }
 };
