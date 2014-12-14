@@ -71,6 +71,8 @@ void RoundController::keyPressed(int key) {
   } else {
     if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
+    } else if (key == 'r') {
+      dumpConfig(OF_LOG_NOTICE);
     }
   }
 }
@@ -135,8 +137,14 @@ void RoundController::mouseReleased(int x, int y, int button) {
 }
 
 
-void RoundController::dumpToLog(ofLogLevel level) {
+void RoundController::dumpToLog(ofLogLevel level) const {
   ofLog(level) << "--BEGIN round state--";
   ofLog(level) << _state;
   ofLog(level) << "--  END round state--";
+}
+
+void RoundController::dumpConfig(ofLogLevel level) const {
+  ofLog(level) << "--BEGIN round config--";
+  ofLog(level) << _config.toJsonVal().toStyledString();
+  ofLog(level) << "--  END round config--";
 }

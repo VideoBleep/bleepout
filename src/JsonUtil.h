@@ -49,7 +49,14 @@ template<typename T>
 Json::Value toJsonVal(const T& val);
 
 template<typename T>
-Json::Value toJsonArr(const std::vector<T>& vals);
+Json::Value toJsonArr(const std::vector<T>& vals) {
+  Json::Value arr(Json::arrayValue);
+  arr.resize(vals.size());
+  for (int i = 0; i < vals.size(); i++) {
+    arr[i] = toJsonVal(vals[i]);
+  }
+  return arr;
+}
 
 bool readJsonFile(std::string path, Json::Value* obj);
 void writeJsonFile(std::string path, const Json::Value& obj);
