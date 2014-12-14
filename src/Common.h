@@ -10,6 +10,11 @@
 #define bleepout_Common_h
 
 #include <ofMath.h>
+#include <ofMain.h>
+
+#ifdef TARGET_OSX
+#define ENABLE_SYPHON
+#endif
 
 class ValueSpecifier {
 public:
