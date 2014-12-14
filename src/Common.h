@@ -9,12 +9,15 @@
 #ifndef bleepout_Common_h
 #define bleepout_Common_h
 
-#include <ofMath.h>
 #include <ofMain.h>
+#include <functional>
+#include <list>
 
 #ifdef TARGET_OSX
 #define ENABLE_SYPHON
 #endif
+
+struct Nothing { };
 
 class ValueSpecifier {
 public:
@@ -64,5 +67,32 @@ private:
   float _minVal;
   float _maxVal;
 };
+
+template<typename Arg, typename Result>
+class UnaryFunction : public std::unary_function<Arg, Result> {
+public:
+  virtual Result operator()(Arg) = 0;
+};
+
+template<typename Arg1, typename Arg2, typename Result>
+class BinaryFunction : public std::binary_function<Arg1, Arg2, Result> {
+public:
+  virtual Result operator()(Arg1, Arg2) = 0;
+};
+
+template<typename Arg>
+class UnaryAction {
+public:
+  virtual void operator()(Arg) = 0;
+};
+
+template<typename Arg1, typename Arg2>
+class BinaryAction {
+public:
+  virtual void operator()(Arg1, Arg2) = 0;
+};
+
+template<typename T>
+T getInterpolated(const T& a, const T& b, float amount);
 
 #endif

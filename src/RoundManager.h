@@ -45,6 +45,9 @@ public:
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);
   void setPaddlePosition(PlayerYawPitchRollMessage ypr);
+  
+  ofPtr<LogicController> logicController() { return _logicController; }
+  const RoundConfig& config() const { return _config; }
 
 private:
   RoundConfig _config;
