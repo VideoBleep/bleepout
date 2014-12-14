@@ -99,7 +99,7 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
   for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width)));
+    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit));
     theta += dtheta;
     phi += dphi;
   }
@@ -140,6 +140,7 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
   config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
   config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
   config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
+
   //...
   return config;
 }
