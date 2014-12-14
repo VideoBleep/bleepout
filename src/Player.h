@@ -19,7 +19,8 @@ class Paddle;
 class Player : public GameObject {
 public:
   Player();
-  
+  Player(ofxLibwebsockets::Connection* conn);
+
   void setPaddle(Paddle* paddle) { _paddle = paddle; }
   Paddle* paddle() { return _paddle; }
   const Paddle* paddle() const { return _paddle; }
@@ -48,14 +49,16 @@ public:
   
   static const char* typeName() { return "player"; }
   
-  ofPtr<ofxLibwebsockets::Connection> connection() { return _conn; }
+  ofxLibwebsockets::Connection* connection() { return _conn; }
+  void connection(ofxLibwebsockets::Connection* conn) { _conn = conn; }
 
 private:
   
+  ofxLibwebsockets::Connection* _conn; 
   Paddle* _paddle;
   int _score;
   int _lives;
-  ofPtr<ofxLibwebsockets::Connection> _conn;
+  
 };
 
 #endif /* defined(__bleepout__Player__) */

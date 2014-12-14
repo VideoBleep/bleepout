@@ -10,6 +10,10 @@
 #include <ofMain.h>
 
 Player::Player() : GameObject(GAME_OBJECT_PLAYER), _paddle(NULL), _score(0), _lives(3) {
-    _color.setHsb(ofRandom(255), 255, 200);
+	_color.setHsb(ofRandom(255), 255, 200);
 }
 
+Player::Player(ofxLibwebsockets::Connection* conn) 
+	: GameObject(GAME_OBJECT_PLAYER),
+	_conn(conn) {
+}

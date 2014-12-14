@@ -36,6 +36,15 @@ struct PlayerYawPitchRollMessage {
 	float roll;
 };
 
+struct PlayerCreateMessage {
+	ofPtr<Player> player;
+	int id;
+	// paddle color
+	int red;
+	int green;
+	int blue;
+};
+
 class PlayerManager : PlayerEventSource {
 public:
 	explicit PlayerManager(ofPtr<RoundController> roundController);
