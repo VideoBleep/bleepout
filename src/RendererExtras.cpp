@@ -38,14 +38,15 @@ private:
   float _lastPulseTime;
 };
 
-class SpinPulser {
+template<typename T>
+class ValuePulser {
 public:
-  SpinPulser() {}
-  SpinPulser(ofVec3f minRate, ofVec3f maxRate, float changeInterval, ofVec3f startValue = ofVec3f()) {
+  ValuePulser() { }
+  ValuePulser(T minRate, T maxRate, float changeInterval, T startValue) {
     setup(minRate, maxRate, changeInterval, startValue);
   }
   
-  void setup(ofVec3f minRate, ofVec3f maxRate, float changeInterval, ofVec3f startValue = ofVec3f()) {
+  void setup(T minRate, T maxRate, float changeInterval, T startValue) {
     setRange(minRate, maxRate);
     setPulseInterval(changeInterval);
     setValue(startValue);
@@ -60,7 +61,8 @@ public:
     return _value;
   }
   
-  const ofVec3f& value() const { return _value; }
+  const T& value() const { return _value; }
+  void setValue(T value) { _value = value; }
   
   void pulse(float time) {
     _changePulser.pulse(time);
@@ -75,25 +77,24 @@ public:
   void setPulseInterval(float interval) {
     _changePulser.setInterval(interval);
   }
-  
-  void setValue(ofVec3f value) {
-    _value = value;
-  }
-  
-private:
-  void updateRate() {
-    _rate.x = ofRandom(_minRate.x, _maxRate.x);
-    _rate.y = ofRandom(_minRate.y, _maxRate.y);
-    _rate.z = ofRandom(_minRate.z, _maxRate.z);
-  }
-  
-private:
+protected:
+  void updateRate();
+
   Pulser _changePulser;
-  ofVec3f _value;
-  ofVec3f _rate;
-  ofVec3f _minRate;
-  ofVec3f _maxRate;
+  T _value;
+  T _rate;
+  T _minRate;
+  T _maxRate;
 };
+
+template<>
+void ValuePulser<ofVec3f>::updateRate() {
+  _rate.x = ofRandom(_minRate.x, _maxRate.x);
+  _rate.y = ofRandom(_minRate.y, _maxRate.y);
+  _rate.z = ofRandom(_minRate.z, _maxRate.z);
+}
+
+typedef ValuePulser<ofVec3f> SpinPulser;
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -155,14 +156,18 @@ class RendererExtrasImpl {
 private:
   RingSet _ringSet1;
   RingSet _ringSet2;
+  RingSet _ringSet3;
 public:
   RendererExtrasImpl() {
-    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f),
-                    ofVec3f(20), 30, 1.95, 0.4, ofColor(127, 0, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f),
+    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
+                    ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
+    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 100, 2, 0.2, ofColor(0, 127, 0, 63));
+    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
+                    ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
   void draw(RoundState state, RoundConfig config) {
     ofPushMatrix();
@@ -173,6 +178,7 @@ public:
     
     _ringSet1.draw(config);
     _ringSet2.draw(config);
+    _ringSet3.draw(config);
     
     ofPopStyle();
     ofPopMatrix();
