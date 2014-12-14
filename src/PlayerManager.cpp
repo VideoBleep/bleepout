@@ -116,7 +116,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
     newPlayer.color.set(ofHexToInt(parts[2]),
                         ofHexToInt(parts[3]),
                         ofHexToInt(parts[4]));
-		newPlayer.player->connection(&(args.conn));
+    newPlayer.player.reset(new Player(&args.conn));
     newPlayer.player->setColor(newPlayer.color);
 		_roundController->state().players().push_back(newPlayer.player);
 	}
