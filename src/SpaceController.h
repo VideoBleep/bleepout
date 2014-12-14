@@ -26,8 +26,6 @@ public:
   void addInitialPaddles();
     
 private:
-  void generateBricks();
-  
   void addPaddle(float heading, Player* player);
   
   void addBrick(const BrickSpec& brickSpec);
