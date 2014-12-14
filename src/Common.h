@@ -17,6 +17,8 @@
 #define ENABLE_SYPHON
 #endif
 
+struct Nothing { };
+
 class ValueSpecifier {
 public:
   enum Mode {
@@ -67,7 +69,20 @@ private:
 };
 
 template<typename Arg, typename Result>
+class UnaryFunction : public std::unary_function<Arg, Result> {
+public:
+  virtual Result operator()(Arg) = 0;
+};
+
+template<typename Arg1, typename Arg2, typename Result>
+class BinaryFunction : public std::binary_function<Arg1, Arg2, Result> {
+public:
+  virtual Result operator()(Arg1, Arg2) = 0;
+};
+
+template<typename Arg, typename Result>
 struct Delayed {
+  
   class Action {
   public:
     virtual Result call(Arg arg) = 0;
@@ -84,10 +99,14 @@ struct Delayed {
     SimpleAction(float triggerTime)
     : _triggerTime(triggerTime), _called(false) { }
     
+    virtual bool called() const override {
+      return _called;
+    }
+    
     virtual bool update(float time, Arg arg, Result* result) override  {
-      if (_called || time < Action::triggerTime())
+      if (_called || time < _triggerTime)
         return false;
-      *result = call(arg);
+      *result = this->call(arg);
       _called = true;
       return true;
     }
@@ -98,19 +117,19 @@ struct Delayed {
   
   class FunctorAction : public SimpleAction {
   public:
-    typedef std::unary_function<Arg, Result> Func;
+    typedef UnaryFunction<Arg, Result> Func;
     
     FunctorAction(float triggerTime, ofPtr<Func> f)
     : SimpleAction(triggerTime), _function(f) { }
     
-    virtual Result call(Arg arg) override { return _function(arg); }
+    virtual Result call(Arg arg) override { return (*_function)(arg); }
   private:
     ofPtr<Func> _function;
   };
   
   class ActionSpan : public Action {
   public:
-    typedef std::binary_function<Arg, float, Result> Func;
+    typedef BinaryFunction<Arg, float, Result> Func;
     
     ActionSpan(float start, float end, ofPtr<Func> fn)
     :_startTime(start), _endTime(end), _started(false), _ended(false),

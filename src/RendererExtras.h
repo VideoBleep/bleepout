@@ -18,7 +18,9 @@ class RendererExtrasImpl;
 class RendererExtras {
 public:
   void setup();
+  void update();
   void draw(RoundState state, RoundConfig config);
+  void keyPressed(int key);
 private:
   ofPtr<RendererExtrasImpl> _impl;
 };

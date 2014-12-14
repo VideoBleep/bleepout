@@ -22,6 +22,7 @@ public:
     
   virtual void setup() {}
 
+  virtual void update() {}
   virtual void draw(RoundState& state, RoundConfig& config);
 
   virtual void keyPressed(int key) {}

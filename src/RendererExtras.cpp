@@ -142,6 +142,11 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
+  
+  ofColor& color() { return _color; }
+  
+  float lineWidth() const { return _lineWidth; }
+  void setLineWidth(float lineWidth) { _lineWidth = lineWidth; }
 private:
   SpinPulser _spinPulser;
   SpinPulser _spreadPulser;
@@ -154,9 +159,23 @@ private:
 
 class RendererExtrasImpl {
 private:
+  class RingChange : public UnaryFunction<RingSet&, Nothing> {
+  public:
+    RingChange(ofColor color, float lineWidth) : _color(color), _lineWidth(lineWidth) { }
+    Nothing operator()(RingSet& ringSet) {
+      ringSet.color().set(_color);
+      ringSet.setLineWidth(_lineWidth);
+      return Nothing();
+    }
+  private:
+    ofColor _color;
+    float _lineWidth;
+  };
+  
   RingSet _ringSet1;
   RingSet _ringSet2;
   RingSet _ringSet3;
+  ofPtr<Delayed<RingSet&, Nothing>::Action> _action;
 public:
   RendererExtrasImpl() {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
@@ -168,6 +187,13 @@ public:
     _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
+  }
+  void update() {
+    if (_action) {
+      if (_action->update(ofGetElapsedTimef(), _ringSet1, NULL)) {
+        _action.reset();
+      }
+    }
   }
   void draw(RoundState state, RoundConfig config) {
     ofPushMatrix();
@@ -183,13 +209,32 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
+  void keyPressed(int key) {
+    if (key == 'z') {
+      _ringSet1.color().setHueAngle(_ringSet1.color().getHueAngle() + 20);
+      ofColor newColor(_ringSet1.color());
+      newColor.setHueAngle((newColor.getHueAngle() + 30));
+      ofPtr<UnaryFunction<RingSet&, Nothing> > fn(new RingChange(newColor, _ringSet1.lineWidth() + 4));
+      _action.reset(new Delayed<RingSet&, Nothing>::FunctorAction(ofGetElapsedTimef() + 5.0f, fn));
+    }
+  }
 };
 
 void RendererExtras::setup() {
   _impl.reset(new RendererExtrasImpl());
 }
 
+void RendererExtras::update() {
+  if (_impl)
+    _impl->update();
+}
+
 void RendererExtras::draw(RoundState state, RoundConfig config) {
   if (_impl)
     _impl->draw(state, config);
+}
+
+void RendererExtras::keyPressed(int key) {
+  if (_impl)
+    _impl->keyPressed(key);
 }
