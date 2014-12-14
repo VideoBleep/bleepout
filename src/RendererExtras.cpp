@@ -75,7 +75,7 @@ public:
     _color = color;
   }
   
-  void draw(RoundConfig config) {
+  void draw(const RoundConfig& config) {
     float radius = config.domeRadius() * _radiusScale;
     float totalElapsed = ofGetElapsedTimef();
     float rate = ofGetFrameRate();
@@ -149,7 +149,7 @@ public:
   void update() {
     _actions.update(TimedActionArgs::now());
   }
-  void draw(RoundState state, RoundConfig config) {
+  void draw(const RoundState& state, const RoundConfig& config) {
     ofPushMatrix();
     ofPushStyle();
     
@@ -191,7 +191,7 @@ void RendererExtras::update() {
     _impl->update();
 }
 
-void RendererExtras::draw(RoundState state, RoundConfig config) {
+void RendererExtras::draw(const RoundState& state, const RoundConfig& config) {
   if (_impl)
     _impl->draw(state, config);
 }
