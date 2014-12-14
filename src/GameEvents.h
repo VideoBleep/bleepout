@@ -104,6 +104,7 @@ public:
     ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
   }
   
+  bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
   void disableLogging();
 protected:
@@ -197,6 +198,7 @@ public:
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
   ofEvent<EmptyEventArgs> roundEndedEvent;
   
+  bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
   void disableLogging();
   
@@ -278,6 +280,7 @@ public:
     ofRemoveListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
   }
   
+  bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
   void disableLogging();
 protected:
