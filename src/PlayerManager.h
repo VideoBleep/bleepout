@@ -39,10 +39,7 @@ struct PlayerYawPitchRollMessage {
 struct PlayerCreateMessage {
 	ofPtr<Player> player;
 	int id;
-	// paddle color
-	int red;
-	int green;
-	int blue;
+  ofColor color;
 };
 
 class PlayerManager : PlayerEventSource {

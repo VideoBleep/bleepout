@@ -21,6 +21,7 @@ PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
+  player->setColor(ofColor::green);
   _state.players().push_back(player);
   return player;
 }
@@ -112,10 +113,11 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		// the rest of the PlayerCreateMessage ... is that a problem?
 		PlayerCreateMessage newPlayer;
 		newPlayer.id = ofHexToInt(parts[1]);
-		newPlayer.red = ofHexToInt(parts[2]);
-		newPlayer.green = ofHexToInt(parts[3]);
-		newPlayer.blue = ofHexToInt(parts[4]);		
+    newPlayer.color.set(ofHexToInt(parts[2]),
+                        ofHexToInt(parts[3]),
+                        ofHexToInt(parts[4]));
 		newPlayer.player->connection(&(args.conn));
+    newPlayer.player->setColor(newPlayer.color);
 		_roundController->state().players().push_back(newPlayer.player);
 	}
 	// if the prefix is but then we have a click message
@@ -132,7 +134,7 @@ void PlayerManager::gotMessage(ofMessage msg){
 // Find player in collection based on connection (say that 10 times fast, sucka)
 ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	// find player by comparing connection
-	for (ofPtr<Player>& p : state().players()) {
+	for (const ofPtr<Player>& p : state().players()) {
 		if (*(p->connection()) == conn) {
 			return p;
 		}

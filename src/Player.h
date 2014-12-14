@@ -53,6 +53,7 @@ public:
   void connection(ofxLibwebsockets::Connection* conn) { _conn = conn; }
 
 private:
+  void init();
   
   ofxLibwebsockets::Connection* _conn; 
   Paddle* _paddle;
