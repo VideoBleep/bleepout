@@ -21,6 +21,7 @@ PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
+  player->setColor(ofColor::green);
   _state.players().push_back(player);
   return player;
 }
@@ -86,21 +87,38 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 
 	// Parse message
 	int pos = args.message.find(messageDelimiter);
-	std::string msgPrefix = args.message.substr(0, pos);
+	//std::string msgPrefix = args.message.substr(0, pos);
 	std::string msgData = args.message.substr(pos, args.message.length());
+
+	vector<string> parts = ofSplitString(args.message, messageDelimiter);
+	std::string msgPrefix = parts[0];
 
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == "ypr") {
 		PlayerYawPitchRollMessage ypr;
 		ypr.player = player;
-		pos = msgData.find(messageDelimiter);
-		ypr.yaw = ofToFloat(msgData.substr(0, pos));
-		msgData.erase(0, pos + 1);
-		pos = msgData.find(messageDelimiter);
-		ypr.pitch = ofToFloat(msgData.substr(0, pos));
-		msgData.erase(0, pos + 1);
-		ypr.roll = ofToFloat(msgData);
+		//pos = msgData.find(messageDelimiter);
+		ypr.yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
+		// msgData.erase(0, pos + 1);
+		// pos = msgData.find(messageDelimiter);
+		ypr.pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
+		// msgData.erase(0, pos + 1);
+		ypr.roll = ofToFloat(parts[3]); //ofToFloat(msgData);
 		_roundController->setPaddlePosition(ypr);
+	}
+	//
+	else if (msgPrefix == "new") {
+		// This implies that the PlayerCreateMessage will be responsible for instantiating the player
+		// Is that correct? If the .player instance is referenced but not 
+		// the rest of the PlayerCreateMessage ... is that a problem?
+		PlayerCreateMessage newPlayer;
+		newPlayer.id = ofHexToInt(parts[1]);
+    newPlayer.color.set(ofHexToInt(parts[2]),
+                        ofHexToInt(parts[3]),
+                        ofHexToInt(parts[4]));
+		newPlayer.player->connection(&(args.conn));
+    newPlayer.player->setColor(newPlayer.color);
+		_roundController->state().players().push_back(newPlayer.player);
 	}
 	// if the prefix is but then we have a click message
 }
@@ -116,7 +134,7 @@ void PlayerManager::gotMessage(ofMessage msg){
 // Find player in collection based on connection (say that 10 times fast, sucka)
 ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	// find player by comparing connection
-	for (ofPtr<Player>& p : state().players()) {
+	for (const ofPtr<Player>& p : state().players()) {
 		if (*(p->connection()) == conn) {
 			return p;
 		}
