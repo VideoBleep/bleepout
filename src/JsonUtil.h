@@ -46,7 +46,10 @@ bool readJsonArr(const Json::Value& arr, std::vector<T>* result) {
 }
 
 template<typename T>
-Json::Value toJsonObj(const T& val);
+Json::Value toJsonVal(const T& val);
+
+template<typename T>
+Json::Value toJsonArr(const std::vector<T>& vals);
 
 bool readJsonFile(std::string path, Json::Value* obj);
 void writeJsonFile(std::string path, const Json::Value& obj);

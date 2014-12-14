@@ -68,8 +68,8 @@ void RoundConfig::loadJsonFile(std::string path) {
 
 void RoundConfig::saveJsonFile(std::string path) const {
   Json::Value root;
-  root["brickSize"] = toJsonObj(_brickSize);
-  root["paddleSize"] = toJsonObj(_paddleSize);
+  root["brickSize"] = toJsonVal(_brickSize);
+  root["paddleSize"] = toJsonVal(_paddleSize);
   root["ballRadius"] = _ballRadius;
   root["domeRadius"] = _domeRadius;
   root["domeMargin"] = _domeMargin;
