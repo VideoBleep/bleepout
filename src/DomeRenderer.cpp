@@ -116,6 +116,7 @@ void DomeRenderer::setup() {
     _drawTrajectories = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+    _extras.setup();
 }
 
 void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
@@ -163,7 +164,9 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
             }
         }
     }
-   
+  
+    _extras.draw(state, config);
+  
     _cam.end();
     
     ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, ofGetHeight() - 35);
@@ -210,7 +213,7 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofTranslate(ball.getPosition());
     ofRotateX(360 * ball.getTrajectory()->getTime());
     ofRotateY(45);
-    ofSetLineWidth(3.0);
+    ofSetLineWidth(8.0);
     ofSetColor(ball.getColor());
     ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
     ofFill();
