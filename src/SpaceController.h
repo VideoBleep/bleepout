@@ -28,13 +28,14 @@ public:
 private:
   void generateBricks();
   
-  void addBrick(float elevation, float heading, const ofColor& color);
   void addBall(float elevation, float heading);
   void addPaddle(float heading, Player* player);
   void addWall(float elevation, float heading, float width, float height, float depth);
-    
-  void addBrickRing(float elevation, const ofColor& color, int count, float phase = 0);
+
   void addCurvedWall(float elevation1, float heading1, float elevation2, float heading2, float width);
+  
+  void addBrick(const BrickSpec& brickSpec);
+  void addBrickRing(const BrickRingSpec& ringSpec);
   
   void onCollision(CollisionArgs &cdata);
     

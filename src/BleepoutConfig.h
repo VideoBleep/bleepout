@@ -29,8 +29,30 @@ private:
   bool _vsync;
 };
 
+struct BrickSpec {
+  float elevation;
+  float heading;
+  ofColor color;
+  
+  BrickSpec() { }
+  BrickSpec(float e, float h, ofColor c)
+  : elevation(e), heading(h), color(c) { }
+};
+
+struct BrickRingSpec {
+  float elevation;
+  ofColor color;
+  int count;
+  float phase;
+  
+  BrickRingSpec() { }
+  BrickRingSpec(float e, ofColor c, int n, float p = 0)
+  : elevation(e), count(n), phase(p), color(c) { }
+};
+
 class RoundConfig {
 public:
+  
   RoundConfig(const BleepoutConfig& appConfig);
   
   void loadJsonFile(std::string path);

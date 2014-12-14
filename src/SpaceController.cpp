@@ -44,9 +44,9 @@ void SpaceController::setup() {
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       float s = i / (cols * 1.0);
-      addBrick(30 + 3 * j,
+      addBrick(BrickSpec(30 + 3 * j,
                s * 360 + j * 2 + ((i % 2) ? 5 : -5),
-               ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255));
+                          ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255)));
     }
   }
     
@@ -54,26 +54,26 @@ void SpaceController::setup() {
     addCurvedWall(30, i * 60 + 15, 70, i * 60 + 45, 10);
   }
 
-  addBrickRing(72, ofColor(0, 0, 0), 12);
-  addBrickRing(76, ofColor(0, 0, 0), 10);
-  addBrickRing(80, ofColor(0, 0, 0), 8);
+  addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
+  addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
+  addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
 
 }
 
-void SpaceController::addBrick(float elevation, float heading, const ofColor& color) {
-    ofPtr<Brick> brick(new Brick);
-    brick->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), elevation, heading);
-    brick->setSize(_config.brickSize());
-    brick->setColor(color);
-
-    _world.addObject(brick.get());
-    _state.bricks().push_back(brick);
+void SpaceController::addBrick(const BrickSpec &brickSpec) {
+  ofPtr<Brick> brick(new Brick);
+  brick->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), brickSpec.elevation, brickSpec.heading);
+  brick->setSize(_config.brickSize());
+  brick->setColor(brickSpec.color);
+  
+  _world.addObject(brick.get());
+  _state.bricks().push_back(brick);
 }
 
-void SpaceController::addBrickRing(float elevation, const ofColor& color, int count, float phase) {
-    for (int i = 0; i < count; i++) {
-        addBrick(elevation, i * 360 / (count * 1.0) + phase, color);
-    }
+void SpaceController::addBrickRing(const BrickRingSpec& ringSpec) {
+  for (int i = 0; i < ringSpec.count; i++) {
+    addBrick(BrickSpec(ringSpec.elevation, i * 360 / (ringSpec.count * 1.0) + ringSpec.phase, ringSpec.color));
+  }
 }
 
 void SpaceController::addBall(float elevation, float heading) {
