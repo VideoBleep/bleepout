@@ -24,7 +24,7 @@ private:
     RingChange(RingSet& ringSet, ofColor color, float lineWidth)
     : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
     virtual void operator()(TimedActionArgs args) override {
-      _ringSet.color().set(_color);
+      _ringSet._color = _color;
       _ringSet.setLineWidth(_lineWidth);
       return Nothing();
     }
@@ -32,6 +32,21 @@ private:
     RingSet& _ringSet;
     ofColor _color;
     float _lineWidth;
+  };
+  class RingFade : public TimedFunc {
+  public:
+    RingFade(RingSet& ringSet, ofColor startColor, ofColor endColor)
+    : _ringSet(ringSet)
+    , _startColor(startColor)
+    , _endColor(endColor) { }
+    virtual void operator()(TimedActionArgs args) override {
+      ofColor color = _startColor.getLerped(_endColor, args.percentage);
+      _ringSet._color = color;
+    }
+  private:
+    RingSet& _ringSet;
+    ofColor _startColor;
+    ofColor _endColor;
   };
 public:
   RingSet() { }
@@ -79,6 +94,9 @@ public:
   
   TimedFunc* newChange(ofColor color, float lineWidth) {
     return new RingChange(*this, color, lineWidth);
+  }
+  TimedFunc* newFade(ofColor startColor, ofColor endColor) {
+    return new RingFade(*this, startColor, endColor);
   }
 private:
   SpinPulser _spinPulser;
@@ -134,6 +152,13 @@ public:
       newColor.setHueAngle((newColor.getHueAngle() + 30));
       ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
       _actions.add(ofPtr<TimedAction>(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn)));
+    } else if (key == 'x') {
+      ofColor startColor(255, 0, 0);
+      ofColor endColor(0, 0, 255);
+      ofPtr<TimedFunc> fn(_ringSet2.newFade(startColor, endColor));
+      _actions.add(ofPtr<TimedAction>(DurationAction::newDurationAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, fn)));
+    } else if (key == 'v') {
+      ofLogNotice() << "queued actions: " << _actions.size();
     }
   }
 };
