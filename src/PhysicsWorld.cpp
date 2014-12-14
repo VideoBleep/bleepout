@@ -10,6 +10,7 @@
 
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
+#include "GameObject.h"
 #include "OrbitalTrajectory.h"
 
 #if USE_BULLET_COLLISIONS
@@ -209,14 +210,26 @@ public:
             while (iter2 != objects.end()) {
                 auto obj1 = *iter1;
                 auto obj2 = *iter2;
-                if (BoundingBox::testCollision(obj1->getBoundingBox(), obj2->getBoundingBox())) {
-                    auto contact = std::make_pair(obj1, obj2);
-                    newContacts->insert(contact);
-                    if (oldContacts->find(contact) == oldContacts->end()) {
-                        static CollisionArgs args;
-                        args.a = obj1->thisGameObject;
-                        args.b = obj2->thisGameObject;
-                        ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                
+                // speed things up considerably by ignoring static-static collisions.
+                // will need to adjust this if collisions that involve a paddle and a non-ball become necessary
+                // (paddles are technically static, even though they move.)
+                if ((obj1->isDynamic() || obj2->isDynamic()) &&
+                    obj1->thisGameObject->alive() &&
+                    obj2->thisGameObject->alive())
+                {
+                    
+                    CollisionManifold m;
+                    if (BoundingBox::testCollision(obj1->getBoundingBox(), obj2->getBoundingBox(), &m)) {
+                        auto contact = std::make_pair(obj1, obj2);
+                        newContacts->insert(contact);
+                        if (oldContacts->find(contact) == oldContacts->end()) {
+                            static CollisionArgs args;
+                            args.a = obj1->thisGameObject;
+                            args.b = obj2->thisGameObject;
+                            args.normal = m.normal;
+                            ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                        }
                     }
                 }
                 ++iter2;

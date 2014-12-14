@@ -8,7 +8,6 @@
 
 #include "Logging.h"
 #include <ofMain.h>
-#include <ofxBullet.h>
 
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   os << "position:(" << obj.getPosition() << ")"

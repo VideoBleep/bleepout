@@ -12,6 +12,7 @@
 #include "RendererBase.h"
 #include "RoundManager.h"
 #include "TurntableCam.h"
+#include <ofTrueTypeFont.h>
 
 class DomeRenderer : public RendererBase {
 public:
@@ -32,6 +33,9 @@ protected:
     
     ofxTurntableCam _cam;
     bool _debugGraphics;
+    bool _drawTrajectories;
+    
+    ofTrueTypeFont _font;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

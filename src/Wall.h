@@ -14,7 +14,7 @@
 
 class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(bool isExit);
+  Wall(bool isExit = false);
   
   bool isExit() const { return _isExit; }
   

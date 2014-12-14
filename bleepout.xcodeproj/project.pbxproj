@@ -16,7 +16,6 @@
 		32624F741A39446B00B4B62D /* Logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32624F721A39446B00B4B62D /* Logging.cpp */; };
 		32B33A931A2FFCF200A2EA9F /* RendererBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */; };
 		32B33A961A3004DE00A2EA9F /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A941A3004DE00A2EA9F /* GameObject.cpp */; };
-		32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */; };
 		32B33AA01A3137D800A2EA9F /* GameEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
@@ -30,6 +29,11 @@
 		5B0DD8DE1A38484A00E8BBD1 /* PhysicsWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8DC1A38484A00E8BBD1 /* PhysicsWorld.cpp */; };
 		5B0DD8E31A3963C900E8BBD1 /* TurntableCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8E11A3963C900E8BBD1 /* TurntableCam.cpp */; };
 		5B0DD8EB1A39CA8E00E8BBD1 /* PhysicsUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8E91A39CA8E00E8BBD1 /* PhysicsUtil.cpp */; };
+		5B0DD9091A3C497600E8BBD1 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8FC1A3C497600E8BBD1 /* ofxSyphonClient.mm */; };
+		5B0DD90A1A3C497600E8BBD1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD8FE1A3C497600E8BBD1 /* ofxSyphonServer.mm */; };
+		5B0DD90B1A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD9001A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm */; };
+		5B0DD90C1A3C497600E8BBD1 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0DD9051A3C497600E8BBD1 /* Syphon.framework */; };
+		5B0DD90D1A3C497600E8BBD1 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0DD9081A3C497600E8BBD1 /* SyphonNameboundClient.m */; };
 		5B0E83411A369EC30091AB99 /* ofxBulletJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F01A369EC20091AB99 /* ofxBulletJoint.cpp */; };
 		5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F61A369EC20091AB99 /* ofxBulletWorldRigid.cpp */; };
 		5B0E83431A369EC30091AB99 /* GLDebugDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E80F91A369EC20091AB99 /* GLDebugDrawer.cpp */; };
@@ -49,6 +53,7 @@
 		5B0E841D1A37A7430091AB99 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B0E84181A37A7430091AB99 /* Wall.cpp */; };
 		5B557D691A35207F00967B7B /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B557D681A35207F00967B7B /* openFrameworksDebug.a */; };
 		5B94A4D71A35CFB5001CA6F5 /* DomeRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B94A4D51A35CFB5001CA6F5 /* DomeRenderer.cpp */; };
+		5BB4E5991A3C4AD70047F957 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5B0DD9051A3C497600E8BBD1 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C085E327DAB912CFA2A443D /* ofxTCPServer.cpp */; };
 		6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2232A9453E355593EF36ADA7 /* Reactor.cpp */; };
 		86135253DC7909CA8590E157 /* Protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EEFEC8B85F7C3B15DD45A4 /* Protocol.cpp */; };
@@ -93,6 +98,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				5BB4E5991A3C4AD70047F957 /* Syphon.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,8 +132,6 @@
 		32B33A941A3004DE00A2EA9F /* GameObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
 		32B33A951A3004DE00A2EA9F /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameObjectCollection.h; sourceTree = "<group>"; };
-		32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleRenderer.cpp; sourceTree = "<group>"; tabWidth = 4; };
-		32B33A9C1A301C3200A2EA9F /* SimpleRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRenderer.h; sourceTree = "<group>"; };
 		32B33A9E1A3137D800A2EA9F /* GameEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameEvents.cpp; sourceTree = "<group>"; };
 		32B33A9F1A3137D800A2EA9F /* GameEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameEvents.h; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
@@ -156,6 +160,16 @@
 		5B0DD8E21A3963C900E8BBD1 /* TurntableCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableCam.h; sourceTree = "<group>"; };
 		5B0DD8E91A39CA8E00E8BBD1 /* PhysicsUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsUtil.cpp; sourceTree = "<group>"; };
 		5B0DD8EA1A39CA8E00E8BBD1 /* PhysicsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsUtil.h; sourceTree = "<group>"; };
+		5B0DD8FA1A3C497600E8BBD1 /* ofxSyphon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSyphon.h; sourceTree = "<group>"; };
+		5B0DD8FB1A3C497600E8BBD1 /* ofxSyphonClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSyphonClient.h; sourceTree = "<group>"; };
+		5B0DD8FC1A3C497600E8BBD1 /* ofxSyphonClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonClient.mm; sourceTree = "<group>"; };
+		5B0DD8FD1A3C497600E8BBD1 /* ofxSyphonServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServer.h; sourceTree = "<group>"; };
+		5B0DD8FE1A3C497600E8BBD1 /* ofxSyphonServer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServer.mm; sourceTree = "<group>"; };
+		5B0DD8FF1A3C497600E8BBD1 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
+		5B0DD9001A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
+		5B0DD9051A3C497600E8BBD1 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
+		5B0DD9071A3C497600E8BBD1 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
+		5B0DD9081A3C497600E8BBD1 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
 		5B0E80EC1A369EC20091AB99 /* ofxBulletCollisionData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletCollisionData.h; sourceTree = "<group>"; };
 		5B0E80ED1A369EC20091AB99 /* ofxBulletMousePickEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletMousePickEvent.h; sourceTree = "<group>"; };
 		5B0E80EE1A369EC20091AB99 /* ofxBulletRaycastData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBulletRaycastData.h; sourceTree = "<group>"; };
@@ -257,6 +271,7 @@
 				E45BE9840E8CC7DD009D7055 /* QuickTime.framework in Frameworks */,
 				E4C2424710CC5A17004149E2 /* AppKit.framework in Frameworks */,
 				E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */,
+				5B0DD90C1A3C497600E8BBD1 /* Syphon.framework in Frameworks */,
 				E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */,
 				E7E077E515D3B63C0020DFD4 /* CoreVideo.framework in Frameworks */,
 			);
@@ -384,8 +399,6 @@
 				5B0DD8E21A3963C900E8BBD1 /* TurntableCam.h */,
 				32B33A911A2FFCF200A2EA9F /* RendererBase.cpp */,
 				32B33A921A2FFCF200A2EA9F /* RendererBase.h */,
-				32B33A9B1A301C3200A2EA9F /* SimpleRenderer.cpp */,
-				32B33A9C1A301C3200A2EA9F /* SimpleRenderer.h */,
 				5B94A4D51A35CFB5001CA6F5 /* DomeRenderer.cpp */,
 				5B94A4D61A35CFB5001CA6F5 /* DomeRenderer.h */,
 			);
@@ -444,6 +457,73 @@
 				69668FDE141262BC3C6CA929 /* jsoncpp.cpp */,
 			);
 			name = jsoncpp;
+			sourceTree = "<group>";
+		};
+		5B0DD8F81A3C497600E8BBD1 /* ofxSyphon */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD8F91A3C497600E8BBD1 /* src */,
+				5B0DD9011A3C497600E8BBD1 /* libs */,
+			);
+			name = ofxSyphon;
+			sourceTree = "<group>";
+		};
+		5B0DD8F91A3C497600E8BBD1 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD8FA1A3C497600E8BBD1 /* ofxSyphon.h */,
+				5B0DD8FB1A3C497600E8BBD1 /* ofxSyphonClient.h */,
+				5B0DD8FC1A3C497600E8BBD1 /* ofxSyphonClient.mm */,
+				5B0DD8FD1A3C497600E8BBD1 /* ofxSyphonServer.h */,
+				5B0DD8FE1A3C497600E8BBD1 /* ofxSyphonServer.mm */,
+				5B0DD8FF1A3C497600E8BBD1 /* ofxSyphonServerDirectory.h */,
+				5B0DD9001A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm */,
+			);
+			name = src;
+			path = ../of_v0.8.4_osx_release/addons/ofxSyphon/src;
+			sourceTree = "<group>";
+		};
+		5B0DD9011A3C497600E8BBD1 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD9021A3C497600E8BBD1 /* Syphon */,
+			);
+			name = libs;
+			path = ../of_v0.8.4_osx_release/addons/ofxSyphon/libs;
+			sourceTree = "<group>";
+		};
+		5B0DD9021A3C497600E8BBD1 /* Syphon */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD9031A3C497600E8BBD1 /* lib */,
+				5B0DD9061A3C497600E8BBD1 /* src */,
+			);
+			path = Syphon;
+			sourceTree = "<group>";
+		};
+		5B0DD9031A3C497600E8BBD1 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD9041A3C497600E8BBD1 /* osx */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		5B0DD9041A3C497600E8BBD1 /* osx */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD9051A3C497600E8BBD1 /* Syphon.framework */,
+			);
+			path = osx;
+			sourceTree = "<group>";
+		};
+		5B0DD9061A3C497600E8BBD1 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5B0DD9071A3C497600E8BBD1 /* SyphonNameboundClient.h */,
+				5B0DD9081A3C497600E8BBD1 /* SyphonNameboundClient.m */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		5B0E7D0D1A35D9E10091AB99 /* Products */ = {
@@ -587,6 +667,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				5B0DD8F81A3C497600E8BBD1 /* ofxSyphon */,
 				5B0E80E91A369EC20091AB99 /* ofxBullet */,
 				32F95B401A2EB2CF008913CC /* ofxXmlSettings */,
 				18240ECCE4076FB0833A8578 /* ofxNetwork */,
@@ -794,18 +875,21 @@
 				5B0E83481A369EC30091AB99 /* ofxBulletConvexShape.cpp in Sources */,
 				5B0E841B1A37A7430091AB99 /* LogicController.cpp in Sources */,
 				32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */,
-				32B33A9D1A301C3200A2EA9F /* SimpleRenderer.cpp in Sources */,
 				5B0E83441A369EC30091AB99 /* ofxBulletBaseShape.cpp in Sources */,
 				5B0E83431A369EC30091AB99 /* GLDebugDrawer.cpp in Sources */,
 				5B0E834A1A369EC30091AB99 /* ofxBulletCylinder.cpp in Sources */,
+				5B0DD90A1A3C497600E8BBD1 /* ofxSyphonServer.mm in Sources */,
 				32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */,
+				5B0DD90D1A3C497600E8BBD1 /* SyphonNameboundClient.m in Sources */,
 				5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */,
 				5B0DD8EB1A39CA8E00E8BBD1 /* PhysicsUtil.cpp in Sources */,
+				5B0DD90B1A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm in Sources */,
 				5B0E83491A369EC30091AB99 /* ofxBulletCustomShape.cpp in Sources */,
 				32324EBA1A2EA32100B51FCD /* Player.cpp in Sources */,
 				32324EB71A2EA08000B51FCD /* Ball.cpp in Sources */,
 				5B0E841C1A37A7430091AB99 /* SpaceController.cpp in Sources */,
 				32FA9F8B1A2EA5BF00F420D4 /* PlayerManager.cpp in Sources */,
+				5B0DD9091A3C497600E8BBD1 /* ofxSyphonClient.mm in Sources */,
 				32B33AA01A3137D800A2EA9F /* GameEvents.cpp in Sources */,
 				5B94A4D71A35CFB5001CA6F5 /* DomeRenderer.cpp in Sources */,
 				9EF1133BC23669A5C94FE30F /* jsoncpp.cpp in Sources */,
@@ -931,6 +1015,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					../of_v0.8.4_osx_release/libs/glut/lib/osx,
+					../of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(OF_PATH)/libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1036,6 +1121,7 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					../of_v0.8.4_osx_release/libs/glut/lib/osx,
+					../of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(OF_PATH)/libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1109,9 +1195,9 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					../of_v0.8.4_osx_release/libs/openFrameworksCompiled/lib/osx,
-					/Users/dewb/ah/of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/fat,
-					/Users/dewb/ah/of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386,
-					/Users/dewb/ah/of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/x86_64,
+					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/fat,
+					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386,
+					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/x86_64,
 				);
 				LIB_BULLET_ALL_RELEASE = "$(LIB_BULLET_COLLISION_RELEASE) $(LIB_BULLET_DYNAMICS_RELEASE) $(LIB_BULLET_MATH_RELEASE) $(LIB_BULLET_MINI_CL_RELEASE) $(LIB_BULLET_SOFT_BODY_RELEASE)";
 				LIB_BULLET_COLLISION_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletCollision.a\"";

@@ -14,13 +14,10 @@
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
+#include <ofxSyphonClient.h>
 
 class BleepoutApp : public ofBaseApp {
 public:
-  static inline BleepoutApp* getApp() {
-    return (BleepoutApp*)ofGetAppPtr();
-  }
-  
   void setup() override;
   void update() override;
   void draw() override;
@@ -36,6 +33,7 @@ private:
 
   BleepoutConfig _config;
   ofPtr<RoundController> _roundController;
+  ofxSyphonClient _syphonClient;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

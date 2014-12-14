@@ -28,6 +28,7 @@ void OrbitalTrajectory::initWithTwoPoints(ofVec3f start, ofVec3f through) {
     _w = _u.getCrossed(_v).getCrossed(_u).normalized();
     _t = 0;
     _position = _u * _r;
+    _lastPosition = _r * (_u * cos(-_speed) + _w * sin(-_speed));
 }
 
 void OrbitalTrajectory::initWithTwoPoints(float elevation1, float heading1, float elevation2, float heading2) {
@@ -39,16 +40,14 @@ void OrbitalTrajectory::setPosition(const ofVec3f& position) {
 }
     
 void OrbitalTrajectory::tick() {
+    _lastPosition = _position;
     _t += _speed;
     _position = _r * (_u * cos(_t) + _w * sin(_t));
 }
 
 void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
-    // mostly works for +y normal paddle bounces, ignoring planeNormal for now
-    // sometimes trajectory is correct but ball motion is reversed so it seems to go through paddle.
-    ofVec3f orbitNormal = _u.crossed(_v);
-    orbitNormal.y *= -1;
-    ofVec3f start = getPosition();
-    ofVec3f through = _v.crossed(orbitNormal);
-    initWithTwoPoints(start, through);
+    ofVec3f vel = getInstantaneousVelocity();
+    float d = vel.dot(planeNormal);
+    ofVec3f reflectedVelocity = vel - 2 * d * planeNormal;
+    initWithTwoPoints(_position, _position + reflectedVelocity);
 }

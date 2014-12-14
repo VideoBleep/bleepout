@@ -37,7 +37,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 }
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
-: _brickSize(5.0f, 5.0f, 20.0f),
+: _brickSize(7.0f, 5.0f, 17.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
 _domeRadius(150.0f),
@@ -53,7 +53,6 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(root, "ballRadius", &_ballRadius);
   readJsonVal(root, "domeRadius", &_domeRadius);
   readJsonVal(root, "domeMargin", &_domeMargin);
-  readJsonVal(root, "playerColors", &_playerColors);
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
@@ -63,6 +62,5 @@ void RoundConfig::saveJsonFile(std::string path) const {
   root["ballRadius"] = _ballRadius;
   root["domeRadius"] = _domeRadius;
   root["domeMargin"] = _domeMargin;
-  root["playerColors"] = toJsonArr(_playerColors);
   writeJsonFile(path, root);
 }

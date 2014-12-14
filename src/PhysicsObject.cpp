@@ -11,12 +11,41 @@
 #include "PhysicsWorld.h"
 #include "PhysicsUtil.h"
 
-bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b) {
-    bool x = std::fabs(a.center.x - b.center.x) <= (a.halfwidths.x + b.halfwidths.x);
-    bool y = std::fabs(a.center.y - b.center.y) <= (a.halfwidths.y + b.halfwidths.y);
-    bool z = std::fabs(a.center.z - b.center.z) <= (a.halfwidths.z + b.halfwidths.z);
-    return x && y && z;
+bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b, CollisionManifold* m) {
+    float nx = a.center.x - b.center.x;
+    float ny = a.center.y - b.center.y;
+    float nz = a.center.z - b.center.z;
+    float ex = a.halfwidths.x + b.halfwidths.x;
+    float ey = a.halfwidths.y + b.halfwidths.y;
+    float ez = a.halfwidths.z + b.halfwidths.z;
+    bool collision = std::fabs(nx) <= ex && std::fabs(ny) <= ey && std::fabs(nz) <= ez;
+    
+    if (m && collision) {
+        float ox = ex - std::fabs(nx);
+        float oy = ey - std::fabs(ny);
+        float oz = ez - std::fabs(nz);
+        if (ox < oy) {
+            if (ox < oz) {
+                m->penetration = ox;
+                m->normal = ofVec3f(nx < 0 ? -1 : 1, 0, 0);
+            } else {
+                m->penetration = oz;
+                m->normal = ofVec3f(0, 0, nz < 0 ? -1 : 1);
+            }
+        } else {
+            if (oy < oz) {
+                m->penetration = oy;
+                m->normal = ofVec3f(0, ny < 0 ? -1 : 1, 0);
+            } else {
+                m->penetration = oz;
+                m->normal = ofVec3f(0, 0, nz < 0 ? -1 : 1);
+            }
+        }
+    }
+    
+    return collision;
 }
+
 
 PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)

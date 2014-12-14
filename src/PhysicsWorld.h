@@ -18,6 +18,7 @@ class CollisionArgs : public ofEventArgs {
 public:
     GameObject* a;
     GameObject* b;
+    ofVec3f normal;
 };
 
 class PhysicsImpl;
