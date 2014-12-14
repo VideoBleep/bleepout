@@ -40,7 +40,9 @@ void BleepoutApp::update() {
 
 void BleepoutApp::draw() {
   ofBackground(0, 0, 0);
+#ifdef ENABLE_SYPHON
   _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
+#endif // ENABLE_SYPHON
   if (_roundController) {
    _roundController->draw();
   }
