@@ -48,6 +48,20 @@ private:
     ofColor _startColor;
     ofColor _endColor;
   };
+  class RingFadeAction : public ValueRampAction<ofColor> {
+  public:
+    RingFadeAction(RingSet& ringSet, float start, float end,
+                   const ofColor& startVal, const ofColor& endVal)
+    :ValueRampAction<ofColor>(start, end, startVal, endVal)
+    , _ringSet(ringSet) { }
+    
+  protected:
+    virtual void applyValue(const ofColor& value) override {
+      _ringSet._color = value;
+    }
+  private:
+    RingSet& _ringSet;
+  };
 public:
   RingSet() { }
   
@@ -98,6 +112,10 @@ public:
   TimedFunc* newFade(ofColor startColor, ofColor endColor) {
     return new RingFade(*this, startColor, endColor);
   }
+  DurationAction* newFadeAction(float start, float end,
+                                const ofColor& startVal, const ofColor& endVal) {
+    return new RingFadeAction(*this, start, end, startVal, endVal);
+  }
 private:
   SpinPulser _spinPulser;
   SpinPulser _spreadPulser;
@@ -122,9 +140,9 @@ public:
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
     _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 100, 2, 0.2, ofColor(0, 127, 0, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 40.0f, ofVec3f(0)),
+                    ofVec3f(60), 10, 2.3, 0.4, ofColor(255, 127, 0, 63));
+    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
@@ -153,10 +171,11 @@ public:
       ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
       _actions.add(ofPtr<TimedAction>(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn)));
     } else if (key == 'x') {
-      ofColor startColor(255, 0, 0);
-      ofColor endColor(0, 0, 255);
-      ofPtr<TimedFunc> fn(_ringSet2.newFade(startColor, endColor));
-      _actions.add(ofPtr<TimedAction>(DurationAction::newDurationAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, fn)));
+      ofColor startColor(255, 0, 0, 63);
+      ofColor endColor(0, 0, 255, 63);
+//      ofPtr<TimedFunc> fn(_ringSet2.newFade(startColor, endColor));
+//      _actions.add(ofPtr<TimedAction>(DurationAction::newDurationAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, fn)));
+      _actions.add(ofPtr<TimedAction>(_ringSet2.newFadeAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, startColor, endColor)));
     } else if (key == 'v') {
       ofLogNotice() << "queued actions: " << _actions.size();
     }

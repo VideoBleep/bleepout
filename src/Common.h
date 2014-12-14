@@ -92,4 +92,7 @@ public:
   virtual void operator()(Arg1, Arg2) = 0;
 };
 
+template<typename T>
+T getInterpolated(const T& a, const T& b, float amount);
+
 #endif

@@ -11,6 +11,7 @@
 
 #include "Common.h"
 #include <list>
+#include <ofTypes.h>
 
 struct TimedActionArgs {
   float time;
@@ -53,7 +54,6 @@ class DurationAction : public TimedAction {
 public:
   static DurationAction*
   newDurationAction(float start, float end, ofPtr<TimedFunc> fn);
-  
 
   DurationAction(float start, float end)
   : _startTime(start), _endTime(end) { }
@@ -70,6 +70,25 @@ private:
   float _endTime;
   bool _started;
   bool _ended;
+};
+
+template<typename T>
+class ValueRampAction : public DurationAction {
+public:
+  ValueRampAction(float start, float end,
+                  const T& startVal, const T& endVal)
+  : DurationAction(start, end)
+  , _startVal(startVal), _endVal(endVal) { }
+  
+  virtual void call(TimedActionArgs args) override {
+    T value = getInterpolated(_startVal, _endVal, args.percentage);
+    this->applyValue(value);
+  }
+protected:
+  virtual void applyValue(const T& value) = 0;
+private:
+  const T& _startVal;
+  const T& _endVal;
 };
 
 class TimedActionSet : public TimedAction {
