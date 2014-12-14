@@ -180,13 +180,13 @@ public:
   RendererExtrasImpl() {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
-                    ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
+                    ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 255, 63));
     _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 100, 2, 0.2, ofColor(0, 127, 0, 63));
+                    ofVec3f(60), 100, 2, 0.2, ofColor(255, 127, 0, 63));
     _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
+                    ofVec3f(60), 150, 2, 0.9, ofColor(0, 255, 127, 63));
   }
   void update() {
     if (_action) {
