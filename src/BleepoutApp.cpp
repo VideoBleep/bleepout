@@ -11,12 +11,14 @@
 
 void BleepoutApp::setup() {
   // load config....
+  
+  _config = BleepoutConfig::createTestConfig();
   ofSetFrameRate(_config.fps());
   ofSetLogLevel(_config.logLevel());
   ofSetVerticalSync(_config.vsync());
   ofSetBackgroundAuto(false);
 
-  RoundConfig roundConfig(_config);
+  RoundConfig roundConfig = RoundConfig::createTestConfig(_config);
   _roundController.reset(new RoundController(roundConfig));
   _roundController->setup();
 
@@ -25,7 +27,7 @@ void BleepoutApp::setup() {
   _playerManager->addPlayer();
 	
   _syphonClient.setup();
-  _syphonClient.set("Composition", "Arena");
+  _syphonClient.set(_config.syphonServerName(), _config.syphonAppName());
 }
 
 void BleepoutApp::update() {

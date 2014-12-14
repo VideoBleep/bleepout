@@ -19,6 +19,7 @@ bool readJsonVal(const Json::Value& obj, const char* property, float* result);
 bool readJsonVal(const Json::Value& obj, const char* property, int* result);
 bool readJsonVal(const Json::Value& obj, const char* property, unsigned char* result);
 bool readJsonVal(const Json::Value& obj, const char* property, bool* result);
+bool readJsonVal(const Json::Value& obj, const char* property, std::string* result);
 bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result);
 bool readJsonVal(const Json::Value& obj, const char* property, ofVec3f* result);
 bool readJsonVal(const Json::Value& obj, const char* property, ofColor* result);
