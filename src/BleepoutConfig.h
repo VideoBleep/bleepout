@@ -12,6 +12,8 @@
 #include <ofMain.h>
 #include <string>
 #include <vector>
+#include <json.h> // it's included as part of ofxLibwebsockets
+#include "JsonUtil.h"
 
 class BleepoutConfig {
 public:
@@ -28,6 +30,8 @@ public:
   
   const std::string& syphonServerName() const { return _syphonServerName; }
   const std::string syphonAppName() const { return _syphonAppName; }
+  
+  Json::Value toJsonVal() const;
 private:
   int _fps;
   ofLogLevel _logLevel;
@@ -61,10 +65,11 @@ struct WallSpec {
   float elevation;
   float heading;
   ofVec3f size;
+  bool isExit;
   
   WallSpec() { }
-  WallSpec(float e, float h, ofVec3f s)
-  : elevation(e), heading(h), size(s) { }
+  WallSpec(float e, float h, ofVec3f s, bool exit = false)
+  : elevation(e), heading(h), size(s), isExit(exit) { }
 };
 
 struct CurvedWallSpec {
@@ -73,9 +78,11 @@ struct CurvedWallSpec {
   float elevation2;
   float heading2;
   float width;
+  bool isExit;
+  
   CurvedWallSpec() { }
-  CurvedWallSpec(float e1, float h1, float e2, float h2, float w)
-  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w) { }
+  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false)
+  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit) { }
 };
 
 struct BallSpec {
@@ -137,6 +144,8 @@ public:
   std::vector<WallSpec> allWalls() const;
   
   const BleepoutConfig& appConfig() const { return _appConfig; }
+  
+  Json::Value toJsonVal() const;
 private:
   const BleepoutConfig& _appConfig;
   ofVec3f _brickSize;

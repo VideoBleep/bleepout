@@ -52,6 +52,9 @@ void BleepoutApp::keyPressed(int key) {
   if (_roundController) {
     _roundController->keyPressed(key);
   }
+  if (key == 'a') {
+    dumpConfig(OF_LOG_NOTICE);
+  }
 }
 
 void BleepoutApp::mousePressed(int x, int y, int button) {
@@ -76,4 +79,10 @@ void BleepoutApp::mouseDragged(int x, int y, int button) {
   if (_roundController) {
     _roundController->mouseDragged(x, y, button);
   }
+}
+
+void BleepoutApp::dumpConfig(ofLogLevel level) const {
+  ofLog(level) << "--BEGIN app config--";
+  ofLog(level) << _config.toJsonVal().toStyledString();
+  ofLog(level) << "--  END app config--";
 }

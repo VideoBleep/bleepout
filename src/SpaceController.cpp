@@ -81,7 +81,7 @@ void SpaceController::addPaddle(float heading, Player* player) {
 }
 
 void SpaceController::addWall(const WallSpec &wallSpec) {
-  ofPtr<Wall> wall(new Wall());
+  ofPtr<Wall> wall(new Wall(wallSpec.isExit));
   wall->setPositionSpherical(_config.domeRadius() + _config.domeMargin(), wallSpec.elevation, wallSpec.heading);
   wall->setSize(wallSpec.size);
   _world.addObject(wall.get());

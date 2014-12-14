@@ -8,9 +8,6 @@
 
 #include "BleepoutConfig.h"
 #include "BleepoutApp.h"
-#include <json.h> // it's included as part of ofxLibwebsockets
-#include <fstream>
-#include "JsonUtil.h"
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
@@ -26,25 +23,30 @@ BleepoutConfig BleepoutConfig::createTestConfig() {
   return config;
 }
 
+Json::Value BleepoutConfig::toJsonVal() const {
+  Json::Value obj(Json::objectValue);
+  obj["fps"] = _fps;
+  obj["logLevel"] = (int)_logLevel;
+  obj["vsync"] = _vsync;
+  obj["syphonServer"] = _syphonServerName;
+  obj["syphonApp"] = _syphonAppName;
+  return obj;
+}
+
 void BleepoutConfig::loadJsonFile(std::string path) {
-  Json::Value root;
-  if (!readJsonFile(path, &root))
+  Json::Value obj;
+  if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(root, "fps", &_fps);
-  readJsonEnumVal(root, "logLevel", &_logLevel);
-  readJsonVal(root, "vsync", &_vsync);
-  readJsonVal(root, "syphonServer", &_syphonServerName);
-  readJsonVal(root, "syphonApp", &_syphonAppName);
+  readJsonVal(obj["fps"], &_fps);
+  readJsonEnumVal(obj["logLevel"], &_logLevel);
+  readJsonVal(obj["vsync"], &_vsync);
+  readJsonVal(obj["syphonServer"], &_syphonServerName);
+  readJsonVal(obj["syphonApp"], &_syphonAppName);
 }
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
-  Json::Value root(Json::objectValue);
-  root["fps"] = _fps;
-  root["logLevel"] = (int)_logLevel;
-  root["vsync"] = _vsync;
-  root["syphonServer"] = _syphonServerName;
-  root["syphonApp"] = _syphonAppName;
-  writeJsonFile(path, root);
+  Json::Value obj = toJsonVal();
+  writeJsonFile(path, obj);
 }
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
@@ -56,24 +58,39 @@ _domeMargin(20.0f),
 _appConfig(appConfig) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
-  Json::Value root;
-  if (!readJsonFile(path, &root))
+  Json::Value obj;
+  if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(root, "brickSize", &_brickSize);
-  readJsonVal(root, "paddleSize", &_paddleSize);
-  readJsonVal(root, "ballRadius", &_ballRadius);
-  readJsonVal(root, "domeRadius", &_domeRadius);
-  readJsonVal(root, "domeMargin", &_domeMargin);
+  readJsonVal(obj["brickSize"], &_brickSize);
+  readJsonVal(obj["paddleSize"], &_paddleSize);
+  readJsonVal(obj["ballRadius"], &_ballRadius);
+  readJsonVal(obj["domeRadius"], &_domeRadius);
+  readJsonVal(obj["domeMargin"], &_domeMargin);
+  readJsonArr(obj["balls"], &_balls);
+  readJsonArr(obj["bricks"], &_bricks);
+  readJsonArr(obj["brickRings"], &_brickRings);
+  readJsonArr(obj["walls"], &_walls);
+  readJsonArr(obj["curvedWallSets"], &_curvedWallSets);
+}
+
+Json::Value RoundConfig::toJsonVal() const {
+  Json::Value obj;
+  obj["brickSize"] = ::toJsonVal(_brickSize);
+  obj["paddleSize"] = ::toJsonVal(_paddleSize);
+  obj["ballRadius"] = _ballRadius;
+  obj["domeRadius"] = _domeRadius;
+  obj["domeMargin"] = _domeMargin;
+  obj["balls"] = toJsonArr(_balls);
+  obj["bricks"] = toJsonArr(_bricks);
+  obj["brickRings"] = toJsonArr(_brickRings);
+  obj["walls"] = toJsonArr(_walls);
+  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+  return obj;
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
-  Json::Value root;
-  root["brickSize"] = toJsonObj(_brickSize);
-  root["paddleSize"] = toJsonObj(_paddleSize);
-  root["ballRadius"] = _ballRadius;
-  root["domeRadius"] = _domeRadius;
-  root["domeMargin"] = _domeMargin;
-  writeJsonFile(path, root);
+  Json::Value obj = toJsonVal();
+  writeJsonFile(path, obj);
 }
 
 static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
@@ -99,7 +116,7 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
   for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width)));
+    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit));
     theta += dtheta;
     phi += dphi;
   }
@@ -140,6 +157,7 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
   config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
   config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
   config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
+
   //...
   return config;
 }

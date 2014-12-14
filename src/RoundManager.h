@@ -34,7 +34,8 @@ public:
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
   
-  void dumpToLog(ofLogLevel level);
+  void dumpToLog(ofLogLevel level) const;
+  void dumpConfig(ofLogLevel level) const;
   
   void keyPressed(int key);
   void mousePressed(int x, int y, int button);

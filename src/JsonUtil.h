@@ -15,29 +15,48 @@
 #include "BleepoutConfig.h"
 #include "Common.h"
 
-bool readJsonVal(const Json::Value& obj, const char* property, float* result);
-bool readJsonVal(const Json::Value& obj, const char* property, int* result);
-bool readJsonVal(const Json::Value& obj, const char* property, unsigned char* result);
-bool readJsonVal(const Json::Value& obj, const char* property, bool* result);
-bool readJsonVal(const Json::Value& obj, const char* property, std::string* result);
-bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result);
-bool readJsonVal(const Json::Value& obj, const char* property, ofVec3f* result);
-bool readJsonVal(const Json::Value& obj, const char* property, ofColor* result);
-bool readJsonVal(const Json::Value& obj, const char* property, std::vector<ofColor>* result);
+bool assertType(const Json::Value& val, Json::ValueType type);
+
+template<typename T>
+bool readJsonVal(const Json::Value& obj, T* result);
 
 template<typename TEnum>
-bool readJsonEnumVal(const Json::Value& obj, const char* property, TEnum* result) {
-  int valueTemp;
-  if(!readJsonVal(obj, property, &valueTemp))
+bool readJsonEnumVal(const Json::Value& val, TEnum* result) {
+  int temp;
+  if(!readJsonVal(val, &temp))
     return false;
-  *result = (TEnum)valueTemp;
+  *result = (TEnum)temp;
   return true;
 }
 
-Json::Value toJsonObj(const ofVec2f& val);
-Json::Value toJsonObj(const ofVec3f& val);
-Json::Value toJsonObj(const ofColor& val);
-Json::Value toJsonArr(const std::vector<ofColor>& vals);
+template<typename T>
+bool readJsonArr(const Json::Value& arr, std::vector<T>* result) {
+  if (!assertType(arr, Json::arrayValue))
+    return false;
+  std::vector<T> tempVals;
+  for (Json::ArrayIndex i = 0; i < arr.size(); i++) {
+    T temp;
+    if (!readJsonVal(arr[i], &temp))
+      return false;
+    tempVals.push_back(temp);
+  }
+  result->clear();
+  result->swap(tempVals);
+  return true;
+}
+
+template<typename T>
+Json::Value toJsonVal(const T& val);
+
+template<typename T>
+Json::Value toJsonArr(const std::vector<T>& vals) {
+  Json::Value arr(Json::arrayValue);
+  arr.resize(vals.size());
+  for (int i = 0; i < vals.size(); i++) {
+    arr[i] = toJsonVal(vals[i]);
+  }
+  return arr;
+}
 
 bool readJsonFile(std::string path, Json::Value* obj);
 void writeJsonFile(std::string path, const Json::Value& obj);
