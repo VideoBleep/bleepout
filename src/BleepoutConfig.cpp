@@ -30,11 +30,11 @@ void BleepoutConfig::loadJsonFile(std::string path) {
   Json::Value root;
   if (!readJsonFile(path, &root))
     return;
-  readJsonVal(root, "fps", &_fps);
-  readJsonEnumVal(root, "logLevel", &_logLevel);
-  readJsonVal(root, "vsync", &_vsync);
-  readJsonVal(root, "syphonServer", &_syphonServerName);
-  readJsonVal(root, "syphonApp", &_syphonAppName);
+  readJsonVal(root["fps"], &_fps);
+  readJsonEnumVal(root["logLevel"], &_logLevel);
+  readJsonVal(root["vsync"], &_vsync);
+  readJsonVal(root["syphonServer"], &_syphonServerName);
+  readJsonVal(root["syphonApp"], &_syphonAppName);
 }
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
@@ -59,11 +59,11 @@ void RoundConfig::loadJsonFile(std::string path) {
   Json::Value root;
   if (!readJsonFile(path, &root))
     return;
-  readJsonVal(root, "brickSize", &_brickSize);
-  readJsonVal(root, "paddleSize", &_paddleSize);
-  readJsonVal(root, "ballRadius", &_ballRadius);
-  readJsonVal(root, "domeRadius", &_domeRadius);
-  readJsonVal(root, "domeMargin", &_domeMargin);
+  readJsonVal(root["brickSize"], &_brickSize);
+  readJsonVal(root["paddleSize"], &_paddleSize);
+  readJsonVal(root["ballRadius"], &_ballRadius);
+  readJsonVal(root["domeRadius"], &_domeRadius);
+  readJsonVal(root["domeMargin"], &_domeMargin);
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
