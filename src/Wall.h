@@ -10,11 +10,14 @@
 #define __bleepout__Wall__
 
 #include "GameObject.h"
-#include <ofxBox2d.h>
+#include "PhysicsObject.h"
 
-class Wall : public GameObject, public ofxBox2dEdge {
+class RoundConfig;
+class WallSpec;
+
+class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(bool isExit) : GameObject(GAME_OBJECT_WALL), _isExit(isExit) {}
+  Wall(const RoundConfig* config = NULL, const WallSpec* spec = NULL);
   
   bool isExit() const { return _isExit; }
   

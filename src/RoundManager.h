@@ -10,7 +10,6 @@
 #define __bleepout__RoundController__
 
 #include <ofMain.h>
-#include <ofxBox2d.h>
 #include <vector>
 #include "PlayerManager.h"
 #include "BleepoutConfig.h"
@@ -35,10 +34,13 @@ public:
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
   
-  void dumpToLog(ofLogLevel level);
+  void dumpToLog(ofLogLevel level) const;
+  void dumpConfig(ofLogLevel level) const;
   
   void keyPressed(int key);
+  void mousePressed(int x, int y, int button);
   void mouseMoved(int x, int y );
+  void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button);
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);

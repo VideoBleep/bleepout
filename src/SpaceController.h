@@ -9,11 +9,11 @@
 #ifndef __bleepout__SpaceController__
 #define __bleepout__SpaceController__
 
-#include <ofxBox2d.h>
-
 #include "GameState.h"
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
+#include "PhysicsWorld.h"
+#include <ofMain.h>
 
 class SpaceController : public CollisionEventSource {
 public:
@@ -21,20 +21,23 @@ public:
   
   void setup();
   void update();
+  void drawDebug();
+    
+  void addInitialPaddles();
+    
 private:
-  void generateBricks();
+  void addPaddle(float heading, Player* player);
   
-  void addBrick(ofVec2f center);
-  void addBall(ofVec2f center);
-  void addPaddle(ofVec2f center, Player* player);
+  void addBrick(const BrickSpec& brickSpec);
+  void addWall(const WallSpec& wallSpec);
+  void addBall(const BallSpec& ballSpec);
   
-  void contactStart(ofxBox2dContactArgs& e);
-  void contactEnd(ofxBox2dContactArgs& e);
-  
-  void ballHitObject(Ball* ball, GameObject* obj);
+  void onCollision(CollisionArgs &cdata);
+    
+  void ballHitObject(Ball* ball, GameObject* obj, ofVec3f normal);
 
 private:
-  ofxBox2d _box2d;
+  PhysicsWorld _world;
   RoundState& _state;
   RoundConfig& _config;
 };

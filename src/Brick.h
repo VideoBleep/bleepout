@@ -9,13 +9,16 @@
 #ifndef __bleepout__Brick__
 #define __bleepout__Brick__
 
-#include <ofMain.h>
-#include <ofxBox2d.h>
 #include "GameObject.h"
+#include "PhysicsObject.h"
+#include <ofMain.h>
 
-class Brick : public GameObject, public ofxBox2dRect {
+class RoundConfig;
+class BrickSpec;
+
+class Brick : public GameObject, public PhysicsObject {
 public:
-  Brick() : GameObject(GAME_OBJECT_BRICK), _value(1) {}
+  Brick(const RoundConfig* config = NULL, const BrickSpec* spec = NULL);
   
   int value() const { return _value; }
   void setValue(int value) { _value = value; }

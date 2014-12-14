@@ -9,11 +9,15 @@
 #include "Paddle.h"
 
 Paddle::Paddle(Player* player)
-: GameObject(GAME_OBJECT_PADDLE), _player(player) {
-  ofLogVerbose() << "Create Paddle";
+: GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
+  thisGameObject = this;
+  _color = ofColor(128, 128, 128);
 }
 
-Paddle::~Paddle() {
-  ofLogVerbose() << "Destroy Paddle";
-  destroy();
+const ofColor& Paddle::getColor() const {
+    if (_player) {
+        return _player->getColor();
+    } else {
+        return _color;
+    }
 }

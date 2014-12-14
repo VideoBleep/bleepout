@@ -8,9 +8,6 @@
 
 #include "BleepoutConfig.h"
 #include "BleepoutApp.h"
-#include <ofxXmlSettings.h>
-#include <json.h> // it's included as part of ofxLibwebsockets
-#include <fstream>
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
@@ -19,230 +16,148 @@ _vsync(true) {
   
 }
 
-void BleepoutConfig::loadFile(const std::string& path) {
-  ofxXmlSettings settings;
-  if (!path.empty())
-    settings.load(path);
-  _fps = settings.getValue("settings:fps", _fps);
-  _logLevel = (ofLogLevel)settings.getValue("settings:logLevel", _logLevel);
-  _vsync = settings.getValue("settings:vsync", _vsync);
-  //...
+BleepoutConfig BleepoutConfig::createTestConfig() {
+  BleepoutConfig config;
+  config._syphonServerName = "Composition";
+  config._syphonAppName = "Arena";
+  return config;
 }
 
-void BleepoutConfig::saveFile(const std::string& path) const {
-  ofxXmlSettings settings;
-  settings.setValue("settings:fps", _fps);
-  settings.setValue("settings:logLevel", (int)_logLevel);
-  settings.setValue("settings:vsync", _vsync);
-  settings.save(path);
-}
-
-static bool readJsonVal(const Json::Value& obj, const char* property, float* result) {
-  const Json::Value& val = obj[property];
-  if (!obj.isNumeric()) {
-    ofLogError() << "invalid type for property \"" << property << "\" (expected number): " << val.toStyledString();
-    return false;
-  }
-  *result = obj.asFloat();
-  return true;
-}
-
-static bool readJsonVal(const Json::Value& obj, const char* property, int* result) {
-  const Json::Value& val = obj[property];
-  if (!obj.isNumeric()) {
-    ofLogError() << "invalid type for property \"" << property << "\" (expected number): " << val.toStyledString();
-    return false;
-  }
-  *result = obj.asInt();
-  return true;
-}
-
-static bool readJsonVal(const Json::Value& obj, const char* property, bool* result) {
-  const Json::Value& val = obj[property];
-  if (!obj.isBool()) {
-    ofLogError() << "invalid type for property \"" << property << "\" (expected boolean): " << val.toStyledString();
-    return false;
-  }
-  *result = val.asBool();
-  return true;
-}
-
-template<typename TEnum>
-static bool readJsonEnumVal(const Json::Value& obj, const char* property, TEnum* result) {
-  int valueTemp;
-  if(!readJsonVal(obj, property, &valueTemp))
-    return false;
-  *result = (TEnum)valueTemp;
-  return true;
-}
-
-static bool readJsonVal(const Json::Value& obj, const char* property, ofVec2f* result) {
-  const Json::Value& val = obj[property];
-  if (!obj.isObject()) {
-    ofLogError() << "invalid type for property \"" << property << "\" (expected object): " << val.toStyledString();
-    return false;
-  }
-  ofVec2f temp;
-  if (!readJsonVal(val, "x", &(temp.x)) || !readJsonVal(val, "y", &(temp.y)))
-    return false;
-  *result = temp;
-  return true;
-}
-
-static bool readJsonVal(const Json::Value& obj, const char* property, PhysicsOptions* result) {
-  const Json::Value& val = obj[property];
-  if (!obj.isObject()) {
-    ofLogError() << "invalid type for property \"" << property << "\" (expected object): " << val.toStyledString();
-    return false;
-  }
-  PhysicsOptions temp;
-  if (!readJsonVal(val, "density", &temp.density) ||
-      !readJsonVal(val, "bounce", &temp.bounce) ||
-      !readJsonVal(val, "friction", &temp.friction))
-    return false;
-  *result = temp;
-  return true;
-}
-
-static Json::Value toJsonObj(const ofVec2f& val) {
+Json::Value BleepoutConfig::toJsonVal() const {
   Json::Value obj(Json::objectValue);
-  obj["x"] = val.x;
-  obj["y"] = val.y;
+  obj["fps"] = _fps;
+  obj["logLevel"] = (int)_logLevel;
+  obj["vsync"] = _vsync;
+  obj["syphonServer"] = _syphonServerName;
+  obj["syphonApp"] = _syphonAppName;
   return obj;
-}
-
-static Json::Value toJsonObj(const PhysicsOptions& val) {
-  Json::Value obj(Json::objectValue);
-  obj["density"] = val.density;
-  obj["bounce"] = val.bounce;
-  obj["friction"] = val.friction;
-  return obj;
-}
-
-static bool readJsonObjectFile(std::string path, Json::Value* obj) {
-  path = ofToDataPath(path);
-  std::ifstream fis(path.c_str());
-  Json::Reader reader;
-  if (!reader.parse(fis, *obj)) {
-    ofLogError() << "error loading json from: " << path << ": " << reader.getFormattedErrorMessages();
-    return false;
-  }
-  if (!obj->isObject()) {
-    ofLogError() << "config root is not object: " << obj->toStyledString();
-    return false;
-  }
-}
-
-static void writeJsonFile(std::string path, const Json::Value& obj) {
-  path = ofToDataPath(path);
-  std::ofstream fos(path.c_str());
-  Json::StyledStreamWriter writer;
-  writer.write(fos, obj);
 }
 
 void BleepoutConfig::loadJsonFile(std::string path) {
-  Json::Value root;
-  if (!readJsonObjectFile(path, &root))
+  Json::Value obj;
+  if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(root, "fps", &_fps);
-  readJsonEnumVal(root, "logLevel", &_logLevel);
-  readJsonVal(root, "vsync", &_vsync);
+  readJsonVal(obj["fps"], &_fps);
+  readJsonEnumVal(obj["logLevel"], &_logLevel);
+  readJsonVal(obj["vsync"], &_vsync);
+  readJsonVal(obj["syphonServer"], &_syphonServerName);
+  readJsonVal(obj["syphonApp"], &_syphonAppName);
 }
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
-  Json::Value root(Json::objectValue);
-  root["fps"] = _fps;
-  root["logLevel"] = (int)_logLevel;
-  root["vsync"] = _vsync;
-  writeJsonFile(path, root);
-}
-
-static void readPhysics(ofxXmlSettings& settings,
-                                  std::string prefix,
-                                  PhysicsOptions& vals) {
-  vals.density = settings.getValue(prefix + "Density", vals.density);
-  vals.bounce = settings.getValue(prefix + "Bounce", vals.bounce);
-  vals.friction = settings.getValue(prefix + "Friction", vals.friction);
-}
-
-static void writePhysics(ofxXmlSettings& settings,
-                         std::string prefix,
-                         const PhysicsOptions& options) {
-  settings.setValue(prefix + "Density", options.density);
-  settings.setValue(prefix + "Bounce", options.bounce);
-  settings.setValue(prefix + "Friction", options.friction);
-}
-
-static void readVec2f(ofxXmlSettings& settings, std::string prefix, ofVec2f& vals) {
-  vals.x = settings.getValue(prefix + "X", vals.x);
-  vals.y = settings.getValue(prefix + "Y", vals.y);
-}
-
-static void writeVec2(ofxXmlSettings& settings, std::string prefix, ofVec2f vals) {
-  settings.setValue(prefix + "X", vals.x);
-  settings.setValue(prefix + "Y", vals.y);
+  Json::Value obj = toJsonVal();
+  writeJsonFile(path, obj);
 }
 
 RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
-: _brickSize(100.0f, 20.0f),
-_brickGap(5.0f),
-_paddleSize(150.0f, 25.0f),
-_ballRadius(10.0f),
-_ballPhysics(3.0f, 1.0f, 0.0f),
-_paddlePhysics(0.0f, 0.0f, 0.9f),
-_ballInitialVelocity(0.01f, 10.5f),
+: _brickSize(7.0f, 5.0f, 17.0f),
+_paddleSize(16.0f, 8.0f, 40.0f),
+_ballRadius(8.0f),
+_domeRadius(150.0f),
+_domeMargin(20.0f),
 _appConfig(appConfig) { }
 
-void RoundConfig::loadFile(const std::string &path) {
-  ofxXmlSettings settings;
-  if (!path.empty())
-    settings.load(path);
-  readVec2f(settings, "settings:brickSize", _brickSize);
-  _brickGap = settings.getValue("settings:brickGap", _brickGap);
-  readVec2f(settings, "settings:paddleSize", _paddleSize);
-  _ballRadius = settings.getValue("settings:ballRadius", _ballRadius);
-  readPhysics(settings, "settings:ball", _ballPhysics);
-  readPhysics(settings, "settings:paddle", _paddlePhysics);
-  readVec2f(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
-  //...
-}
-
-void RoundConfig::saveFile(const std::string &path) const {
-  ofxXmlSettings settings;
-  writeVec2(settings, "settings:brickSize", _brickSize);
-  settings.setValue("settings:brickGap", _brickGap);
-  writeVec2(settings, "settings:paddleSize", _paddleSize);
-  settings.setValue("settings:ballRadius", _ballRadius);
-  writePhysics(settings, "settings:ball", _ballPhysics);
-  writePhysics(settings, "settings:paddle", _paddlePhysics);
-  writeVec2(settings, "settings:ballInitialVelocity", _ballInitialVelocity);
-
-  //...
-  settings.save(path);
-}
-
 void RoundConfig::loadJsonFile(std::string path) {
-  Json::Value root;
-  if (!readJsonObjectFile(path, &root))
+  Json::Value obj;
+  if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(root, "brickSize", &_brickSize);
-  readJsonVal(root, "brickGap", &_brickGap);
-  readJsonVal(root, "paddleSize", &_paddleSize);
-  readJsonVal(root, "ballRadius", &_ballRadius);
-  readJsonVal(root, "ballPhysics", &_ballPhysics);
-  readJsonVal(root, "paddlePhysics", &_paddlePhysics);
-  readJsonVal(root, "ballInitialVelocity", &_ballInitialVelocity);
+  readJsonVal(obj["brickSize"], &_brickSize);
+  readJsonVal(obj["paddleSize"], &_paddleSize);
+  readJsonVal(obj["ballRadius"], &_ballRadius);
+  readJsonVal(obj["domeRadius"], &_domeRadius);
+  readJsonVal(obj["domeMargin"], &_domeMargin);
+  readJsonArr(obj["balls"], &_balls);
+  readJsonArr(obj["bricks"], &_bricks);
+  readJsonArr(obj["brickRings"], &_brickRings);
+  readJsonArr(obj["walls"], &_walls);
+  readJsonArr(obj["curvedWallSets"], &_curvedWallSets);
+}
+
+Json::Value RoundConfig::toJsonVal() const {
+  Json::Value obj;
+  obj["brickSize"] = ::toJsonVal(_brickSize);
+  obj["paddleSize"] = ::toJsonVal(_paddleSize);
+  obj["ballRadius"] = _ballRadius;
+  obj["domeRadius"] = _domeRadius;
+  obj["domeMargin"] = _domeMargin;
+  obj["balls"] = toJsonArr(_balls);
+  obj["bricks"] = toJsonArr(_bricks);
+  obj["brickRings"] = toJsonArr(_brickRings);
+  obj["walls"] = toJsonArr(_walls);
+  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+  return obj;
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
-  Json::Value root;
-  root["brickSize"] = toJsonObj(_brickSize);
-  root["brickGap"] = _brickGap;
-  root["paddleSize"] = toJsonObj(_paddleSize);
-  root["ballRadius"] = _ballRadius;
-  root["ballPhysics"] = toJsonObj(_ballPhysics);
-  root["paddlePhysics"] = toJsonObj(_paddlePhysics);
-  root["ballInitialVelocity"] = toJsonObj(_ballInitialVelocity);
-  writeJsonFile(path, root);
+  Json::Value obj = toJsonVal();
+  writeJsonFile(path, obj);
 }
 
+static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
+  for (int i = 0; i < ring.count; i++) {
+    bricks.push_back(BrickSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.color));
+  }
+}
+
+std::vector<BrickSpec> RoundConfig::allBricks() const {
+  std::vector<BrickSpec> allBricks(_bricks);
+  for (const BrickRingSpec& ring : _brickRings) {
+    createRingBricks(ring, allBricks);
+  }
+  return allBricks;
+}
+
+static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<WallSpec>& walls) {
+  float theta = curve.elevation1;
+  float phi = curve.heading1;
+  float dtheta = curve.elevation2 - curve.elevation1;
+  float dphi = curve.heading2 - curve.heading1;
+  int steps = floor(max((r * dtheta * PI/180.0) / curve.width, (r * dphi * PI/180.0) / curve.width));
+  dtheta /= steps * 1.0;
+  dphi /= steps * 1.0;
+  for (int i = 0; i < steps; i++) {
+    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit));
+    theta += dtheta;
+    phi += dphi;
+  }
+}
+
+std::vector<WallSpec> RoundConfig::allWalls() const {
+  std::vector<WallSpec> walls(_walls);
+  float r = domeRadius() + domeMargin();
+  for (const CurvedWallSpec& curve : _curvedWallSets) {
+    createCurveWalls(curve, r, walls);
+  }
+  return walls;
+}
+
+RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
+  RoundConfig config(appConfig);
+  
+  for (int i = 0; i < 5; i ++) {
+    config.addBall(BallSpec(30, ofRandom(360)));
+  }
+  
+  int cols = 12;
+  int rows = 10;
+  
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      float s = i / (cols * 1.0);
+      config.addBrick(BrickSpec(30 + 3 * j,
+                           s * 360 + j * 2 + ((i % 2) ? 5 : -5),
+                           ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255)));
+    }
+  }
+  
+  for (int i = 0; i < 6; i++) {
+    config.addCurvedWallSet(CurvedWallSpec(30, i * 60 + 15, 70, i * 60 + 45, 10));
+  }
+  
+  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
+  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
+  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
+
+  //...
+  return config;
+}
