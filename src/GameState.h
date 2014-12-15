@@ -33,11 +33,8 @@ class RoundState {
 public:
   
   RoundState(const RoundConfig& config)
-  : _config(config) {}
-  RoundState(const RoundState& other)
-  : _config(other._config) {
-    ofLogWarning() << "DUPLICATING ROUND STATE!!!";
-  }
+  : _config(config)
+  , _liveBricks(0) {}
   
   const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
   const GameObjectCollection<Ball>& balls() const { return _balls; }
@@ -57,6 +54,12 @@ public:
   Wall& addWall(const WallSpec& wallSpec);
   Ball& addBall(const BallSpec& ballSpec);
   
+  int decrementLiveBricks() {
+    return ++_liveBricks;
+  }
+  
+  int liveBricks() const { return _liveBricks; }
+  
   void output(std::ostream& os) const;
   
   RoundMessage message;
@@ -64,12 +67,16 @@ public:
   
   
 private:
+  RoundState(const RoundState& other) : _config(other._config) {
+    ofLogWarning() << "DUPLICATING ROUND STATE!!!";
+  }
   const RoundConfig& _config;
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;
   GameObjectCollection<Brick>  _bricks;
   GameObjectCollection<Wall>   _walls;
   GameObjectCollection<Player> _players;
+  int _liveBricks;
 };
 
 #endif /* defined(__bleepout__GameState__) */

@@ -135,6 +135,10 @@ public:
   
   RoundState& state() { return _state; }
   
+  virtual void output(std::ostream& os) const {
+    os << "()";
+  }
+  
 private:
   RoundState& _state;
 };
@@ -158,7 +162,7 @@ public:
   Player* previousPlayer() { return _previousPlayer; }
   const Player* previousPlayer() const { return _previousPlayer; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, ball());
     os << " ";
@@ -184,7 +188,7 @@ public:
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, brick());
     os << " ";
@@ -204,6 +208,11 @@ public:
   RoundStateObjectEventArgs(RoundState& state, T* obj)
   : RoundStateEventArgs(state)
   , ObjectEventArgs<T>(obj) { }
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    outputField(os, this->object());
+    os << ")";
+  }
 };
 
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
@@ -216,12 +225,13 @@ class RoundStateEventSource {
 public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerEventArgs > playerScoreChangedEvent;
   ofEvent<BallEventArgs> ballDestroyedEvent;
   ofEvent<BallEventArgs> ballRespawnedEvent;
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
-  ofEvent<EmptyEventArgs> roundEndedEvent;
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
@@ -259,6 +269,10 @@ protected:
     BrickDestroyedEventArgs e(state, brick, ball);
     ofNotifyEvent(brickDestroyedEvent, e);
   }
+  void notifyAllBricksDestroyed(RoundState& state) {
+    RoundStateEventArgs e(state);
+    ofNotifyEvent(allBricksDestroyedEvent, e);
+  }
   void notifyPlayerScoreChanged(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerScoreChangedEvent, e);
@@ -279,8 +293,8 @@ protected:
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerLivesChangedEvent, e);
   }
-  void notifyRoundEnded() {
-    EmptyEventArgs e;
+  void notifyRoundEnded(RoundState& state) {
+    RoundStateEventArgs e(state);
     ofNotifyEvent(roundEndedEvent, e);
   }
 private:

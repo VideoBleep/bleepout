@@ -35,10 +35,15 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
   
   if (player) {
     brick->kill();
+    _state.decrementLiveBricks();
     notifyBrickDestroyed(_state, brick, ball);
     
     player->adjustScore(brick->value());
     notifyPlayerScoreChanged(_state, player);
+    
+    if (_state.liveBricks() <= 0) {
+      notifyAllBricksDestroyed(_state);
+    }
   }
   //...
 }

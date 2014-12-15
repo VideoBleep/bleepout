@@ -56,12 +56,13 @@ public:
   
   EVENT_LOGGER_CALLBACK(BallOwnerChanged, BallOwnerChangedEventArgs);
   EVENT_LOGGER_CALLBACK(BrickDestroyed, BrickDestroyedEventArgs);
+  EVENT_LOGGER_CALLBACK(AllBricksDestroyed, RoundStateEventArgs);
   EVENT_LOGGER_CALLBACK(PlayerScoreChanged, PlayerEventArgs);
   EVENT_LOGGER_CALLBACK(BallDestroyed, BallEventArgs);
   EVENT_LOGGER_CALLBACK(BallRespawned, BallEventArgs);
   EVENT_LOGGER_CALLBACK(PlayerLost, PlayerEventArgs);
   EVENT_LOGGER_CALLBACK(PlayerLivesChanged, PlayerEventArgs);
-  EVENT_LOGGER_CALLBACK(RoundEnded, EmptyEventArgs);
+  EVENT_LOGGER_CALLBACK(RoundEnded, RoundStateEventArgs);
 private:
   ofLogLevel _level;
 };

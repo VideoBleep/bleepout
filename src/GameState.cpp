@@ -21,6 +21,8 @@ Paddle& RoundState::addPaddle(Player* player) {
 Brick& RoundState::addBrick(const BrickSpec& brickSpec) {
   ofPtr<Brick> brick(new Brick(&_config, &brickSpec));
   _bricks.push_back(brick);
+  if (brick->alive())
+    _liveBricks++;
   return *brick;
 }
 
