@@ -43,6 +43,14 @@ public:
       ofLog(level) << "   " << (o);
     }
   }
+  
+private:
+  void push_back(ofPtr<T>& obj) {
+    VectorType::push_back(obj);
+  }
+  
+  friend class RoundState;
+  
 };
 
 #endif

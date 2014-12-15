@@ -370,6 +370,9 @@
 			children = (
 				32B33A951A3004DE00A2EA9F /* GameObject.h */,
 				32B33A941A3004DE00A2EA9F /* GameObject.cpp */,
+				5B0E84121A37A7430091AB99 /* GameState.cpp */,
+				5B0E84131A37A7430091AB99 /* GameState.h */,
+				32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */,
 				32324EAF1A2EA04400B51FCD /* Brick.cpp */,
 				32324EB01A2EA04400B51FCD /* Brick.h */,
 				32324EB21A2EA04F00B51FCD /* Paddle.cpp */,
@@ -389,9 +392,6 @@
 		32B33A8F1A2FFC9100A2EA9F /* core */ = {
 			isa = PBXGroup;
 			children = (
-				5B0E84121A37A7430091AB99 /* GameState.cpp */,
-				5B0E84131A37A7430091AB99 /* GameState.h */,
-				32B33A971A300F4C00A2EA9F /* GameObjectCollection.h */,
 				32FA9F891A2EA5BF00F420D4 /* PlayerManager.cpp */,
 				32FA9F8A1A2EA5BF00F420D4 /* PlayerManager.h */,
 				32FA9F8C1A2EA80900F420D4 /* RoundManager.cpp */,

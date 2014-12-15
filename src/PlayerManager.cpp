@@ -22,7 +22,7 @@ PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
   player->setColor(ofColor::green);
-  _state.players().push_back(player);
+  _state.addPlayer(player);
   return player;
 }
 
@@ -118,7 +118,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
                         ofHexToInt(parts[4]));
     newPlayer.player.reset(new Player(&args.conn));
     newPlayer.player->setColor(newPlayer.color);
-		_roundController->state().players().push_back(newPlayer.player);
+		_roundController->state().addPlayer(newPlayer.player);
 	}
 	// if the prefix is but then we have a click message
 }
