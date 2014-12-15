@@ -14,11 +14,10 @@
 #include "Logging.h"
 
 RoundController::RoundController(RoundConfig config)
-  : _config(config) {
-}
+: _config(config)
+, _state(config) { }
 
-RoundController::~RoundController() {
-}
+RoundController::~RoundController() { }
 
 void RoundController::setup() {
    
