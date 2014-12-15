@@ -50,6 +50,12 @@ public:
   GameObjectCollection<Brick>& bricks() { return _bricks; }
   GameObjectCollection<Wall>& walls() { return _walls; }
   GameObjectCollection<Player>& players() { return _players; }
+
+  void addPlayer(ofPtr<Player> player);
+  Paddle& addPaddle(Player* player);
+  Brick& addBrick(const BrickSpec& brickSpec);
+  Wall& addWall(const WallSpec& wallSpec);
+  Ball& addBall(const BallSpec& ballSpec);
   
   void output(std::ostream& os) const;
   
