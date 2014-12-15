@@ -13,11 +13,13 @@
 #include "RoundManager.h"
 #include "TurntableCam.h"
 #include <ofTrueTypeFont.h>
+#include "RendererExtras.h"
 
 class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
-    virtual void setup() override;
+    virtual void setup(RoundController& roundController) override;
+    virtual void update() override;
     virtual void draw(RoundState& round, RoundConfig& config) override;
     
     virtual void keyPressed(int key);
@@ -36,6 +38,7 @@ protected:
     bool _drawTrajectories;
     
     ofTrueTypeFont _font;
+    RendererExtras _extras;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

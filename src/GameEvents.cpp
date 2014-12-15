@@ -35,6 +35,9 @@ private:
   ofLogLevel _level;
 };
 
+bool CollisionEventSource::loggingEnabled() const {
+  return (bool)_logger;
+}
 void CollisionEventSource::enableLogging(ofLogLevel level) {
   disableLogging();
   _logger.reset(new CollisionEventLogger(level));
@@ -63,6 +66,9 @@ private:
   ofLogLevel _level;
 };
 
+bool RoundStateEventSource::loggingEnabled() const {
+  return (bool)_logger;
+}
 void RoundStateEventSource::enableLogging(ofLogLevel level) {
   disableLogging();
   _logger.reset(new RoundStateEventLogger(level));
@@ -85,6 +91,9 @@ private:
   ofLogLevel _level;
 };
 
+bool PlayerEventSource::loggingEnabled() const {
+  return (bool)_logger;
+}
 void PlayerEventSource::enableLogging(ofLogLevel level) {
   disableLogging();
   _logger.reset(new PlayerEventLogger(level));

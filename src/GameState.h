@@ -31,6 +31,11 @@ struct RoundMessage {
 
 class RoundState {
 public:
+  
+  RoundState() {}
+  RoundState(const RoundState& other) {
+    ofLogWarning() << "DUPLICATING ROUND STATE!!!";
+  }
 
   const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
   const GameObjectCollection<Ball>& balls() const { return _balls; }
