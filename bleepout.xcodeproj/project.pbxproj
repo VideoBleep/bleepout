@@ -26,6 +26,7 @@
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
 		32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */; };
 		32F95B4C1A2EB2CF008913CC /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B481A2EB2CF008913CC /* tinyxmlparser.cpp */; };
+		32FA5BF81A3EBD5400E68E90 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FA5BF61A3EBD5400E68E90 /* Modifier.cpp */; };
 		32FA9F8B1A2EA5BF00F420D4 /* PlayerManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FA9F891A2EA5BF00F420D4 /* PlayerManager.cpp */; };
 		32FA9F8E1A2EA80900F420D4 /* RoundManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FA9F8C1A2EA80900F420D4 /* RoundManager.cpp */; };
 		32FA9F911A2EA84100F420D4 /* BleepoutApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32FA9F8F1A2EA84100F420D4 /* BleepoutApp.cpp */; };
@@ -154,6 +155,8 @@
 		32F95B461A2EB2CF008913CC /* tinyxml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		32F95B481A2EB2CF008913CC /* tinyxmlparser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		32FA5BF61A3EBD5400E68E90 /* Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifier.cpp; sourceTree = "<group>"; };
+		32FA5BF71A3EBD5400E68E90 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
 		32FA9F891A2EA5BF00F420D4 /* PlayerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerManager.cpp; sourceTree = "<group>"; };
 		32FA9F8A1A2EA5BF00F420D4 /* PlayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerManager.h; sourceTree = "<group>"; };
 		32FA9F8C1A2EA80900F420D4 /* RoundManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoundManager.cpp; sourceTree = "<group>"; };
@@ -385,6 +388,8 @@
 				5B0E84181A37A7430091AB99 /* Wall.cpp */,
 				324483F51A3E1D0400F4DCB6 /* AnimationObject.cpp */,
 				324483F61A3E1D0400F4DCB6 /* AnimationObject.h */,
+				32FA5BF61A3EBD5400E68E90 /* Modifier.cpp */,
+				32FA5BF71A3EBD5400E68E90 /* Modifier.h */,
 			);
 			name = game_objects;
 			sourceTree = "<group>";
@@ -920,6 +925,7 @@
 				9EF1133BC23669A5C94FE30F /* jsoncpp.cpp in Sources */,
 				C6C3882A0B0872D1485F3874 /* Client.cpp in Sources */,
 				A78C77753D562AE8F0E928ED /* Connection.cpp in Sources */,
+				32FA5BF81A3EBD5400E68E90 /* Modifier.cpp in Sources */,
 				F1AC6AEFB9B93C6AC45C9CA8 /* Events.cpp in Sources */,
 				5B0E83411A369EC30091AB99 /* ofxBulletJoint.cpp in Sources */,
 				5B0E83461A369EC30091AB99 /* ofxBulletCapsule.cpp in Sources */,
