@@ -7,10 +7,15 @@
 //
 
 #include "Wall.h"
+#include "BleepoutConfig.h"
 
-Wall::Wall(bool isExit)
+Wall::Wall(const RoundConfig* config /*= NULL*/, const WallSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_WALL)
-, _isExit(isExit)
 {
     thisGameObject = this;
+  if (config && spec) {
+    _isExit = spec->isExit;
+    this->setPositionSpherical(config->domeRadius() + config->domeMargin(), spec->elevation, spec->heading);
+    this->setSize(spec->size);
+  }
 }

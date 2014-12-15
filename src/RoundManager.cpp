@@ -26,16 +26,14 @@ void RoundController::setup() {
   _logicController.reset(new LogicController(_state, _config));
   _spaceController->setup();
   _logicController->setup();
-  _logicController->enableLogging(OF_LOG_NOTICE);
   
-  _spaceController->enableLogging(OF_LOG_NOTICE);
   _spaceController->attachListener(*_logicController);
     
   _state.message.text = "START";
   _state.message.color = ofColor(255, 0, 0);
     
   _renderer.reset(new DomeRenderer());
-  _renderer->setup();
+  _renderer->setup(*this);
   
   ofLog(OF_LOG_NOTICE) << _state;
   //...
@@ -74,6 +72,16 @@ void RoundController::keyPressed(int key) {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
+    } else if (key == 'p') {
+      if (_spaceController->loggingEnabled())
+        _spaceController->disableLogging();
+      else
+        _spaceController->enableLogging(OF_LOG_NOTICE);
+    } else if (key == 'o') {
+      if (_logicController->loggingEnabled())
+        _logicController->disableLogging();
+      else
+        _logicController->enableLogging(OF_LOG_NOTICE);
     }
   }
 }

@@ -105,7 +105,7 @@ namespace {
 }
 
 
-void DomeRenderer::setup() {
+void DomeRenderer::setup(RoundController& roundController) {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
@@ -116,7 +116,7 @@ void DomeRenderer::setup() {
     _drawTrajectories = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-    _extras.setup();
+    _extras.setup(roundController.config(), *roundController.logicController());
 }
 
 void DomeRenderer::update() {
