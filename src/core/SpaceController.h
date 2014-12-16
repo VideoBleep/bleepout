@@ -25,12 +25,12 @@ public:
     
   void addInitialPaddles();
     
-private:
+  void addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
-  
+    
+private:
   void addBrick(const BrickSpec& brickSpec);
   void addWall(const WallSpec& wallSpec);
-  void addBall(const BallSpec& ballSpec);
   
   void onCollision(CollisionArgs &cdata);
     

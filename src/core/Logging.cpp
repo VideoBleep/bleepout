@@ -17,7 +17,7 @@ void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   << ", collisionShape:" << obj.collisionShape
   << ", trajectory:";
   if (obj.trajectory)
-    os << *(obj.trajectory);
+    os << (obj.trajectory.get());
   else
     os << "(none)";
 }
@@ -43,8 +43,11 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
 void Brick::output(std::ostream &os) const {
   os << "Brick{";
   outputGameObjectFields(os, *this);
-  os << ", value:" << value()
-     << ", ";
+  os << ", value:" << value();
+  os << ", lives:" << lives();
+  if (maxLives() > 1)
+    os << "/" << maxLives();
+  os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";
 }
@@ -129,7 +132,15 @@ void OrbitalTrajectory::output(std::ostream &os) const {
      << "}";
 }
 
-std::ostream& operator<<(std::ostream& os, const OrbitalTrajectory& trajectory) {
+void CircularTrajectory::output(std::ostream &os) const {
+    os << "OrbitalTrajectory{radius:" << getRadius()
+    << ", speed:" << getSpeed()
+    << ", pos:" << getPosition()
+    << ", t:" << _t
+    << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory) {
   trajectory.output(os);
   return os;
 }

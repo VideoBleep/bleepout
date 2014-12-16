@@ -45,34 +45,34 @@ void SpaceController::setup() {
   for (const WallSpec& wall : _config.allWalls()) {
     addWall(wall);
   }
+    
+  // Create the floor exit wall
+  float d = (_config.domeMargin() + _config.domeRadius()) * 5;
+  addWall(WallSpec(-10, 0, ofVec3f(d, 10, d), true));
 }
 
 void SpaceController::addBrick(const BrickSpec &brickSpec) {
-  ofPtr<Brick> brick(new Brick(&_config, &brickSpec));
-  _world.addObject(brick.get());
-  _state.bricks().push_back(brick);
+  Brick& brick = _state.addBrick(brickSpec);
+  _world.addObject(&brick);
 }
 
 void SpaceController::addBall(const BallSpec &ballSpec) {
-  ofPtr<Ball> ball(new Ball(&_config, &ballSpec));
-  _world.addObject(ball.get());
-  _state.balls().push_back(ball);
+  Ball& ball = _state.addBall(ballSpec);
+  _world.addObject(&ball);
 }
 
 void SpaceController::addPaddle(float heading, Player* player) {
-    ofPtr<Paddle> paddle(new Paddle(player));
-    player->setPaddle(paddle.get());
-    paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
-    paddle->setSize(_config.paddleSize());
+    Paddle& paddle = _state.addPaddle(player);
+    player->setPaddle(&paddle);
+    paddle.setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
+    paddle.setSize(_config.paddleSize());
 
-    _world.addObject(paddle.get());
-    _state.paddles().push_back(paddle);
+    _world.addObject(&paddle);
 }
 
 void SpaceController::addWall(const WallSpec &wallSpec) {
-  ofPtr<Wall> wall(new Wall(&_config, &wallSpec));
-  _world.addObject(wall.get());
-  _state.walls().push_back(wall);
+  Wall& wall = _state.addWall(wallSpec);
+  _world.addObject(&wall);
 }
 
 void SpaceController::update() {

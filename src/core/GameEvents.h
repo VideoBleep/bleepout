@@ -18,6 +18,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Wall.h"
+#include "GameState.h"
 
 template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {
@@ -128,12 +129,29 @@ private:
   ofPtr<CollisionEventLogger> _logger;
 };
 
-class BallOwnerChangedEventArgs {
+class RoundStateEventArgs {
 public:
-  BallOwnerChangedEventArgs(Ball* ball,
+  RoundStateEventArgs(RoundState& state) : _state(state) { }
+  
+  RoundState& state() { return _state; }
+  
+  virtual void output(std::ostream& os) const {
+    os << "()";
+  }
+  
+private:
+  RoundState& _state;
+};
+
+class BallOwnerChangedEventArgs : public RoundStateEventArgs {
+public:
+  BallOwnerChangedEventArgs(RoundState& state,
+                            Ball* ball,
                             Player* player,
                             Player* previousPlayer)
-  : _ball(ball), _player(player), _previousPlayer(previousPlayer) {}
+  : RoundStateEventArgs(state)
+  , _ball(ball), _player(player)
+  , _previousPlayer(previousPlayer) {}
   
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
@@ -144,7 +162,7 @@ public:
   Player* previousPlayer() { return _previousPlayer; }
   const Player* previousPlayer() const { return _previousPlayer; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, ball());
     os << " ";
@@ -159,17 +177,18 @@ private:
   Player* _previousPlayer;
 };
 
-class BrickDestroyedEventArgs {
+class BrickDestroyedEventArgs : public RoundStateEventArgs {
 public:
-  BrickDestroyedEventArgs(Brick* brick, Ball* ball)
-  : _brick(brick), _ball(ball) { }
+  BrickDestroyedEventArgs(RoundState& state, Brick* brick, Ball* ball)
+  : RoundStateEventArgs(state)
+  , _brick(brick), _ball(ball) { }
   
   Brick* brick() { return _brick; }
   const Brick* brick() const { return _brick; }
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, brick());
     os << " ";
@@ -181,8 +200,23 @@ private:
   Ball* _ball;
 };
 
-typedef ObjectEventArgs<Player> PlayerEventArgs;
-typedef ObjectEventArgs<Ball> BallEventArgs;
+template<typename T>
+class RoundStateObjectEventArgs
+: public RoundStateEventArgs
+, public ObjectEventArgs<T> {
+public:
+  RoundStateObjectEventArgs(RoundState& state, T* obj)
+  : RoundStateEventArgs(state)
+  , ObjectEventArgs<T>(obj) { }
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    outputField(os, this->object());
+    os << ")";
+  }
+};
+
+typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
+typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
 class RoundStateEventLogger;
 
@@ -191,12 +225,13 @@ class RoundStateEventSource {
 public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerEventArgs > playerScoreChangedEvent;
   ofEvent<BallEventArgs> ballDestroyedEvent;
   ofEvent<BallEventArgs> ballRespawnedEvent;
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
-  ofEvent<EmptyEventArgs> roundEndedEvent;
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
@@ -226,36 +261,40 @@ public:
     ofRemoveListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
   }
 protected:
-  void notifyBallOwnerChanged(Ball* ball, Player* player, Player* previousPlayer) {
-    BallOwnerChangedEventArgs e(ball, player, previousPlayer);
+  void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {
+    BallOwnerChangedEventArgs e(state, ball, player, previousPlayer);
     ofNotifyEvent(ballOwnerChangedEvent, e);
   }
-  void notifyBrickDestroyed(Brick* brick, Ball* ball) {
-    BrickDestroyedEventArgs e(brick, ball);
+  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball) {
+    BrickDestroyedEventArgs e(state, brick, ball);
     ofNotifyEvent(brickDestroyedEvent, e);
   }
-  void notifyPlayerScoreChanged(Player* player) {
-    PlayerEventArgs e(player);
+  void notifyAllBricksDestroyed(RoundState& state) {
+    RoundStateEventArgs e(state);
+    ofNotifyEvent(allBricksDestroyedEvent, e);
+  }
+  void notifyPlayerScoreChanged(RoundState& state, Player* player) {
+    PlayerEventArgs e(state, player);
     ofNotifyEvent(playerScoreChangedEvent, e);
   }
-  void notifyBallDestroyed(Ball* ball) {
-    BallEventArgs e(ball);
+  void notifyBallDestroyed(RoundState& state, Ball* ball) {
+    BallEventArgs e(state, ball);
     ofNotifyEvent(ballDestroyedEvent, e);
   }
-  void notifyBallRespawned(Ball* ball) {
-    BallEventArgs e(ball);
+  void notifyBallRespawned(RoundState& state, Ball* ball) {
+    BallEventArgs e(state, ball);
     ofNotifyEvent(ballRespawnedEvent, e);
   }
-  void notifyPlayerLost(Player* player) {
-    PlayerEventArgs e(player);
+  void notifyPlayerLost(RoundState& state, Player* player) {
+    PlayerEventArgs e(state, player);
     ofNotifyEvent(playerLostEvent, e);
   }
-  void notifyPlayerLivesChanged(Player* player) {
-    PlayerEventArgs e(player);
+  void notifyPlayerLivesChanged(RoundState& state, Player* player) {
+    PlayerEventArgs e(state, player);
     ofNotifyEvent(playerLivesChangedEvent, e);
   }
-  void notifyRoundEnded() {
-    EmptyEventArgs e;
+  void notifyRoundEnded(RoundState& state) {
+    RoundStateEventArgs e(state);
     ofNotifyEvent(roundEndedEvent, e);
   }
 private:
@@ -284,12 +323,12 @@ public:
   void enableLogging(ofLogLevel level);
   void disableLogging();
 protected:
-  void notifyPlayerAdded(Player* player) {
-    PlayerEventArgs e(player);
+  void notifyPlayerAdded(RoundState& state, Player* player) {
+    PlayerEventArgs e(state, player);
     ofNotifyEvent(playerAddedEvent, e);
   }
-  void notifyPlayerRemoved(Player* player) {
-    PlayerEventArgs e(player);
+  void notifyPlayerRemoved(RoundState& state, Player* player) {
+    PlayerEventArgs e(state, player);
     ofNotifyEvent(playerRemovedEvent, e);
   }
 private:

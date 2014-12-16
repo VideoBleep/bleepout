@@ -98,7 +98,7 @@ void RoundConfig::saveJsonFile(std::string path) const {
 
 static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
   for (int i = 0; i < ring.count; i++) {
-    bricks.push_back(BrickSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.color));
+    bricks.push_back(BrickSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.color, ring.value, ring.lives, ring.speed));
   }
 }
 
@@ -119,7 +119,7 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
   for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit));
+    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit, curve.speed));
     theta += dtheta;
     phi += dphi;
   }
@@ -147,19 +147,36 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       float s = i / (cols * 1.0);
-      config.addBrick(BrickSpec(30 + 3 * j,
-                           s * 360 + j * 2 + ((i % 2) ? 5 : -5),
-                           ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255)));
+      BrickSpec spec;
+      spec.elevation = 30 + 3 * j;
+      spec.heading = s * 360 + j * 2 + ((i % 2) ? 5 : -5);
+      spec.color = ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255);
+      spec.lives = (j % 3 == 1) ? 2 : 1;
+      spec.value = 1;
+      spec.speed = 0;
+      config.addBrick(spec);
     }
   }
   
   for (int i = 0; i < 6; i++) {
-    config.addCurvedWallSet(CurvedWallSpec(30, i * 60 + 15, 70, i * 60 + 45, 10));
+    CurvedWallSpec spec;
+    spec.elevation1 = 30;
+    spec.heading1 = i * 60 + 15;
+    spec.elevation2 = i % 2 ? 70 : 64;
+    spec.heading2 = i * 60 + 45;
+    spec.width = 10;
+    spec.isExit = false;
+    spec.speed = 0;
+    config.addCurvedWallSet(spec);
   }
+    
+  config.addWall(WallSpec(67,   5, ofVec3f(10, 10, 30), false, 0.02,  80));
+  config.addWall(WallSpec(67, 125, ofVec3f(10, 10, 30), false, 0.02, 200));
+  config.addWall(WallSpec(67, 245, ofVec3f(10, 10, 30), false, 0.02, 320));
   
-  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12));
-  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10));
-  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8));
+  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12, 1, 2, 0, 0.02));
+  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10, 1, 1, 0, -0.02));
+  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8, 2, 2, 0, 0.02));
 
   //...
   return config;

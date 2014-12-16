@@ -14,11 +14,10 @@
 #include "Logging.h"
 
 RoundController::RoundController(RoundConfig config)
-  : _config(config) {
-}
+: _config(config)
+, _state(_config) { }
 
-RoundController::~RoundController() {
-}
+RoundController::~RoundController() { }
 
 void RoundController::setup() {
    
@@ -26,6 +25,13 @@ void RoundController::setup() {
   _logicController.reset(new LogicController(_state, _config));
   _spaceController->setup();
   _logicController->setup();
+    
+  // for ease of debugging, disable exits initially
+  for (auto& wall : _state.walls()) {
+    if (wall->isExit()) {
+      wall->kill();
+    }
+  }
   
   _spaceController->attachListener(*_logicController);
     
@@ -82,6 +88,20 @@ void RoundController::keyPressed(int key) {
         _logicController->disableLogging();
       else
         _logicController->enableLogging(OF_LOG_NOTICE);
+    } else if (key == 'e') {
+        // toggle exits on and off
+        for (auto& wall : _state.walls()) {
+            if (wall->isExit()) {
+                if (wall->alive()) {
+                    wall->kill();
+                } else {
+                    wall->revive();
+                }
+            }
+        }
+    } else if (key == 'b') {
+        // add a new ball
+        _spaceController->addBall(BallSpec(30, ofRandom(360)));
     }
   }
 }

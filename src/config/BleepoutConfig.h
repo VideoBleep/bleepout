@@ -43,22 +43,30 @@ private:
 struct BrickSpec {
   float elevation;
   float heading;
+  int value;
+  int lives;
   ofColor color;
+  float speed;
+  float stopHeading;
   
-  BrickSpec() { }
-  BrickSpec(float e, float h, ofColor c)
-  : elevation(e), heading(h), color(c) { }
+  BrickSpec() : speed(0), stopHeading(-1) { }
+  BrickSpec(float e, float h, ofColor c, int v, int l, float s = 0, float stop = -1)
+  : elevation(e), heading(h), color(c), value(v), lives(l), speed(s), stopHeading(stop) { }
 };
 
 struct BrickRingSpec {
   float elevation;
   ofColor color;
+  int value;
+  int lives;
   int count;
   float phase;
+  float speed;
+  float stopHeading;
   
-  BrickRingSpec() { }
-  BrickRingSpec(float e, ofColor c, int n, float p = 0)
-  : elevation(e), count(n), phase(p), color(c) { }
+  BrickRingSpec() : speed(0), stopHeading(-1) { }
+  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0, float s = 0, float stop = -1)
+  : elevation(e), count(n), phase(p), color(c), value(v), lives(l), speed(s), stopHeading(-1) { }
 };
 
 struct WallSpec {
@@ -66,10 +74,12 @@ struct WallSpec {
   float heading;
   ofVec3f size;
   bool isExit;
+  float speed;
+  float stopHeading;
   
-  WallSpec() { }
-  WallSpec(float e, float h, ofVec3f s, bool exit = false)
-  : elevation(e), heading(h), size(s), isExit(exit) { }
+  WallSpec() : speed(0), stopHeading(-1) { }
+  WallSpec(float e, float h, ofVec3f s, bool exit = false, float sp = 0, float stop = -1)
+  : elevation(e), heading(h), size(s), isExit(exit), speed(sp), stopHeading(stop) { }
 };
 
 struct CurvedWallSpec {
@@ -79,10 +89,12 @@ struct CurvedWallSpec {
   float heading2;
   float width;
   bool isExit;
+  float speed;
+  float stopHeading;
   
-  CurvedWallSpec() { }
-  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false)
-  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit) { }
+    CurvedWallSpec() : speed(0), stopHeading(-1) { }
+  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false, float sp = 0, float stop = -1)
+  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit), speed(sp), stopHeading(stop) { }
 };
 
 struct BallSpec {
