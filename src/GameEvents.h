@@ -231,9 +231,6 @@ private:
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
 typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
-class RoundStateEventLogger;
-
-
 class RoundStateEventSource : public EventSource {
 public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
