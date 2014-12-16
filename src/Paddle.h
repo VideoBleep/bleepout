@@ -25,10 +25,15 @@ public:
     
   virtual const ofColor& getColor() const override;
   
-  static const char* typeName() { return "paddle"; }
 private:
   Player* _player;
 };
 
+
+template<>
+struct GameObjectTypeTraits<Paddle> {
+  static const GameObjectType typeId = GAME_OBJECT_PADDLE;
+  static const char typeName[];
+};
 
 #endif /* defined(__bleepout__Paddle__) */

@@ -90,9 +90,8 @@ void Wall::output(std::ostream &os) const {
 
 template<typename T>
 static void outputObjectCollection(std::ostream& os,
-                                   const char* label,
                                    const GameObjectCollection<T>& collection) {
-  os << label << "{size:" << collection.size();
+  os << GameObjectTypeTraits<T>::typeName << "s: {size:" << collection.size();
   if (!collection.empty()) {
     os << "\n";
     for (auto& obj : collection) {
@@ -106,11 +105,11 @@ static void outputObjectCollection(std::ostream& os,
 
 void RoundState::output(std::ostream &os) const {
   os << "RoundState{\n";
-  outputObjectCollection(os, "paddles:", _paddles);
-  outputObjectCollection(os, "balls:", _balls);
-  outputObjectCollection(os, "bricks:", _bricks);
-  outputObjectCollection(os, "players:", _players);
-  outputObjectCollection(os, "walls:", _walls);
+  outputObjectCollection(os, _paddles);
+  outputObjectCollection(os, _balls);
+  outputObjectCollection(os, _bricks);
+  outputObjectCollection(os, _players);
+  outputObjectCollection(os, _walls);
   os << "}";
 }
 

@@ -9,6 +9,8 @@
 #include "Brick.h"
 #include "BleepoutConfig.h"
 
+const char GameObjectTypeTraits<Brick>::typeName[] = "brick";
+
 Brick::Brick(const RoundConfig* config /*= NULL*/, const BrickSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_BRICK)
 , PhysicsObject(CollisionBox)

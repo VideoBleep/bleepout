@@ -47,8 +47,6 @@ public:
   
   void output(std::ostream& os) const override;
   
-  static const char* typeName() { return "player"; }
-  
   ofxLibwebsockets::Connection* connection() { return _conn; }
   void connection(ofxLibwebsockets::Connection* conn) { _conn = conn; }
 
@@ -60,6 +58,12 @@ private:
   int _score;
   int _lives;
   
+};
+
+template<>
+struct GameObjectTypeTraits<Player> {
+  static const GameObjectType typeId = GAME_OBJECT_PLAYER;
+  static const char typeName[];
 };
 
 #endif /* defined(__bleepout__Player__) */

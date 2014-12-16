@@ -31,7 +31,7 @@ void outputField(std::ostream& os, const char* label, const T* obj) {
 
 template<typename T>
 void outputField(std::ostream& os, const T* obj) {
-  outputField(os, T::typeName(), obj);
+  outputField(os, GameObjectTypeTraits<T>::typeName, obj);
 }
 
 class EmptyEventArgs {

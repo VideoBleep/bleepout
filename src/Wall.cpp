@@ -9,6 +9,8 @@
 #include "Wall.h"
 #include "BleepoutConfig.h"
 
+const char GameObjectTypeTraits<Wall>::typeName[] = "wall";
+
 Wall::Wall(const RoundConfig* config /*= NULL*/, const WallSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_WALL)
 {

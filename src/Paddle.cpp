@@ -8,6 +8,8 @@
 
 #include "Paddle.h"
 
+const char GameObjectTypeTraits<Paddle>::typeName[] = "paddle";
+
 Paddle::Paddle(Player* player)
 : GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
   thisGameObject = this;

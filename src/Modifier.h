@@ -23,8 +23,24 @@ public:
   
   ModifierType modifierType() const { return _modifierType; }
   virtual float duration() { return 0; }
+  
+  virtual bool applyToTarget(GameObject& target) = 0;
 private:
   const ModifierType _modifierType;
+};
+
+template<>
+struct GameObjectTypeTraits<Modifier> {
+  static const GameObjectType typeId = GAME_OBJECT_MODIFIER;
+  static const char typeName[];
+};
+
+template<typename T>
+class TargetModifier : Modifier {
+public:
+  TargetModifier(ModifierType modifierType)
+  : Modifier(modifierType) { }
+private:
 };
 
 template<typename ModInstanceType, typename TargetType>
@@ -65,14 +81,14 @@ private:
   float _endTime;
 };
 
-class ModifiableGameObject : public GameObject {
-public:
-  ModifiableGameObject(GameObjectType type)
-  : GameObject(type) { }
-  
-  virtual bool applyModifier(Modifier& mod) {
-    return false;
-  }
-};
+//class ModifiableGameObject : public GameObject {
+//public:
+//  ModifiableGameObject(GameObjectType type)
+//  : GameObject(type) { }
+//  
+//  virtual bool applyModifier(Modifier& mod) {
+//    return false;
+//  }
+//};
 
 #endif /* defined(__bleepout__Modifier__) */

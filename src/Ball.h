@@ -30,9 +30,14 @@ public:
   void output(std::ostream& os) const override;
   void bounce(ofVec3f normal);
 
-  static const char* typeName() { return "ball"; }
 private:
   Player* _player;
+};
+
+template<>
+struct GameObjectTypeTraits<Ball> {
+  static const GameObjectType typeId = GAME_OBJECT_BALL;
+  static const char typeName[];
 };
 
 #endif /* defined(__bleepout__Ball__) */

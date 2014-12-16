@@ -48,4 +48,8 @@ protected:
   ofColor _color;
 };
 
+template<typename T>
+struct GameObjectTypeTraits {
+};
+
 #endif /* defined(__bleepout__GameObject__) */

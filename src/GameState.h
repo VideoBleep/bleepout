@@ -65,7 +65,6 @@ public:
   RoundMessage message;
   float time;
   
-  
 private:
   RoundState(const RoundState& other) : _config(other._config) {
     ofLogWarning() << "DUPLICATING ROUND STATE!!!";

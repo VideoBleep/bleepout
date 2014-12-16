@@ -25,9 +25,14 @@ public:
   
   void output(std::ostream& os) const override;
   
-  static const char* typeName() { return "brick"; }
 private:
   int _value;
+};
+
+template<>
+struct GameObjectTypeTraits<Brick> {
+  static const GameObjectType typeId = GAME_OBJECT_BRICK;
+  static const char typeName[];
 };
 
 #endif /* defined(__bleepout__Brick__) */

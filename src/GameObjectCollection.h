@@ -44,6 +44,10 @@ public:
     }
   }
   
+  GameObjectType objectType() const {
+    return GameObjectTypeTraits<T>::typeId;
+  }
+  
 private:
   void push_back(ofPtr<T>& obj) {
     VectorType::push_back(obj);

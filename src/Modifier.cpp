@@ -7,3 +7,5 @@
 //
 
 #include "Modifier.h"
+
+const char GameObjectTypeTraits<Modifier>::typeName[] = "modifier";

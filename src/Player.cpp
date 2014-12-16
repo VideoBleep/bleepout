@@ -9,6 +9,8 @@
 #include "Player.h"
 #include <ofMain.h>
 
+const char GameObjectTypeTraits<Player>::typeName[] = "player";
+
 Player::Player() : GameObject(GAME_OBJECT_PLAYER), _conn(NULL) {
   init();
 }
