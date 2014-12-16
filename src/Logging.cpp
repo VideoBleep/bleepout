@@ -43,8 +43,11 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
 void Brick::output(std::ostream &os) const {
   os << "Brick{";
   outputGameObjectFields(os, *this);
-  os << ", value:" << value()
-     << ", ";
+  os << ", value:" << value();
+  os << ", lives:" << lives();
+  if (maxLives() > 1)
+    os << "/" << maxLives();
+  os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";
 }

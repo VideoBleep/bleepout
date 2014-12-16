@@ -136,6 +136,10 @@ bool readJsonVal(const Json::Value& val, BrickSpec* result) {
       !readJsonVal(val["heading"], &temp.heading) ||
       !readJsonVal(val["color"], &temp.color))
     return false;
+  if (!readJsonVal(val["value"], &temp.value))
+    temp.value = 1;
+  if (!readJsonVal(val["lives"], &temp.lives))
+    temp.lives = 1;
   *result = temp;
   return true;
 }
@@ -150,6 +154,10 @@ bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
       !readJsonVal(val["count"], &temp.count) ||
       !readJsonVal(val["phase"], &temp.phase))
     return false;
+  if (!readJsonVal(val["value"], &temp.value))
+    temp.value = 1;
+  if (!readJsonVal(val["lives"], &temp.lives))
+    temp.lives = 1;
   *result = temp;
   return true;
 }
@@ -235,6 +243,8 @@ Json::Value toJsonVal(const BrickSpec& spec) {
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   obj["color"] = toJsonVal(spec.color);
+  obj["value"] = spec.value;
+  obj["lives"] = spec.lives;
   return obj;
 }
 
@@ -243,6 +253,8 @@ Json::Value toJsonVal(const BrickRingSpec& spec) {
   Json::Value obj(Json::objectValue);
   obj["elevation"] = spec.elevation;
   obj["color"] = toJsonVal(spec.color);
+  obj["value"] = spec.value;
+  obj["lives"] = spec.lives;
   obj["count"] = spec.count;
   obj["phase"] = spec.phase;
   return obj;

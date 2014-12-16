@@ -43,22 +43,26 @@ private:
 struct BrickSpec {
   float elevation;
   float heading;
+  int value;
+  int lives;
   ofColor color;
   
   BrickSpec() { }
-  BrickSpec(float e, float h, ofColor c)
-  : elevation(e), heading(h), color(c) { }
+  BrickSpec(float e, float h, ofColor c, int v, int l)
+  : elevation(e), heading(h), color(c), value(v), lives(l) { }
 };
 
 struct BrickRingSpec {
   float elevation;
   ofColor color;
+  int value;
+  int lives;
   int count;
   float phase;
   
   BrickRingSpec() { }
-  BrickRingSpec(float e, ofColor c, int n, float p = 0)
-  : elevation(e), count(n), phase(p), color(c) { }
+  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0)
+  : elevation(e), count(n), phase(p), color(c), value(v), lives(l) { }
 };
 
 struct WallSpec {

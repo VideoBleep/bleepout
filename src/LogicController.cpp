@@ -34,18 +34,20 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
   Player* player = ball->player();
   
   if (player) {
-    brick->kill();
-    _state.decrementLiveBricks();
-    notifyBrickDestroyed(_state, brick, ball);
-    
-    player->adjustScore(brick->value());
-    notifyPlayerScoreChanged(_state, player);
-    
-    if (_state.liveBricks() <= 0) {
-      notifyAllBricksDestroyed(_state);
+    brick->adjustLives(-1);
+    if (!brick->alive()) {
+      brick->kill();
+      _state.decrementLiveBricks();
+      notifyBrickDestroyed(_state, brick, ball);
+      
+      player->adjustScore(brick->value());
+      notifyPlayerScoreChanged(_state, player);
+      
+      if (_state.liveBricks() <= 0) {
+        notifyAllBricksDestroyed(_state);
+      }
     }
   }
-  //...
 }
 
 void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
