@@ -215,6 +215,27 @@ public:
   }
 };
 
+class ModifierEventArgs
+: public RoundStateEventArgs {
+public:
+  ModifierEventArgs(RoundState& state, Modifier* modifier,
+                    GameObject* target)
+  : RoundStateEventArgs(state)
+  , _modifier(modifier)
+  , _target(target) { }
+  
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    outputField(os, _modifier);
+    os << " ";
+    outputField(os, "target", _target);
+    os << ")";
+  }
+private:
+  Modifier* _modifier;
+  GameObject* _target;
+};
+
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
 typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
@@ -232,6 +253,9 @@ public:
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierAppliedEvent;
+  ofEvent<ModifierEventArgs> modifierRemovedEvent;
   
   bool loggingEnabled() const;
   void enableLogging(ofLogLevel level);
@@ -247,6 +271,9 @@ public:
     ofAddListener(playerLostEvent, &listener, &Listener::onPlayerLost);
     ofAddListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
     ofAddListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+    ofAddListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
+    ofAddListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
+    ofAddListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
   }
   
   template<typename Listener>
@@ -259,6 +286,9 @@ public:
     ofRemoveListener(playerLostEvent, &listener, &Listener::onPlayerLost);
     ofRemoveListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
     ofRemoveListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+    ofRemoveListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
+    ofRemoveListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
+    ofRemoveListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
   }
 protected:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {
@@ -296,6 +326,18 @@ protected:
   void notifyRoundEnded(RoundState& state) {
     RoundStateEventArgs e(state);
     ofNotifyEvent(roundEndedEvent, e);
+  }
+  void notifyModifierAppeared(RoundState& state, Modifier* modifier) {
+    ModifierEventArgs e(state, modifier, NULL);
+    ofNotifyEvent(modifierAppearedEvent, e);
+  }
+  void notifyModifierApplied(RoundState& state, Modifier* modifier) {
+    ModifierEventArgs e(state, modifier, NULL);
+    ofNotifyEvent(modifierAppliedEvent, e);
+  }
+  void notifyModifierRemoved(RoundState& state, Modifier* modifier) {
+    ModifierEventArgs e(state, modifier, NULL);
+    ofNotifyEvent(modifierRemovedEvent, e);
   }
 private:
   ofPtr<RoundStateEventLogger> _logger;

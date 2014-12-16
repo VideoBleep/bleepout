@@ -63,6 +63,9 @@ public:
   EVENT_LOGGER_CALLBACK(PlayerLost, PlayerEventArgs);
   EVENT_LOGGER_CALLBACK(PlayerLivesChanged, PlayerEventArgs);
   EVENT_LOGGER_CALLBACK(RoundEnded, RoundStateEventArgs);
+  EVENT_LOGGER_CALLBACK(ModifierAppeared, ModifierEventArgs);
+  EVENT_LOGGER_CALLBACK(ModifierApplied, ModifierEventArgs);
+  EVENT_LOGGER_CALLBACK(ModifierRemoved, ModifierEventArgs);
 private:
   ofLogLevel _level;
 };
