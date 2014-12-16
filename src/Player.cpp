@@ -26,3 +26,12 @@ void Player::init() {
   _lives = 3;
   _color.setHsb(ofRandom(255), 255, 200);
 }
+
+bool ExtraLifeModifier::applyToTarget(GameObject &target) {
+  if (target.type() != GAME_OBJECT_PLAYER)
+    return false;
+  Player& player = static_cast<Player&>(target);
+  player.adjustLives(1);
+  kill();
+  return true;
+}

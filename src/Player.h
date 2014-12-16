@@ -13,6 +13,7 @@
 #include <iostream>
 #include <ofTypes.h>
 #include <Connection.h>
+#include "Modifier.h"
 
 class Paddle;
 
@@ -38,12 +39,16 @@ public:
       kill();
     } else {
       _lives = lives;
+      revive();
     }
   }
   int adjustLives(int amount) {
     setLives(_lives + amount);
     return _lives;
   }
+  
+  virtual bool physical() const override { return false; }
+  virtual bool visible() const override { return false; }
   
   void output(std::ostream& os) const override;
   
@@ -64,6 +69,12 @@ template<>
 struct GameObjectTypeTraits<Player> {
   static const GameObjectType typeId = GAME_OBJECT_PLAYER;
   static const char typeName[];
+};
+
+class ExtraLifeModifier : public Modifier {
+public:
+  ExtraLifeModifier() : Modifier(MODIFIER_EXTRA_LIFE) {}
+  virtual bool applyToTarget(GameObject& target) override;
 };
 
 #endif /* defined(__bleepout__Player__) */
