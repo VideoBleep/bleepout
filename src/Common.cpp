@@ -24,3 +24,8 @@ template<>
 float getInterpolated(const float& a, const float& b, float amount) {
   return ofLerp(a, b, amount);
 }
+
+std::ostream& operator<<(std::ostream& os, const Outputable& obj) {
+  obj.output(os);
+  return os;
+}
