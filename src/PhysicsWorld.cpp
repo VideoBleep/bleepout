@@ -215,8 +215,8 @@ public:
                 // will need to adjust this if collisions that involve a paddle and a non-ball become necessary
                 // (paddles are technically static, even though they move.)
                 if ((obj1->isDynamic() || obj2->isDynamic()) &&
-                    obj1->thisGameObject->alive() &&
-                    obj2->thisGameObject->alive())
+                    obj1->thisGameObject->physical() &&
+                    obj2->thisGameObject->physical())
                 {
                     
                     CollisionManifold m;

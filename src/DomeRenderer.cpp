@@ -229,3 +229,7 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofPopStyle();
     ofPopMatrix();
 }
+
+void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
+  //...?
+}

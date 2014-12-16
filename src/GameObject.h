@@ -32,6 +32,8 @@ public:
   GameObjectType type() const { return _type; }
   GameObjectId id() const { return _id; }
   bool alive() const { return _alive; }
+  virtual bool visible() const { return this->alive(); }
+  virtual bool physical() const { return this->alive(); }
   
   void kill() { _alive = false; }
   void revive() { _alive = true; }

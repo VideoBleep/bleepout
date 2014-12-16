@@ -12,21 +12,37 @@
 #include "GameObject.h"
 
 enum ModifierType {
-  
+  MODIFIER_UNKNOWN
 };
 
 class Modifier : public GameObject {
 public:
   Modifier(ModifierType modifierType)
   : GameObject(GAME_OBJECT_MODIFIER)
-  , _modifierType(modifierType) { }
+  , _modifierType(modifierType)
+  , _visible(false)
+  , _physical(false) { }
   
   ModifierType modifierType() const { return _modifierType; }
   virtual float duration() { return 0; }
   
   virtual bool applyToTarget(GameObject& target) = 0;
+  
+  virtual bool visible() const override {
+    return this->alive() && _visible;
+  }
+  void show() { _visible = false; }
+  void hide() { _visible = false; }
+  
+  virtual bool physical() const override {
+    return this->alive() && _physical;
+  }
+  void dematerialize() { _physical = false; }
+  void materialize() { _physical = true; }
 private:
   const ModifierType _modifierType;
+  bool _visible;
+  bool _physical;
 };
 
 template<>
@@ -35,13 +51,21 @@ struct GameObjectTypeTraits<Modifier> {
   static const char typeName[];
 };
 
-template<typename T>
-class TargetModifier : Modifier {
-public:
-  TargetModifier(ModifierType modifierType)
-  : Modifier(modifierType) { }
-private:
-};
+//template<typename T>
+//class TypedModifier : public Modifier {
+//public:
+//  TypedModifier(ModifierType modifierType)
+//  : Modifier(modifierType) { }
+//  
+//  virtual bool applyToTarget(GameObject& target) override {
+//    if (target.type() != GameObjectTypeTraits<T>::typeId) {
+//      return false;
+//    }
+//    return applyToTypedTarget(static_cast<T&>(target));
+//  }
+//protected:
+//  virtual bool applyToTypedTarget(T& target) = 0;
+//};
 
 template<typename ModInstanceType, typename TargetType>
 class ModifierSlot {
