@@ -36,6 +36,7 @@ protected:
     ofxTurntableCam _cam;
     bool _debugGraphics;
     bool _drawTrajectories;
+    bool _drawLasers;
     
     ofTrueTypeFont _font;
     RendererExtras _extras;

@@ -21,10 +21,11 @@
 #include "GameEvents.h"
 #include "PhysicsObject.h"
 #include "OrbitalTrajectory.h"
+#include "CircularTrajectory.h"
 
 std::ostream& operator<<(std::ostream& os, const GameObject& obj);
 std::ostream& operator<<(std::ostream& os, const RoundState& state);
-std::ostream& operator<<(std::ostream& os, const OrbitalTrajectory& trajectory);
+std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory);
 std::ostream& operator<<(std::ostream& os, const BoundingBox& box);
 std::ostream& operator<<(std::ostream& os, const CollisionShape& shape);
 

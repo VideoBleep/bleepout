@@ -11,7 +11,9 @@
 
 #include <ofMain.h>
 
-ofVec3f cylindricalToCartesian(float heading, float r, float z);
-ofVec3f sphericalToCartesian(float elevation, float heading, float r);
+ofVec3f cylindricalToCartesian(float r, float heading, float z);
+ofVec3f sphericalToCartesian(float r, float elevation, float heading);
+
+void cartesianToSpherical(const ofVec3f& xyz, float *pElevation, float* pHeading, float* pRadius = NULL);
 
 #endif /* defined(__bleepout__PhysicsUtil__) */
