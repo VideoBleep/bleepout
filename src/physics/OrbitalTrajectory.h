@@ -10,6 +10,8 @@
 #define __bleepout__OrbitalTrajectory__
 
 #include "Trajectory.h"
+#include "PointHistory.h"
+
 
 class OrbitalTrajectory : public Trajectory {
 public:
@@ -31,6 +33,8 @@ public:
     const ofVec3f& u() const { return _u; }
     const ofVec3f& v() const { return _v; }
     const ofVec3f& w() const { return _w; }
+    
+    PointHistory history;
     
 protected:
     virtual void tick() override;

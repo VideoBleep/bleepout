@@ -120,6 +120,7 @@ void DomeRenderer::setup(RoundController& roundController) {
 
     _debugGraphics = false;
     _drawTrajectories = false;
+    _drawLasers = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
     _extras.setup(roundController.config(), *roundController.logicController());
@@ -179,7 +180,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
   
     _cam.end();
     
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, ofGetHeight() - 35);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode", 10, ofGetHeight() - 45);
 
 }
 
@@ -188,6 +189,8 @@ void DomeRenderer::keyPressed(int key) {
         _debugGraphics = !_debugGraphics;
     } else if (key == 't') {
         _drawTrajectories = !_drawTrajectories;
+    } else if (key == 'l') {
+        _drawLasers = !_drawLasers;
     } else {
       _extras.keyPressed(key);
     }
@@ -236,17 +239,43 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofPushMatrix();
     ofPushStyle();
     
-    ofNoFill();
-    ofTranslate(ball.getPosition());
-    ofRotateX(360 * ball.getTrajectory()->getTime());
-    ofRotateY(45);
-    ofSetLineWidth(8.0);
-    ofSetColor(ball.getColor());
-    ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
-    ofFill();
-    ofSetColor(255, 255, 255);
-    ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
+    if (!_drawLasers) {
+        ofNoFill();
+        ofTranslate(ball.getPosition());
+        ofRotateX(360 * ball.getTrajectory()->getTime());
+        ofRotateY(45);
+        ofSetLineWidth(8.0);
+        ofSetColor(ball.getColor());
+        ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
+        ofFill();
+        ofSetColor(255, 255, 255);
+        ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
+    } else {
+        OrbitalTrajectory* ot = (OrbitalTrajectory*)ball.getTrajectory();
+        if (ot) {
+            ofSetColor(255, 255, 255, 255);
+            ofSetLineWidth(1.5);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
+            
+            ofColor c = ball.getColor();
+            c.a = 128;
+            ofSetColor(c);
+            ofSetLineWidth(5.0);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
 
+            c.a = 64;
+            ofSetColor(c);
+            ofSetLineWidth(8.0);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
+        }
+    }
+    
     ofPopStyle();
     ofPopMatrix();
 }
