@@ -30,9 +30,10 @@ Brick::Brick(const RoundConfig* config /*= NULL*/, const BrickSpec* spec /*= NUL
     } else {
         this->setTrajectory(new CircularTrajectory(config->domeRadius() +
                                                    config->domeMargin(),
+                                                   spec->speed,
                                                    spec->elevation,
                                                    spec->heading,
-                                                   spec->speed));
+                                                   spec->stopHeading));
     }
   }
 }

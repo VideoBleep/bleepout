@@ -15,9 +15,9 @@
 class CircularTrajectory : public Trajectory {
 public:
     CircularTrajectory();
-    CircularTrajectory(float domeRadius, float elevation, float heading, float speed = 0.02);
+    CircularTrajectory(float domeRadius, float speed, float elevation, float startHeading, float stopHeading = -1);
     
-    void initWithElevationHeading(float elevation, float heading);
+    void initWithElevationHeading(float elevation, float startHeading, float stopHeading = -1);
         
     float getRadius() const { return _r; }
     void setRadius(float r) { _r = r; }
@@ -35,6 +35,9 @@ protected:
     virtual void tick() override;
     
     float _r;
+    float _elevation;
+    float _startHeading;
+    float _stopHeading;
     
     float _phi;
     float _circleRadius;

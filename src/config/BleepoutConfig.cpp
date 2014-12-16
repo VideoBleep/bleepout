@@ -162,13 +162,17 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
     CurvedWallSpec spec;
     spec.elevation1 = 30;
     spec.heading1 = i * 60 + 15;
-    spec.elevation2 = 70;
+    spec.elevation2 = i % 2 ? 70 : 64;
     spec.heading2 = i * 60 + 45;
     spec.width = 10;
     spec.isExit = false;
     spec.speed = 0;
     config.addCurvedWallSet(spec);
   }
+    
+  config.addWall(WallSpec(67,   5, ofVec3f(10, 10, 30), false, 0.02,  80));
+  config.addWall(WallSpec(67, 125, ofVec3f(10, 10, 30), false, 0.02, 200));
+  config.addWall(WallSpec(67, 245, ofVec3f(10, 10, 30), false, 0.02, 320));
   
   config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12, 1, 2, 0, 0.02));
   config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10, 1, 1, 0, -0.02));

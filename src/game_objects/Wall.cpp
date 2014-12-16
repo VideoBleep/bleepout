@@ -26,9 +26,10 @@ Wall::Wall(const RoundConfig* config /*= NULL*/, const WallSpec* spec /*= NULL*/
     } else {
       this->setTrajectory(new CircularTrajectory(config->domeRadius() +
                                                  config->domeMargin(),
+                                                 spec->speed,
                                                  spec->elevation,
                                                  spec->heading,
-                                                 spec->speed));
+                                                 spec->stopHeading));
     }
   }
 }
