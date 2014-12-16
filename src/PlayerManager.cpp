@@ -16,7 +16,7 @@ PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
 	_roundController(roundController),
 	_state(roundController->state())
 {
-	setup();
+
 }
 
 ofPtr<Player> PlayerManager::addPlayer() {
@@ -82,9 +82,7 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
-
-	ofPtr<Player> player = findPlayer(args.conn);
-
+	
 	// Parse message
 	int pos = args.message.find(messageDelimiter);
 	//std::string msgPrefix = args.message.substr(0, pos);
@@ -93,8 +91,28 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	vector<string> parts = ofSplitString(args.message, messageDelimiter);
 	std::string msgPrefix = parts[0];
 
+	if (msgPrefix == "4new") {
+		// This implies that the PlayerCreateMessage will be responsible for instantiating the player
+		// Is that correct? If the .player instance is referenced but not 
+		// the rest of the PlayerCreateMessage ... is that a problem?
+		PlayerCreateMessage newPlayer;
+		newPlayer.id = ofHexToInt(parts[1]);
+		newPlayer.color.set(ofHexToInt(parts[2]),
+			ofHexToInt(parts[3]),
+			ofHexToInt(parts[4]));
+		newPlayer.player.reset(new Player(&args.conn));
+		newPlayer.player->setColor(newPlayer.color);
+		_roundController->state().players().push_back(newPlayer.player);
+
+		// Pong
+		args.conn.send("hello");
+		return;
+	}
+
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == "ypr") {
+		ofPtr<Player> player = findPlayer(args.conn);
+
 		PlayerYawPitchRollMessage ypr;
 		ypr.player = player;
 		//pos = msgData.find(messageDelimiter);
@@ -106,21 +124,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		ypr.roll = ofToFloat(parts[3]); //ofToFloat(msgData);
 		_roundController->setPaddlePosition(ypr);
 	}
-	//
-	else if (msgPrefix == "new") {
-		// This implies that the PlayerCreateMessage will be responsible for instantiating the player
-		// Is that correct? If the .player instance is referenced but not 
-		// the rest of the PlayerCreateMessage ... is that a problem?
-		PlayerCreateMessage newPlayer;
-		newPlayer.id = ofHexToInt(parts[1]);
-    newPlayer.color.set(ofHexToInt(parts[2]),
-                        ofHexToInt(parts[3]),
-                        ofHexToInt(parts[4]));
-    newPlayer.player.reset(new Player(&args.conn));
-    newPlayer.player->setColor(newPlayer.color);
-		_roundController->state().players().push_back(newPlayer.player);
-	}
-	// if the prefix is but then we have a click message
+	// click messages? Other?
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){
@@ -135,9 +139,12 @@ void PlayerManager::gotMessage(ofMessage msg){
 ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	// find player by comparing connection
 	for (const ofPtr<Player>& p : state().players()) {
-		if (*(p->connection()) == conn) {
-			return p;
+		if (*(p->connection()) != NULL) {
+			if (*(p->connection()) == conn) {
+				return p;
+			}
 		}
 	}
+	// TODO: Is this correct way to return null?
 	return ofPtr<Player>();
 }
