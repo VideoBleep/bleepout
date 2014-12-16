@@ -7,7 +7,6 @@
 //
 
 #include "PhysicsObject.h"
-#include "OrbitalTrajectory.h"
 #include "PhysicsWorld.h"
 #include "PhysicsUtil.h"
 
@@ -72,17 +71,25 @@ void PhysicsObject::setPosition(const ofVec3f& newPosition) {
 }
 
 void PhysicsObject::setPositionCylindrical(float r, float heading, float z) {
-    rotation = 360 - heading;
+    staticRotation = 360 - heading;
     setPosition(cylindricalToCartesian(r, heading, z));
 }
 
 void PhysicsObject::setPositionSpherical(float r, float elevation, float heading) {
-    rotation = 360 - heading;
+    staticRotation = 360 - heading;
     setPosition(sphericalToCartesian(r, elevation, heading));
 }
 
+float PhysicsObject::getRotation() const {
+    if (isDynamic()) {
+        return trajectory->getRotation();
+    } else {
+        return staticRotation;
+    }
+}
+
 void PhysicsObject::setRotation(float heading) {
-    rotation = heading;
+    staticRotation = heading;
     updateBoundingBox();
 }
 
@@ -105,8 +112,9 @@ void PhysicsObject::tick() {
 void PhysicsObject::updateBoundingBox() {
     boundingBox.center = getPosition();
     
-    if (rotation != 0 && collisionShape != CollisionSphere) {
-        float phi = rotation * PI/180.0;
+    float rot = getRotation();
+    if (rot != 0 && collisionShape != CollisionSphere) {
+        float phi = rot * PI/180.0;
         float c = cos(phi);
         float s = sin(phi);
         float hx = size.x / 2.0;

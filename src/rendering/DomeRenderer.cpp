@@ -8,6 +8,7 @@
 
 #include "DomeRenderer.h"
 #include "PhysicsUtil.h"
+#include "OrbitalTrajectory.h"
 
 namespace {
     void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, float lineWidth = 1.5, bool alphaBlending = false) {
@@ -80,14 +81,15 @@ namespace {
                 continue;
             }
             auto t = obj->getTrajectory();
-            if (t) {
-                float r = t->getRadius();
+            OrbitalTrajectory* ot = (OrbitalTrajectory*)t;
+            if (ot) {
+                float r = ot->getRadius();
 
                 ofSetColor(color);
                 
                 ofPushMatrix();
                 ofVec3f normal(0, 0, -1);
-                ofVec3f orbitNormal = t->u().crossed(t->w()).normalized();
+                ofVec3f orbitNormal = ot->u().crossed(ot->w()).normalized();
                 ofVec3f axis = normal.crossed(orbitNormal);
                 float angle = acos(normal.dot(orbitNormal));
                 ofRotate(angle * 180/PI, axis.x, axis.y, axis.z);
@@ -97,9 +99,9 @@ namespace {
                 
                 if (showVectors) {
                     ofFill();
-                    ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
-                    ofLine(ofVec3f::zero(), t->v() * r);
-                    ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()).normalize() * r/4.0, 2);
+                    ofDrawArrow(ofVec3f::zero(), ot->u() * r, 2);
+                    ofLine(ofVec3f::zero(), ot->v() * r);
+                    ofDrawArrow(ofVec3f::zero(), ot->u().crossed(ot->v()).normalize() * r/4.0, 2);
                 }
             }
         }

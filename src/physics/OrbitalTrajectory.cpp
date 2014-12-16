@@ -11,8 +11,6 @@
 
 OrbitalTrajectory::OrbitalTrajectory()
 : _r(1.0)
-, _speed(0.02)
-, _t(0)
 {
 }
 

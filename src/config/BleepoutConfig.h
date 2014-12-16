@@ -46,10 +46,11 @@ struct BrickSpec {
   int value;
   int lives;
   ofColor color;
+  float speed;
   
   BrickSpec() { }
-  BrickSpec(float e, float h, ofColor c, int v, int l)
-  : elevation(e), heading(h), color(c), value(v), lives(l) { }
+  BrickSpec(float e, float h, ofColor c, int v, int l, float s = 0)
+  : elevation(e), heading(h), color(c), value(v), lives(l), speed(s) { }
 };
 
 struct BrickRingSpec {
@@ -59,10 +60,11 @@ struct BrickRingSpec {
   int lives;
   int count;
   float phase;
+  float speed;
   
   BrickRingSpec() { }
-  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0)
-  : elevation(e), count(n), phase(p), color(c), value(v), lives(l) { }
+  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0, float s = 0)
+  : elevation(e), count(n), phase(p), color(c), value(v), lives(l), speed(s) { }
 };
 
 struct WallSpec {
@@ -70,10 +72,11 @@ struct WallSpec {
   float heading;
   ofVec3f size;
   bool isExit;
+  float speed;
   
   WallSpec() { }
-  WallSpec(float e, float h, ofVec3f s, bool exit = false)
-  : elevation(e), heading(h), size(s), isExit(exit) { }
+  WallSpec(float e, float h, ofVec3f s, bool exit = false, float sp = 0)
+  : elevation(e), heading(h), size(s), isExit(exit), speed(sp) { }
 };
 
 struct CurvedWallSpec {
@@ -83,10 +86,11 @@ struct CurvedWallSpec {
   float heading2;
   float width;
   bool isExit;
+  float speed;
   
   CurvedWallSpec() { }
-  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false)
-  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit) { }
+  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false, float sp = 0)
+  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit), speed(sp) { }
 };
 
 struct BallSpec {

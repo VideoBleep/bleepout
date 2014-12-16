@@ -28,3 +28,17 @@ ofVec3f sphericalToCartesian(float r, float elevation, float heading) {
     p.z = r_sin_theta * sin(phi);
     return p;
 }
+
+void cartesianToSpherical(const ofVec3f& xyz, float *pElevation, float* pHeading, float* pRadius) {
+    if (!pElevation || !pHeading) {
+        return;
+    }
+    
+    float r = xyz.length();
+    *pElevation = atan(xyz.y / xyz.x);
+    *pHeading = acos(xyz.z / r);
+    
+    if (pRadius) {
+        *pRadius = r;
+    }
+}

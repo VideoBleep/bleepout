@@ -10,7 +10,7 @@
 #define __bleepout__PhysicsObject__
 
 #include <ofMain.h>
-#include <OrbitalTrajectory.h>
+#include <Trajectory.h>
 
 class PhysicsWorld;
 class GameObject;
@@ -38,7 +38,7 @@ public:
     const ofVec3f& getPosition() const;
     void setPosition(const ofVec3f& newPosition);
     
-    float getRotation() const { return rotation; }
+    float getRotation() const;
     void setRotation(float heading);
     
     void setPositionCylindrical(float r, float heading, float z);
@@ -55,21 +55,21 @@ public:
     bool isDynamic() const { return trajectory != NULL; }
     void tick();
     
-    OrbitalTrajectory* getTrajectory() { return trajectory.get(); }
-    void setTrajectory(OrbitalTrajectory* t) { trajectory.reset(t); }
+    Trajectory* getTrajectory() { return trajectory.get(); }
+    void setTrajectory(Trajectory* t) { trajectory.reset(t); }
     
 protected:
     void updateBoundingBox();
     
     ofVec3f staticPosition;
-    float rotation;
+    float staticRotation;
     ofVec3f size;
     BoundingBox boundingBox;
     
     ofVec3f velocity;
     CollisionShape collisionShape;
 
-    ofPtr<OrbitalTrajectory> trajectory;
+    ofPtr<Trajectory> trajectory;
     PhysicsWorld* world;
     GameObject* thisGameObject;
     

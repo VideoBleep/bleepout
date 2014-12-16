@@ -9,10 +9,9 @@
 #ifndef __bleepout__OrbitalTrajectory__
 #define __bleepout__OrbitalTrajectory__
 
-#include <ofMain.h>
-#include <iostream>
+#include "Trajectory.h"
 
-class OrbitalTrajectory {
+class OrbitalTrajectory : public Trajectory {
 public:
     OrbitalTrajectory();
     OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed = 0.02);
@@ -23,38 +22,24 @@ public:
     float getRadius() const { return _r; }
     void setRadius(float r) { _r = r; }
     
-    float getSpeed() const { return _speed; }
-    void setSpeed(float s) { _speed = s; }
+    virtual void setPosition(const ofVec3f& position) override;
+        
+    virtual void reflect(const ofVec3f& planeNormal) override;
     
-    const ofVec3f& getPosition() const { return _position; }
-    void setPosition(const ofVec3f& position);
-    
-    float getTime() const { return _t; }
-    
-    void reflect(const ofVec3f& planeNormal);
-    
-    void output(std::ostream& os) const;
+    virtual void output(std::ostream& os) const override;
 
     const ofVec3f& u() const { return _u; }
     const ofVec3f& v() const { return _v; }
     const ofVec3f& w() const { return _w; }
     
-    ofVec3f getInstantaneousVelocity() const { return _position - _lastPosition; }
-    
 protected:
-    friend class PhysicsObject;
-    void tick();
+    virtual void tick() override;
 
     float _r;
     
     ofVec3f _u;
     ofVec3f _v;
     ofVec3f _w;
-    float _t;
-    float _speed;
-    
-    ofVec3f _position;
-    ofVec3f _lastPosition;
 };
 
 #endif /* defined(__bleepout__OrbitalTrajectory__) */
