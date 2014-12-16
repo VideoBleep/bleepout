@@ -56,6 +56,7 @@ void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
     Ball* ball = e.ball();
     Player* player = ball->player();
     
+    ball->kill();
     notifyBallDestroyed(_state, ball);
     
     if (player) {

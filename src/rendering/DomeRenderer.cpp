@@ -180,7 +180,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
   
     _cam.end();
     
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode", 10, ofGetHeight() - 45);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 75);
 
 }
 
@@ -232,7 +232,9 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
+    if (!wall.isExit()) {
+        drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
+    }
 }
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
