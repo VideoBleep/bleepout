@@ -10,16 +10,20 @@
 #include "PhysicsUtil.h"
 
 namespace {
-    void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor) {
+    void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, float lineWidth = 1.5, bool alphaBlending = false) {
         ofPushMatrix();
         ofPushStyle();
-        
+      
+        if (alphaBlending)
+          ofEnableAlphaBlending();
+        else
+          ofDisableAlphaBlending();
         ofSetRectMode(OF_RECTMODE_CENTER);
         ofVec3f dims = object.getSize();
         ofTranslate(object.getPosition());
         ofRotateY(object.getRotation());
         ofNoFill();
-        ofSetLineWidth(1.5);
+        ofSetLineWidth(lineWidth);
         ofSetColor(edgeColor);
         ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
         ofFill();
@@ -200,7 +204,22 @@ void DomeRenderer::mouseDragged(int x, int y, int button) {
 }
 
 void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
-    drawBoxObject(brick, ofColor(255, 255, 255), brick.getColor());
+    ofColor edgeColor = ofColor::white;
+    ofColor fillColor = brick.getColor();
+    float lineWidth = 1.5f;
+    bool alphaBlending = false;
+    if (brick.maxLives() > 1) {
+      fillColor.a = ofMap(brick.lives(), 1, brick.maxLives(),
+                          63, 255);
+      edgeColor = ofColor((unsigned char)ofMap(brick.lives(),
+                                               1, brick.maxLives(),
+                                               255, 31));
+      edgeColor.a = fillColor.a;
+      alphaBlending = true;
+      float lineWidth = ofMap(brick.lives(), 1, 4,
+                              3.0f, 15.0f, true);
+    }
+    drawBoxObject(brick, edgeColor, fillColor, lineWidth, alphaBlending);
 }
 
 void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
