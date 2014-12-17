@@ -102,7 +102,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 			ofHexToInt(parts[4]));
 		newPlayer.player.reset(new Player(&args.conn));
 		newPlayer.player->setColor(newPlayer.color);
-		_roundController->state().players().push_back(newPlayer.player);
+		_roundController->state().addPlayer(newPlayer.player);
 
 		// Pong
 		args.conn.send("hello");
