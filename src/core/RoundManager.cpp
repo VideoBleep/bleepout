@@ -41,8 +41,7 @@ void RoundController::setup() {
   _renderer.reset(new DomeRenderer());
   _renderer->setup(*this);
   
-  ofLog(OF_LOG_NOTICE) << _state;
-  //...
+	//...
 }
 
 void RoundController::draw() {
@@ -53,14 +52,15 @@ void RoundController::update() {
     _state.time = ofGetElapsedTimef();
 
     if (_state.time < 3) {
-        _state.message = RoundMessage("VideoBleep\n presents", ofColor(255, 255, 255), 12);
+        _state.message = RoundMessage("Video Bleep\n presents", ofColor(255, 255, 255), 12);
     } else if (_state.time < 7.5) {
-        _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 120, 240), 50, 4);
-    } else if (_state.time < 10) {
+        _state.message = RoundMessage("BLEEPOUT", ofColor(0, 120, 240), 50, 4);
+    } else if (_state.time < 20) {
         _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
     } else {
         _state.message.text = "";
         if (_state.paddles().size() == 0) {
+			ofLogNotice() << "Initial Paddle Create";
             _spaceController->addInitialPaddles();
         }
     }

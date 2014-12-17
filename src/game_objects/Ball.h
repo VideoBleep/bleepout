@@ -15,7 +15,7 @@
 #include "Common.h"
 
 class RoundConfig;
-class BallSpec;
+struct BallSpec;
 
 class Ball : public GameObject, public PhysicsObject {
 public:

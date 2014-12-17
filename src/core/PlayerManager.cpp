@@ -67,7 +67,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 }
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
-	cout << "new connection open" << endl;
+	cout << "new connection open from " << args.conn.getClientIP() << endl;
 	messages.push_back("New connection from " + args.conn.getClientIP());
 }
 
@@ -103,7 +103,8 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		newPlayer.player.reset(new Player(&args.conn));
 		newPlayer.player->setColor(newPlayer.color);
 		_roundController->state().addPlayer(newPlayer.player);
-
+		
+		ofLogNotice() << "Player Created - id#" << parts[1];
 		// Pong
 		args.conn.send("hello");
 		return;
