@@ -22,12 +22,13 @@ SpaceController::SpaceController(RoundState& state, RoundConfig & config)
 }
 
 void SpaceController::addInitialPaddles() {
-    int numPlayers = _state.players().size();
-    for (int i = 0; i < numPlayers; i++) {
-        ofPtr<Player> player = _state.players()[i];
-        addPaddle(360 * i / (numPlayers * 1.0), player.get());
-        ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
-    }
+  int numPlayers = _state.players().size();
+  int i = 0;
+  for (ofPtr<Player>& player : _state.players()) {
+    addPaddle(360 * i / (numPlayers * 1.0), player.get());
+    ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
+    i++;
+  }
 }
 
 void SpaceController::setup() {

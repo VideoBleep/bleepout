@@ -143,8 +143,8 @@ void RoundController::mousePressed(int x, int y, int button) {
 void RoundController::mouseMoved(int x, int y) {
   if (ofGetKeyPressed(OF_KEY_COMMAND)) {
         _renderer->mouseMoved(x, y);
-  } else if (_state.players().size()) {
-    ofPtr<Player> player = _state.players()[0];
+  } else if (!_state.players().empty()) {
+    const ofPtr<Player>& player = _state.players().front();
     setPaddlePosition(player->id(), (float)x / ofGetWidth());
   }
 }

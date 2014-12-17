@@ -9,8 +9,7 @@
 #ifndef bleepout_GameObjectCollection_h
 #define bleepout_GameObjectCollection_h
 
-#include <vector>
-#include <map>
+#include <list>
 #include <ofTypes.h>
 #include <iostream>
 #include <string>
@@ -18,39 +17,34 @@
 #include "GameObject.h"
 
 template<typename T>
-class GameObjectCollection : public std::vector<ofPtr<T> > {
+class GameObjectCollection : public std::list<ofPtr<T> > {
+private:
+  typedef std::list<ofPtr<T> >  CollectionType;
 public:
-  typedef std::vector<ofPtr<T> >  VectorType;
   
   ofPtr<T> getById(GameObjectId id) {
-    for (auto iter = VectorType::begin(); iter != VectorType::end(); ++iter) {
-      if ((*iter)->id() == id)
-        return *iter;
+    for (auto& obj : *this) {
+      if (obj && obj->id() == id)
+        return obj;
     }
     return ofPtr<T>();
   }
-  
-  inline typename VectorType::iterator begin() { return VectorType::begin(); }
-  inline typename VectorType::const_iterator begin() const { return VectorType::begin(); }
-  
-  inline typename VectorType::iterator end() { return VectorType::end(); }
-  inline typename VectorType::const_iterator end() const { return VectorType::end(); }
 
   void dumpToLog(const std::string& label, ofLogLevel level) {
-    ofLog(level) << label << "(size:" << VectorType::size() << ")";
+    ofLog(level) << label << "(size:" << CollectionType::size() << ")";
     for (auto& obj : *this) {
       GameObject& o = *obj;
       ofLog(level) << "   " << (o);
     }
   }
   
-  GameObjectType objectType() const {
+  inline GameObjectType objectType() const {
     return GameObjectTypeTraits<T>::typeId;
   }
   
 private:
   void push_back(ofPtr<T>& obj) {
-    VectorType::push_back(obj);
+    CollectionType::push_back(obj);
   }
   
   friend class RoundState;
