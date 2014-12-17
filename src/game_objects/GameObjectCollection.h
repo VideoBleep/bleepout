@@ -19,9 +19,9 @@
 template<typename T>
 class GameObjectCollection : public std::list<ofPtr<T> > {
 private:
-  typedef std::list<ofPtr<T> >  CollectionType;
-public:
-  
+  typedef std::list<ofPtr<T> >  ImplType;
+
+public:  
   ofPtr<T> getById(GameObjectId id) {
     for (auto& obj : *this) {
       if (obj && obj->id() == id)
@@ -31,7 +31,7 @@ public:
   }
 
   void dumpToLog(const std::string& label, ofLogLevel level) {
-    ofLog(level) << label << "(size:" << CollectionType::size() << ")";
+    ofLog(level) << label << "(size:" << ImplType::size() << ")";
     for (auto& obj : *this) {
       GameObject& o = *obj;
       ofLog(level) << "   " << (o);
@@ -42,13 +42,22 @@ public:
     return GameObjectTypeTraits<T>::typeId;
   }
   
-private:
-  void push_back(ofPtr<T>& obj) {
-    CollectionType::push_back(obj);
+  int pruneDeadObjects() {
+    int count = 0;
+    for (auto iter = ImplType::begin();
+         iter != ImplType::end();
+         iter++) {
+      ofPtr<T>& obj = *iter;
+      if (obj && !obj->alive()) {
+        obj.reset();
+      }
+      if (!obj) {
+        iter = ImplType::erase(iter);
+        count++;
+      }
+    }
+    return count;
   }
-  
-  friend class RoundState;
-  
 };
 
 #endif
