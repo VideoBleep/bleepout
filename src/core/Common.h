@@ -12,6 +12,7 @@
 #include <ofMain.h>
 #include <functional>
 #include <list>
+#include <iostream>
 
 #ifdef TARGET_OSX
 #define ENABLE_SYPHON
@@ -21,6 +22,13 @@
 #endif
 
 struct Nothing { };
+
+class Outputable {
+public:
+  virtual void output(std::ostream& os) const = 0;
+};
+
+std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 
 class ValueSpecifier {
 public:
