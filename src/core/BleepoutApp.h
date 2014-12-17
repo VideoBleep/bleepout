@@ -15,7 +15,7 @@
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
 #include "Common.h"
-
+#include "SetupController.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -39,6 +39,7 @@ private:
 	ofPtr<PlayerManager> _playerManager;
 
   BleepoutConfig _config;
+  ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
