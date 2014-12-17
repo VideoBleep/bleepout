@@ -61,6 +61,9 @@
 		5BB4E5F91A400F500047F957 /* RendererBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5D91A400F500047F957 /* RendererBase.cpp */; };
 		5BB4E5FA1A400F500047F957 /* RendererExtras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5DB1A400F500047F957 /* RendererExtras.cpp */; };
 		5BB4E5FB1A400F500047F957 /* TurntableCam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5DD1A400F500047F957 /* TurntableCam.cpp */; };
+		5BB4E5FE1A40150F0047F957 /* Trajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5FC1A40150F0047F957 /* Trajectory.cpp */; };
+		5BB4E6011A40198D0047F957 /* CircularTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5FF1A40198D0047F957 /* CircularTrajectory.cpp */; };
+		5BB4E6041A4077970047F957 /* PointHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E6021A4077970047F957 /* PointHistory.cpp */; };
 		66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C085E327DAB912CFA2A443D /* ofxTCPServer.cpp */; };
 		6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2232A9453E355593EF36ADA7 /* Reactor.cpp */; };
 		86135253DC7909CA8590E157 /* Protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EEFEC8B85F7C3B15DD45A4 /* Protocol.cpp */; };
@@ -232,6 +235,12 @@
 		5BB4E5DC1A400F500047F957 /* RendererExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererExtras.h; sourceTree = "<group>"; };
 		5BB4E5DD1A400F500047F957 /* TurntableCam.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TurntableCam.cpp; sourceTree = "<group>"; };
 		5BB4E5DE1A400F500047F957 /* TurntableCam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurntableCam.h; sourceTree = "<group>"; };
+		5BB4E5FC1A40150F0047F957 /* Trajectory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trajectory.cpp; sourceTree = "<group>"; };
+		5BB4E5FD1A40150F0047F957 /* Trajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trajectory.h; sourceTree = "<group>"; };
+		5BB4E5FF1A40198D0047F957 /* CircularTrajectory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircularTrajectory.cpp; sourceTree = "<group>"; };
+		5BB4E6001A40198D0047F957 /* CircularTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularTrajectory.h; sourceTree = "<group>"; };
+		5BB4E6021A4077970047F957 /* PointHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointHistory.cpp; sourceTree = "<group>"; };
+		5BB4E6031A4077970047F957 /* PointHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointHistory.h; sourceTree = "<group>"; };
 		5D95092D59E7A34C9DB7823E /* Server.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Server.cpp; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/ofxLibwebsockets/src/Server.cpp; sourceTree = SOURCE_ROOT; };
 		69668FDE141262BC3C6CA929 /* jsoncpp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = jsoncpp.cpp; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/jsoncpp/jsoncpp.cpp; sourceTree = SOURCE_ROOT; };
 		75DCA31CF0745355CC4AD2DD /* libwebsockets.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = libwebsockets.h; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/libwebsockets/include/libwebsockets.h; sourceTree = SOURCE_ROOT; };
@@ -662,6 +671,12 @@
 				5BB4E5D11A400F500047F957 /* PhysicsUtil.h */,
 				5BB4E5D21A400F500047F957 /* PhysicsWorld.cpp */,
 				5BB4E5D31A400F500047F957 /* PhysicsWorld.h */,
+				5BB4E5FC1A40150F0047F957 /* Trajectory.cpp */,
+				5BB4E5FD1A40150F0047F957 /* Trajectory.h */,
+				5BB4E5FF1A40198D0047F957 /* CircularTrajectory.cpp */,
+				5BB4E6001A40198D0047F957 /* CircularTrajectory.h */,
+				5BB4E6021A4077970047F957 /* PointHistory.cpp */,
+				5BB4E6031A4077970047F957 /* PointHistory.h */,
 			);
 			path = physics;
 			sourceTree = "<group>";
@@ -894,7 +909,9 @@
 				5BB4E5E01A400F500047F957 /* JsonUtil.cpp in Sources */,
 				5B0E83471A369EC30091AB99 /* ofxBulletCone.cpp in Sources */,
 				960D20B191346612D5C05A6A /* ofxTCPClient.cpp in Sources */,
+				5BB4E6041A4077970047F957 /* PointHistory.cpp in Sources */,
 				5BB4E5F31A400F500047F957 /* OrbitalTrajectory.cpp in Sources */,
+				5BB4E5FE1A40150F0047F957 /* Trajectory.cpp in Sources */,
 				5BB4E5F01A400F500047F957 /* Paddle.cpp in Sources */,
 				5BB4E5F51A400F500047F957 /* PhysicsUtil.cpp in Sources */,
 				125506CD3E5F428AAFE5CC65 /* ofxTCPManager.cpp in Sources */,
@@ -911,6 +928,7 @@
 				5B0E83481A369EC30091AB99 /* ofxBulletConvexShape.cpp in Sources */,
 				32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */,
 				5B0E83441A369EC30091AB99 /* ofxBulletBaseShape.cpp in Sources */,
+				5BB4E6011A40198D0047F957 /* CircularTrajectory.cpp in Sources */,
 				5B0E83431A369EC30091AB99 /* GLDebugDrawer.cpp in Sources */,
 				5B0E834A1A369EC30091AB99 /* ofxBulletCylinder.cpp in Sources */,
 				5BB4E5E71A400F500047F957 /* PlayerManager.cpp in Sources */,

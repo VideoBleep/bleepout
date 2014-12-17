@@ -11,8 +11,6 @@
 
 OrbitalTrajectory::OrbitalTrajectory()
 : _r(1.0)
-, _speed(0.02)
-, _t(0)
 {
 }
 
@@ -43,6 +41,8 @@ void OrbitalTrajectory::tick() {
     _lastPosition = _position;
     _t += _speed;
     _position = _r * (_u * cos(_t) + _w * sin(_t));
+    
+    history.push(_position);
 }
 
 void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {

@@ -8,6 +8,7 @@
 
 #include "DomeRenderer.h"
 #include "PhysicsUtil.h"
+#include "OrbitalTrajectory.h"
 
 namespace {
     void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, float lineWidth = 1.5, bool alphaBlending = false) {
@@ -80,14 +81,15 @@ namespace {
                 continue;
             }
             auto t = obj->getTrajectory();
-            if (t) {
-                float r = t->getRadius();
+            OrbitalTrajectory* ot = (OrbitalTrajectory*)t;
+            if (ot) {
+                float r = ot->getRadius();
 
                 ofSetColor(color);
                 
                 ofPushMatrix();
                 ofVec3f normal(0, 0, -1);
-                ofVec3f orbitNormal = t->u().crossed(t->w()).normalized();
+                ofVec3f orbitNormal = ot->u().crossed(ot->w()).normalized();
                 ofVec3f axis = normal.crossed(orbitNormal);
                 float angle = acos(normal.dot(orbitNormal));
                 ofRotate(angle * 180/PI, axis.x, axis.y, axis.z);
@@ -97,9 +99,9 @@ namespace {
                 
                 if (showVectors) {
                     ofFill();
-                    ofDrawArrow(ofVec3f::zero(), t->u() * r, 2);
-                    ofLine(ofVec3f::zero(), t->v() * r);
-                    ofDrawArrow(ofVec3f::zero(), t->u().crossed(t->v()).normalize() * r/4.0, 2);
+                    ofDrawArrow(ofVec3f::zero(), ot->u() * r, 2);
+                    ofLine(ofVec3f::zero(), ot->v() * r);
+                    ofDrawArrow(ofVec3f::zero(), ot->u().crossed(ot->v()).normalize() * r/4.0, 2);
                 }
             }
         }
@@ -118,6 +120,7 @@ void DomeRenderer::setup(RoundController& roundController) {
 
     _debugGraphics = false;
     _drawTrajectories = false;
+    _drawLasers = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
     _extras.setup(roundController.config(), *roundController.logicController());
@@ -177,7 +180,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
   
     _cam.end();
     
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + t to show trajectories\ncommand + d to show physics debugging info", 10, ofGetHeight() - 35);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 75);
 
 }
 
@@ -186,6 +189,8 @@ void DomeRenderer::keyPressed(int key) {
         _debugGraphics = !_debugGraphics;
     } else if (key == 't') {
         _drawTrajectories = !_drawTrajectories;
+    } else if (key == 'l') {
+        _drawLasers = !_drawLasers;
     } else {
       _extras.keyPressed(key);
     }
@@ -227,24 +232,52 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
+    if (!wall.isExit()) {
+        drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
+    }
 }
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     ofPushMatrix();
     ofPushStyle();
     
-    ofNoFill();
-    ofTranslate(ball.getPosition());
-    ofRotateX(360 * ball.getTrajectory()->getTime());
-    ofRotateY(45);
-    ofSetLineWidth(8.0);
-    ofSetColor(ball.getColor());
-    ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
-    ofFill();
-    ofSetColor(255, 255, 255);
-    ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
+    if (!_drawLasers) {
+        ofNoFill();
+        ofTranslate(ball.getPosition());
+        ofRotateX(360 * ball.getTrajectory()->getTime());
+        ofRotateY(45);
+        ofSetLineWidth(8.0);
+        ofSetColor(ball.getColor());
+        ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
+        ofFill();
+        ofSetColor(255, 255, 255);
+        ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
+    } else {
+        OrbitalTrajectory* ot = (OrbitalTrajectory*)ball.getTrajectory();
+        if (ot) {
+            ofSetColor(255, 255, 255, 255);
+            ofSetLineWidth(1.5);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
+            
+            ofColor c = ball.getColor();
+            c.a = 128;
+            ofSetColor(c);
+            ofSetLineWidth(5.0);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
 
+            c.a = 64;
+            ofSetColor(c);
+            ofSetLineWidth(8.0);
+            glBegin(GL_LINE_STRIP);
+            ot->history.emitPoints();
+            glEnd();
+        }
+    }
+    
     ofPopStyle();
     ofPopMatrix();
 }
