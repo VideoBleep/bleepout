@@ -19,21 +19,14 @@ void BleepoutApp::setup() {
   ofSetLogLevel(_config.logLevel());
   ofSetVerticalSync(_config.vsync());
   ofSetBackgroundAuto(false);
-
-//  RoundConfig roundConfig = RoundConfig::createTestConfig(_config);
-//  _roundController.reset(new RoundController(roundConfig));
-//  _roundController->setup();
   
   _setupController.reset(new SetupController(_config));
   _setupController->setup();
   ofAddListener(_setupController->startRoundEvent, this,
                 &BleepoutApp::onStartRound);
 
-  // [jim] May not be in the correct place here, but putting it back temporarily to aid sockets integration
   _playerManager.reset(new PlayerManager());
-//  _playerManager->addPlayer();
-  
-  
+
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonClient.set(_config.syphonServerName(), _config.syphonAppName());
@@ -62,6 +55,8 @@ void BleepoutApp::draw() {
 
 void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
   if (_roundController) {
+    ofRemoveListener(_roundController->roundEndedEvent, this,
+                     &BleepoutApp::onRoundEnded);
     ofLogError() << "Round has already been started";
     return;
   }
@@ -69,6 +64,16 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
+  ofAddListener(_roundController->roundEndedEvent, this,
+                &BleepoutApp::onRoundEnded);
+}
+
+void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
+  if (!_roundController) {
+    ofLogError() << "Round was not active";
+    return;
+  }
+  _roundController.reset();
 }
 
 void BleepoutApp::keyPressed(int key) {
@@ -76,9 +81,6 @@ void BleepoutApp::keyPressed(int key) {
     _roundController->keyPressed(key);
   } else if (_setupController) {
     _setupController->keyPressed(key);
-  }
-  if (key == 'a') {
-    dumpConfig(OF_LOG_NOTICE);
   }
 }
 
@@ -104,10 +106,4 @@ void BleepoutApp::mouseDragged(int x, int y, int button) {
   if (_roundController) {
     _roundController->mouseDragged(x, y, button);
   }
-}
-
-void BleepoutApp::dumpConfig(ofLogLevel level) const {
-  ofLog(level) << "--BEGIN app config--";
-  ofLog(level) << _config.toJsonVal().toStyledString();
-  ofLog(level) << "--  END app config--";
 }

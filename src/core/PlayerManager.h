@@ -17,24 +17,6 @@
 #include "GameEvents.h"
 #include <list>
 
-class RoundController;
-
-struct PlayerYawPitchRollMessage {
-	PlayerYawPitchRollMessage() {
-	}
-
-	PlayerYawPitchRollMessage(float y, float p, float r) {
-		yaw = y;
-		pitch = p;
-		roll = r;
-	}
-
-	ofPtr<Player> player;
-	float yaw;
-	float pitch;
-	float roll;
-};
-
 class PlayerManager
 : public PlayerEventSource
 , public ControlEventSource {

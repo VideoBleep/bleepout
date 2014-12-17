@@ -32,6 +32,7 @@ void RoundController::setup() {
   _logicController.reset(new LogicController(_state, _config));
   _spaceController->setup();
   _logicController->setup();
+  ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
     
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -77,11 +78,17 @@ void RoundController::update() {
   _renderer->update();
 }
 
+void RoundController::onRoundEnded(RoundStateEventArgs &e) {
+  ofNotifyEvent(roundEndedEvent, e);
+}
+
 void RoundController::keyPressed(int key) {
   if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->keyPressed(key);
   } else {
-    if (key == 'l') {
+    if (key == 'q') {
+      //....
+    } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
@@ -121,16 +128,6 @@ void RoundController::onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs &e) {
   }
   
   paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * e.yaw(), _config.domeMargin());
-}
-
-void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {
-	Paddle* paddle = ypr.player->paddle();
-	if (!paddle) {
-		ofLogError() << "Unable to set paddle position for player: " << ypr.player->id();
-		return;
-	}
-
-    paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * ypr.yaw, _config.domeMargin());
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {

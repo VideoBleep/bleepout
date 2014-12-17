@@ -36,10 +36,10 @@ public:
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
   const BleepoutConfig& config() const { return _config; }
-  
-  void dumpConfig(ofLogLevel level) const;
+
 private:
   void onStartRound(StartRoundEventArgs& e);
+  void onRoundEnded(RoundStateEventArgs& e);
   
   BleepoutConfig _config;
 	ofPtr<PlayerManager> _playerManager;

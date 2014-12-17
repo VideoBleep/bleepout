@@ -25,7 +25,7 @@ ofPtr<Player> PlayerManager::addPlayer() {
   return player;
 }
 
-void PlayerManager::setup(){
+void PlayerManager::setup() {
 
 	ofxLibwebsockets::ServerOptions options = ofxLibwebsockets::defaultServerOptions();
 	options.port = 3500;
