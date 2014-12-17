@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 #include <ofTypes.h>
+#include "Modifier.h"
 
 class Paddle : public GameObject, public PhysicsObject {
 public:
@@ -34,6 +35,15 @@ template<>
 struct GameObjectTypeTraits<Paddle> {
   static const GameObjectType typeId = GAME_OBJECT_PADDLE;
   static const char typeName[];
+};
+
+class PaddleWidthModifier : public Modifier {
+public:
+  PaddleWidthModifier(float amount)
+  : Modifier(MODIFIER_PADDLE_WIDTH)
+  , _amount(amount) { }
+private:
+  float _amount;
 };
 
 #endif /* defined(__bleepout__Paddle__) */

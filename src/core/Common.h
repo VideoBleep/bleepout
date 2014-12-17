@@ -18,6 +18,24 @@
 #define ENABLE_SYPHON
 #endif
 
+enum GameObjectType {
+  GAME_OBJECT_OTHER,
+  GAME_OBJECT_BRICK,
+  GAME_OBJECT_PADDLE,
+  GAME_OBJECT_BALL,
+  GAME_OBJECT_PLAYER,
+  GAME_OBJECT_WALL,
+  GAME_OBJECT_ANIMATION,
+  GAME_OBJECT_MODIFIER
+};
+typedef int GameObjectId;
+
+enum ModifierType {
+  MODIFIER_UNKNOWN,
+  MODIFIER_EXTRA_LIFE,
+  MODIFIER_PADDLE_WIDTH
+};
+
 struct Nothing { };
 
 class Outputable {

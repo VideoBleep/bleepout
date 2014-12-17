@@ -11,11 +11,6 @@
 
 #include "GameObject.h"
 
-enum ModifierType {
-  MODIFIER_UNKNOWN,
-  MODIFIER_EXTRA_LIFE
-};
-
 class Modifier : public GameObject {
 public:
   Modifier(ModifierType modifierType)

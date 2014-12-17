@@ -14,6 +14,7 @@
 #include <vector>
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include "JsonUtil.h"
+#include "Common.h"
 
 class BleepoutConfig {
 public:
@@ -104,6 +105,10 @@ struct BallSpec {
   BallSpec() { }
   BallSpec(float e, float h)
   : elevation(e), heading(h) { }
+};
+
+struct ModifierSpec {
+  ModifierType type;
 };
 
 class RoundConfig {
