@@ -71,7 +71,7 @@ void RoundController::update() {
 }
 
 void RoundController::keyPressed(int key) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->keyPressed(key);
   } else {
     if (key == 'l') {
@@ -133,7 +133,7 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
 }
 
 void RoundController::mousePressed(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mousePressed(x, y, button);
   } else {
         
@@ -141,7 +141,7 @@ void RoundController::mousePressed(int x, int y, int button) {
 }
 
 void RoundController::mouseMoved(int x, int y) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
         _renderer->mouseMoved(x, y);
   } else if (_state.players().size()) {
     ofPtr<Player> player = _state.players()[0];
@@ -150,7 +150,7 @@ void RoundController::mouseMoved(int x, int y) {
 }
 
 void RoundController::mouseDragged(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mouseDragged(x, y, button);
   } else {
   
@@ -158,7 +158,7 @@ void RoundController::mouseDragged(int x, int y, int button) {
 }
 
 void RoundController::mouseReleased(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mouseReleased(x, y, button);
   } else {
     

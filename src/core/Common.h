@@ -15,6 +15,9 @@
 
 #ifdef TARGET_OSX
 #define ENABLE_SYPHON
+#define BLEEPOUT_CONTROL_KEY OF_KEY_COMMAND
+#else
+#define BLEEPOUT_CONTROL_KEY OF_KEY_CONTROL
 #endif
 
 struct Nothing { };
