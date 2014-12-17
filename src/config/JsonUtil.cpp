@@ -140,6 +140,10 @@ bool readJsonVal(const Json::Value& val, BrickSpec* result) {
     temp.value = 1;
   if (!readJsonVal(val["lives"], &temp.lives))
     temp.lives = 1;
+  if (!readJsonVal(val["speed"], &temp.speed))
+    temp.speed = 0;
+  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
+    temp.stopHeading = -1;
   *result = temp;
   return true;
 }
@@ -158,6 +162,10 @@ bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
     temp.value = 1;
   if (!readJsonVal(val["lives"], &temp.lives))
     temp.lives = 1;
+  if (!readJsonVal(val["speed"], &temp.speed))
+    temp.speed = 0;
+  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
+    temp.stopHeading = -1;
   *result = temp;
   return true;
 }
@@ -172,7 +180,11 @@ bool readJsonVal(const Json::Value& val, WallSpec* result) {
       !readJsonVal(val["size"], &temp.size))
     return false;
   if (!readJsonVal(val["isExit"], &temp.isExit))
-      temp.isExit = false;
+    temp.isExit = false;
+  if (!readJsonVal(val["speed"], &temp.speed))
+    temp.speed = 0;
+  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
+    temp.stopHeading = -1;
   *result = temp;
   return true;
 }
@@ -190,6 +202,10 @@ bool readJsonVal(const Json::Value& val, CurvedWallSpec* result) {
     return false;
   if (!readJsonVal(val["isExit"], &temp.isExit))
     temp.isExit = false;
+  if (!readJsonVal(val["speed"], &temp.speed))
+    temp.speed = 0;
+  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
+    temp.stopHeading = -1;
   *result = temp;
   return true;
 }
@@ -245,6 +261,8 @@ Json::Value toJsonVal(const BrickSpec& spec) {
   obj["color"] = toJsonVal(spec.color);
   obj["value"] = spec.value;
   obj["lives"] = spec.lives;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
   return obj;
 }
 
@@ -257,6 +275,8 @@ Json::Value toJsonVal(const BrickRingSpec& spec) {
   obj["lives"] = spec.lives;
   obj["count"] = spec.count;
   obj["phase"] = spec.phase;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
   return obj;
 }
 
@@ -267,6 +287,8 @@ Json::Value toJsonVal(const WallSpec& spec) {
   obj["heading"] = spec.heading;
   obj["size"] = toJsonVal(spec.size);
   obj["isExit"] = toJsonVal(spec.isExit);
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
   return obj;
 }
 
@@ -279,6 +301,8 @@ Json::Value toJsonVal(const CurvedWallSpec& spec) {
   obj["heading2"] = spec.heading2;
   obj["width"] = toJsonVal(spec.width);
   obj["isExit"] = toJsonVal(spec.isExit);
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
   return obj;
 }
 
