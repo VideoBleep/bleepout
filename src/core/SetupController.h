@@ -12,21 +12,24 @@
 #include "Player.h"
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
-#include <vector>
+#include "PlayerManager.h"
+#include <list>
 #include <ofTypes.h>
 
-class RoundController;
-
-class SetupController {
+class SetupController : public SetupEventSource {
 public:
   SetupController(const BleepoutConfig& appConfig);
   void setup();
   void update();
   void draw();
-  bool tryStartRound(ofPtr<RoundController>& roundController);
+  void keyPressed(int key);
+  
 private:
+  bool tryStartRound();
+  
+  ofPtr<PlayerManager> _playerManager;
   const BleepoutConfig& _appConfig;
-  std::vector<Player> _players;
+  std::list<ofPtr<Player> > _players;
   ofPtr<RoundConfig> _roundConfig;
 };
 

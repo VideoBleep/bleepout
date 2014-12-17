@@ -12,6 +12,7 @@
 #include <ofTypes.h>
 #include <ofLog.h>
 #include <iostream>
+#include <list>
 #include "GameObject.h"
 #include "Player.h"
 #include "Brick.h"
@@ -65,7 +66,7 @@ public:
     os << "(";
     outputField(os, ball());
     os << " ";
-    outputField(os, ObjectEventArgs<T>::object());
+    outputField(os, this->object());
     os << ")";
   }
 private:
@@ -337,6 +338,59 @@ protected:
   void notifyPlayerRemoved(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerRemovedEvent, e);
+  }
+};
+
+class StartRoundEventArgs {
+public:
+  StartRoundEventArgs(ofPtr<RoundConfig> config,
+                      std::list<ofPtr<Player> > players)
+  : _config(config) , _players(players) { }
+  
+  ofPtr<RoundConfig>& config() { return _config; }
+  std::list<ofPtr<Player> >& players() { return _players; }
+private:
+  ofPtr<RoundConfig> _config;
+  std::list<ofPtr<Player> > _players;
+};
+
+class SetupEventSource : public EventSource {
+public:
+  ofEvent<StartRoundEventArgs> startRoundEvent;
+protected:
+  void notifyStartRound(ofPtr<RoundConfig> config,
+                        std::list<ofPtr<Player> > players) {
+    StartRoundEventArgs e(config, players);
+    ofNotifyEvent(startRoundEvent, e);
+  }
+};
+  
+class PlayerYawPitchRollEventArgs {
+public:
+  PlayerYawPitchRollEventArgs(Player* player, float yaw,
+                              float pitch, float roll)
+  : _player(player), _yaw(yaw), _pitch(pitch), _roll(roll) { }
+  
+  Player* player() { return _player; }
+  float yaw() const { return _yaw; }
+  float pitch() const { return _pitch; }
+  float roll() const { return _roll; }
+  
+private:
+  Player* _player;
+  float _yaw;
+  float _pitch;
+  float _roll;
+};
+
+class ControlEventSource : public EventSource {
+public:
+  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
+protected:
+  void notifyPlayerYawPitchRoll(Player* player, float yaw,
+                                float pitch, float roll) {
+    PlayerYawPitchRollEventArgs e(player, yaw, pitch, roll);
+    ofNotifyEvent(playerYawPitchRollEvent, e);
   }
 };
 

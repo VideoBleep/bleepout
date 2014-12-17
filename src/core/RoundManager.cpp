@@ -13,11 +13,18 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
-RoundController::RoundController(RoundConfig config)
+RoundController::RoundController(RoundConfig config,
+                                 std::list<ofPtr<Player> > players,
+                                 PlayerManager& playerManager)
 : _config(config)
-, _state(_config) { }
+, _state(_config, players)
+, _playerManager(playerManager) {
+  ofAddListener(playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+}
 
-RoundController::~RoundController() { }
+RoundController::~RoundController() {
+  ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+}
 
 void RoundController::setup() {
    
@@ -104,6 +111,16 @@ void RoundController::keyPressed(int key) {
         _spaceController->addBall(BallSpec(30, ofRandom(360)));
     }
   }
+}
+
+void RoundController::onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs &e) {
+  Paddle* paddle = e.player()->paddle();
+  if (!paddle) {
+    ofLogError() << "Unable to set paddle position for player: " << e.player()->id();
+    return;
+  }
+  
+  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * e.yaw(), _config.domeMargin());
 }
 
 void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {

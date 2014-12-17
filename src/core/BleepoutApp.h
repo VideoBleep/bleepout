@@ -16,6 +16,7 @@
 #include "RendererBase.h"
 #include "Common.h"
 #include "SetupController.h"
+#include "GameEvents.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -23,6 +24,8 @@
 
 class BleepoutApp : public ofBaseApp {
 public:
+  BleepoutApp();
+  
   void setup() override;
   void update() override;
   void draw() override;
@@ -36,9 +39,10 @@ public:
   
   void dumpConfig(ofLogLevel level) const;
 private:
-	ofPtr<PlayerManager> _playerManager;
-
+  void onStartRound(StartRoundEventArgs& e);
+  
   BleepoutConfig _config;
+	ofPtr<PlayerManager> _playerManager;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
 #ifdef ENABLE_SYPHON

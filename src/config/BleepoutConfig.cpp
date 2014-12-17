@@ -16,6 +16,20 @@ _vsync(true) {
   
 }
 
+BleepoutConfig::BleepoutConfig(const BleepoutConfig& other)
+: _fps(other._fps)
+, _logLevel(other._logLevel)
+, _syphonServerName(other._syphonServerName)
+, _syphonAppName(other._syphonAppName) { }
+
+BleepoutConfig& BleepoutConfig::operator=(const BleepoutConfig& other) {
+  _fps = other._fps;
+  _logLevel = other._logLevel;
+  _syphonServerName = other._syphonServerName;
+  _syphonAppName = other._syphonAppName;
+  return *this;
+}
+
 BleepoutConfig BleepoutConfig::createTestConfig() {
   BleepoutConfig config;
   config._syphonServerName = "Composition";

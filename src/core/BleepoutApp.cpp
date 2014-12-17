@@ -8,6 +8,8 @@
 
 #include "BleepoutApp.h"
 
+BleepoutApp::BleepoutApp()
+: _config() { }
 
 void BleepoutApp::setup() {
   // load config....
@@ -18,13 +20,19 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config.vsync());
   ofSetBackgroundAuto(false);
 
-  RoundConfig roundConfig = RoundConfig::createTestConfig(_config);
-  _roundController.reset(new RoundController(roundConfig));
-  _roundController->setup();
+//  RoundConfig roundConfig = RoundConfig::createTestConfig(_config);
+//  _roundController.reset(new RoundController(roundConfig));
+//  _roundController->setup();
+  
+  _setupController.reset(new SetupController(_config));
+  _setupController->setup();
+  ofAddListener(_setupController->startRoundEvent, this,
+                &BleepoutApp::onStartRound);
 
   // [jim] May not be in the correct place here, but putting it back temporarily to aid sockets integration
-  _playerManager.reset(new PlayerManager(_roundController));
-  _playerManager->addPlayer();
+  _playerManager.reset(new PlayerManager());
+//  _playerManager->addPlayer();
+  
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
@@ -35,6 +43,8 @@ void BleepoutApp::setup() {
 void BleepoutApp::update() {
   if (_roundController) {
     _roundController->update();
+  } else if (_setupController) {
+    _setupController->update();
   }
 }
 
@@ -45,12 +55,27 @@ void BleepoutApp::draw() {
 #endif // ENABLE_SYPHON
   if (_roundController) {
    _roundController->draw();
+  } else if (_setupController) {
+    _setupController->draw();
   }
+}
+
+void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
+  if (_roundController) {
+    ofLogError() << "Round has already been started";
+    return;
+  }
+  _roundController.reset(new RoundController(*e.config(),
+                                             e.players(),
+                                             *_playerManager));
+  _roundController->setup();
 }
 
 void BleepoutApp::keyPressed(int key) {
   if (_roundController) {
     _roundController->keyPressed(key);
+  } else if (_setupController) {
+    _setupController->keyPressed(key);
   }
   if (key == 'a') {
     dumpConfig(OF_LOG_NOTICE);
