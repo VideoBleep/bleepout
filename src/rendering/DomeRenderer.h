@@ -14,6 +14,7 @@
 #include "TurntableCam.h"
 #include <ofTrueTypeFont.h>
 #include "RendererExtras.h"
+#include "Geometry.h"
 
 class DomeRenderer : public RendererBase {
 public:
@@ -32,6 +33,8 @@ protected:
     virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
     virtual void drawWall(RoundState& round, Wall& wall) override;
     virtual void drawBall(RoundState& round, Ball& ball) override;
+    
+    void drawGenMesh(const GenMesh& gm, const ofColor& faceColor, const ofColor& edgeColor, float lineWidth);
     
     ofxTurntableCam _cam;
     bool _debugGraphics;

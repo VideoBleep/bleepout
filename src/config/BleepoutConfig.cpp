@@ -176,7 +176,7 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
     CurvedWallSpec spec;
     spec.elevation1 = 30;
     spec.heading1 = i * 60 + 15;
-    spec.elevation2 = i % 2 ? 70 : 64;
+    spec.elevation2 = i % 2 ? 68 : 62;
     spec.heading2 = i * 60 + 45;
     spec.width = 10;
     spec.isExit = false;

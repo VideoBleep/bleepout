@@ -144,6 +144,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
     ofSetColor(80, 80, 110);
     ofNoFill();
     ofRotateX(90);
+    ofSetLineWidth(1.5);
     ofCircle(0, 0, 0, config.domeRadius());
 
     ofPopStyle();
@@ -178,13 +179,46 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
             }
         }
     }
-  
+    
+    for (auto& cw : config.curvedWallSets()) {
+        float r = config.domeRadius() + config.domeMargin();
+        float d = cw.width / 4.0;
+        int steps = 20;
+        
+        Sweep sweep;
+        sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
+        sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
+        sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 + d));
+        sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 - d));
+        sweep.path.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1));
+        for (int i = 0; i < steps; i++) {
+            float s = i / ((steps - 1) * 1.0);
+            sweep.path.addPoint(sphericalToCartesian(r,
+                                                     lerp(cw.elevation1, cw.elevation2, s),
+                                                     lerp(cw.heading1, cw.heading2, s)));
+        }
+
+        sweep.generate();
+        drawGenMesh(sweep, ofColor(80, 80, 90), ofColor(98, 98, 118), 2.5);
+    }
+    
+    
     _extras.draw(state, config);
   
     _cam.end();
     
     ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\ncommand + C for comet mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 90);
 
+}
+
+
+void DomeRenderer::drawGenMesh(const GenMesh& gm, const ofColor& edgeColor, const ofColor& faceColor, float lineWidth) {
+    ofSetColor(faceColor);
+    gm.mesh->draw();
+    ofSetColor(edgeColor);
+    ofSetLineWidth(lineWidth);
+    ofTranslate(_cam.getLookAtDir().normalized() * -0.5);
+    gm.outline->draw();
 }
 
 void DomeRenderer::keyPressed(int key) {
@@ -237,8 +271,8 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    if (!wall.isExit()) {
-        drawBoxObject(wall, ofColor(80, 80, 80), ofColor(98, 98, 98));
+    if (!wall.isExit() && wall.isDynamic()) {
+        drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), 2.5);
     }
 }
 
