@@ -123,6 +123,7 @@ void DomeRenderer::setup(RoundController& roundController) {
     _debugGraphics = false;
     _drawTrajectories = false;
     _drawLasers = false;
+    _drawCometTails = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
     _extras.setup(roundController.config(), *roundController.logicController());
@@ -182,7 +183,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
   
     _cam.end();
     
-    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 75);
+    ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\ncommand + C for comet mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 90);
 
 }
 
@@ -193,6 +194,8 @@ void DomeRenderer::keyPressed(int key) {
         _drawTrajectories = !_drawTrajectories;
     } else if (key == 'l') {
         _drawLasers = !_drawLasers;
+    } else if (key == 'c') {
+        _drawCometTails = !_drawCometTails;
     } else {
       _extras.keyPressed(key);
     }
@@ -239,11 +242,40 @@ void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
     }
 }
 
-void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
-    ofPushMatrix();
-    ofPushStyle();
+void drawCometTail(Ball& ball, float width, float length, int order, const ofColor& color) {
+    ofSetColor(color);
+    ofVec3f pos = ball.getPosition();
     
+    float s = 0.03;
+    ofVec3f vel = ball.getVelocity().normalized();
+    ofVec3f perpVec = vel.crossed(pos).normalized();
+    ofVec3f jitter = perpVec * ofRandom(-s, s) + vel.normalized() * ofRandom(-s, s);
+    vel += jitter;
+    
+    ofVec3f stack = pos.normalized() * 0.01 * order;
+    ofVec3f tailPt = pos - vel * length + stack;
+    ofVec3f headPt = pos + vel * 2.2 * width + stack;
+    ofVec3f offsetVec = perpVec * 1.2 * width;
+    ofVec3f topPt = pos + offsetVec + stack;
+    ofVec3f botPt = pos - offsetVec + stack;
+    ofBeginShape();
+    ofSetCurveResolution(12);
+    ofCurveVertex(tailPt);
+    ofCurveVertex(tailPt);
+    ofCurveVertex(topPt);
+    ofCurveVertex(headPt);
+    ofCurveVertex(botPt);
+    ofCurveVertex(tailPt);
+    ofEndShape();
+}
+
+void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
+
     if (!_drawLasers) {
+        
+        ofPushStyle();
+        ofPushMatrix();
+        
         ofNoFill();
         ofTranslate(ball.getPosition());
         ofRotateX(360 * ball.getTrajectory()->getTime());
@@ -254,9 +286,25 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
         ofFill();
         ofSetColor(255, 255, 255);
         ofDrawSphere(ofVec3f::zero(), ball.getSize().x / 2.0);
+    
+        ofPopMatrix();
+        
+        if (_drawCometTails) {
+            drawCometTail(ball, 6.8, 50,  0, ofColor(255, 100,  0, 200));
+            drawCometTail(ball, 5.0, 30, -1, ofColor(255, 180,  0, 200));
+            drawCometTail(ball, 5.0, 30,  1, ofColor(255, 180,  0, 200));
+            drawCometTail(ball, 3.0, 18,  2, ofColor(255, 255, 80, 200));
+            drawCometTail(ball, 3.0, 18, -2, ofColor(255, 255, 80, 200));
+        }
+        
+        ofPopStyle();
+        
     } else {
         OrbitalTrajectory* ot = (OrbitalTrajectory*)ball.getTrajectory();
         if (ot) {
+            ofPushStyle();
+            ofPushMatrix();
+            
             ofEnableBlendMode(OF_BLENDMODE_ADD);
             
             ofSetColor(255, 255, 255, 255);
@@ -282,9 +330,11 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
             ot->history.emitPoints();
             glEnd();
             
+            ofPopMatrix();
+            ofPopStyle();
+            
         }
+        
     }
     
-    ofPopStyle();
-    ofPopMatrix();
 }

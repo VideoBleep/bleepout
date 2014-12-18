@@ -37,6 +37,7 @@ protected:
     bool _debugGraphics;
     bool _drawTrajectories;
     bool _drawLasers;
+    bool _drawCometTails;
     
     ofTrueTypeFont _font;
     RendererExtras _extras;

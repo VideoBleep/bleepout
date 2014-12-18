@@ -100,8 +100,12 @@ void PhysicsObject::setSize(const ofVec3f& newSize) {
     updateBoundingBox();
 }
 
-void PhysicsObject::setVelocity(const ofVec3f& v) {
-    velocity = v;
+ofVec3f PhysicsObject::getVelocity() const {
+    if (isDynamic()) {
+        return trajectory->getInstantaneousVelocity();
+    } else {
+        return ofVec3f(0, 0, 0);
+    }
 }
 
 void PhysicsObject::tick() {

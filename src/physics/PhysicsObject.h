@@ -51,8 +51,7 @@ public:
     
     const BoundingBox& getBoundingBox() const { return boundingBox; }
 
-    const ofVec3f& getVelocity() const { return velocity; }
-    void setVelocity(const ofVec3f& v);
+    ofVec3f getVelocity() const;
     
     bool isDynamic() const { return trajectory != NULL; }
     void tick();
@@ -72,7 +71,6 @@ protected:
     ofVec3f size;
     BoundingBox boundingBox;
     
-    ofVec3f velocity;
     CollisionShape collisionShape;
 
     ofPtr<Trajectory> trajectory;
