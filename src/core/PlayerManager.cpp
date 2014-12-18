@@ -9,24 +9,23 @@
 
 #include "PlayerManager.h"
 #include "RoundManager.h"
+#include "Logging.h"
 
 std::string messageDelimiter = "|";
 
-PlayerManager::PlayerManager(ofPtr<RoundController> roundController) :
-	_roundController(roundController),
-	_state(roundController->state())
+PlayerManager::PlayerManager()
 {
-	setup();
+
 }
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
   player->setColor(ofColor::green);
-  _state.addPlayer(player);
+  _players.push_back(player);
   return player;
 }
 
-void PlayerManager::setup(){
+void PlayerManager::setup() {
 
 	ofxLibwebsockets::ServerOptions options = ofxLibwebsockets::defaultServerOptions();
 	options.port = 3500;
@@ -67,7 +66,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 }
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
-	cout << "new connection open" << endl;
+	cout << "new connection open from " << args.conn.getClientIP() << endl;
 	messages.push_back("New connection from " + args.conn.getClientIP());
 }
 
@@ -83,8 +82,6 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
 
-	ofPtr<Player> player = findPlayer(args.conn);
-
 	// Parse message
 	int pos = args.message.find(messageDelimiter);
 	//std::string msgPrefix = args.message.substr(0, pos);
@@ -93,34 +90,52 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	vector<string> parts = ofSplitString(args.message, messageDelimiter);
 	std::string msgPrefix = parts[0];
 
+	ofPtr<Player> player = findPlayer(args.conn);
+
+	if (msgPrefix == "4new") {
+		if (_inRoundMode) {
+			ofLogWarning() << "Ignoring create player message in setup mode";
+			return;
+		}
+		if (player) {
+			ofLogWarning() << "Got create player message for existing player: " << *player;
+			return;
+		}
+		int id___UNUSED = ofHexToInt(parts[1]);
+		ofColor color(ofHexToInt(parts[2]),
+									ofHexToInt(parts[3]),
+									ofHexToInt(parts[4]));
+		player.reset(new Player(&args.conn));
+		player->setColor(color);
+		_players.push_back(player);
+		
+		ofLogNotice() << "Player Created - id#" << id___UNUSED;
+		// Pong
+		args.conn.send("hello");
+		return;
+	}
+
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == "ypr") {
-		PlayerYawPitchRollMessage ypr;
-		ypr.player = player;
+		if (!_inRoundMode) {
+			ofLogWarning() << "Ignoring YPR message in setup mode";
+			return;
+		}
+		if (!player) {
+			ofLogWarning() << "YPR message received for nonexistant player";
+			return;
+		}
+
 		//pos = msgData.find(messageDelimiter);
-		ypr.yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
+		float yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
 		// msgData.erase(0, pos + 1);
 		// pos = msgData.find(messageDelimiter);
-		ypr.pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
+		float pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
 		// msgData.erase(0, pos + 1);
-		ypr.roll = ofToFloat(parts[3]); //ofToFloat(msgData);
-		_roundController->setPaddlePosition(ypr);
+		float roll = ofToFloat(parts[3]); //ofToFloat(msgData);
+		notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
 	}
-	//
-	else if (msgPrefix == "new") {
-		// This implies that the PlayerCreateMessage will be responsible for instantiating the player
-		// Is that correct? If the .player instance is referenced but not 
-		// the rest of the PlayerCreateMessage ... is that a problem?
-		PlayerCreateMessage newPlayer;
-		newPlayer.id = ofHexToInt(parts[1]);
-    newPlayer.color.set(ofHexToInt(parts[2]),
-                        ofHexToInt(parts[3]),
-                        ofHexToInt(parts[4]));
-    newPlayer.player.reset(new Player(&args.conn));
-    newPlayer.player->setColor(newPlayer.color);
-		_roundController->state().addPlayer(newPlayer.player);
-	}
-	// if the prefix is but then we have a click message
+	// click messages? Other?
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){
@@ -134,7 +149,7 @@ void PlayerManager::gotMessage(ofMessage msg){
 // Find player in collection based on connection (say that 10 times fast, sucka)
 ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	// find player by comparing connection
-	for (const ofPtr<Player>& p : state().players()) {
+	for (const ofPtr<Player>& p : _players) {
 		if (*(p->connection()) == conn) {
 			return p;
 		}

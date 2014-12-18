@@ -13,7 +13,7 @@
 #include "PhysicsObject.h"
 
 class RoundConfig;
-class WallSpec;
+struct WallSpec;
 
 class Wall : public GameObject, public PhysicsObject {
 public:

@@ -10,7 +10,7 @@
 #define __bleepout__RoundController__
 
 #include <ofMain.h>
-#include <vector>
+#include <list>
 #include "PlayerManager.h"
 #include "BleepoutConfig.h"
 #include "GameState.h"
@@ -23,13 +23,17 @@ class RendererBase;
 class RoundController
 {
 public:
-  explicit RoundController(RoundConfig config);
+  RoundController(RoundConfig config,
+                  std::list<ofPtr<Player> > players,
+                  PlayerManager& playerManager);
   
   ~RoundController();
   
   void setup();
   void draw();
   void update();
+  
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
@@ -44,12 +48,15 @@ public:
   void mouseDragged(int x, int y, int button);
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);
-  void setPaddlePosition(PlayerYawPitchRollMessage ypr);
   
   ofPtr<LogicController> logicController() { return _logicController; }
   const RoundConfig& config() const { return _config; }
 
 private:
+  void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
+  void onRoundEnded(RoundStateEventArgs& e);
+  
+  PlayerManager& _playerManager;
   RoundConfig _config;
   RoundState _state;
   ofPtr<RendererBase> _renderer;
