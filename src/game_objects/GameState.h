@@ -10,6 +10,7 @@
 #define __bleepout__GameState__
 
 #include <iostream>
+#include <list>
 
 #include "GameObject.h"
 #include "Paddle.H"
@@ -33,9 +34,8 @@ struct RoundMessage {
 class RoundState {
 public:
   
-  RoundState(const RoundConfig& config)
-  : _config(config)
-  , _liveBricks(0) {}
+  RoundState(const RoundConfig& config,
+             std::list<ofPtr<Player> >& players);
   
   const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
   const GameObjectCollection<Ball>& balls() const { return _balls; }
@@ -51,7 +51,6 @@ public:
   GameObjectCollection<Player>& players() { return _players; }
   GameObjectCollection<Modifier>& modifiers() { return _modifiers; }
 
-  void addPlayer(ofPtr<Player> player);
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
   Wall& addWall(const WallSpec& wallSpec);
@@ -70,6 +69,8 @@ public:
   float time;
   
 private:
+  void addPlayer(ofPtr<Player> player);
+  
   RoundState(const RoundState& other) : _config(other._config) {
     ofLogWarning() << "DUPLICATING ROUND STATE!!!";
   }

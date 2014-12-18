@@ -21,6 +21,9 @@ public:
   static BleepoutConfig createTestConfig();
   
   BleepoutConfig();
+  BleepoutConfig(const BleepoutConfig& other);
+  
+  BleepoutConfig& operator=(const BleepoutConfig& other);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;

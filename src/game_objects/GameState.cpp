@@ -8,6 +8,15 @@
 
 #include "GameState.h"
 
+RoundState::RoundState(const RoundConfig& config,
+                       std::list<ofPtr<Player> >& players)
+: _config(config)
+, _liveBricks(0) {
+  for (auto& player : players) {
+    addPlayer(player);
+  }
+}
+
 void RoundState::addPlayer(ofPtr<Player> player) {
   _players.push_back(player);
 }
