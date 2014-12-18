@@ -14,7 +14,7 @@
 #include <ofMain.h>
 
 class RoundConfig;
-class BrickSpec;
+struct BrickSpec;
 
 class Brick : public GameObject, public PhysicsObject {
 public:

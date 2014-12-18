@@ -15,7 +15,7 @@ std::string messageDelimiter = "|";
 
 PlayerManager::PlayerManager()
 {
-	setup();
+
 }
 
 ofPtr<Player> PlayerManager::addPlayer() {
@@ -66,7 +66,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 }
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
-	cout << "new connection open" << endl;
+	cout << "new connection open from " << args.conn.getClientIP() << endl;
 	messages.push_back("New connection from " + args.conn.getClientIP());
 }
 
@@ -82,8 +82,6 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
 
-	ofPtr<Player> player = findPlayer(args.conn);
-
 	// Parse message
 	int pos = args.message.find(messageDelimiter);
 	//std::string msgPrefix = args.message.substr(0, pos);
@@ -92,12 +90,42 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	vector<string> parts = ofSplitString(args.message, messageDelimiter);
 	std::string msgPrefix = parts[0];
 
+	ofPtr<Player> player = findPlayer(args.conn);
+
+	if (msgPrefix == "4new") {
+		if (_inRoundMode) {
+			ofLogWarning() << "Ignoring create player message in setup mode";
+			return;
+		}
+		if (player) {
+			ofLogWarning() << "Got create player message for existing player: " << *player;
+			return;
+		}
+		int id___UNUSED = ofHexToInt(parts[1]);
+		ofColor color(ofHexToInt(parts[2]),
+									ofHexToInt(parts[3]),
+									ofHexToInt(parts[4]));
+		player.reset(new Player(&args.conn));
+		player->setColor(color);
+		_players.push_back(player);
+		
+		ofLogNotice() << "Player Created - id#" << id___UNUSED;
+		// Pong
+		args.conn.send("hello");
+		return;
+	}
+
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == "ypr") {
-    if (!_inRoundMode) {
-      ofLogWarning() << "Ignoring YPR message in setup mode";
-      return;
-    }
+		if (!_inRoundMode) {
+			ofLogWarning() << "Ignoring YPR message in setup mode";
+			return;
+		}
+		if (!player) {
+			ofLogWarning() << "YPR message received for nonexistant player";
+			return;
+		}
+
 		//pos = msgData.find(messageDelimiter);
 		float yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
 		// msgData.erase(0, pos + 1);
@@ -105,27 +133,9 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		float pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
 		// msgData.erase(0, pos + 1);
 		float roll = ofToFloat(parts[3]); //ofToFloat(msgData);
-    notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
+		notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
 	}
-	//
-  else if (msgPrefix == "new") {
-    if (player) {
-      ofLogWarning() << "Got create player message for existing player: " << *player;
-      return;
-    }
-    if (_inRoundMode) {
-      ofLogWarning() << "Ignoring create player message in setup mode";
-      return;
-    }
-		int id___UNUSED = ofHexToInt(parts[1]);
-    ofColor color(ofHexToInt(parts[2]),
-                  ofHexToInt(parts[3]),
-                  ofHexToInt(parts[4]));
-    player.reset(new Player(&args.conn));
-    player->setColor(color);
-    _players.push_back(player);
-	}
-	// if the prefix is but then we have a click message
+	// click messages? Other?
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){

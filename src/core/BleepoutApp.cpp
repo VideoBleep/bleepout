@@ -26,7 +26,9 @@ void BleepoutApp::setup() {
                 &BleepoutApp::onStartRound);
 
   _playerManager.reset(new PlayerManager());
-
+  _playerManager->setup();
+  _playerManager->addPlayer();
+  
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonClient.set(_config.syphonServerName(), _config.syphonAppName());
