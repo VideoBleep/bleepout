@@ -22,6 +22,11 @@ void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
     os << "(none)";
 }
 
+std::ostream& operator<<(std::ostream& os, const PhysicsObject& obj) {
+    obj.output(os);
+    return os;
+}
+
 std::ostream& operator<<(std::ostream& os, const GameObject& obj) {
   obj.output(os);
   return os;
@@ -38,6 +43,10 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
   os << "id:" << obj.id();
   if (!obj.alive())
     os << ", dead";
+}
+
+void PhysicsObject::output(std::ostream& os) const {
+    outputPhysicsObjectFields(os, *this);
 }
 
 void Brick::output(std::ostream &os) const {

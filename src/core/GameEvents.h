@@ -12,6 +12,7 @@
 #include <ofTypes.h>
 #include <ofLog.h>
 #include <iostream>
+#include <list>
 #include "GameObject.h"
 #include "Player.h"
 #include "Brick.h"
@@ -19,6 +20,7 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "GameState.h"
+#include "Common.h"
 
 template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {
@@ -34,20 +36,15 @@ void outputField(std::ostream& os, const T* obj) {
   outputField(os, T::typeName(), obj);
 }
 
-class EmptyEventArgs {
-public:
-  void output(std::ostream& os) const { }
-};
-
 template<typename T>
-class ObjectEventArgs {
+class ObjectEventArgs : public Outputable {
 public:
   explicit ObjectEventArgs(T* obj) : _object(obj) { }
   
   T* object() { return _object; }
   const T* object() const { return _object; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, object());
     os << ")";
@@ -65,11 +62,11 @@ public:
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
   
-  void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "(";
     outputField(os, ball());
     os << " ";
-    outputField(os, ObjectEventArgs<T>::object());
+    outputField(os, this->object());
     os << ")";
   }
 private:
@@ -81,9 +78,24 @@ typedef BallHitObjectEventArgs<Brick> BallHitBrickEventArgs;
 typedef BallHitObjectEventArgs<Wall> BallHitWallEventArgs;
 typedef BallHitObjectEventArgs<Ball> BallHitBallEventArgs;
 
-class CollisionEventLogger;
+class EventSource {
+public:
+  void enableLogging(ofLogLevel level) { _logLevel = level; }
+  void disableLogging() { _logLevel = OF_LOG_SILENT; }
+  bool loggingEnabled() const {
+    return _logLevel != OF_LOG_SILENT;
+  }
+protected:
+  void logEvent(const char* name, const Outputable& event) const {
+    if (loggingEnabled()) {
+      ofLog(_logLevel) << "EVENT{" << name << "}: " << event;
+    }
+  }
+private:
+  ofLogLevel _logLevel = OF_LOG_SILENT;
+};
 
-class CollisionEventSource {
+class CollisionEventSource : public EventSource {
 public:
   ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
   ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
@@ -105,37 +117,36 @@ public:
     ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
   }
   
-  bool loggingEnabled() const;
-  void enableLogging(ofLogLevel level);
-  void disableLogging();
 protected:
   void notifyBallHitPaddle(Ball* ball, Paddle* paddle) {
     BallHitPaddleEventArgs e(ball, paddle);
     ofNotifyEvent(ballHitPaddleEvent, e);
+    logEvent("BallHitPaddle", e);
   }
   void notifyBallHitBrick(Ball* ball, Brick* brick) {
     BallHitBrickEventArgs e(ball, brick);
     ofNotifyEvent(ballHitBrickEvent, e);
+    logEvent("BallHitBrick", e);
   }
   void notifyBallHitWall(Ball* ball, Wall* wall) {
     BallHitWallEventArgs e(ball, wall);
     ofNotifyEvent(ballHitWallEvent, e);
+    logEvent("BallHitWall", e);
   }
   void notifyBallHitBall(Ball* ball, Ball* otherBall) {
     BallHitBallEventArgs e(ball, otherBall);
     ofNotifyEvent(ballHitBallEvent, e);
+    logEvent("BallHitBall", e);
   }
-private:
-  ofPtr<CollisionEventLogger> _logger;
 };
 
-class RoundStateEventArgs {
+class RoundStateEventArgs : public Outputable {
 public:
   RoundStateEventArgs(RoundState& state) : _state(state) { }
   
   RoundState& state() { return _state; }
   
-  virtual void output(std::ostream& os) const {
+  virtual void output(std::ostream& os) const override {
     os << "()";
   }
   
@@ -202,26 +213,26 @@ private:
 
 template<typename T>
 class RoundStateObjectEventArgs
-: public RoundStateEventArgs
-, public ObjectEventArgs<T> {
+: public RoundStateEventArgs {
 public:
   RoundStateObjectEventArgs(RoundState& state, T* obj)
   : RoundStateEventArgs(state)
-  , ObjectEventArgs<T>(obj) { }
+  , _object(obj) { }
   virtual void output(std::ostream& os) const override {
     os << "(";
-    outputField(os, this->object());
+    outputField(os, _object);
     os << ")";
   }
+  T* object() { return _object; }
+  const T* object() const { return _object; }
+private:
+  T* _object;
 };
 
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
 typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
-class RoundStateEventLogger;
-
-
-class RoundStateEventSource {
+class RoundStateEventSource : public EventSource {
 public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
@@ -232,10 +243,6 @@ public:
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
-  
-  bool loggingEnabled() const;
-  void enableLogging(ofLogLevel level);
-  void disableLogging();
   
   template<typename Listener>
   void attachListener(Listener& listener) {
@@ -264,44 +271,49 @@ protected:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {
     BallOwnerChangedEventArgs e(state, ball, player, previousPlayer);
     ofNotifyEvent(ballOwnerChangedEvent, e);
+    logEvent("BallOwnerChanged", e);
   }
   void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball) {
     BrickDestroyedEventArgs e(state, brick, ball);
     ofNotifyEvent(brickDestroyedEvent, e);
+    logEvent("BrickDestroyed", e);
   }
   void notifyAllBricksDestroyed(RoundState& state) {
     RoundStateEventArgs e(state);
     ofNotifyEvent(allBricksDestroyedEvent, e);
+    logEvent("AllBricksDestroyed", e);
   }
   void notifyPlayerScoreChanged(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerScoreChangedEvent, e);
+    logEvent("PlayerScoreChanged", e);
   }
   void notifyBallDestroyed(RoundState& state, Ball* ball) {
     BallEventArgs e(state, ball);
     ofNotifyEvent(ballDestroyedEvent, e);
+    logEvent("BallDestroyed", e);
   }
   void notifyBallRespawned(RoundState& state, Ball* ball) {
     BallEventArgs e(state, ball);
     ofNotifyEvent(ballRespawnedEvent, e);
+    logEvent("BallRespawned", e);
   }
   void notifyPlayerLost(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerLostEvent, e);
+    logEvent("PlayerLost", e);
   }
   void notifyPlayerLivesChanged(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerLivesChangedEvent, e);
+    logEvent("PlayerLivesChanged", e);
   }
   void notifyRoundEnded(RoundState& state) {
     RoundStateEventArgs e(state);
     ofNotifyEvent(roundEndedEvent, e);
+    logEvent("RoundEnded", e);
   }
-private:
-  ofPtr<RoundStateEventLogger> _logger;
 };
-
-class PlayerEventLogger;
 
 class PlayerEventSource {
 public:
@@ -318,10 +330,6 @@ public:
     ofRemoveListener(playerAddedEvent, &listener, &Listener::onPlayerAdded);
     ofRemoveListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
   }
-  
-  bool loggingEnabled() const;
-  void enableLogging(ofLogLevel level);
-  void disableLogging();
 protected:
   void notifyPlayerAdded(RoundState& state, Player* player) {
     PlayerEventArgs e(state, player);
@@ -331,8 +339,59 @@ protected:
     PlayerEventArgs e(state, player);
     ofNotifyEvent(playerRemovedEvent, e);
   }
+};
+
+class StartRoundEventArgs {
+public:
+  StartRoundEventArgs(ofPtr<RoundConfig> config,
+                      std::list<ofPtr<Player> > players)
+  : _config(config) , _players(players) { }
+  
+  ofPtr<RoundConfig>& config() { return _config; }
+  std::list<ofPtr<Player> >& players() { return _players; }
 private:
-  ofPtr<PlayerEventLogger> _logger;
+  ofPtr<RoundConfig> _config;
+  std::list<ofPtr<Player> > _players;
+};
+
+class SetupEventSource : public EventSource {
+public:
+  ofEvent<StartRoundEventArgs> startRoundEvent;
+protected:
+  void notifyStartRound(ofPtr<RoundConfig> config,
+                        std::list<ofPtr<Player> > players) {
+    StartRoundEventArgs e(config, players);
+    ofNotifyEvent(startRoundEvent, e);
+  }
+};
+  
+class PlayerYawPitchRollEventArgs {
+public:
+  PlayerYawPitchRollEventArgs(Player* player, float yaw,
+                              float pitch, float roll)
+  : _player(player), _yaw(yaw), _pitch(pitch), _roll(roll) { }
+  
+  Player* player() { return _player; }
+  float yaw() const { return _yaw; }
+  float pitch() const { return _pitch; }
+  float roll() const { return _roll; }
+  
+private:
+  Player* _player;
+  float _yaw;
+  float _pitch;
+  float _roll;
+};
+
+class ControlEventSource : public EventSource {
+public:
+  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
+protected:
+  void notifyPlayerYawPitchRoll(Player* player, float yaw,
+                                float pitch, float roll) {
+    PlayerYawPitchRollEventArgs e(player, yaw, pitch, roll);
+    ofNotifyEvent(playerYawPitchRollEvent, e);
+  }
 };
 
 #endif /* defined(__bleepout__GameEvents__) */

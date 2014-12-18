@@ -9,6 +9,7 @@
 #include "PhysicsObject.h"
 #include "PhysicsWorld.h"
 #include "PhysicsUtil.h"
+#include "GameObject.h"
 
 bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b, CollisionManifold* m) {
     float nx = a.center.x - b.center.x;
@@ -49,6 +50,7 @@ bool BoundingBox::testCollision(const BoundingBox& a, const BoundingBox& b, Coll
 PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)
 , world(NULL)
+, isCollidable(false)
 {
     
 }
@@ -98,14 +100,28 @@ void PhysicsObject::setSize(const ofVec3f& newSize) {
     updateBoundingBox();
 }
 
-void PhysicsObject::setVelocity(const ofVec3f& v) {
-    velocity = v;
+ofVec3f PhysicsObject::getVelocity() const {
+    if (isDynamic()) {
+        return trajectory->getInstantaneousVelocity();
+    } else {
+        return ofVec3f(0, 0, 0);
+    }
 }
 
 void PhysicsObject::tick() {
     if (isDynamic()) {
         trajectory->tick();
         updateBoundingBox();
+    }
+    if (world) {
+        bool alive = thisGameObject->alive();
+        if (alive && !isCollidable) {
+            world->addObject(this);
+            isCollidable = true;
+        } else if (!alive && isCollidable) {
+            world->removeObject(this);
+            isCollidable = false;
+        }
     }
 }
 
@@ -126,6 +142,13 @@ void PhysicsObject::updateBoundingBox() {
         boundingBox.halfwidths = size / 2.0;
     }
         
+    if (world) {
+        world->updateCollisionObject(this);
+    }
+}
+
+void PhysicsObject::setTrajectory(Trajectory* t) {
+    trajectory.reset(t);
     if (world) {
         world->updateCollisionObject(this);
     }
