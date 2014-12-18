@@ -26,6 +26,7 @@ public:
   
 private:
   bool tryStartRound();
+  bool canStartRound() const;
   
   ofPtr<PlayerManager> _playerManager;
   const BleepoutConfig& _appConfig;

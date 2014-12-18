@@ -25,10 +25,15 @@ void SetupController::update() {
 void SetupController::draw() {
   ofPushStyle();
   ofPushMatrix();
-  ofFill();
-  ofSetColor(ofColor::orange);
-  int foo = (int)ofGetElapsedTimef() % 30;
-  ofRect(50 + foo * 10, 50, 100, 100);
+  ofTranslate(100, 250);
+  ofSetColor(0, 0, 0);
+  ofDrawBitmapString("Waiting for players...", 0, 0);
+  ofTranslate(0, 15);
+  ofDrawBitmapString("Players: " + ofToString(_players.size()), 0, 0);
+  if (canStartRound()) {
+    ofTranslate(0, 15);
+    ofDrawBitmapString("Press 'n' to start round...", 0, 0);
+  }
   //...
   ofPopMatrix();
   ofPopStyle();
@@ -43,6 +48,10 @@ void SetupController::keyPressed(int key) {
       //...?
     }
   }
+}
+
+bool SetupController::canStartRound() const {
+  return !_players.empty() && _roundConfig;
 }
 
 bool SetupController::tryStartRound() {
