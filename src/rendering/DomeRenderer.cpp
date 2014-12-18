@@ -66,9 +66,11 @@ namespace {
             }
             ofSetColor(255, 0, 0);
             ofNoFill();
-            BoundingBox bbox = obj->getBoundingBox();
-            ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
+            if (obj->getWorld()) {
+                BoundingBox bbox = obj->getWorld()->getObjBoundingBox(obj.get());
+                ofDrawBox(bbox.center.x, bbox.center.y, bbox.center.z,
                       bbox.halfwidths.x * 2, bbox.halfwidths.y * 2, bbox.halfwidths.z * 2);
+            }
         }
         ofPopStyle();
     }
@@ -153,9 +155,9 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
         drawBoundingBoxes(state.paddles());
         drawBoundingBoxes(state.bricks());
         drawBoundingBoxes(state.walls());
-        drawTrajectories(state.balls(), ofColor(255, 0, 0), true);
+        drawTrajectories(state.balls(), ofColor(255, 0, 0, 100), true);
     } else if (_drawTrajectories) {
-        drawTrajectories(state.balls(), ofColor(180, 180, 200), false);
+        drawTrajectories(state.balls(), ofColor(180, 180, 200, 180), false);
     }
     
     if (state.message.text.length()) {
