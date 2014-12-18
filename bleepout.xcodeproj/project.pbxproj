@@ -66,6 +66,7 @@
 		5BB4E5FE1A40150F0047F957 /* Trajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5FC1A40150F0047F957 /* Trajectory.cpp */; };
 		5BB4E6011A40198D0047F957 /* CircularTrajectory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E5FF1A40198D0047F957 /* CircularTrajectory.cpp */; };
 		5BB4E6041A4077970047F957 /* PointHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E6021A4077970047F957 /* PointHistory.cpp */; };
+		5BB4E60D1A42BE1A0047F957 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BB4E60B1A42BE1A0047F957 /* Geometry.cpp */; };
 		66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1C085E327DAB912CFA2A443D /* ofxTCPServer.cpp */; };
 		6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2232A9453E355593EF36ADA7 /* Reactor.cpp */; };
 		86135253DC7909CA8590E157 /* Protocol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57EEFEC8B85F7C3B15DD45A4 /* Protocol.cpp */; };
@@ -247,6 +248,8 @@
 		5BB4E6001A40198D0047F957 /* CircularTrajectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularTrajectory.h; sourceTree = "<group>"; };
 		5BB4E6021A4077970047F957 /* PointHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointHistory.cpp; sourceTree = "<group>"; };
 		5BB4E6031A4077970047F957 /* PointHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointHistory.h; sourceTree = "<group>"; };
+		5BB4E60B1A42BE1A0047F957 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
+		5BB4E60C1A42BE1A0047F957 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		5D95092D59E7A34C9DB7823E /* Server.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = Server.cpp; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/ofxLibwebsockets/src/Server.cpp; sourceTree = SOURCE_ROOT; };
 		69668FDE141262BC3C6CA929 /* jsoncpp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = jsoncpp.cpp; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/jsoncpp/jsoncpp.cpp; sourceTree = SOURCE_ROOT; };
 		75DCA31CF0745355CC4AD2DD /* libwebsockets.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = libwebsockets.h; path = ../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/libwebsockets/include/libwebsockets.h; sourceTree = SOURCE_ROOT; };
@@ -704,6 +707,8 @@
 				5BB4E5DC1A400F500047F957 /* RendererExtras.h */,
 				5BB4E5DD1A400F500047F957 /* TurntableCam.cpp */,
 				5BB4E5DE1A400F500047F957 /* TurntableCam.h */,
+				5BB4E60B1A42BE1A0047F957 /* Geometry.cpp */,
+				5BB4E60C1A42BE1A0047F957 /* Geometry.h */,
 			);
 			path = rendering;
 			sourceTree = "<group>";
@@ -971,6 +976,7 @@
 				5BB4E5FB1A400F500047F957 /* TurntableCam.cpp in Sources */,
 				5BB4E5F81A400F500047F957 /* DomeRenderer.cpp in Sources */,
 				86135253DC7909CA8590E157 /* Protocol.cpp in Sources */,
+				5BB4E60D1A42BE1A0047F957 /* Geometry.cpp in Sources */,
 				3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */,
 				6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */,
 				5BB4E5ED1A400F500047F957 /* Brick.cpp in Sources */,

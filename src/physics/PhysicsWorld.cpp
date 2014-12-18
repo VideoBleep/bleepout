@@ -6,7 +6,7 @@
 //
 //
 
-#define USE_BULLET_COLLISIONS 0
+#define USE_BULLET_COLLISIONS 1
 
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
@@ -57,12 +57,12 @@ public:
 
         if (obj->collisionShape == CollisionSphere) {
             btSphereShape* shape = new btSphereShape(obj->getSize().x * 0.5);
-            shape->setMargin(0);
+            shape->setMargin(2.0);
             co->setCollisionShape(shape);
         } else if (obj->collisionShape == CollisionBox) {
             ofVec3f size = obj->getSize();
             btBoxShape* shape = new btBoxShape(btVector3(size.x * 0.5, size.y * 0.5, size.z * 0.5));
-            shape->setMargin(0);
+            shape->setMargin(2.0);
             co->setCollisionShape(shape);
         }
         
@@ -191,23 +191,24 @@ public:
                     newContacts->insert(contact);
                     if (oldContacts->find(contact) == oldContacts->end()) {
                         
-                        ofVec3f normal;
+                        ofVec3f normalFromBtoA;
+                        double penDist = -9999;
                         
                         for (int j = 0; j < numContacts; j++) {
                             btManifoldPoint& pt = contactManifold->getContactPoint(j);
-                            btVector3 ptA = pt.getPositionWorldOnA();
-                            btVector3 ptB = pt.getPositionWorldOnB();
                             double ptdist = pt.getDistance();
-                            
-                            btVector3 n = pt.m_normalWorldOnB;
-                            normal = ofVec3f(n.x(), n.y(), n.z());
+                            if (ptdist > penDist) {
+                                penDist = ptdist;
+                                btVector3 n = pt.m_normalWorldOnB;
+                                normalFromBtoA = ofVec3f(n.x(), n.y(), n.z());
+                            }
                         }
 
                         static CollisionArgs args;
                         args.a = obj1->thisGameObject;
                         args.b = obj2->thisGameObject;
-                        args.normal = -normal;
-                        ofLog(OF_LOG_NOTICE) << "* Collision detected\n" << *obj1 << *obj2;
+                        args.normal = -normalFromBtoA;
+                        ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
                         ofNotifyEvent(PhysicsWorld::collisionEvent, args);
                     }
                 }

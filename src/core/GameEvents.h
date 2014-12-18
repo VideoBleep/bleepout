@@ -80,6 +80,7 @@ typedef BallHitObjectEventArgs<Ball> BallHitBallEventArgs;
 
 class EventSource {
 public:
+  EventSource() : _logLevel(OF_LOG_SILENT) {}
   void enableLogging(ofLogLevel level) { _logLevel = level; }
   void disableLogging() { _logLevel = OF_LOG_SILENT; }
   bool loggingEnabled() const {
@@ -92,7 +93,7 @@ protected:
     }
   }
 private:
-  ofLogLevel _logLevel = OF_LOG_SILENT;
+  ofLogLevel _logLevel;
 };
 
 class CollisionEventSource : public EventSource {
