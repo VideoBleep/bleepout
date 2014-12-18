@@ -257,6 +257,8 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     } else {
         OrbitalTrajectory* ot = (OrbitalTrajectory*)ball.getTrajectory();
         if (ot) {
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            
             ofSetColor(255, 255, 255, 255);
             ofSetLineWidth(1.5);
             glBegin(GL_LINE_STRIP);
@@ -270,13 +272,16 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
             glBegin(GL_LINE_STRIP);
             ot->history.emitPoints();
             glEnd();
-
+            
+            ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+            
             c.a = 64;
             ofSetColor(c);
             ofSetLineWidth(8.0);
             glBegin(GL_LINE_STRIP);
             ot->history.emitPoints();
             glEnd();
+            
         }
     }
     
