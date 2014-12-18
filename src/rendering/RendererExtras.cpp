@@ -149,7 +149,7 @@ public:
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
   void setup(RoundStateEventSource& eventSource) {
-//    _animations.attach(eventSource);
+    _animations.attach(eventSource);
   }
   void update() {
     _actions.update(TimedActionArgs::now());
