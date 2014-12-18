@@ -87,6 +87,7 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonArr(obj["brickRings"], &_brickRings);
   readJsonArr(obj["walls"], &_walls);
   readJsonArr(obj["curvedWallSets"], &_curvedWallSets);
+  readJsonVal(obj["modifierDefs"], &_modifierDefs);
 }
 
 Json::Value RoundConfig::toJsonVal() const {
@@ -102,6 +103,7 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["brickRings"] = toJsonArr(_brickRings);
   obj["walls"] = toJsonArr(_walls);
   obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+  obj["modifierDefs"] = ::toJsonVal(_modifierDefs);
   return obj;
 }
 

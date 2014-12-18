@@ -140,6 +140,8 @@ bool readJsonVal(const Json::Value& val, BrickSpec* result) {
     temp.value = 1;
   if (!readJsonVal(val["lives"], &temp.lives))
     temp.lives = 1;
+  if (!readJsonVal(val["modifierName"], &temp.modifierName))
+    temp.modifierName = "";
   *result = temp;
   return true;
 }
@@ -207,28 +209,6 @@ bool readJsonVal(const Json::Value& val, BallSpec* result) {
 }
 
 template<>
-bool readJsonVal(const Json::Value& val, StringMap* result) {
-  if (val.isNull())
-    return true;
-  if (!assertType(val, Json::objectValue))
-    return false;
-  auto end = val.end();
-  for (auto i = val.begin(); i != end; i++) {
-    result->insert(std::make_pair(i.key().asString(), (*i).asString()));
-  }
-  return true;
-}
-
-template<>
-Json::Value toJsonVal(const StringMap& val) {
-  Json::Value obj(Json::objectValue);
-  for (const auto& entry : val) {
-    obj[entry.first] = entry.second;
-  }
-  return obj;
-}
-
-template<>
 Json::Value toJsonVal(const ofVec2f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
@@ -267,6 +247,7 @@ Json::Value toJsonVal(const BrickSpec& spec) {
   obj["color"] = toJsonVal(spec.color);
   obj["value"] = spec.value;
   obj["lives"] = spec.lives;
+  obj["modifierName"] = spec.modifierName;
   return obj;
 }
 
