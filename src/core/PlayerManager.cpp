@@ -113,6 +113,8 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	vector<string> parts = ofSplitString(args.message, messageDelimiter);
 	std::string msgPrefix = parts[0];
 
+	ofPtr<Player> player = findPlayer(args.conn);
+
 	if (msgPrefix == "4new") {
 		if (_inRoundMode) {
 			ofLogWarning() << "Ignoring create player message in setup mode";
@@ -143,7 +145,6 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 			return;
 		}
 
-		ofPtr<Player> player = findPlayer(args.conn);
 		if (!player) {
 			ofLogWarning() << "YPR message received for nonexistant player";
 			return;
