@@ -62,6 +62,7 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
     ofLogError() << "Round has already been started";
     return;
   }
+  _playerManager.setIsInRound(true);
   _roundController.reset(new RoundController(*e.config(),
                                              e.players(),
                                              *_playerManager));
@@ -75,6 +76,7 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
     ofLogError() << "Round was not active";
     return;
   }
+  _playerManager.setIsInRound(false);
   _roundController.reset();
 }
 
