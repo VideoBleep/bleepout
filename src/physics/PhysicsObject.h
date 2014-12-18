@@ -24,6 +24,8 @@ struct BoundingBox {
     ofVec3f center;
     ofVec3f halfwidths;
     static bool testCollision(const BoundingBox& a, const BoundingBox& b, CollisionManifold* manifold = NULL);
+    BoundingBox() : center(ofVec3f::zero()), halfwidths(ofVec3f::zero()) {}
+    BoundingBox(const BoundingBox& other) { center = other.center; halfwidths = other.halfwidths; }
 };
 
 enum CollisionShape {
@@ -56,7 +58,11 @@ public:
     void tick();
     
     Trajectory* getTrajectory() { return trajectory.get(); }
-    void setTrajectory(Trajectory* t) { trajectory.reset(t); }
+    void setTrajectory(Trajectory* t);
+    
+    PhysicsWorld* getWorld() { return world; }
+    
+    virtual void output(std::ostream& os) const;
     
 protected:
     void updateBoundingBox();
@@ -72,6 +78,7 @@ protected:
     ofPtr<Trajectory> trajectory;
     PhysicsWorld* world;
     GameObject* thisGameObject;
+    bool isCollidable;
     
     friend class GameObject;
     friend class PhysicsWorld;
