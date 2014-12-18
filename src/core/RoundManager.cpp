@@ -87,6 +87,8 @@ void RoundController::keyPressed(int key) {
     _renderer->keyPressed(key);
   } else {
     if (key == 'q') {
+      RoundStateEventArgs e(_state);
+      ofNotifyEvent(roundEndedEvent, e);
       //....
     } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
