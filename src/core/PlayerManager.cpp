@@ -63,16 +63,38 @@ void PlayerManager::draw(){
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 	cout << "on connected" << endl;
+
+	// Engine.io client packet type prefixes
+	// TODO - create constants for these
+	//var packets = exports.packets = {
+	//    open:     0    // non-ws
+	//    , close:    1    // non-ws
+	//    , ping:     2
+	//    , pong:     3
+	//    , message:  4
+	//    , upgrade:  5
+	//    , noop:     6
+	//};
+
+	// Engine.io handshake packet 
+	// sid;
+	// upgrades
+	// pingInterval;
+	// pingTimeout;
+
+	// TODO - Build with a JSON builder
+	std::string handshake = "{ \"sid\": 1, \"upgrades\": [\"websockets\"], \"pingInterval\": 100, \"pingTimeout\": 1000 }";
+
+	args.conn.send("0" + handshake);
 }
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
-	messages.push_back("New connection from " + args.conn.getClientIP());
+	args.conn.send("4opened");
 }
 
 void PlayerManager::onClose(ofxLibwebsockets::Event& args){
 	cout << "on close" << endl;
-	messages.push_back("Connection closed");
 }
 
 void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
@@ -83,6 +105,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
 
 	// Parse message
+	// TODO: Create an engine.io packet parser
 	int pos = args.message.find(messageDelimiter);
 	//std::string msgPrefix = args.message.substr(0, pos);
 	std::string msgData = args.message.substr(pos, args.message.length());
@@ -116,11 +139,12 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	}
 
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
-	if (msgPrefix == "ypr") {
+	if (msgPrefix == "4ypr") {
 		if (!_inRoundMode) {
 			ofLogWarning() << "Ignoring YPR message in setup mode";
 			return;
 		}
+
 		if (!player) {
 			ofLogWarning() << "YPR message received for nonexistant player";
 			return;
