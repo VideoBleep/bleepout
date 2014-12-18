@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 #include <ofTypes.h>
+#include <iostream>
 #include "Modifier.h"
 
 class Paddle : public GameObject, public PhysicsObject {
@@ -26,8 +27,13 @@ public:
     
   virtual const ofColor& getColor() const override;
   
+  void addWidthModifier(float amount);
+  void removeWidthModifier();
+  
 private:
   Player* _player;
+  ofVec3f _origSize;
+  bool _hasWidthModifier;
 };
 
 
@@ -39,9 +45,9 @@ struct GameObjectTypeTraits<Paddle> {
 
 class PaddleWidthModifier : public Modifier {
 public:
-  PaddleWidthModifier(float amount)
-  : Modifier(MODIFIER_PADDLE_WIDTH)
-  , _amount(amount) { }
+  PaddleWidthModifier(const ModifierSpec* spec);
+  virtual bool applyToTarget(GameObject& target) override;
+  virtual void output(std::ostream& os) const override;
 private:
   float _amount;
 };

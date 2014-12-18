@@ -38,6 +38,8 @@ public:
   }
   void dematerialize() { _physical = false; }
   void materialize() { _physical = true; }
+  
+  static Modifier* createModifier(const ModifierSpec& spec);
 private:
   const ModifierType _modifierType;
   bool _visible;

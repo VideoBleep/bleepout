@@ -75,6 +75,7 @@ class ExtraLifeModifier : public Modifier {
 public:
   ExtraLifeModifier() : Modifier(MODIFIER_EXTRA_LIFE) {}
   virtual bool applyToTarget(GameObject& target) override;
+  virtual void output(std::ostream& os) const override;
 };
 
 #endif /* defined(__bleepout__Player__) */

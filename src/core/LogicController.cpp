@@ -40,6 +40,12 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
       _state.decrementLiveBricks();
       notifyBrickDestroyed(_state, brick, ball);
       
+      const std::string& modifierName = brick->modifierName();
+      if (!modifierName.empty()) {
+        const ModifierSpec& spec = _config.modifierDef(modifierName);
+        //...
+      }
+      
       player->adjustScore(brick->value());
       notifyPlayerScoreChanged(_state, player);
       
