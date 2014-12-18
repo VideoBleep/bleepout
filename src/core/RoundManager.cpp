@@ -63,7 +63,7 @@ void RoundController::update() {
         _state.message = RoundMessage("Video Bleep\n presents", ofColor(255, 255, 255), 12);
     } else if (_state.time < 7.5) {
         _state.message = RoundMessage("BLEEPOUT", ofColor(0, 120, 240), 50, 4);
-    } else if (_state.time < 20) {
+    } else if (_state.time < 10) {
         _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
     } else {
         _state.message.text = "";

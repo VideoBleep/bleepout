@@ -333,7 +333,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
     ofVec3f topPt = pos + offsetVec + stack;
     ofVec3f botPt = pos - offsetVec + stack;
     ofBeginShape();
-    ofSetCurveResolution(12);
+    ofSetCurveResolution(5);
     ofCurveVertex(tailPt);
     ofCurveVertex(tailPt);
     ofCurveVertex(topPt);
@@ -352,14 +352,15 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
         ofPushStyle();
         ofPushMatrix();
         
-        ofNoFill();
         ofTranslate(ball.getPosition());
         ofRotateX(360 * ball.getTrajectory()->getTime());
         ofRotateY(45);
         ofSetLineWidth(8.0);
         if (ball.player() != NULL) {
+            ofFill();
             ofSetColor(ball.getColor());
-            ofCircle(ofVec3f::zero(), ball.getSize().x / 2.0 + 0.05);
+            ofSetCylinderResolution(16, 1);
+            ofDrawCylinder(ofVec3f::zero(), ball.getSize().x * 0.5 + 0.308, ball.getSize().x * 0.315);
         }
         ofFill();
         ofSetColor(255, 255, 255);
