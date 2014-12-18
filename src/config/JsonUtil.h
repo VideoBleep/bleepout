@@ -12,7 +12,7 @@
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include <ofMain.h>
 #include <vector>
-#include "BleepoutConfig.h"
+#include "ObjectSpecs.h"
 #include "Common.h"
 
 bool assertType(const Json::Value& val, Json::ValueType type);

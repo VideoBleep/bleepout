@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		125506CD3E5F428AAFE5CC65 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F399B91E98DC31CDA6DDACB4 /* ofxTCPManager.cpp */; };
 		320111C31A427FA500EFCC35 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C11A427FA500EFCC35 /* Modifier.cpp */; };
+		320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */; };
 		3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3205CA341A412FDC0030EE68 /* SetupController.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
@@ -125,6 +126,8 @@
 		30841703B7AC8487D16FB4AA /* ofxTCPServer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTCPServer.h; path = ../of_v0.8.4_osx_release/addons/ofxNetwork/src/ofxTCPServer.h; sourceTree = SOURCE_ROOT; };
 		320111C11A427FA500EFCC35 /* Modifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Modifier.cpp; sourceTree = "<group>"; };
 		320111C21A427FA500EFCC35 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; };
+		320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectSpecs.cpp; sourceTree = "<group>"; };
+		320111C81A428F6B00EFCC35 /* ObjectSpecs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectSpecs.h; sourceTree = "<group>"; };
 		3205CA341A412FDC0030EE68 /* SetupController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetupController.cpp; sourceTree = "<group>"; };
 		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; };
 		3243A2931A3AA550000BB599 /* basicRound.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = basicRound.json; sourceTree = "<group>"; };
@@ -607,6 +610,8 @@
 				5BB4E5A21A400F500047F957 /* BleepoutConfig.h */,
 				5BB4E5A31A400F500047F957 /* JsonUtil.cpp */,
 				5BB4E5A41A400F500047F957 /* JsonUtil.h */,
+				320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */,
+				320111C81A428F6B00EFCC35 /* ObjectSpecs.h */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -950,6 +955,7 @@
 				5BB4E5E41A400F500047F957 /* Logging.cpp in Sources */,
 				5B0DD90B1A3C497600E8BBD1 /* ofxSyphonServerDirectory.mm in Sources */,
 				5BB4E5F11A400F500047F957 /* Player.cpp in Sources */,
+				320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */,
 				5BB4E5F61A400F500047F957 /* PhysicsWorld.cpp in Sources */,
 				5B0E83491A369EC30091AB99 /* ofxBulletCustomShape.cpp in Sources */,
 				5B0DD9091A3C497600E8BBD1 /* ofxSyphonClient.mm in Sources */,

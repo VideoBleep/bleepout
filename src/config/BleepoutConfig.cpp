@@ -164,7 +164,9 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
       BrickSpec spec;
       spec.elevation = 30 + 3 * j;
       spec.heading = s * 360 + j * 2 + ((i % 2) ? 5 : -5);
-      spec.color = ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255);
+      spec.color = ofColor(s * 255,
+                           j / (rows * 1.0) * 255,
+                           (1 - s) * 255);
       spec.lives = (j % 3 == 1) ? 2 : 1;
       spec.value = 1;
       spec.speed = 0;
@@ -184,13 +186,19 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
     config.addCurvedWallSet(spec);
   }
     
-  config.addWall(WallSpec(67,   5, ofVec3f(10, 10, 30), false, 0.02,  80));
-  config.addWall(WallSpec(67, 125, ofVec3f(10, 10, 30), false, 0.02, 200));
-  config.addWall(WallSpec(67, 245, ofVec3f(10, 10, 30), false, 0.02, 320));
+  config.addWall(WallSpec(67,   5, ofVec3f(10, 10, 30),
+                          false, 0.02,  80));
+  config.addWall(WallSpec(67, 125, ofVec3f(10, 10, 30),
+                          false, 0.02, 200));
+  config.addWall(WallSpec(67, 245, ofVec3f(10, 10, 30),
+                          false, 0.02, 320));
   
-  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12, 1, 2, 0, 0.02));
-  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10, 1, 1, 0, -0.02));
-  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8, 2, 2, 0, 0.02));
+  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0),
+                                    12, 1, 2, 0, 0.02));
+  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0),
+                                    10, 1, 1, 0, -0.02));
+  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
+                                    8, 2, 2, 0, 0.02));
 
   //...
   return config;

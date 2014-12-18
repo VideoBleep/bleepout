@@ -34,7 +34,7 @@ enum GameObjectType {
 typedef int GameObjectId;
 
 enum ModifierType {
-  MODIFIER_UNKNOWN,
+  MODIFIER_NONE,
   MODIFIER_EXTRA_LIFE,
   MODIFIER_PADDLE_WIDTH
 };

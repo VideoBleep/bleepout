@@ -207,6 +207,28 @@ bool readJsonVal(const Json::Value& val, BallSpec* result) {
 }
 
 template<>
+bool readJsonVal(const Json::Value& val, StringMap* result) {
+  if (val.isNull())
+    return true;
+  if (!assertType(val, Json::objectValue))
+    return false;
+  auto end = val.end();
+  for (auto i = val.begin(); i != end; i++) {
+    result->insert(std::make_pair(i.key().asString(), (*i).asString()));
+  }
+  return true;
+}
+
+template<>
+Json::Value toJsonVal(const StringMap& val) {
+  Json::Value obj(Json::objectValue);
+  for (const auto& entry : val) {
+    obj[entry.first] = entry.second;
+  }
+  return obj;
+}
+
+template<>
 Json::Value toJsonVal(const ofVec2f& val) {
   Json::Value obj(Json::objectValue);
   obj["x"] = val.x;
@@ -288,4 +310,63 @@ Json::Value toJsonVal(const BallSpec& spec) {
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   return obj;
+}
+
+template<>
+Json::Value toJsonVal(const ModifierType& type) {
+  switch (type) {
+    case MODIFIER_EXTRA_LIFE:
+      return "extra_life";
+    case MODIFIER_PADDLE_WIDTH:
+      return "paddle_width";
+    case MODIFIER_NONE:
+    default:
+      return Json::Value(Json::nullValue);
+  }
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, ModifierType* result) {
+  if (val.isNull()) {
+    *result = MODIFIER_NONE;
+    return true;
+  }
+  if (!assertType(val, Json::stringValue))
+    return false;
+  std::string str = val.asString();
+  if (str.empty()) {
+    *result = MODIFIER_NONE;
+    return true;
+  }
+  if (str == "extra_life") {
+    *result = MODIFIER_EXTRA_LIFE;
+    return true;
+  }
+  if (str == "paddle_width") {
+    *result = MODIFIER_PADDLE_WIDTH;
+    return true;
+  }
+  return false;
+}
+
+template<>
+Json::Value toJsonVal(const ModifierSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["type"] = toJsonVal(spec.type);
+  obj["properties"] = toJsonVal(spec.properties);
+  return obj;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
+  if (val.isNull()) {
+    *result = ModifierSpec(MODIFIER_NONE);
+    return true;
+  }
+  ModifierSpec temp;
+  if (!readJsonVal(val["type"], &temp.type) ||
+      !readJsonVal(val["properties"], &temp.properties))
+    return false;
+  *result = temp;
+  return true;
 }

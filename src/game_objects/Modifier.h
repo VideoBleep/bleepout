@@ -10,6 +10,7 @@
 #define __bleepout__Modifier__
 
 #include "GameObject.h"
+#include "ObjectSpecs.h"
 
 class Modifier : public GameObject {
 public:
@@ -23,6 +24,8 @@ public:
   virtual float duration() { return 0; }
   
   virtual bool applyToTarget(GameObject& target) = 0;
+  
+  virtual void readProperties(const std::map<std::string, std::string>& properties);
   
   virtual bool visible() const override {
     return this->alive() && _visible;
