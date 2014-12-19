@@ -35,30 +35,16 @@ void PlayerManager::setup() {
 	// this adds your app as a listener for the server
 	server.addListener(this);
 
-	// TEMPORARY rendering stuff -------------------------------------
-	// setup message queue
-	font.loadFont("myriad.ttf", 20);
-	messages.push_back("WebSocket server setup at " + ofToString(server.getPort()) + (server.usingSSL() ? " with SSL" : " without SSL"));
-
-	//ofBackground(0);
-	//ofSetFrameRate(60);	
-	// TEMPORARY rendering stuff end ---------------------------------
+	ofLogNotice() << "WebSocket server setup at " << ofToString(server.getPort()) << (server.usingSSL() ? " with SSL" : " without SSL");
 }
 
 void PlayerManager::update(){
-	messages.push_back("Reply would execute here");
+	// [Jim] This is possibly not needed but not sure if something in oF will call it... ?
+	//messages.push_back("Reply would execute here");
 }
 
 void PlayerManager::draw(){
-	int x = font.getSize();
-	int y = font.getSize() * 2;
-	ofSetColor(255);
-	for (int i = messages.size() - 1; i >= 0; i--){
-		//font.drawString( messages[i], x, y );
-		y += font.stringHeight(messages[i]) + font.getSize();
-	}
-	//if (currentImage.bAllocated()) currentImage.draw(0, 0);
-	//ofDrawBitmapString("Drag an image onto the window to send!\nOpen your browser to localhost:9093 to receive", 20, 20);
+	// [Jim] This is not needed but not sure if something in oF will call it... ?
 }
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
@@ -90,6 +76,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
+
 	args.conn.send("4opened");
 }
 
