@@ -35,13 +35,13 @@ public:
   void mouseMoved(int x, int y );
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
-  const BleepoutConfig& config() const { return _config; }
+  const BleepoutConfig& config() const { return *_config; }
 
 private:
   void onStartRound(StartRoundEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
   
-  BleepoutConfig _config;
+  ofPtr<BleepoutConfig> _config;
 	ofPtr<PlayerManager> _playerManager;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;

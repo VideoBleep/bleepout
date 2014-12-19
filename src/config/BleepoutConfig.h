@@ -16,43 +16,16 @@
 #include "ObjectSpecs.h"
 #include "JsonUtil.h"
 
-class BleepoutConfig {
-public:
-  static BleepoutConfig createTestConfig();
-  
-  BleepoutConfig();
-  BleepoutConfig(const BleepoutConfig& other);
-  
-  BleepoutConfig& operator=(const BleepoutConfig& other);
-  
-  void loadJsonFile(std::string path);
-  void saveJsonFile(std::string path) const;
-  
-  int fps() const { return _fps; }
-  ofLogLevel logLevel() const { return _logLevel; }
-  bool vsync() const { return _vsync; }
-  
-  const std::string& syphonServerName() const { return _syphonServerName; }
-  const std::string syphonAppName() const { return _syphonAppName; }
-  
-  Json::Value toJsonVal() const;
-private:
-  int _fps;
-  ofLogLevel _logLevel;
-  bool _vsync;
-  std::string _syphonServerName;
-  std::string _syphonAppName;
-};
-
 class RoundConfig {
 public:
+  static RoundConfig* createTestConfig();
   
-  static RoundConfig createTestConfig();
-  
-  RoundConfig();
+  RoundConfig(std::string name);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
+  
+  const std::string& name() const { return _name; }
   
   const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
@@ -104,6 +77,7 @@ public:
   
   Json::Value toJsonVal() const;
 private:
+  std::string _name;
   ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
@@ -119,6 +93,36 @@ private:
   std::vector<WallSpec> _walls;
   std::vector<CurvedWallSpec> _curvedWallSets;
   std::map<std::string, ModifierSpec> _modifierDefs;
+};
+
+class BleepoutConfig {
+public:
+  static BleepoutConfig* createTestConfig();
+  
+  BleepoutConfig();
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
+  
+  int fps() const { return _fps; }
+  ofLogLevel logLevel() const { return _logLevel; }
+  bool vsync() const { return _vsync; }
+  
+  const std::string& syphonServerName() const { return _syphonServerName; }
+  const std::string syphonAppName() const { return _syphonAppName; }
+  
+  const std::vector<ofPtr<RoundConfig> >& roundConfigs() const {
+    return _roundConfigs;
+  }
+  
+  Json::Value toJsonVal() const;
+private:
+  int _fps;
+  ofLogLevel _logLevel;
+  bool _vsync;
+  std::string _syphonServerName;
+  std::string _syphonAppName;
+  std::vector<ofPtr<RoundConfig> > _roundConfigs;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */
