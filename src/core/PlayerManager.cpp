@@ -35,44 +35,53 @@ void PlayerManager::setup() {
 	// this adds your app as a listener for the server
 	server.addListener(this);
 
-	// TEMPORARY rendering stuff -------------------------------------
-	// setup message queue
-	font.loadFont("myriad.ttf", 20);
-	messages.push_back("WebSocket server setup at " + ofToString(server.getPort()) + (server.usingSSL() ? " with SSL" : " without SSL"));
-
-	//ofBackground(0);
-	//ofSetFrameRate(60);	
-	// TEMPORARY rendering stuff end ---------------------------------
+	ofLogNotice() << "WebSocket server setup at " << ofToString(server.getPort()) << (server.usingSSL() ? " with SSL" : " without SSL");
 }
 
 void PlayerManager::update(){
-	messages.push_back("Reply would execute here");
+	// [Jim] This is possibly not needed but not sure if something in oF will call it... ?
+	//messages.push_back("Reply would execute here");
 }
 
 void PlayerManager::draw(){
-	int x = font.getSize();
-	int y = font.getSize() * 2;
-	ofSetColor(255);
-	for (int i = messages.size() - 1; i >= 0; i--){
-		//font.drawString( messages[i], x, y );
-		y += font.stringHeight(messages[i]) + font.getSize();
-	}
-	//if (currentImage.bAllocated()) currentImage.draw(0, 0);
-	//ofDrawBitmapString("Drag an image onto the window to send!\nOpen your browser to localhost:9093 to receive", 20, 20);
+	// [Jim] This is not needed but not sure if something in oF will call it... ?
 }
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 	cout << "on connected" << endl;
+
+	// Engine.io client packet type prefixes
+	// TODO - create constants for these
+	//var packets = exports.packets = {
+	//    open:     0    // non-ws
+	//    , close:    1    // non-ws
+	//    , ping:     2
+	//    , pong:     3
+	//    , message:  4
+	//    , upgrade:  5
+	//    , noop:     6
+	//};
+
+	// Engine.io handshake packet 
+	// sid;
+	// upgrades
+	// pingInterval;
+	// pingTimeout;
+
+	// TODO - Build with a JSON builder
+	std::string handshake = "{ \"sid\": 1, \"upgrades\": [\"websockets\"], \"pingInterval\": 100, \"pingTimeout\": 1000 }";
+
+	args.conn.send("0" + handshake);
 }
 
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
-	messages.push_back("New connection from " + args.conn.getClientIP());
+
+	args.conn.send("4opened");
 }
 
 void PlayerManager::onClose(ofxLibwebsockets::Event& args){
 	cout << "on close" << endl;
-	messages.push_back("Connection closed");
 }
 
 void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
@@ -83,6 +92,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	ofLogVerbose() << "got message " << args.message << endl;
 
 	// Parse message
+	// TODO: Create an engine.io packet parser
 	int pos = args.message.find(messageDelimiter);
 	//std::string msgPrefix = args.message.substr(0, pos);
 	std::string msgData = args.message.substr(pos, args.message.length());
@@ -116,11 +126,12 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 	}
 
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
-	if (msgPrefix == "ypr") {
+	if (msgPrefix == "4ypr") {
 		if (!_inRoundMode) {
 			ofLogWarning() << "Ignoring YPR message in setup mode";
 			return;
 		}
+
 		if (!player) {
 			ofLogWarning() << "YPR message received for nonexistant player";
 			return;

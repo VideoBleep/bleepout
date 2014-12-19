@@ -165,6 +165,7 @@
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\core\PlayerManager.cpp" />
     <ClCompile Include="src\core\RoundManager.cpp" />
+    <ClCompile Include="src\core\SetupController.cpp" />
     <ClCompile Include="src\core\SpaceController.cpp" />
     <ClCompile Include="src\core\Timing.cpp" />
     <ClCompile Include="src\game_objects\AnimationObject.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="src\core\LogicController.h" />
     <ClInclude Include="src\core\PlayerManager.h" />
     <ClInclude Include="src\core\RoundManager.h" />
+    <ClInclude Include="src\core\SetupController.h" />
     <ClInclude Include="src\core\SpaceController.h" />
     <ClInclude Include="src\core\Timing.h" />
     <ClInclude Include="src\game_objects\AnimationObject.h" />
@@ -293,6 +295,7 @@
     <ClInclude Include="src\physics\PointHistory.h" />
     <ClInclude Include="src\physics\Trajectory.h" />
     <ClInclude Include="src\rendering\Animations.h" />
+    <ClInclude Include="DomeRenderer.h" />
     <ClInclude Include="src\rendering\DomeRenderer.h" />
     <ClInclude Include="src\rendering\RendererBase.h" />
     <ClInclude Include="src\rendering\RendererExtras.h" />

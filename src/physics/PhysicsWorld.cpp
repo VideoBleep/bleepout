@@ -6,20 +6,26 @@
 //
 //
 
-#define USE_BULLET_COLLISIONS 0
+#define USE_BULLET_COLLISIONS 1
 
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
 #include "GameObject.h"
 #include "OrbitalTrajectory.h"
+#include "Logging.h"
 
 #if USE_BULLET_COLLISIONS
 
 #include <ofxBullet.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 class PhysicsImpl {
 public:
     std::map<PhysicsObject*, btCollisionObject*> objectMap;
+
+    typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
+    ContactSet* newContacts;
+    ContactSet* oldContacts;
     
     btCollisionConfiguration* bt_collision_configuration;
     btCollisionDispatcher* bt_dispatcher;
@@ -39,24 +45,29 @@ public:
         bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, max_objects, 0, true);
         
         bt_collision_world = new btCollisionWorld(bt_dispatcher, bt_broadphase, bt_collision_configuration);
+        
+        newContacts = new ContactSet();
+        oldContacts = new ContactSet();
     }
 
     void addObject(PhysicsObject* obj) {
-        ofVec3f pos = obj->getPosition();
 
         btCollisionObject* co = new btCollisionObject;
-        co->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
-        
+        co->setUserPointer(obj);
+
         if (obj->collisionShape == CollisionSphere) {
-            btSphereShape* shape = new btSphereShape(obj->getSize().x);
-            shape->setMargin(10);
+            btSphereShape* shape = new btSphereShape(obj->getSize().x * 0.5);
+            shape->setMargin(2.0);
             co->setCollisionShape(shape);
         } else if (obj->collisionShape == CollisionBox) {
             ofVec3f size = obj->getSize();
-            btBoxShape* shape = new btBoxShape(btVector3(size.x, size.y, size.z));
+            btBoxShape* shape = new btBoxShape(btVector3(size.x * 0.5, size.y * 0.5, size.z * 0.5));
+            shape->setMargin(2.0);
             co->setCollisionShape(shape);
         }
-        co->setUserPointer(obj);
+        
+        updateCollisionObject(obj, co);
+        
         bt_collision_world->addCollisionObject(co);
         objectMap.insert(std::pair<PhysicsObject*, btCollisionObject*>(obj, co));
     }
@@ -65,10 +76,27 @@ public:
         auto it = objectMap.find(obj);
         if (it != objectMap.end()) {
             auto co = it->second;
-            ofVec3f pos = obj->getPosition();
-            ofVec3f size = obj->getSize();
-            co->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
-            co->getCollisionShape()->setLocalScaling(btVector3(size.x, size.y, size.z));
+            updateCollisionObject(obj, co);
+        }
+    }
+    
+    void updateCollisionObject(PhysicsObject* obj, btCollisionObject* co) {
+        ofVec3f pos = obj->getPosition();
+        ofVec3f size = obj->getSize();
+        
+        co->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
+        // setLocalScaling is the wrong place.
+        // if we want to have size-changing objects, we'll need to figure out the right place
+        //co->getCollisionShape()->setLocalScaling(btVector3(size.x, size.y, size.z));
+        
+        btQuaternion btq;
+        btq.setRotation(btVector3(0, 1, 0), obj->getRotation() * PI/180.0);
+        co->getWorldTransform().setRotation(btq);
+        
+        if (obj->isDynamic()) {
+            co->setCollisionFlags(co->getCollisionFlags() | ~btCollisionObject::CF_STATIC_OBJECT);
+        } else {
+            co->setCollisionFlags(co->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
         }
     }
     
@@ -83,26 +111,48 @@ public:
         }
     }
     
+    BoundingBox getObjBoundingBox(PhysicsObject* obj) {
+        BoundingBox bbox;
+        
+        auto it = objectMap.find(obj);
+        if (it != objectMap.end()) {
+            auto co = it->second;
+            
+            btTransform tr = co->getWorldTransform();
+            btVector3 aabbMin, aabbMax;
+            co->getCollisionShape()->getAabb(tr, aabbMin, aabbMax);
+            
+            btVector3 center;
+            center = (aabbMin + aabbMax) * btScalar(0.5);
+            bbox.center = ofVec3f(center.x(), center.y(), center.z());
+            bbox.halfwidths = ofVec3f((aabbMax.x() - aabbMin.x()) * 0.5,
+                                      (aabbMax.y() - aabbMin.y()) * 0.5,
+                                      (aabbMax.z() - aabbMin.z()) * 0.5);
+        }
+        
+        return bbox;
+    }
+    
     ~PhysicsImpl() {
         for (auto const &it : objectMap) {
             removeObject(it.first);
         }
+        
+        delete newContacts;
+        delete oldContacts;
+        
+        delete bt_collision_world;
+        delete bt_broadphase;
+        delete bt_dispatcher;
+        delete bt_collision_configuration;
     }
 
     void update() {
         for (auto const &it : objectMap) {
             auto obj = it.first;
             if (obj->isDynamic()) {
-                obj->trajectory->tick();
-                obj->setPosition(obj->trajectory->getPosition());
+                obj->tick();
             }
-            ofPushStyle();
-            ofNoFill();
-            ofSetColor(255, 0, 0);
-            btVector3 pos = it.second->getWorldTransform().getOrigin();
-            btVector3 size = it.second->getCollisionShape()->getLocalScaling();
-            ofRect(pos.x()-3, pos.y()-3, size.x()+6, size.y()+6);
-            ofPopStyle();
         }
         performCollisionDetection();
     }
@@ -116,25 +166,8 @@ public:
         }
     }
     
-    class MyContactCallback : public btCollisionWorld::ContactResultCallback {
-    public:
-        virtual btScalar addSingleResult(btManifoldPoint& cp,
-                                         const btCollisionObjectWrapper* colObj0,int partId0,int index0,
-                                         const btCollisionObjectWrapper* colObj1,int partId1,int index1)
-        {
-            btVector3 pt1 = cp.m_localPointA;
-            btVector3 pt2 = cp.m_localPointB;
-            return 0; // There was a planned purpose for the return value of addSingleResult, but it is not used so you can ignore it.
-        }
-    };
-    
     void performCollisionDetection() {
         bt_collision_world->performDiscreteCollisionDetection();
-        
-        if (objectMap.size()) {
-            MyContactCallback contactCallback;
-            bt_collision_world->contactTest(objectMap.begin()->second, contactCallback);
-        }
         
         int numManifolds = bt_collision_world->getDispatcher()->getNumManifolds();
         for (int i = 0; i < numManifolds; i++) {
@@ -144,13 +177,46 @@ public:
             contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
             int numContacts = contactManifold->getNumContacts();
             
-            for (int j = 0; j < numContacts; j++) {
-                btManifoldPoint& pt = contactManifold->getContactPoint(j);
-                btVector3 ptA = pt.getPositionWorldOnA();
-                btVector3 ptB = pt.getPositionWorldOnB();
-                double ptdist = pt.getDistance();
+            if (numContacts > 0) {
+            
+                auto obj1 = (PhysicsObject*)obA->getUserPointer();
+                auto obj2 = (PhysicsObject*)obB->getUserPointer();
+
+                
+                if ((obj1->isDynamic() || obj2->isDynamic()) &&
+                    obj1->thisGameObject->alive() &&
+                    obj2->thisGameObject->alive())
+                {
+                    auto contact = std::make_pair(obj1, obj2);
+                    newContacts->insert(contact);
+                    if (oldContacts->find(contact) == oldContacts->end()) {
+                        
+                        ofVec3f normalFromBtoA;
+                        double penDist = -9999;
+                        
+                        for (int j = 0; j < numContacts; j++) {
+                            btManifoldPoint& pt = contactManifold->getContactPoint(j);
+                            double ptdist = pt.getDistance();
+                            if (ptdist > penDist) {
+                                penDist = ptdist;
+                                btVector3 n = pt.m_normalWorldOnB;
+                                normalFromBtoA = ofVec3f(n.x(), n.y(), n.z());
+                            }
+                        }
+
+                        static CollisionArgs args;
+                        args.a = obj1->thisGameObject;
+                        args.b = obj2->thisGameObject;
+                        args.normal = -normalFromBtoA;
+                        ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
+                        ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                    }
+                }
             }
         }
+        
+        std::swap(oldContacts, newContacts);
+        newContacts->clear();
     }
     
 };
@@ -197,6 +263,10 @@ public:
             }
         }
         performCollisionDetection();
+    }
+    
+    BoundingBox getObjBoundingBox(PhysicsObject* obj) {
+        return obj->getBoundingBox();
     }
     
     void performCollisionDetection() {
@@ -255,6 +325,7 @@ void PhysicsWorld::addObject(PhysicsObject* obj) {
     if (_impl.get()) {
         _impl->addObject(obj);
         obj->world = this;
+        obj->isCollidable = true;
     }
 }
 
@@ -282,6 +353,13 @@ void PhysicsWorld::notifyCollision(GameObject* a, GameObject* b) {
     args.b = b;
     ofNotifyEvent(collisionEvent, args, this);
 }
+
+BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
+    if (_impl.get()) {
+        return _impl->getObjBoundingBox(obj);
+    }
+}
+
 
 ofEvent<CollisionArgs> PhysicsWorld::collisionEvent;
 
