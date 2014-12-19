@@ -420,4 +420,18 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
 
 void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
   //...?
+  ofPushStyle();
+  ofPushMatrix();
+  
+  ofTranslate(modifier.getPosition());
+  ofRotateX(360 * modifier.getTrajectory()->getTime());
+  ofRotateY(45);
+  ofSetLineWidth(8.0);
+  ofFill();
+  ofSetColor(255, 0, 0);
+  ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+  
+  ofPopMatrix();
+  
+  ofPopStyle();
 }

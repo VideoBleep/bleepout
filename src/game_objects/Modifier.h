@@ -11,21 +11,21 @@
 
 #include "GameObject.h"
 #include "ObjectSpecs.h"
+#include "PhysicsObject.h"
 
-class Modifier : public GameObject {
+class RoundConfig;
+class Brick;
+
+class Modifier : public GameObject, public PhysicsObject {
 public:
-  Modifier(ModifierType modifierType)
-  : GameObject(GAME_OBJECT_MODIFIER)
-  , _modifierType(modifierType)
-  , _visible(false)
-  , _physical(false) { }
+  Modifier(ModifierType modifierType);
+  
+  virtual void setup(const RoundConfig& config, const Brick& spawner);
   
   ModifierType modifierType() const { return _modifierType; }
   virtual float duration() { return 0; }
   
   virtual bool applyToTarget(GameObject& target) = 0;
-  
-  virtual void readProperties(const std::map<std::string, std::string>& properties);
   
   virtual bool visible() const override {
     return this->alive() && _visible;
@@ -38,8 +38,10 @@ public:
   }
   void dematerialize() { _physical = false; }
   void materialize() { _physical = true; }
-  
+  virtual void output(std::ostream& os) const override = 0;
+
   static Modifier* createModifier(const ModifierSpec& spec);
+  
 private:
   const ModifierType _modifierType;
   bool _visible;

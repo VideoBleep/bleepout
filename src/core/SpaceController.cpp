@@ -76,12 +76,26 @@ void SpaceController::addWall(const WallSpec &wallSpec) {
   _world.addObject(&wall);
 }
 
+void SpaceController::setUpModifier(Modifier &modifier,
+                                    Brick &spawnerBrick) {
+  modifier.setup(_config, spawnerBrick);
+  _world.addObject(&modifier);
+}
+
+void SpaceController::removeModifier(Modifier &modifier) {
+  _world.removeObject(&modifier);
+}
+
 void SpaceController::update() {
     _world.update();
 }
 
 void SpaceController::onCollision(CollisionArgs &cdata) {
-    if (cdata.a->type() == GAME_OBJECT_BALL) {
+    if (cdata.a->type() == GAME_OBJECT_MODIFIER) {
+        modifierHitObject(static_cast<Modifier*>(cdata.a), cdata.b);
+    } else if (cdata.b->type() == GAME_OBJECT_MODIFIER) {
+        modifierHitObject(static_cast<Modifier*>(cdata.b), cdata.a);
+    } else if (cdata.a->type() == GAME_OBJECT_BALL) {
         ballHitObject(static_cast<Ball*>(cdata.a), cdata.b, cdata.normal);
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
         ballHitObject(static_cast<Ball*>(cdata.b), cdata.a, -cdata.normal);
@@ -104,6 +118,16 @@ void SpaceController::ballHitObject(Ball *ball, GameObject *obj, ofVec3f normal)
     case GAME_OBJECT_WALL:
       notifyBallHitWall(ball, static_cast<Wall*>(obj));
       ball->bounce(normal);
+      break;
+    default:
+      break;
+  }
+}
+
+void SpaceController::modifierHitObject(Modifier *modifier, GameObject *obj) {
+  switch (obj->type()) {
+    case GAME_OBJECT_PADDLE:
+      notifyModifierHitPaddle(modifier, static_cast<Paddle*>(obj));
       break;
     default:
       break;

@@ -27,6 +27,10 @@ public:
     
   void addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
+  
+  void setUpModifier(Modifier& modifier,
+                     Brick& spawnerBrick);
+  void removeModifier(Modifier& modifier);
     
 private:
   void addBrick(const BrickSpec& brickSpec);
@@ -35,6 +39,7 @@ private:
   void onCollision(CollisionArgs &cdata);
     
   void ballHitObject(Ball* ball, GameObject* obj, ofVec3f normal);
+  void modifierHitObject(Modifier* modifier, GameObject* obj);
 
 private:
   PhysicsWorld _world;

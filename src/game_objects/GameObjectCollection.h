@@ -45,8 +45,7 @@ public:
   int pruneDeadObjects() {
     int count = 0;
     for (auto iter = ImplType::begin();
-         iter != ImplType::end();
-         iter++) {
+         iter != ImplType::end();) {
       ofPtr<T>& obj = *iter;
       if (obj && !obj->alive()) {
         obj.reset();
@@ -54,9 +53,25 @@ public:
       if (!obj) {
         iter = ImplType::erase(iter);
         count++;
+      } else {
+        iter++;
       }
     }
     return count;
+  }
+  
+  bool eraseObjectById(GameObjectId id) {
+    for (auto iter = ImplType::begin();
+         iter != ImplType::end();
+         iter++) {
+      ofPtr<T>& obj = *iter;
+      if (obj && obj->id() == id) {
+        obj.reset();
+        ImplType::erase(iter);
+        return true;
+      }
+    }
+    return false;
   }
 };
 

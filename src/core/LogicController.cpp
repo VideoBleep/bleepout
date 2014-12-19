@@ -43,7 +43,12 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
       const std::string& modifierName = brick->modifierName();
       if (!modifierName.empty()) {
         const ModifierSpec& spec = _config.modifierDef(modifierName);
-        //...
+        ofPtr<Modifier> modifier(Modifier::createModifier(spec));
+        if (modifier) {
+          modifier->setup(_config, *brick);
+          _state.addModifier(modifier);
+          notifyModifierAppeared(_state, modifier.get(), brick);
+        }
       }
       
       player->adjustScore(brick->value());
@@ -76,5 +81,15 @@ void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
 }
 
 void LogicController::onBallHitBall(BallHitBallEventArgs &e) {
+  //...
+}
+
+void LogicController::onModifierHitPaddle(ModifierHitPaddleEventArgs &e) {
+  Modifier& modifier = *e.modifier();
+  if (modifier.applyToTarget(*e.paddle())) {
+    notifyModifierRemoved(_state, &modifier, e.paddle());
+    _state.modifiers().eraseObjectById(modifier.id());
+    //...?
+  }
   //...
 }

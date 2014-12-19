@@ -172,3 +172,21 @@ std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
   }
   return os;
 }
+
+void PaddleWidthModifier::output(std::ostream &os) const {
+  os << "PaddleWidthModifier{amount:" << _amount;
+  os << ", ";
+  outputGameObjectFields(os, *this);
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
+  os << "}";
+}
+
+void ExtraLifeModifier::output(std::ostream &os) const {
+  os << "ExtraLifeModifier{";
+  os << ", ";
+  outputGameObjectFields(os, *this);
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
+  os << "}";
+}

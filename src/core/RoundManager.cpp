@@ -24,6 +24,8 @@ RoundController::RoundController(RoundConfig config,
 
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+  ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
+  ofRemoveListener(_logicController->modifierRemovedEvent, this, &RoundController::onModifierRemoved);
 }
 
 void RoundController::setup() {
@@ -33,6 +35,8 @@ void RoundController::setup() {
   _spaceController->setup();
   _logicController->setup();
   ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
+  ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
+  ofAddListener(_logicController->modifierRemovedEvent, this, &RoundController::onModifierRemoved);
     
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -76,6 +80,18 @@ void RoundController::update() {
   _spaceController->update();
   _logicController->update();
   _renderer->update();
+}
+
+void RoundController::onModifierAppeared(ModifierEventArgs& e) {
+  if (!e.target() || e.target()->type() != GAME_OBJECT_BRICK) {
+    ofLogError() << "Invalid spawn source for modifier";
+    return;
+  }
+  _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
+}
+
+void RoundController::onModifierRemoved(ModifierEventArgs &e) {
+  _spaceController->removeModifier(*e.modifier());
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {

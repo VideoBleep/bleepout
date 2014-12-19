@@ -67,6 +67,7 @@ RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
 : _brickSize(7.0f, 5.0f, 17.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
+_modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
@@ -79,6 +80,7 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(obj["brickSize"], &_brickSize);
   readJsonVal(obj["paddleSize"], &_paddleSize);
   readJsonVal(obj["ballRadius"], &_ballRadius);
+  readJsonVal(obj["modifierRadius"], &_modifierRadius);
   readJsonVal(obj["brickFadeTime"], &_brickFadeTime);
   readJsonVal(obj["domeRadius"], &_domeRadius);
   readJsonVal(obj["domeMargin"], &_domeMargin);
@@ -95,6 +97,7 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["brickSize"] = ::toJsonVal(_brickSize);
   obj["paddleSize"] = ::toJsonVal(_paddleSize);
   obj["ballRadius"] = _ballRadius;
+  obj["modifierRadius"] = _modifierRadius;
   obj["brickFadeTime"] = _brickFadeTime;
   obj["domeRadius"] = _domeRadius;
   obj["domeMargin"] = _domeMargin;
@@ -157,6 +160,13 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
     config.addBall(BallSpec(30, ofRandom(360)));
   }
   
+  std::string paddleWidthModName("paddleWidthMod");
+  StringMap paddleWidthModProps;
+  paddleWidthModProps["amount"] = "1.5";
+  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH, paddleWidthModProps);
+  config._modifierDefs.insert(std::make_pair(paddleWidthModName,
+                                             paddleWidthModSpec));
+  
   int cols = 12;
   int rows = 10;
   
@@ -172,6 +182,8 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
       spec.lives = (j % 3 == 1) ? 2 : 1;
       spec.value = 1;
       spec.speed = 0;
+      if (i % 3 == 0 && j % 3 == 0)
+        spec.modifierName = paddleWidthModName;
       config.addBrick(spec);
     }
   }
