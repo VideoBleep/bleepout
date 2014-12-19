@@ -93,11 +93,9 @@ template<>
 bool readJsonVal(const Json::Value& val, ofVec2f* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  ofVec2f temp;
-  if (!readJsonVal(val["x"], &temp.x) ||
-      !readJsonVal(val["y"], &temp.y))
+  if (!readJsonVal(val["x"], &result->x) ||
+      !readJsonVal(val["y"], &result->y))
     return false;
-  *result = temp;
   return true;
 }
 
@@ -105,12 +103,10 @@ template<>
 bool readJsonVal(const Json::Value& val, ofVec3f* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  ofVec3f temp;
-  if (!readJsonVal(val["x"], &temp.x) ||
-      !readJsonVal(val["y"], &temp.y) ||
-      !readJsonVal(val["z"], &temp.z))
+  if (!readJsonVal(val["x"], &result->x) ||
+      !readJsonVal(val["y"], &result->y) ||
+      !readJsonVal(val["z"], &result->z))
     return false;
-  *result = temp;
   return true;
 }
 
@@ -118,12 +114,12 @@ template<>
 bool readJsonVal(const Json::Value& val, ofColor* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  ofColor temp;
-  if (!readJsonVal(val["r"], &temp.r) ||
-      !readJsonVal(val["g"], &temp.g) ||
-      !readJsonVal(val["b"], &temp.b))
+  if (!readJsonVal(val["r"], &result->r) ||
+      !readJsonVal(val["g"], &result->g) ||
+      !readJsonVal(val["b"], &result->b))
     return false;
-  *result = temp;
+  if (!readJsonVal(val["a"], &result->a))
+    result->a = 255;
   return true;
 }
 
@@ -131,22 +127,20 @@ template<>
 bool readJsonVal(const Json::Value& val, BrickSpec* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  BrickSpec temp;
-  if (!readJsonVal(val["elevation"], &temp.elevation) ||
-      !readJsonVal(val["heading"], &temp.heading) ||
-      !readJsonVal(val["color"], &temp.color))
+  if (!readJsonVal(val["elevation"], &result->elevation) ||
+      !readJsonVal(val["heading"], &result->heading) ||
+      !readJsonVal(val["color"], &result->color))
     return false;
-  if (!readJsonVal(val["value"], &temp.value))
-    temp.value = 1;
-  if (!readJsonVal(val["lives"], &temp.lives))
-    temp.lives = 1;
-  if (!readJsonVal(val["speed"], &temp.speed))
-    temp.speed = 0;
-  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
-    temp.stopHeading = -1;
-  if (!readJsonVal(val["modifierName"], &temp.modifierName))
-    temp.modifierName = "";
-  *result = temp;
+  if (!readJsonVal(val["value"], &result->value))
+    result->value = 1;
+  if (!readJsonVal(val["lives"], &result->lives))
+    result->lives = 1;
+  if (!readJsonVal(val["speed"], &result->speed))
+    result->speed = 0;
+  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
+    result->stopHeading = -1;
+  if (!readJsonVal(val["modifierName"], &result->modifierName))
+    result->modifierName = "";
   return true;
 }
 
@@ -154,21 +148,19 @@ template<>
 bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  BrickRingSpec temp;
-  if (!readJsonVal(val["elevation"], &temp.elevation) ||
-      !readJsonVal(val["color"], &temp.color) ||
-      !readJsonVal(val["count"], &temp.count) ||
-      !readJsonVal(val["phase"], &temp.phase))
+  if (!readJsonVal(val["elevation"], &result->elevation) ||
+      !readJsonVal(val["color"], &result->color) ||
+      !readJsonVal(val["count"], &result->count) ||
+      !readJsonVal(val["phase"], &result->phase))
     return false;
-  if (!readJsonVal(val["value"], &temp.value))
-    temp.value = 1;
-  if (!readJsonVal(val["lives"], &temp.lives))
-    temp.lives = 1;
-  if (!readJsonVal(val["speed"], &temp.speed))
-    temp.speed = 0;
-  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
-    temp.stopHeading = -1;
-  *result = temp;
+  if (!readJsonVal(val["value"], &result->value))
+    result->value = 1;
+  if (!readJsonVal(val["lives"], &result->lives))
+    result->lives = 1;
+  if (!readJsonVal(val["speed"], &result->speed))
+    result->speed = 0;
+  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
+    result->stopHeading = -1;
   return true;
 }
 
@@ -176,18 +168,16 @@ template<>
 bool readJsonVal(const Json::Value& val, WallSpec* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  WallSpec temp;
-  if (!readJsonVal(val["elevation"], &temp.elevation) ||
-      !readJsonVal(val["heading"], &temp.heading) ||
-      !readJsonVal(val["size"], &temp.size))
+  if (!readJsonVal(val["elevation"], &result->elevation) ||
+      !readJsonVal(val["heading"], &result->heading) ||
+      !readJsonVal(val["size"], &result->size))
     return false;
-  if (!readJsonVal(val["isExit"], &temp.isExit))
-    temp.isExit = false;
-  if (!readJsonVal(val["speed"], &temp.speed))
-    temp.speed = 0;
-  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
-    temp.stopHeading = -1;
-  *result = temp;
+  if (!readJsonVal(val["isExit"], &result->isExit))
+    result->isExit = false;
+  if (!readJsonVal(val["speed"], &result->speed))
+    result->speed = 0;
+  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
+    result->stopHeading = -1;
   return true;
 }
 
@@ -195,20 +185,18 @@ template<>
 bool readJsonVal(const Json::Value& val, CurvedWallSpec* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  CurvedWallSpec temp;
-  if (!readJsonVal(val["elevation1"], &temp.elevation1) ||
-      !readJsonVal(val["heading1"], &temp.heading1) ||
-      !readJsonVal(val["elevation2"], &temp.elevation2) ||
-      !readJsonVal(val["heading2"], &temp.heading2) ||
-      !readJsonVal(val["width"], &temp.width))
+  if (!readJsonVal(val["elevation1"], &result->elevation1) ||
+      !readJsonVal(val["heading1"], &result->heading1) ||
+      !readJsonVal(val["elevation2"], &result->elevation2) ||
+      !readJsonVal(val["heading2"], &result->heading2) ||
+      !readJsonVal(val["width"], &result->width))
     return false;
-  if (!readJsonVal(val["isExit"], &temp.isExit))
-    temp.isExit = false;
-  if (!readJsonVal(val["speed"], &temp.speed))
-    temp.speed = 0;
-  if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
-    temp.stopHeading = -1;
-  *result = temp;
+  if (!readJsonVal(val["isExit"], &result->isExit))
+    result->isExit = false;
+  if (!readJsonVal(val["speed"], &result->speed))
+    result->speed = 0;
+  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
+    result->stopHeading = -1;
   return true;
 }
 
@@ -216,11 +204,9 @@ template<>
 bool readJsonVal(const Json::Value& val, BallSpec* result) {
   if (!assertType(val, Json::objectValue))
     return false;
-  BallSpec temp;
-  if (!readJsonVal(val["elevation"], &temp.elevation) ||
-      !readJsonVal(val["heading"], &temp.heading))
+  if (!readJsonVal(val["elevation"], &result->elevation) ||
+      !readJsonVal(val["heading"], &result->heading))
     return false;
-  *result = temp;
   return true;
 }
 
@@ -247,6 +233,7 @@ Json::Value toJsonVal(const ofColor& val) {
   obj["r"] = val.r;
   obj["g"] = val.g;
   obj["b"] = val.b;
+  obj["a"] = val.a;
   return obj;
 }
 
@@ -365,13 +352,11 @@ Json::Value toJsonVal(const ModifierSpec& spec) {
 template<>
 bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
   if (val.isNull()) {
-    *result = ModifierSpec(MODIFIER_NONE);
+    result->type = MODIFIER_NONE;
     return true;
   }
-  ModifierSpec temp;
-  if (!readJsonVal(val["type"], &temp.type) ||
-      !readJsonVal(val["properties"], &temp.properties))
+  if (!readJsonVal(val["type"], &result->type) ||
+      !readJsonVal(val["properties"], &result->properties))
     return false;
-  *result = temp;
   return true;
 }
