@@ -17,6 +17,36 @@
 #include "GameEvents.h"
 #include <list>
 
+// Engine.io client packet type prefixes
+//var packets = exports.packets = {
+//    open:     0    // non-ws
+//    , close:    1    // non-ws
+//    , ping:     2
+//    , pong:     3
+//    , message:  4
+//    , upgrade:  5
+//    , noop:     6
+//};
+
+const std::string PACKET_OPEN = "0";
+const std::string PACKET_CLOSE = "1";
+const std::string PACKET_PING = "2";
+const std::string PACKET_PONG = "3";
+const std::string PACKET_MESSAGE = "4";
+const std::string PACKET_UPGRADE = "5";
+const std::string PACKET_NOOP = "6";
+
+// New player
+const std::string MESSAGE_NEW = "new";
+// Player start
+const std::string MESSAGE_START = "sta";
+// Yaw / Pitch / Roll 
+const std::string MESSAGE_YPR = "ypr";
+// Action 
+const std::string MESSAGE_ACT = "act";
+
+
+
 class PlayerManager
 : public PlayerEventSource
 , public ControlEventSource {
