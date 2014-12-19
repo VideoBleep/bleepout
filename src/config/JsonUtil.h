@@ -12,7 +12,8 @@
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include <ofMain.h>
 #include <vector>
-#include "BleepoutConfig.h"
+#include <map>
+#include "ObjectSpecs.h"
 #include "Common.h"
 
 bool assertType(const Json::Value& val, Json::ValueType type);
@@ -46,6 +47,23 @@ bool readJsonArr(const Json::Value& arr, std::vector<T>* result) {
 }
 
 template<typename T>
+bool readJsonVal(const Json::Value& val,
+                 std::map<std::string, T>* result) {
+  if (val.isNull())
+    return true;
+  if (!assertType(val, Json::objectValue))
+    return false;
+  auto end = val.end();
+  for (auto i = val.begin(); i != end; i++) {
+    T temp;
+    if (!readJsonVal(*i, &temp))
+      return false;
+    result->insert(std::make_pair(i.key().asString(), temp));
+  }
+  return true;
+}
+
+template<typename T>
 Json::Value toJsonVal(const T& val);
 
 template<typename T>
@@ -56,6 +74,15 @@ Json::Value toJsonArr(const std::vector<T>& vals) {
     arr[i] = toJsonVal(vals[i]);
   }
   return arr;
+}
+
+template<typename T>
+Json::Value toJsonVal(const std::map<std::string, T> map) {
+  Json::Value obj(Json::objectValue);
+  for (const auto& entry : map) {
+    obj[entry.first] = toJsonVal(entry.second);
+  }
+  return obj;
 }
 
 bool readJsonFile(std::string path, Json::Value* obj);

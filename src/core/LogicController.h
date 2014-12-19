@@ -24,6 +24,7 @@ public:
   void onBallHitBrick(BallHitBrickEventArgs& e);
   void onBallHitWall(BallHitWallEventArgs& e);
   void onBallHitBall(BallHitBallEventArgs& e);
+  void onModifierHitPaddle(ModifierHitPaddleEventArgs& e);
 
 private:
   RoundState& _state;
