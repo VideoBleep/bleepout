@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>bleepout</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\src;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\libs;%(AdditionalIncludeDirectories);src\core;src\config;src\rendering;src\physics;src\game_objects;src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port\win32helpers</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies);websockets_static.lib;ZLIB.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\lib\win32\Release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\src;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\libs;%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port\win32helpers</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies);websockets_static.lib;ZLIB.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\lib\win32\Release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2d.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dBaseShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dCircle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dEdge.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRect.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2BroadPhase.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2CollideCircle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2CollideEdge.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2CollidePolygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2Collision.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2Distance.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2DynamicTree.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2TimeOfImpact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2ChainShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2CircleShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2EdgeShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2PolygonShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2BlockAllocator.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Draw.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Math.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Settings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2StackAllocator.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Timer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Body.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2ContactManager.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Fixture.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Island.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2World.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2WorldCallbacks.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2CircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2Contact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ContactSolver.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2PolygonContact.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2DistanceJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2FrictionJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2GearJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2Joint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2MotorJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2MouseJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2PulleyJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2RopeJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\Box2D\Rope\b2Rope.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxBox2d\libs\triangle\del_impl.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\jsoncpp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Client.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Connection.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Events.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Protocol.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Reactor.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Server.cpp" />
+    <ClCompile Include="src\config\BleepoutConfig.cpp" />
+    <ClCompile Include="src\config\JsonUtil.cpp" />
+    <ClCompile Include="src\core\BleepoutApp.cpp" />
+    <ClCompile Include="src\core\Common.cpp" />
+    <ClCompile Include="src\core\GameEvents.cpp" />
+    <ClCompile Include="src\core\Logging.cpp" />
+    <ClCompile Include="src\core\LogicController.cpp" />
+    <ClCompile Include="src\core\main.cpp" />
+    <ClCompile Include="src\core\PlayerManager.cpp" />
+    <ClCompile Include="src\core\RoundManager.cpp" />
+    <ClCompile Include="src\core\SetupController.cpp" />
+    <ClCompile Include="src\core\SpaceController.cpp" />
+    <ClCompile Include="src\core\Timing.cpp" />
+    <ClCompile Include="src\game_objects\AnimationObject.cpp" />
+    <ClCompile Include="src\game_objects\Ball.cpp" />
+    <ClCompile Include="src\game_objects\Brick.cpp" />
+    <ClCompile Include="src\game_objects\GameObject.cpp" />
+    <ClCompile Include="src\game_objects\GameState.cpp" />
+    <ClCompile Include="src\game_objects\Paddle.cpp" />
+    <ClCompile Include="src\game_objects\Player.cpp" />
+    <ClCompile Include="src\game_objects\Wall.cpp" />
+    <ClCompile Include="src\physics\CircularTrajectory.cpp" />
+    <ClCompile Include="src\physics\OrbitalTrajectory.cpp" />
+    <ClCompile Include="src\physics\PhysicsObject.cpp" />
+    <ClCompile Include="src\physics\PhysicsUtil.cpp" />
+    <ClCompile Include="src\physics\PhysicsWorld.cpp" />
+    <ClCompile Include="src\physics\PointHistory.cpp" />
+    <ClCompile Include="src\physics\Trajectory.cpp" />
+    <ClCompile Include="src\rendering\Animations.cpp" />
+    <ClCompile Include="src\rendering\DomeRenderer.cpp" />
+    <ClCompile Include="src\rendering\RendererBase.cpp" />
+    <ClCompile Include="src\rendering\RendererExtras.cpp" />
+    <ClCompile Include="src\rendering\TurntableCam.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2d.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dBaseShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dCircle.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dContactListener.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dEdge.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygon.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dPolygonUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRect.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dRender.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\src\ofxBox2dUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Box2D.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2BroadPhase.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2Collision.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2Distance.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2DynamicTree.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\b2TimeOfImpact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2ChainShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2CircleShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2EdgeShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2PolygonShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes\b2Shape.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2BlockAllocator.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Draw.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2GrowableStack.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Math.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Settings.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2StackAllocator.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Common\b2Timer.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Body.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2ContactManager.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Fixture.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2Island.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2TimeStep.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2World.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\b2WorldCallbacks.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ChainAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ChainAndPolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2CircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2Contact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2ContactSolver.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2EdgeAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2EdgeAndPolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts\b2PolygonContact.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2DistanceJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2FrictionJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2GearJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2Joint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2MotorJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2MouseJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2PrismaticJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2PulleyJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2RopeJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2WeldJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints\b2WheelJoint.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\Box2D\Rope\b2Rope.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\assert.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\del_interface.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\dpoint.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\triangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxBox2d\libs\triangle\triangle_impl.hpp" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\src\ofxLibwebsockets.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json\json-forwards.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json\json.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\libwebsockets.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Client.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Connection.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Events.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Protocol.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Reactor.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Server.h" />
+    <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Util.h" />
+    <ClInclude Include="src\config\BleepoutConfig.h" />
+    <ClInclude Include="src\config\JsonUtil.h" />
+    <ClInclude Include="src\core\BleepoutApp.h" />
+    <ClInclude Include="src\core\Common.h" />
+    <ClInclude Include="src\core\GameEvents.h" />
+    <ClInclude Include="src\core\Logging.h" />
+    <ClInclude Include="src\core\LogicController.h" />
+    <ClInclude Include="src\core\PlayerManager.h" />
+    <ClInclude Include="src\core\RoundManager.h" />
+    <ClInclude Include="src\core\SetupController.h" />
+    <ClInclude Include="src\core\SpaceController.h" />
+    <ClInclude Include="src\core\Timing.h" />
+    <ClInclude Include="src\game_objects\AnimationObject.h" />
+    <ClInclude Include="src\game_objects\Ball.h" />
+    <ClInclude Include="src\game_objects\Brick.h" />
+    <ClInclude Include="src\game_objects\GameObject.h" />
+    <ClInclude Include="src\game_objects\GameObjectCollection.h" />
+    <ClInclude Include="src\game_objects\GameState.h" />
+    <ClInclude Include="src\game_objects\Paddle.h" />
+    <ClInclude Include="src\game_objects\Player.h" />
+    <ClInclude Include="src\game_objects\Wall.h" />
+    <ClInclude Include="src\physics\CircularTrajectory.h" />
+    <ClInclude Include="src\physics\OrbitalTrajectory.h" />
+    <ClInclude Include="src\physics\PhysicsObject.h" />
+    <ClInclude Include="src\physics\PhysicsUtil.h" />
+    <ClInclude Include="src\physics\PhysicsWorld.h" />
+    <ClInclude Include="src\physics\PointHistory.h" />
+    <ClInclude Include="src\physics\Trajectory.h" />
+    <ClInclude Include="src\rendering\Animations.h" />
+    <ClInclude Include="DomeRenderer.h" />
+    <ClInclude Include="src\rendering\DomeRenderer.h" />
+    <ClInclude Include="src\rendering\RendererBase.h" />
+    <ClInclude Include="src\rendering\RendererExtras.h" />
+    <ClInclude Include="src\rendering\TurntableCam.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="bin\data\myriad.ttf" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

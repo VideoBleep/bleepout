@@ -15,7 +15,8 @@
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
 #include "Common.h"
-
+#include "SetupController.h"
+#include "GameEvents.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -23,6 +24,8 @@
 
 class BleepoutApp : public ofBaseApp {
 public:
+  BleepoutApp();
+  
   void setup() override;
   void update() override;
   void draw() override;
@@ -33,12 +36,14 @@ public:
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
   const BleepoutConfig& config() const { return _config; }
-  
-  void dumpConfig(ofLogLevel level) const;
-private:
-	ofPtr<PlayerManager> _playerManager;
 
+private:
+  void onStartRound(StartRoundEventArgs& e);
+  void onRoundEnded(RoundStateEventArgs& e);
+  
   BleepoutConfig _config;
+	ofPtr<PlayerManager> _playerManager;
+  ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;

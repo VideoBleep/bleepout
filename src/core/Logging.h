@@ -23,6 +23,7 @@
 #include "OrbitalTrajectory.h"
 #include "CircularTrajectory.h"
 
+std::ostream& operator<<(std::ostream& os, const PhysicsObject& obj);
 std::ostream& operator<<(std::ostream& os, const GameObject& obj);
 std::ostream& operator<<(std::ostream& os, const RoundState& state);
 std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory);

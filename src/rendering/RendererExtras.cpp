@@ -26,8 +26,7 @@ private:
     : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
     virtual void operator()(TimedActionArgs args) override {
       _ringSet._color = _color;
-      _ringSet.setLineWidth(_lineWidth);
-      return Nothing();
+      _ringSet.setLineWidth(_lineWidth);      
     }
   private:
     RingSet& _ringSet;

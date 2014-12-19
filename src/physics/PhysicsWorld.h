@@ -13,6 +13,7 @@
 
 class GameObject;
 class PhysicsObject;
+class BoundingBox;
 
 class CollisionArgs : public ofEventArgs {
 public:
@@ -35,6 +36,8 @@ public:
     void update();
     
     void notifyCollision(GameObject* a, GameObject* b);
+    
+    BoundingBox getObjBoundingBox(PhysicsObject* obj);
     
     static ofEvent<CollisionArgs> collisionEvent;
     

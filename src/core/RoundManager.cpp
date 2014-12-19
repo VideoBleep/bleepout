@@ -13,11 +13,18 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
-RoundController::RoundController(RoundConfig config)
+RoundController::RoundController(RoundConfig config,
+                                 std::list<ofPtr<Player> > players,
+                                 PlayerManager& playerManager)
 : _config(config)
-, _state(_config) { }
+, _state(_config, players)
+, _playerManager(playerManager) {
+  ofAddListener(playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+}
 
-RoundController::~RoundController() { }
+RoundController::~RoundController() {
+  ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+}
 
 void RoundController::setup() {
    
@@ -25,6 +32,7 @@ void RoundController::setup() {
   _logicController.reset(new LogicController(_state, _config));
   _spaceController->setup();
   _logicController->setup();
+  ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
     
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -41,8 +49,7 @@ void RoundController::setup() {
   _renderer.reset(new DomeRenderer());
   _renderer->setup(*this);
   
-  ofLog(OF_LOG_NOTICE) << _state;
-  //...
+	//...
 }
 
 void RoundController::draw() {
@@ -53,14 +60,15 @@ void RoundController::update() {
     _state.time = ofGetElapsedTimef();
 
     if (_state.time < 3) {
-        _state.message = RoundMessage("VideoBleep\n presents", ofColor(255, 255, 255), 12);
+        _state.message = RoundMessage("Video Bleep\n presents", ofColor(255, 255, 255), 12);
     } else if (_state.time < 7.5) {
-        _state.message = RoundMessage("BLEEP*OUT", ofColor(0, 120, 240), 50, 4);
+        _state.message = RoundMessage("BLEEPOUT", ofColor(0, 120, 240), 50, 4);
     } else if (_state.time < 10) {
         _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
     } else {
         _state.message.text = "";
         if (_state.paddles().size() == 0) {
+			ofLogNotice() << "Initial Paddle Create";
             _spaceController->addInitialPaddles();
         }
     }
@@ -70,11 +78,19 @@ void RoundController::update() {
   _renderer->update();
 }
 
+void RoundController::onRoundEnded(RoundStateEventArgs &e) {
+  ofNotifyEvent(roundEndedEvent, e);
+}
+
 void RoundController::keyPressed(int key) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->keyPressed(key);
   } else {
-    if (key == 'l') {
+    if (key == 'q') {
+      RoundStateEventArgs e(_state);
+      ofNotifyEvent(roundEndedEvent, e);
+      //....
+    } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
@@ -106,14 +122,14 @@ void RoundController::keyPressed(int key) {
   }
 }
 
-void RoundController::setPaddlePosition(PlayerYawPitchRollMessage ypr) {
-	Paddle* paddle = ypr.player->paddle();
-	if (!paddle) {
-		ofLogError() << "Unable to set paddle position for player: " << ypr.player->id();
-		return;
-	}
-
-    paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * ypr.yaw, _config.domeMargin());
+void RoundController::onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs &e) {
+  Paddle* paddle = e.player()->paddle();
+  if (!paddle) {
+    ofLogError() << "Unable to set paddle position for player: " << e.player()->id();
+    return;
+  }
+  
+  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * e.yaw(), _config.domeMargin());
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
@@ -133,7 +149,7 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
 }
 
 void RoundController::mousePressed(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mousePressed(x, y, button);
   } else {
         
@@ -141,7 +157,7 @@ void RoundController::mousePressed(int x, int y, int button) {
 }
 
 void RoundController::mouseMoved(int x, int y) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
         _renderer->mouseMoved(x, y);
   } else if (_state.players().size()) {
     ofPtr<Player> player = _state.players()[0];
@@ -150,7 +166,7 @@ void RoundController::mouseMoved(int x, int y) {
 }
 
 void RoundController::mouseDragged(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mouseDragged(x, y, button);
   } else {
   
@@ -158,7 +174,7 @@ void RoundController::mouseDragged(int x, int y, int button) {
 }
 
 void RoundController::mouseReleased(int x, int y, int button) {
-  if (ofGetKeyPressed(OF_KEY_COMMAND)) {
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     _renderer->mouseReleased(x, y, button);
   } else {
     

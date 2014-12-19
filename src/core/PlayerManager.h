@@ -11,42 +11,19 @@
 
 #include "Player.h"
 #include <ofMain.h>
-#include <map>
-#include <vector>
 #include "GameObjectCollection.h"
 #include "GameState.h"
 #include "ofxLibwebsockets.h"
 #include "GameEvents.h"
+#include <list>
 
-class RoundController;
-
-struct PlayerYawPitchRollMessage {
-	PlayerYawPitchRollMessage() {
-	}
-
-	PlayerYawPitchRollMessage(float y, float p, float r) {
-		yaw = y;
-		pitch = p;
-		roll = r;
-	}
-
-	ofPtr<Player> player;
-	float yaw;
-	float pitch;
-	float roll;
-};
-
-struct PlayerCreateMessage {
-	ofPtr<Player> player;
-	int id;
-  ofColor color;
-};
-
-class PlayerManager : PlayerEventSource {
+class PlayerManager
+: public PlayerEventSource
+, public ControlEventSource {
 public:
-	explicit PlayerManager(ofPtr<RoundController> roundController);
+	PlayerManager();
 	
-  RoundState& state() { return _state; }
+  std::list<ofPtr<Player> >& players() { return _players; }
 
   ofPtr<Player> addPlayer();
 
@@ -57,6 +34,8 @@ public:
   void update();
   void draw();
   void gotMessage(ofMessage msg);
+  
+  void setIsInRound(bool r) { _inRoundMode = r; }
 
   // Message queue (temporary?)
   ofTrueTypeFont font;
@@ -71,10 +50,9 @@ public:
   void onBroadcast(ofxLibwebsockets::Event& args);
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
-
 private:
-  RoundState& _state;
-  ofPtr<RoundController> _roundController;
+  bool _inRoundMode;
+  std::list<ofPtr<Player> > _players;
 };
 
 #endif /* defined(__bleepout__PlayerManager__) */

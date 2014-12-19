@@ -97,8 +97,7 @@ bool TimedActionSet::done() const {
 bool TimedActionSet::update(TimedActionArgs args) {
   bool allDone = true;
   for (auto i = _actions.begin();
-       i != _actions.end();
-       i++) {
+       i != _actions.end(); ) {
     ofPtr<TimedAction>& action = *i;
     bool done = false;
     if (!action) {
@@ -110,6 +109,8 @@ bool TimedActionSet::update(TimedActionArgs args) {
     }
     if (done && _autoRemove) {
       i = _actions.erase(i);
+    } else {
+      i++;
     }
     if (!done)
       allDone = false;

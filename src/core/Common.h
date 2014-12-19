@@ -12,12 +12,23 @@
 #include <ofMain.h>
 #include <functional>
 #include <list>
+#include <iostream>
 
 #ifdef TARGET_OSX
 #define ENABLE_SYPHON
+#define BLEEPOUT_CONTROL_KEY OF_KEY_COMMAND
+#else
+#define BLEEPOUT_CONTROL_KEY OF_KEY_CONTROL
 #endif
 
 struct Nothing { };
+
+class Outputable {
+public:
+  virtual void output(std::ostream& os) const = 0;
+};
+
+std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 
 class ValueSpecifier {
 public:
