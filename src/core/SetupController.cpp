@@ -43,7 +43,7 @@ void SetupController::keyPressed(int key) {
   if (key == 'n') {
     // yes it's ugly... creating config, returning it by value,
     // then passing that into an auto-generated copy constructor...
-    _roundConfig.reset(new RoundConfig(RoundConfig::createTestConfig(_appConfig)));
+    _roundConfig.reset(new RoundConfig(RoundConfig::createTestConfig()));
     if (!tryStartRound()) {
       //...?
     }

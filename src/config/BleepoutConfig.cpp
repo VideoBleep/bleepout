@@ -63,15 +63,14 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
   writeJsonFile(path, obj);
 }
 
-RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
+RoundConfig::RoundConfig()
 : _brickSize(7.0f, 5.0f, 17.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
 _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _domeRadius(150.0f),
-_domeMargin(20.0f),
-_appConfig(appConfig) { }
+_domeMargin(20.0f) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;
@@ -153,8 +152,8 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   return walls;
 }
 
-RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
-  RoundConfig config(appConfig);
+RoundConfig RoundConfig::createTestConfig() {
+  RoundConfig config;
   
   for (int i = 0; i < 5; i ++) {
     config.addBall(BallSpec(30, ofRandom(360)));

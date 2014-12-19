@@ -47,9 +47,9 @@ private:
 class RoundConfig {
 public:
   
-  static RoundConfig createTestConfig(const BleepoutConfig& appConfig);
+  static RoundConfig createTestConfig();
   
-  RoundConfig(const BleepoutConfig& appConfig);
+  RoundConfig();
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -102,11 +102,8 @@ public:
   
   std::vector<WallSpec> allWalls() const;
   
-  const BleepoutConfig& appConfig() const { return _appConfig; }
-  
   Json::Value toJsonVal() const;
 private:
-  const BleepoutConfig& _appConfig;
   ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
