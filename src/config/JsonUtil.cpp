@@ -144,6 +144,8 @@ bool readJsonVal(const Json::Value& val, BrickSpec* result) {
     temp.speed = 0;
   if (!readJsonVal(val["stopHeading"], &temp.stopHeading))
     temp.stopHeading = -1;
+  if (!readJsonVal(val["modifierName"], &temp.modifierName))
+    temp.modifierName = "";
   *result = temp;
   return true;
 }
@@ -263,6 +265,7 @@ Json::Value toJsonVal(const BrickSpec& spec) {
   obj["lives"] = spec.lives;
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
+  obj["modifierName"] = spec.modifierName;
   return obj;
 }
 
@@ -312,4 +315,63 @@ Json::Value toJsonVal(const BallSpec& spec) {
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   return obj;
+}
+
+template<>
+Json::Value toJsonVal(const ModifierType& type) {
+  switch (type) {
+    case MODIFIER_EXTRA_LIFE:
+      return "extra_life";
+    case MODIFIER_PADDLE_WIDTH:
+      return "paddle_width";
+    case MODIFIER_NONE:
+    default:
+      return Json::Value(Json::nullValue);
+  }
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, ModifierType* result) {
+  if (val.isNull()) {
+    *result = MODIFIER_NONE;
+    return true;
+  }
+  if (!assertType(val, Json::stringValue))
+    return false;
+  std::string str = val.asString();
+  if (str.empty()) {
+    *result = MODIFIER_NONE;
+    return true;
+  }
+  if (str == "extra_life") {
+    *result = MODIFIER_EXTRA_LIFE;
+    return true;
+  }
+  if (str == "paddle_width") {
+    *result = MODIFIER_PADDLE_WIDTH;
+    return true;
+  }
+  return false;
+}
+
+template<>
+Json::Value toJsonVal(const ModifierSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["type"] = toJsonVal(spec.type);
+  obj["properties"] = toJsonVal(spec.properties);
+  return obj;
+}
+
+template<>
+bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
+  if (val.isNull()) {
+    *result = ModifierSpec(MODIFIER_NONE);
+    return true;
+  }
+  ModifierSpec temp;
+  if (!readJsonVal(val["type"], &temp.type) ||
+      !readJsonVal(val["properties"], &temp.properties))
+    return false;
+  *result = temp;
+  return true;
 }

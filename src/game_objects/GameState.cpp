@@ -46,3 +46,7 @@ Ball& RoundState::addBall(const BallSpec& ballSpec) {
   _balls.push_back(ball);
   return *ball;
 }
+
+void RoundState::addModifier(ofPtr<Modifier> modifier) {
+  _modifiers.push_back(modifier);
+}

@@ -33,6 +33,7 @@ protected:
     virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
     virtual void drawWall(RoundState& round, Wall& wall) override;
     virtual void drawBall(RoundState& round, Ball& ball) override;
+    virtual void drawModifier(RoundState& round, Modifier& modifier) override;
     
     void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
     

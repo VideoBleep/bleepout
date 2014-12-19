@@ -55,6 +55,8 @@ public:
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
+  void onModifierAppeared(ModifierEventArgs& e);
+  void onModifierRemoved(ModifierEventArgs& e);
   
   PlayerManager& _playerManager;
   RoundConfig _config;

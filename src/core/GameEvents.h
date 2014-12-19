@@ -33,7 +33,7 @@ void outputField(std::ostream& os, const char* label, const T* obj) {
 
 template<typename T>
 void outputField(std::ostream& os, const T* obj) {
-  outputField(os, T::typeName(), obj);
+  outputField(os, GameObjectTypeTraits<T>::typeName, obj);
 }
 
 template<typename T>
@@ -96,12 +96,35 @@ private:
   ofLogLevel _logLevel;
 };
 
+  class ModifierHitPaddleEventArgs : public Outputable {
+public:
+  ModifierHitPaddleEventArgs(Modifier* modifier, Paddle* paddle)
+  : _modifier(modifier), _paddle(paddle) { }
+  
+  Modifier* modifier() { return _modifier; }
+  const Modifier* modifier() const { return _modifier; }
+  Paddle* paddle() { return _paddle; }
+  const Paddle* paddle() const { return _paddle; }
+
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    outputField(os, modifier());
+    os << " ";
+    outputField(os, paddle());
+    os << ")";
+  }
+private:
+  Modifier* _modifier;
+  Paddle* _paddle;
+};
+
 class CollisionEventSource : public EventSource {
 public:
   ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
   ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
   ofEvent<BallHitWallEventArgs> ballHitWallEvent;
   ofEvent<BallHitBallEventArgs> ballHitBallEvent;
+  ofEvent<ModifierHitPaddleEventArgs> modifierHitPaddleEvent;
   
   template<typename Listener>
   void attachListener(Listener& listener) {
@@ -109,6 +132,7 @@ public:
     ofAddListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
     ofAddListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
     ofAddListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
+    ofAddListener(modifierHitPaddleEvent, &listener, &Listener::onModifierHitPaddle);
   }
   template<typename Listener>
   void detachListener(Listener& listener) {
@@ -116,6 +140,7 @@ public:
     ofRemoveListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
     ofRemoveListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
     ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
+    ofRemoveListener(modifierHitPaddleEvent, &listener, &Listener::onModifierHitPaddle);
   }
   
 protected:
@@ -138,6 +163,11 @@ protected:
     BallHitBallEventArgs e(ball, otherBall);
     ofNotifyEvent(ballHitBallEvent, e);
     logEvent("BallHitBall", e);
+  }
+  void notifyModifierHitPaddle(Modifier* modifier, Paddle* paddle) {
+    ModifierHitPaddleEventArgs e(modifier, paddle);
+    ofNotifyEvent(modifierHitPaddleEvent, e);
+    logEvent("ModifierHitPaddle", e);
   }
 };
 
@@ -230,6 +260,30 @@ private:
   T* _object;
 };
 
+class ModifierEventArgs
+: public RoundStateEventArgs {
+public:
+  ModifierEventArgs(RoundState& state, Modifier* modifier,
+                    GameObject* target)
+  : RoundStateEventArgs(state)
+  , _modifier(modifier)
+  , _target(target) { }
+  
+  Modifier* modifier() { return _modifier; }
+  GameObject* target() { return _target; }
+  
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    outputField(os, _modifier);
+    os << " ";
+    outputField(os, "target", _target);
+    os << ")";
+  }
+private:
+  Modifier* _modifier;
+  GameObject* _target;
+};
+
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
 typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
@@ -244,6 +298,9 @@ public:
   ofEvent<PlayerEventArgs> playerLostEvent;
   ofEvent<PlayerEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierAppliedEvent;
+  ofEvent<ModifierEventArgs> modifierRemovedEvent;
   
   template<typename Listener>
   void attachListener(Listener& listener) {
@@ -255,6 +312,9 @@ public:
     ofAddListener(playerLostEvent, &listener, &Listener::onPlayerLost);
     ofAddListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
     ofAddListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+    ofAddListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
+    ofAddListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
+    ofAddListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
   }
   
   template<typename Listener>
@@ -267,6 +327,9 @@ public:
     ofRemoveListener(playerLostEvent, &listener, &Listener::onPlayerLost);
     ofRemoveListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
     ofRemoveListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
+    ofRemoveListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
+    ofRemoveListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
+    ofRemoveListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
   }
 protected:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {
@@ -313,6 +376,18 @@ protected:
     RoundStateEventArgs e(state);
     ofNotifyEvent(roundEndedEvent, e);
     logEvent("RoundEnded", e);
+  }
+  void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
+    ModifierEventArgs e(state, modifier, spawnerBrick);
+    ofNotifyEvent(modifierAppearedEvent, e);
+  }
+  void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
+    ModifierEventArgs e(state, modifier, target);
+    ofNotifyEvent(modifierAppliedEvent, e);
+  }
+  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target) {
+    ModifierEventArgs e(state, modifier, target);
+    ofNotifyEvent(modifierRemovedEvent, e);
   }
 };
 

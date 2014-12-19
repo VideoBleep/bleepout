@@ -10,6 +10,8 @@
 #include "BleepoutConfig.h"
 #include "CircularTrajectory.h"
 
+const char GameObjectTypeTraits<Brick>::typeName[] = "brick";
+
 Brick::Brick(const RoundConfig* config /*= NULL*/, const BrickSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_BRICK)
 , PhysicsObject(CollisionBox)
@@ -22,6 +24,7 @@ Brick::Brick(const RoundConfig* config /*= NULL*/, const BrickSpec* spec /*= NUL
     this->setLives(spec->lives);
     this->setValue(spec->value);
     _maxLives = spec->lives;
+    _modifierName = spec->modifierName;
     if (spec->speed == 0) {
         this->setPositionSpherical(config->domeRadius() +
                                    config->domeMargin(),

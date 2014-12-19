@@ -7,3 +7,5 @@
 //
 
 #include "AnimationObject.h"
+
+const char GameObjectTypeTraits<AnimationObject>::typeName[] = "animation";
