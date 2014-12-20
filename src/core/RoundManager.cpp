@@ -18,7 +18,8 @@ RoundController::RoundController(RoundConfig config,
                                  PlayerManager& playerManager)
 : _config(config)
 , _state(_config, players)
-, _playerManager(playerManager) {
+, _playerManager(playerManager)
+, _timedActions(true) {
   ofAddListener(playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
 }
 
@@ -28,9 +29,11 @@ RoundController::~RoundController() {
   ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
+  _animationManager->detachFrom(*_logicController);
   _logicController.reset();
   _renderer.reset();
   _spaceController.reset();
+  _animationManager.reset();
 }
 
 void RoundController::setup() {
@@ -38,6 +41,7 @@ void RoundController::setup() {
    
   _spaceController.reset(new SpaceController(_state, _config));
   _logicController.reset(new LogicController(_state, _config));
+  _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
   ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
@@ -51,41 +55,35 @@ void RoundController::setup() {
     }
   }
   
+  _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
-    
-  _state.message.text = "START";
-  _state.message.color = ofColor(255, 0, 0);
-    
+
   _renderer.reset(new DomeRenderer());
   _renderer->setup(_config);
   _renderer->attachTo(*_logicController);
   
-	//...
+  for (auto& msg : _config.startMessages()) {
+    _animationManager->addMessage(msg);
+  }
 }
 
 void RoundController::draw() {
-  _renderer->draw(_state, _config);
+  _renderer->draw(_state);
 }
 
 void RoundController::update() {
-    _state.time = ofGetElapsedTimef() - _startTime;
+  _state.time = ofGetElapsedTimef() - _startTime;
 
-    if (_state.time < 3) {
-        _state.message = RoundMessage("Video Bleep\n presents", ofColor(255, 255, 255), 12);
-    } else if (_state.time < 7.5) {
-        _state.message = RoundMessage("BLEEPOUT", ofColor(0, 120, 240), 50, 4);
-    } else if (_state.time < 10) {
-        _state.message = RoundMessage("STAGE 1 START", ofColor(0, 255, 0), 25);
-    } else {
-        _state.message.text = "";
-        if (_state.paddles().size() == 0) {
-			ofLogNotice() << "Initial Paddle Create";
-            _spaceController->addInitialPaddles();
-        }
+  if (_state.time >= _config.startDelay()) {
+    if (_state.paddles().size() == 0) {
+      ofLogNotice() << "Initial Paddle Create";
+      _spaceController->addInitialPaddles();
     }
+  }
 
   _spaceController->update();
   _logicController->update();
+  _timedActions.update(TimedActionArgs::now());
   _renderer->update();
 }
 
@@ -103,6 +101,16 @@ void RoundController::onModifierApplied(ModifierEventArgs &e) {
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
   ofNotifyEvent(roundEndedEvent, e);
+}
+
+void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
+  _state.addAnimation(animation);
+  auto updater = animation->createUpdaterAction(_state.animations());
+  addTimedAction(ofPtr<TimedAction>(updater));
+}
+
+void RoundController::addTimedAction(ofPtr<TimedAction> action) {
+  _timedActions.add(action);
 }
 
 void RoundController::keyPressed(int key) {

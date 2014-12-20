@@ -58,13 +58,16 @@ public:
   DurationAction(float start, float end)
   : _startTime(start), _endTime(end), _started(false), _ended(false) { }
   
-  virtual void call(TimedActionArgs args) = 0;
-  
   bool started() const { return _started; }
   virtual bool done() const override { return _ended; }
   
   virtual bool update(TimedActionArgs args) override;
-  
+
+protected:
+  virtual void call(TimedActionArgs args) = 0;
+  virtual void start();
+  virtual void end();
+
 private:
   float _startTime;
   float _endTime;

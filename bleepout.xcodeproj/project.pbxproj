@@ -11,6 +11,7 @@
 		320111C31A427FA500EFCC35 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C11A427FA500EFCC35 /* Modifier.cpp */; };
 		320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */; };
 		3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3205CA341A412FDC0030EE68 /* SetupController.cpp */; };
+		322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322D59D71A454BCF00150050 /* RendererUtil.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
 		32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */; };
@@ -131,6 +132,8 @@
 		320111C81A428F6B00EFCC35 /* ObjectSpecs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectSpecs.h; sourceTree = "<group>"; };
 		3205CA341A412FDC0030EE68 /* SetupController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetupController.cpp; sourceTree = "<group>"; };
 		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; };
+		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; };
+		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; };
 		3243A2931A3AA550000BB599 /* basicRound.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = basicRound.json; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		32F95B431A2EB2CF008913CC /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
@@ -709,6 +712,8 @@
 				5BB4E5DE1A400F500047F957 /* TurntableCam.h */,
 				5BB4E60B1A42BE1A0047F957 /* Geometry.cpp */,
 				5BB4E60C1A42BE1A0047F957 /* Geometry.h */,
+				322D59D71A454BCF00150050 /* RendererUtil.cpp */,
+				322D59D81A454BCF00150050 /* RendererUtil.h */,
 			);
 			path = rendering;
 			sourceTree = "<group>";
@@ -951,6 +956,7 @@
 				5BB4E5E51A400F500047F957 /* LogicController.cpp in Sources */,
 				5B0DD90A1A3C497600E8BBD1 /* ofxSyphonServer.mm in Sources */,
 				5BB4E5EB1A400F500047F957 /* AnimationObject.cpp in Sources */,
+				322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */,
 				5BB4E5EF1A400F500047F957 /* GameState.cpp in Sources */,
 				32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */,
 				5B0DD90D1A3C497600E8BBD1 /* SyphonNameboundClient.m in Sources */,

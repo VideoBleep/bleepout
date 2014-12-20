@@ -13,6 +13,7 @@
 
 class RoundConfig;
 class RoundStateEventSource;
+class RoundController;
 
 class RendererBase {
 public:
@@ -23,7 +24,7 @@ public:
   virtual void detachFrom(RoundStateEventSource& roundEvents) {}
 
   virtual void update() {}
-  virtual void draw(RoundState& state, RoundConfig& config);
+  virtual void draw(RoundState& state);
 
   virtual void keyPressed(int key) {}
   virtual void mousePressed(int x, int y, int button) {}
@@ -37,6 +38,7 @@ protected:
   virtual void drawBall(RoundState& state, Ball& ball) = 0;
   virtual void drawWall(RoundState& state, Wall& wall) = 0;
   virtual void drawModifier(RoundState& state, Modifier& modifier) = 0;
+  virtual void drawAnimation(RoundState& state, AnimationObject& animation);
 };
 
 #endif /* defined(__bleepout__RendererBase__) */

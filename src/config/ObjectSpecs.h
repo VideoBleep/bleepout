@@ -102,4 +102,18 @@ struct ModifierSpec {
   : type(t), properties(p) { }
 };
 
+struct MessageSpec {
+  std::string text;
+  ofColor color;
+  float size;
+  int trails;
+  float delay;
+  float duration;
+  
+  MessageSpec() {}
+  MessageSpec(std::string txt, ofColor c, float s, int trl, float del, float dur)
+  : text(txt), color(c), size(s), trails(trl)
+  , delay(del), duration(dur) { }
+};
+
 #endif /* defined(__bleepout__ObjectSpecs__) */

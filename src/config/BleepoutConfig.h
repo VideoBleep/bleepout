@@ -18,7 +18,8 @@
 
 class RoundConfig {
 public:
-  static RoundConfig* createTestConfig();
+  static RoundConfig* createRoundConfig1();
+  static RoundConfig* createRoundConfig2();
   
   RoundConfig(std::string name);
   
@@ -27,6 +28,7 @@ public:
   
   const std::string& name() const { return _name; }
   
+  float startDelay() const { return _startDelay; }
   const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
@@ -41,12 +43,14 @@ public:
   const std::vector<BrickRingSpec>& brickRings() const { return _brickRings; }
   const std::vector<WallSpec>& walls() const { return _walls; }
   const std::vector<CurvedWallSpec>& curvedWallSets() const { return _curvedWallSets; }
+  const std::vector<MessageSpec>& startMessages() const { return _startMessages; }
   
   std::vector<BallSpec>& balls() { return _balls; }
   std::vector<BrickSpec>& bricks() { return _bricks; }
   std::vector<BrickRingSpec>& brickRings() { return _brickRings; }
   std::vector<WallSpec>& walls() { return _walls; }
   std::vector<CurvedWallSpec>& curvedWallSets() { return _curvedWallSets; }
+  std::vector<MessageSpec>& startMessages() { return _startMessages; }
   
   void addBall(BallSpec ball) {
     _balls.push_back(ball);
@@ -67,6 +71,10 @@ public:
     _modifierDefs.insert(std::make_pair(name, spec));
   }
   
+  void addStartMessage(MessageSpec spec) {
+    _startMessages.push_back(spec);
+  }
+  
   const ModifierSpec& modifierDef(std::string name) const {
     return _modifierDefs.at(name);
   }
@@ -78,12 +86,12 @@ public:
   Json::Value toJsonVal() const;
 private:
   std::string _name;
+  float _startDelay;
   ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;
   float _modifierRadius;
-    
   float _domeRadius;
   float _domeMargin;
   
@@ -93,6 +101,7 @@ private:
   std::vector<WallSpec> _walls;
   std::vector<CurvedWallSpec> _curvedWallSets;
   std::map<std::string, ModifierSpec> _modifierDefs;
+  std::vector<MessageSpec> _startMessages;
 };
 
 class BleepoutConfig {
