@@ -120,7 +120,7 @@ namespace {
 }
 
 
-void DomeRenderer::setup(RoundConfig& config) {
+void DomeRenderer::setup(RoundController& roundController) {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
@@ -133,7 +133,7 @@ void DomeRenderer::setup(RoundConfig& config) {
     _drawCometTails = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-    _extras.setup(config);
+    _extras.setup(roundController);
     
     ofLight light;
     light.setDiffuseColor(ofColor(225, 225, 255));

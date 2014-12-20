@@ -50,3 +50,7 @@ Ball& RoundState::addBall(const BallSpec& ballSpec) {
 void RoundState::addModifier(ofPtr<Modifier> modifier) {
   _modifiers.push_back(modifier);
 }
+
+void RoundState::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
+}

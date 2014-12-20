@@ -17,6 +17,7 @@
 #include "SpaceController.h"
 #include "LogicController.h"
 #include "GameEvents.h"
+#include "Timing.h"
 
 class RendererBase;
 
@@ -49,8 +50,9 @@ public:
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);
   
-  ofPtr<LogicController> logicController() { return _logicController; }
   const RoundConfig& config() const { return _config; }
+  
+  void addAnimation(ofPtr<AnimationObject> animation);
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
@@ -65,6 +67,7 @@ private:
   ofPtr<RendererBase> _renderer;
   ofPtr<SpaceController> _spaceController;
   ofPtr<LogicController> _logicController;
+  TimedActionSet _timedActions;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

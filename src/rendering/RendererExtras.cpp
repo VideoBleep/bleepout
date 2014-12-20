@@ -135,9 +135,9 @@ private:
   TimedActionSet _actions;
   AnimationManager _animations;
 public:
-  RendererExtrasImpl(const RoundConfig& config)
+  RendererExtrasImpl(RoundController& roundController)
   : _actions(true)
-  , _animations(config) {
+  , _animations(roundController) {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
@@ -168,8 +168,6 @@ public:
     _ringSet2.draw(config);
     _ringSet3.draw(config);
     
-    _animations.draw();
-    
     ofPopStyle();
     ofPopMatrix();
   }
@@ -192,8 +190,8 @@ public:
   }
 };
 
-void RendererExtras::setup(const RoundConfig& config) {
-  _impl.reset(new RendererExtrasImpl(config));
+void RendererExtras::setup(RoundController& roundController) {
+  _impl.reset(new RendererExtrasImpl(roundController));
 }
 
 void RendererExtras::attachTo(RoundStateEventSource &roundEvents) {

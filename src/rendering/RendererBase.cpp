@@ -30,4 +30,12 @@ void RendererBase::draw(RoundState &state, RoundConfig& config) {
     if (obj && obj->visible())
       drawModifier(state, *obj);
   }
+  for (auto& obj : state.animations()) {
+    if (obj && obj->visible())
+      drawAnimation(state, *obj);
+  }
+}
+
+void RendererBase::drawAnimation(RoundState &state, AnimationObject &animation) {
+  animation.draw(state.config());
 }

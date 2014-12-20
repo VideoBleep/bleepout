@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Modifier.h"
+#include "AnimationObject.h"
 #include "GameObjectCollection.h"
 
 struct RoundMessage {
@@ -43,6 +44,7 @@ public:
   const GameObjectCollection<Wall>& walls() const { return _walls; }
   const GameObjectCollection<Player>& players() const { return _players; }
   const GameObjectCollection<Modifier>& modifiers() const { return _modifiers; }
+  const GameObjectCollection<AnimationObject>& animations() const { return _animations; }
   
   GameObjectCollection<Paddle>& paddles() { return _paddles; }
   GameObjectCollection<Ball>& balls() { return _balls; }
@@ -50,12 +52,16 @@ public:
   GameObjectCollection<Wall>& walls() { return _walls; }
   GameObjectCollection<Player>& players() { return _players; }
   GameObjectCollection<Modifier>& modifiers() { return _modifiers; }
+  GameObjectCollection<AnimationObject>& animations() { return _animations; }
+  
+  const RoundConfig& config() const { return _config; }
 
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
   Wall& addWall(const WallSpec& wallSpec);
   Ball& addBall(const BallSpec& ballSpec);
   void addModifier(ofPtr<Modifier> modifier);
+  void addAnimation(ofPtr<AnimationObject> animation);
   
   int decrementLiveBricks() {
     return ++_liveBricks;
@@ -81,6 +87,7 @@ private:
   GameObjectCollection<Wall>   _walls;
   GameObjectCollection<Player> _players;
   GameObjectCollection<Modifier> _modifiers;
+  GameObjectCollection<AnimationObject> _animations;
   int _liveBricks;
 };
 

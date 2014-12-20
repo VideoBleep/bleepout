@@ -57,7 +57,7 @@ void RoundController::setup() {
   _state.message.color = ofColor(255, 0, 0);
     
   _renderer.reset(new DomeRenderer());
-  _renderer->setup(_config);
+  _renderer->setup(*this);
   _renderer->attachTo(*_logicController);
   
 	//...
@@ -86,6 +86,7 @@ void RoundController::update() {
 
   _spaceController->update();
   _logicController->update();
+  _timedActions.update(TimedActionArgs::now());
   _renderer->update();
 }
 
@@ -103,6 +104,12 @@ void RoundController::onModifierApplied(ModifierEventArgs &e) {
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
   ofNotifyEvent(roundEndedEvent, e);
+}
+
+void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
+  _state.addAnimation(animation);
+  auto updater = animation->createUpdaterAction(_state.animations());
+  _timedActions.add(ofPtr<TimedAction>(updater));
 }
 
 void RoundController::keyPressed(int key) {

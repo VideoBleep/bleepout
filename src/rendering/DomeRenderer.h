@@ -21,7 +21,7 @@ class RoundConfig;
 class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
-    virtual void setup(RoundConfig& config) override;
+    virtual void setup(RoundController& roundController) override;
     virtual void attachTo(RoundStateEventSource& roundEvents) override;
     virtual void detachFrom(RoundStateEventSource& roundEvents) override;
     virtual void update() override;

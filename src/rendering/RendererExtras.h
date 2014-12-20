@@ -15,10 +15,11 @@
 
 class RendererExtrasImpl;
 class RoundStateEventSource;
+class RoundController;
 
 class RendererExtras {
 public:
-  void setup(const RoundConfig& config);
+  void setup(RoundController& roundController);
   void attachTo(RoundStateEventSource& roundEvents);
   void detachFrom(RoundStateEventSource& roundEvents);
   void update();

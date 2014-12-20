@@ -14,23 +14,20 @@
 #include "GameEvents.h"
 #include "GameState.h"
 
-class RoundState;
-class RoundConfig;
+class RoundController;
 
 class AnimationManager {
 public:
-  AnimationManager(const RoundConfig& config);
+  AnimationManager(RoundController& roundController);
   
   void attachTo(RoundStateEventSource& roundEvents);
   void detachFrom(RoundStateEventSource& roundEvents);
   
-  void draw();
-  
 private:
+  void addAnimation(AnimationObject* animation);
   void onBrickDestroyed(BrickDestroyedEventArgs& e);
 private:
-  const RoundConfig& _config;
-  TimedActionSet _animations;
+  RoundController& _roundController;
 };
 
 #endif /* defined(__bleepout__Animations__) */

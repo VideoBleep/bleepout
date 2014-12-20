@@ -11,16 +11,29 @@
 
 #include "GameObject.h"
 #include "PhysicsObject.h"
+#include "Timing.h"
+#include "GameObjectCollection.h"
 
 class RoundConfig;
 
 class AnimationObject : public GameObject {
 public:
-  AnimationObject() : GameObject(GAME_OBJECT_ANIMATION) {}
+  AnimationObject(float delay, float duration)
+  : GameObject(GAME_OBJECT_ANIMATION)
+  , _delay(delay), _duration(duration) { }
   
-  virtual void update(float time) = 0;
+  virtual void update(float percentage);
   virtual void draw(const RoundConfig& config) = 0;
+  virtual void output(std::ostream& os) const override;
+  
+  DurationAction*
+  createUpdaterAction(GameObjectCollection<AnimationObject>& animationList);
+protected:
+  inline float percentage() const { return _percentage; }
 private:
+  float _delay;
+  float _duration;
+  float _percentage;
 };
 
 template<>
