@@ -9,7 +9,7 @@
 #include "RendererBase.h"
 
 
-void RendererBase::draw(RoundState &state, RoundConfig& config) {
+void RendererBase::draw(RoundState &state) {
   for (auto& obj : state.bricks()) {
     if (obj && obj->visible())
       drawBrick(state, *obj);
@@ -30,4 +30,12 @@ void RendererBase::draw(RoundState &state, RoundConfig& config) {
     if (obj && obj->visible())
       drawModifier(state, *obj);
   }
+  for (auto& obj : state.animations()) {
+    if (obj && obj->visible())
+      drawAnimation(state, *obj);
+  }
+}
+
+void RendererBase::drawAnimation(RoundState &state, AnimationObject &animation) {
+  animation.draw(state.config());
 }

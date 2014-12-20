@@ -17,6 +17,15 @@ RoundState::RoundState(const RoundConfig& config,
   }
 }
 
+RoundState::~RoundState() {
+  for (auto& player : _players) {
+    if (player && player->paddle()) {
+      player->setPaddle(NULL);
+    }
+    player.reset();
+  }
+}
+
 void RoundState::addPlayer(ofPtr<Player> player) {
   _players.push_back(player);
 }
@@ -49,4 +58,8 @@ Ball& RoundState::addBall(const BallSpec& ballSpec) {
 
 void RoundState::addModifier(ofPtr<Modifier> modifier) {
   _modifiers.push_back(modifier);
+}
+
+void RoundState::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
 }

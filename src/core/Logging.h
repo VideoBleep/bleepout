@@ -18,7 +18,6 @@
 #include "Wall.h"
 #include "GameState.h"
 #include "GameObjectCollection.h"
-#include "GameEvents.h"
 #include "PhysicsObject.h"
 #include "OrbitalTrajectory.h"
 #include "CircularTrajectory.h"
@@ -29,5 +28,19 @@ std::ostream& operator<<(std::ostream& os, const RoundState& state);
 std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory);
 std::ostream& operator<<(std::ostream& os, const BoundingBox& box);
 std::ostream& operator<<(std::ostream& os, const CollisionShape& shape);
+
+template<typename T>
+void outputField(std::ostream& os, const char* label, const T* obj) {
+  os << label << ": ";
+  if (obj)
+    obj->output(os);
+  else
+    os << "(null)";
+}
+
+template<typename T>
+void outputField(std::ostream& os, const T* obj) {
+  outputField(os, GameObjectTypeTraits<T>::typeName, obj);
+}
 
 #endif /* defined(__bleepout__Logging__) */

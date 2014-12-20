@@ -14,13 +14,12 @@
 #include <ofTypes.h>
 
 class RendererExtrasImpl;
-class RoundStateEventSource;
 
 class RendererExtras {
 public:
-  void setup(const RoundConfig& config, RoundStateEventSource& eventSource);
+  void setup(const RoundConfig& config);
   void update();
-  void draw(RoundState& state, const RoundConfig& config);
+  void draw(RoundState& state);
   void keyPressed(int key);
 private:
   ofPtr<RendererExtrasImpl> _impl;

@@ -133,11 +133,11 @@ private:
   RingSet _ringSet2;
   RingSet _ringSet3;
   TimedActionSet _actions;
-  AnimationManager _animations;
+  const RoundConfig& _config;
 public:
   RendererExtrasImpl(const RoundConfig& config)
   : _actions(true)
-  , _animations(config) {
+  , _config(config) {
     _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
                     SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
@@ -148,24 +148,17 @@ public:
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
-  void setup(RoundStateEventSource& eventSource) {
-    _animations.attach(eventSource);
-  }
-  void update() {
-    _actions.update(TimedActionArgs::now());
-  }
-  void draw(RoundState& state, const RoundConfig& config) {
+  void update() { }
+  void draw(RoundState& state) {
     ofPushMatrix();
     ofPushStyle();
     
     float totalElapsed = ofGetElapsedTimef();
     float rate = ofGetFrameRate();
     
-    _ringSet1.draw(config);
-    _ringSet2.draw(config);
-    _ringSet3.draw(config);
-    
-    _animations.draw();
+    _ringSet1.draw(state.config());
+    _ringSet2.draw(state.config());
+    _ringSet3.draw(state.config());
     
     ofPopStyle();
     ofPopMatrix();
@@ -189,9 +182,8 @@ public:
   }
 };
 
-void RendererExtras::setup(const RoundConfig& config, RoundStateEventSource& eventSource) {
+void RendererExtras::setup(const RoundConfig& config) {
   _impl.reset(new RendererExtrasImpl(config));
-  _impl->setup(eventSource);
 }
 
 void RendererExtras::update() {
@@ -199,9 +191,9 @@ void RendererExtras::update() {
     _impl->update();
 }
 
-void RendererExtras::draw(RoundState& state, const RoundConfig& config) {
+void RendererExtras::draw(RoundState& state) {
   if (_impl)
-    _impl->draw(state, config);
+    _impl->draw(state);
 }
 
 void RendererExtras::keyPressed(int key) {

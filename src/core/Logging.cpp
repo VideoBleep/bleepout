@@ -7,6 +7,7 @@
 //
 
 #include "Logging.h"
+#include "GameEvents.h"
 #include <ofMain.h>
 
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {

@@ -19,6 +19,9 @@
 #include <ofxBullet.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
+#define SCENE_SIZE 500
+#define MAX_OBJECTS 16000
+
 class PhysicsImpl {
 public:
     std::map<PhysicsObject*, btCollisionObject*> objectMap;
@@ -26,23 +29,21 @@ public:
     typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
     ContactSet* newContacts;
     ContactSet* oldContacts;
-    
+  
+    PhysicsWorld& world;
     btCollisionConfiguration* bt_collision_configuration;
     btCollisionDispatcher* bt_dispatcher;
     btBroadphaseInterface* bt_broadphase;
     btCollisionWorld* bt_collision_world;
     
-    double scene_size = 500;
-    unsigned int max_objects = 16000;
-    
-    PhysicsImpl() {
+    PhysicsImpl(PhysicsWorld& w) : world(w) {
         bt_collision_configuration = new btDefaultCollisionConfiguration();
         bt_dispatcher = new btCollisionDispatcher(bt_collision_configuration);
         
-        btScalar sscene_size = (btScalar) scene_size;
+        btScalar sscene_size = (btScalar) SCENE_SIZE;
         btVector3 worldAabbMin(-sscene_size, -sscene_size, -sscene_size);
         btVector3 worldAabbMax(sscene_size, sscene_size, sscene_size);
-        bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, max_objects, 0, true);
+        bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, MAX_OBJECTS, 0, true);
         
         bt_collision_world = new btCollisionWorld(bt_dispatcher, bt_broadphase, bt_collision_configuration);
         
@@ -204,12 +205,12 @@ public:
                             }
                         }
 
-                        static CollisionArgs args;
+                        CollisionArgs args;
                         args.a = obj1->thisGameObject;
                         args.b = obj2->thisGameObject;
                         args.normal = -normalFromBtoA;
                         ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
-                        ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                        world.notifyCollision(args);
                     }
                 }
             }
@@ -231,8 +232,9 @@ public:
     typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
     ContactSet* newContacts;
     ContactSet* oldContacts;
-    
-    PhysicsImpl() {
+    PhysicsWorld& world;
+  
+    PhysicsImpl(PhysicsWorld& w) : world(w) {
         newContacts = new ContactSet();
         oldContacts = new ContactSet();
     }
@@ -298,7 +300,7 @@ public:
                             args.a = obj1->thisGameObject;
                             args.b = obj2->thisGameObject;
                             args.normal = m.normal;
-                            ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                            world.notifyCollision(args);
                         }
                     }
                 }
@@ -318,7 +320,7 @@ public:
 #endif
 
 void PhysicsWorld::setup() {
-    _impl.reset(new PhysicsImpl());
+    _impl.reset(new PhysicsImpl(*this));
 }
 
 void PhysicsWorld::addObject(PhysicsObject* obj) {
@@ -347,11 +349,8 @@ void PhysicsWorld::updateCollisionObject(PhysicsObject* obj) {
     }
 }
 
-void PhysicsWorld::notifyCollision(GameObject* a, GameObject* b) {
-    static CollisionArgs args;
-    args.a = a;
-    args.b = b;
-    ofNotifyEvent(collisionEvent, args, this);
+void PhysicsWorld::notifyCollision(CollisionArgs& args) {
+    ofNotifyEvent(collisionEvent, args);
 }
 
 BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
@@ -359,7 +358,4 @@ BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
         return _impl->getObjBoundingBox(obj);
     }
 }
-
-
-ofEvent<CollisionArgs> PhysicsWorld::collisionEvent;
 

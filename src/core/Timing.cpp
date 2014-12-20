@@ -53,12 +53,12 @@ bool DurationAction::update(TimedActionArgs args) {
     return true;
   if (!_started) {
     if (args.time >= _startTime)
-      _started = true;
+      this->start();
     else
       return false;
   } else {
     if (args.time >= _endTime) {
-      _ended = true;
+      this->end();
       return true;
     }
   }
@@ -67,6 +67,14 @@ bool DurationAction::update(TimedActionArgs args) {
   args.percentage = ofMap(args.time, _startTime, _endTime, 0, 1);
   call(args);
   return false;
+}
+
+void DurationAction::start() {
+  _started = true;
+}
+
+void DurationAction::end() {
+  _ended = true;
 }
 
 class FunctorDurationAction : public DurationAction {

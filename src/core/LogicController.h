@@ -20,13 +20,21 @@ public:
   void setup();
   void update();
   
-  void onBallHitPaddle(BallHitPaddleEventArgs& e);
-  void onBallHitBrick(BallHitBrickEventArgs& e);
-  void onBallHitWall(BallHitWallEventArgs& e);
-  void onBallHitBall(BallHitBallEventArgs& e);
-  void onModifierHitPaddle(ModifierHitPaddleEventArgs& e);
-
+  void attachTo(CollisionEventSource& collisions);
+  void detachFrom(CollisionEventSource& collisions);
+  
 private:
+  void onCollision(CollisionEventArgs& e);
+  
+  void onBallHitObject(Ball& ball, GameObject& object);
+  void onModifierHitObject(Modifier& modifier, GameObject& object);
+  
+  void onBallHitPaddle(Ball& ball, Paddle& paddle);
+  void onBallHitBrick(Ball& ball, Brick& brick);
+  void onBallHitWall(Ball& ball, Wall& wall);
+  void onBallHitBall(Ball& ball, Ball& otherBall);
+  void onModifierHitPaddle(Modifier& modifier, Paddle& paddle);
+
   RoundState& _state;
   RoundConfig& _config;
 };
