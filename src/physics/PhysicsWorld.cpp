@@ -19,6 +19,9 @@
 #include <ofxBullet.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
+#define SCENE_SIZE 500
+#define MAX_OBJECTS 16000
+
 class PhysicsImpl {
 public:
     std::map<PhysicsObject*, btCollisionObject*> objectMap;
@@ -32,17 +35,14 @@ public:
     btBroadphaseInterface* bt_broadphase;
     btCollisionWorld* bt_collision_world;
     
-    double scene_size = 500;
-    unsigned int max_objects = 16000;
-    
     PhysicsImpl() {
         bt_collision_configuration = new btDefaultCollisionConfiguration();
         bt_dispatcher = new btCollisionDispatcher(bt_collision_configuration);
         
-        btScalar sscene_size = (btScalar) scene_size;
+        btScalar sscene_size = (btScalar) SCENE_SIZE;
         btVector3 worldAabbMin(-sscene_size, -sscene_size, -sscene_size);
         btVector3 worldAabbMax(sscene_size, sscene_size, sscene_size);
-        bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, max_objects, 0, true);
+        bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, MAX_OBJECTS, 0, true);
         
         bt_collision_world = new btCollisionWorld(bt_dispatcher, bt_broadphase, bt_collision_configuration);
         
