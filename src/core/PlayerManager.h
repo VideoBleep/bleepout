@@ -18,16 +18,6 @@
 #include <list>
 
 // Engine.io client packet type prefixes
-//var packets = exports.packets = {
-//    open:     0    // non-ws
-//    , close:    1    // non-ws
-//    , ping:     2
-//    , pong:     3
-//    , message:  4
-//    , upgrade:  5
-//    , noop:     6
-//};
-
 const std::string PACKET_OPEN = "0";
 const std::string PACKET_CLOSE = "1";
 const std::string PACKET_PING = "2";
@@ -44,6 +34,12 @@ const std::string MESSAGE_START = "sta";
 const std::string MESSAGE_YPR = "ypr";
 // Action 
 const std::string MESSAGE_ACT = "act";
+
+// Action message prefixes
+const std::string ACTION_CONFIGURE = "cfg";
+const std::string ACTION_START = "start";
+const std::string ACTION_CALIBRATE = "cal";
+const std::string ACTION_QUIT = "quit";
 
 class PlayerManager
 : public PlayerEventSource
@@ -78,6 +74,7 @@ public:
   void onBroadcast(ofxLibwebsockets::Event& args);
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+
 private:
   bool _inRoundMode;
   std::list<ofPtr<Player> > _players;

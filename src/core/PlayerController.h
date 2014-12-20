@@ -6,6 +6,15 @@
 	
 	Actions are routed to the controller from messages recieved by PlayerManager
 
+	The player lifecycle is as follows:
+
+	* Connect
+	* Configure
+	* Queue
+	* Calibrate
+	* 
+	
+
 */
 #include "Player.h"
 
@@ -17,14 +26,17 @@ class PlayerController
 public: 
 	/*
 		Player Actions
+
 	*/
-	// Player connected
+	// Player connected - called by message from player
 	void connect(Player& player);
-	// Player has entered the 'lobby'
+	// Player configuring - called by message from player
+	void configure(Player& player);
+	// Player has entered the 'lobby' - called by ... ?
 	void queue(Player& player);
-	// Calibrate Player Position
+	// Calibrate Player Position - called by player, but this likely is a complicated step
 	void calibrate(Player& player);
-	// Player has started their game.
+	// Player has started their game - called by player
 	void start(Player& player);
 	// Player has quit. Called by player.
 	void quit(Player& player);
