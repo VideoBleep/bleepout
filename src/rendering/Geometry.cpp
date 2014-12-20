@@ -79,5 +79,5 @@ void Sweep::generate(bool merge) {
     if (merge) {
         mesh->mergeDuplicateVertices();
     }
-    return mesh;
+    //return mesh;
 }
