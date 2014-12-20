@@ -34,6 +34,7 @@ RoundController::~RoundController() {
 }
 
 void RoundController::setup() {
+  _startTime = ofGetElapsedTimef();
    
   _spaceController.reset(new SpaceController(_state, _config));
   _logicController.reset(new LogicController(_state, _config));
@@ -67,7 +68,7 @@ void RoundController::draw() {
 }
 
 void RoundController::update() {
-    _state.time = ofGetElapsedTimef();
+    _state.time = ofGetElapsedTimef() - _startTime;
 
     if (_state.time < 3) {
         _state.message = RoundMessage("Video Bleep\n presents", ofColor(255, 255, 255), 12);

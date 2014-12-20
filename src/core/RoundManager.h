@@ -58,6 +58,7 @@ private:
   void onModifierAppeared(ModifierEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   
+  float _startTime;
   PlayerManager& _playerManager;
   RoundConfig _config;
   RoundState _state;
