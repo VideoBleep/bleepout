@@ -23,4 +23,10 @@ public:
 private:
 };
 
+template<>
+struct GameObjectTypeTraits<AnimationObject> {
+  static const GameObjectType typeId = GAME_OBJECT_ANIMATION;
+  static const char typeName[];
+};
+
 #endif /* defined(__bleepout__AnimationObject__) */

@@ -120,7 +120,7 @@ namespace {
 }
 
 
-void DomeRenderer::setup(RoundController& roundController) {
+void DomeRenderer::setup(RoundConfig& config) {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
@@ -133,7 +133,7 @@ void DomeRenderer::setup(RoundController& roundController) {
     _drawCometTails = false;
     
     _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-    _extras.setup(roundController.config(), *roundController.logicController());
+    _extras.setup(config);
     
     ofLight light;
     light.setDiffuseColor(ofColor(225, 225, 255));
@@ -154,6 +154,14 @@ void DomeRenderer::setup(RoundController& roundController) {
     wallMaterial.setEmissiveColor(ofColor(68, 60, 98));
     wallMaterial.setShininess(10.0);
     wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
+}
+
+void DomeRenderer::attachTo(RoundStateEventSource &roundEvents) {
+  _extras.attachTo(roundEvents);
+}
+
+void DomeRenderer::detachFrom(RoundStateEventSource &roundEvents) {
+  _extras.detachFrom(roundEvents);
 }
 
 void DomeRenderer::update() {
@@ -416,4 +424,22 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
         
     }
     
+}
+
+void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
+  //...?
+  ofPushStyle();
+  ofPushMatrix();
+  
+  ofTranslate(modifier.getPosition());
+  ofRotateX(360 * modifier.getTrajectory()->getTime());
+  ofRotateY(45);
+  ofSetLineWidth(8.0);
+  ofFill();
+  ofSetColor(255, 0, 0);
+  ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+  
+  ofPopMatrix();
+  
+  ofPopStyle();
 }

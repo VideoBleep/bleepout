@@ -15,32 +15,95 @@ void LogicController::setup() {
   
 }
 
+void LogicController::attachTo(CollisionEventSource &collisions) {
+  ofAddListener(collisions.collisionEvent, this,
+                &LogicController::onCollision);
+}
+
+void LogicController::detachFrom(CollisionEventSource &collisions) {
+  ofRemoveListener(collisions.collisionEvent, this,
+                   &LogicController::onCollision);
+}
+
 void LogicController::update() {
   
 }
 
-void LogicController::onBallHitPaddle(BallHitPaddleEventArgs &e) {
-  Player* previousPlayer = e.ball()->player();
-  Player* player = e.object()->player();
-  e.ball()->setPlayer(player);
-  if (player != previousPlayer) {
-    notifyBallOwnerChanged(_state, e.ball(), player, previousPlayer);
+void LogicController::onCollision(CollisionEventArgs &e) {
+  GameObject& objA = *e.a();
+  GameObject& objB = *e.b();
+  auto typeA = objA.type();
+  auto typeB = objB.type();
+  if (typeA == GAME_OBJECT_MODIFIER) {
+    onModifierHitObject(static_cast<Modifier&>(objA), objB);
+  } else if (typeB == GAME_OBJECT_MODIFIER) {
+    onModifierHitObject(static_cast<Modifier&>(objB), objA);
+  } else if (typeA == GAME_OBJECT_BALL) {
+    onBallHitObject(static_cast<Ball&>(objA), objB);
+  } else if (typeB == GAME_OBJECT_BALL) {
+    onBallHitObject(static_cast<Ball&>(objB), objA);
   }
 }
 
-void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
-  Ball* ball = e.ball();
-  Brick* brick = e.object();
-  Player* player = ball->player();
-  
+void LogicController::onBallHitObject(Ball &ball, GameObject &object) {
+  switch (object.type()) {
+    case GAME_OBJECT_BRICK:
+      onBallHitBrick(ball, static_cast<Brick&>(object));
+      break;
+    case GAME_OBJECT_PADDLE:
+      onBallHitPaddle(ball, static_cast<Paddle&>(object));
+      break;
+    case GAME_OBJECT_BALL:
+      onBallHitBall(ball, static_cast<Ball&>(object));
+      break;
+    case GAME_OBJECT_WALL:
+      onBallHitWall(ball, static_cast<Wall&>(object));
+      break;
+    default:
+      break;
+  }
+}
+
+void LogicController::onModifierHitObject(Modifier &modifier, GameObject &object) {
+  switch (object.type()) {
+    case GAME_OBJECT_PADDLE:
+      onModifierHitPaddle(modifier, static_cast<Paddle&>(object));
+      break;
+    default:
+      break;
+  }
+}
+
+void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
+  Player* previousPlayer = ball.player();
+  Player* player = paddle.player();
+  ball.setPlayer(player);
+  if (player != previousPlayer) {
+    notifyBallOwnerChanged(_state, &ball, player, previousPlayer);
+  }
+}
+
+void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
+  Player* player = ball.player();
   if (player) {
-    brick->adjustLives(-1);
-    if (!brick->alive()) {
-      brick->kill();
+    brick.adjustLives(-1);
+    if (!brick.alive()) {
+      brick.kill();
       _state.decrementLiveBricks();
-      notifyBrickDestroyed(_state, brick, ball);
+      notifyBrickDestroyed(_state, &brick, &ball);
       
-      player->adjustScore(brick->value());
+      const std::string& modifierName = brick.modifierName();
+      if (!modifierName.empty()) {
+        const ModifierSpec& spec = _config.modifierDef(modifierName);
+        ofPtr<Modifier> modifier(Modifier::createModifier(spec));
+        if (modifier) {
+          modifier->setup(_config, brick);
+          _state.addModifier(modifier);
+          notifyModifierAppeared(_state, modifier.get(), &brick);
+        }
+      }
+      
+      player->adjustScore(brick.value());
       notifyPlayerScoreChanged(_state, player);
       
       if (_state.liveBricks() <= 0) {
@@ -50,14 +113,12 @@ void LogicController::onBallHitBrick(BallHitBrickEventArgs &e) {
   }
 }
 
-void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
-  Wall* wall = e.object();
-  if (wall->isExit()) {
-    Ball* ball = e.ball();
-    Player* player = ball->player();
+void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
+  if (wall.isExit()) {
+    Player* player = ball.player();
     
-    ball->kill();
-    notifyBallDestroyed(_state, ball);
+    ball.kill();
+    notifyBallDestroyed(_state, &ball);
     
     if (player) {
       player->adjustLives(-1);
@@ -69,6 +130,15 @@ void LogicController::onBallHitWall(BallHitWallEventArgs &e) {
   }
 }
 
-void LogicController::onBallHitBall(BallHitBallEventArgs &e) {
+void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
+  //...
+}
+
+void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
+  if (modifier.applyToTarget(paddle)) {
+    notifyModifierApplied(_state, &modifier, &paddle);
+    _state.modifiers().eraseObjectById(modifier.id());
+    //...?
+  }
   //...
 }

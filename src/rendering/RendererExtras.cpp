@@ -148,8 +148,11 @@ public:
                     SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
-  void setup(RoundStateEventSource& eventSource) {
-    _animations.attach(eventSource);
+  void attachTo(RoundStateEventSource& roundEvents) {
+    _animations.attachTo(roundEvents);
+  }
+  void detachFrom(RoundStateEventSource& roundEvents) {
+    _animations.detachFrom(roundEvents);
   }
   void update() {
     _actions.update(TimedActionArgs::now());
@@ -189,9 +192,24 @@ public:
   }
 };
 
-void RendererExtras::setup(const RoundConfig& config, RoundStateEventSource& eventSource) {
+void RendererExtras::setup(const RoundConfig& config) {
   _impl.reset(new RendererExtrasImpl(config));
-  _impl->setup(eventSource);
+}
+
+void RendererExtras::attachTo(RoundStateEventSource &roundEvents) {
+  if (!_impl) {
+    ofLogError() << "RendererExtras cannot attach to events before setup";
+    return;
+  }
+  _impl->attachTo(roundEvents);
+}
+
+void RendererExtras::detachFrom(RoundStateEventSource &roundEvents) {
+  if (!_impl) {
+    ofLogError() << "RendererExtras cannot detach to events before setup";
+    return;
+  }
+  _impl->detachFrom(roundEvents);
 }
 
 void RendererExtras::update() {

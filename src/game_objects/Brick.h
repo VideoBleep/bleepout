@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "PhysicsObject.h"
 #include <ofMain.h>
+#include <string>
 
 class RoundConfig;
 struct BrickSpec;
@@ -36,13 +37,21 @@ public:
   }
   int maxLives() const { return _maxLives; }
   
+  const std::string& modifierName() const { return _modifierName; }
+  
   void output(std::ostream& os) const override;
   
-  static const char* typeName() { return "brick"; }
 private:
   int _value;
   int _lives;
   int _maxLives;
+  std::string _modifierName;
+};
+
+template<>
+struct GameObjectTypeTraits<Brick> {
+  static const GameObjectType typeId = GAME_OBJECT_BRICK;
+  static const char typeName[];
 };
 
 #endif /* defined(__bleepout__Brick__) */

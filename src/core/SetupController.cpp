@@ -23,30 +23,54 @@ void SetupController::update() {
 }
 
 void SetupController::draw() {
+  ofBackground(ofColor::white);
   ofPushStyle();
   ofPushMatrix();
-  ofTranslate(100, 250);
-  ofSetColor(0, 0, 0);
-  ofDrawBitmapString("Waiting for players...", 0, 0);
-  ofTranslate(0, 15);
-  ofDrawBitmapString("Players: " + ofToString(_players.size()), 0, 0);
-  if (canStartRound()) {
+  {
+    ofSetColor(0);
+    ofTranslate(100, 250);
+    ofDrawBitmapString("Waiting for players...", 0, 0);
     ofTranslate(0, 15);
-    ofDrawBitmapString("Press 'n' to start round...", 0, 0);
+    ofDrawBitmapString("Players: " + ofToString(_players.size()), 0, 0);
+    if (canStartRound()) {
+      ofTranslate(0, 15);
+      ofDrawBitmapString("Press ENTER to start round...", 0, 0);
+    }
   }
-  //...
+  ofPopMatrix();
+  ofPopStyle();
+  ofPushMatrix();
+  ofPushStyle();
+  {
+    ofTranslate(350, 250);
+    ofSetColor(0);
+    ofDrawBitmapString("Select round configuration:", 0, 0);
+    int i = 0;
+    for (auto& round : _appConfig.roundConfigs()) {
+      ofTranslate(0, 25);
+      bool selected = _roundConfig && _roundConfig == round;
+      std::string prefix;
+      if (selected)
+        prefix = "**";
+      ofDrawBitmapString(prefix + "[" + ofToString(i) + "]: " + round->name(), 0, 0);
+      i++;
+    }
+  }
   ofPopMatrix();
   ofPopStyle();
 }
 
 void SetupController::keyPressed(int key) {
-  if (key == 'n') {
-    // yes it's ugly... creating config, returning it by value,
-    // then passing that into an auto-generated copy constructor...
-    _roundConfig.reset(new RoundConfig(RoundConfig::createTestConfig(_appConfig)));
+  if (key == OF_KEY_RETURN) {
     if (!tryStartRound()) {
       //...?
     }
+  } else if (key >= '0' && key <= '9') {
+    int i = key - '0';
+    if (i < _appConfig.roundConfigs().size()) {
+      _roundConfig = _appConfig.roundConfigs()[i];
+    }
+    //........???!!!
   }
 }
 

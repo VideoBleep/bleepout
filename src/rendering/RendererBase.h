@@ -10,19 +10,17 @@
 #define __bleepout__RendererBase__
 
 #include "GameState.h"
-#include "GameObjectCollection.h"
-#include "Brick.h"
-#include "Paddle.h"
-#include "Ball.h"
-#include "BleepoutConfig.h"
 
-class RoundController;
+class RoundConfig;
+class RoundStateEventSource;
 
 class RendererBase {
 public:
   virtual ~RendererBase() {}
     
-  virtual void setup(RoundController& roundController) {}
+  virtual void setup(RoundConfig& config) {}
+  virtual void attachTo(RoundStateEventSource& roundEvents) {}
+  virtual void detachFrom(RoundStateEventSource& roundEvents) {}
 
   virtual void update() {}
   virtual void draw(RoundState& state, RoundConfig& config);
@@ -38,6 +36,7 @@ protected:
   virtual void drawPaddle(RoundState& state, Paddle& paddle) = 0;
   virtual void drawBall(RoundState& state, Ball& ball) = 0;
   virtual void drawWall(RoundState& state, Wall& wall) = 0;
+  virtual void drawModifier(RoundState& state, Modifier& modifier) = 0;
 };
 
 #endif /* defined(__bleepout__RendererBase__) */

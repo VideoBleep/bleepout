@@ -24,6 +24,13 @@ RoundController::RoundController(RoundConfig config,
 
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+  ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
+  ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
+  _logicController->detachFrom(*_spaceController);
+  _renderer->detachFrom(*_logicController);
+  _logicController.reset();
+  _renderer.reset();
+  _spaceController.reset();
 }
 
 void RoundController::setup() {
@@ -33,6 +40,8 @@ void RoundController::setup() {
   _spaceController->setup();
   _logicController->setup();
   ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
+  ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
+  ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
     
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -41,13 +50,14 @@ void RoundController::setup() {
     }
   }
   
-  _spaceController->attachListener(*_logicController);
+  _logicController->attachTo(*_spaceController);
     
   _state.message.text = "START";
   _state.message.color = ofColor(255, 0, 0);
     
   _renderer.reset(new DomeRenderer());
-  _renderer->setup(*this);
+  _renderer->setup(_config);
+  _renderer->attachTo(*_logicController);
   
 	//...
 }
@@ -76,6 +86,18 @@ void RoundController::update() {
   _spaceController->update();
   _logicController->update();
   _renderer->update();
+}
+
+void RoundController::onModifierAppeared(ModifierEventArgs& e) {
+  if (!e.target() || e.target()->type() != GAME_OBJECT_BRICK) {
+    ofLogError() << "Invalid spawn source for modifier";
+    return;
+  }
+  _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
+}
+
+void RoundController::onModifierApplied(ModifierEventArgs &e) {
+  _spaceController->removeModifier(*e.modifier());
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
@@ -159,8 +181,8 @@ void RoundController::mousePressed(int x, int y, int button) {
 void RoundController::mouseMoved(int x, int y) {
   if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
         _renderer->mouseMoved(x, y);
-  } else if (_state.players().size()) {
-    ofPtr<Player> player = _state.players()[0];
+  } else if (!_state.players().empty()) {
+    const ofPtr<Player>& player = _state.players().front();
     setPaddlePosition(player->id(), (float)x / ofGetWidth());
   }
 }

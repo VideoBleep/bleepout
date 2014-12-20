@@ -10,6 +10,8 @@
 #include "OrbitalTrajectory.h"
 #include "BleepoutConfig.h"
 
+const char GameObjectTypeTraits<Ball>::typeName[] = "ball";
+
 Ball::Ball(const RoundConfig* config /*= NULL*/, const BallSpec* spec /*= NULL*/)
 : GameObject(GAME_OBJECT_BALL)
 , _player(NULL)

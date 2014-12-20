@@ -9,8 +9,7 @@
 #ifndef bleepout_GameObjectCollection_h
 #define bleepout_GameObjectCollection_h
 
-#include <vector>
-#include <map>
+#include <list>
 #include <ofTypes.h>
 #include <iostream>
 #include <string>
@@ -18,39 +17,62 @@
 #include "GameObject.h"
 
 template<typename T>
-class GameObjectCollection : public std::vector<ofPtr<T> > {
-public:
-  typedef std::vector<ofPtr<T> >  VectorType;
-  
+class GameObjectCollection : public std::list<ofPtr<T> > {
+private:
+  typedef std::list<ofPtr<T> >  ImplType;
+
+public:  
   ofPtr<T> getById(GameObjectId id) {
-    for (auto iter = VectorType::begin(); iter != VectorType::end(); ++iter) {
-      if ((*iter)->id() == id)
-        return *iter;
+    for (auto& obj : *this) {
+      if (obj && obj->id() == id)
+        return obj;
     }
     return ofPtr<T>();
   }
-  
-  inline typename VectorType::iterator begin() { return VectorType::begin(); }
-  inline typename VectorType::const_iterator begin() const { return VectorType::begin(); }
-  
-  inline typename VectorType::iterator end() { return VectorType::end(); }
-  inline typename VectorType::const_iterator end() const { return VectorType::end(); }
 
   void dumpToLog(const std::string& label, ofLogLevel level) {
-    ofLog(level) << label << "(size:" << VectorType::size() << ")";
+    ofLog(level) << label << "(size:" << ImplType::size() << ")";
     for (auto& obj : *this) {
       GameObject& o = *obj;
       ofLog(level) << "   " << (o);
     }
   }
   
-private:
-  void push_back(ofPtr<T>& obj) {
-    VectorType::push_back(obj);
+  inline GameObjectType objectType() const {
+    return GameObjectTypeTraits<T>::typeId;
   }
   
-  friend class RoundState;
+  int pruneDeadObjects() {
+    int count = 0;
+    for (auto iter = ImplType::begin();
+         iter != ImplType::end();) {
+      ofPtr<T>& obj = *iter;
+      if (obj && !obj->alive()) {
+        obj.reset();
+      }
+      if (!obj) {
+        iter = ImplType::erase(iter);
+        count++;
+      } else {
+        iter++;
+      }
+    }
+    return count;
+  }
   
+  bool eraseObjectById(GameObjectId id) {
+    for (auto iter = ImplType::begin();
+         iter != ImplType::end();
+         iter++) {
+      ofPtr<T>& obj = *iter;
+      if (obj && obj->id() == id) {
+        obj.reset();
+        ImplType::erase(iter);
+        return true;
+      }
+    }
+    return false;
+  }
 };
 
 #endif

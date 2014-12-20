@@ -12,28 +12,14 @@
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
 _logLevel(OF_LOG_NOTICE),
-_vsync(true) {
-  
-}
+_vsync(true) { }
 
-BleepoutConfig::BleepoutConfig(const BleepoutConfig& other)
-: _fps(other._fps)
-, _logLevel(other._logLevel)
-, _syphonServerName(other._syphonServerName)
-, _syphonAppName(other._syphonAppName) { }
-
-BleepoutConfig& BleepoutConfig::operator=(const BleepoutConfig& other) {
-  _fps = other._fps;
-  _logLevel = other._logLevel;
-  _syphonServerName = other._syphonServerName;
-  _syphonAppName = other._syphonAppName;
-  return *this;
-}
-
-BleepoutConfig BleepoutConfig::createTestConfig() {
-  BleepoutConfig config;
-  config._syphonServerName = "Composition";
-  config._syphonAppName = "Arena";
+BleepoutConfig* BleepoutConfig::createTestConfig() {
+  BleepoutConfig* config = new BleepoutConfig();
+  config->_syphonServerName = "Composition";
+  config->_syphonAppName = "Arena";
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createTestConfig()));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(new RoundConfig("omghi")));
   return config;
 }
 
@@ -63,14 +49,15 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
   writeJsonFile(path, obj);
 }
 
-RoundConfig::RoundConfig(const BleepoutConfig& appConfig)
+RoundConfig::RoundConfig(std::string name)
 : _brickSize(7.0f, 5.0f, 17.0f),
 _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
+_modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
-_appConfig(appConfig) { }
+_name(name) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;
@@ -79,6 +66,7 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(obj["brickSize"], &_brickSize);
   readJsonVal(obj["paddleSize"], &_paddleSize);
   readJsonVal(obj["ballRadius"], &_ballRadius);
+  readJsonVal(obj["modifierRadius"], &_modifierRadius);
   readJsonVal(obj["brickFadeTime"], &_brickFadeTime);
   readJsonVal(obj["domeRadius"], &_domeRadius);
   readJsonVal(obj["domeMargin"], &_domeMargin);
@@ -87,6 +75,7 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonArr(obj["brickRings"], &_brickRings);
   readJsonArr(obj["walls"], &_walls);
   readJsonArr(obj["curvedWallSets"], &_curvedWallSets);
+  readJsonVal(obj["modifierDefs"], &_modifierDefs);
 }
 
 Json::Value RoundConfig::toJsonVal() const {
@@ -94,6 +83,7 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["brickSize"] = ::toJsonVal(_brickSize);
   obj["paddleSize"] = ::toJsonVal(_paddleSize);
   obj["ballRadius"] = _ballRadius;
+  obj["modifierRadius"] = _modifierRadius;
   obj["brickFadeTime"] = _brickFadeTime;
   obj["domeRadius"] = _domeRadius;
   obj["domeMargin"] = _domeMargin;
@@ -102,6 +92,7 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["brickRings"] = toJsonArr(_brickRings);
   obj["walls"] = toJsonArr(_walls);
   obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+  obj["modifierDefs"] = ::toJsonVal(_modifierDefs);
   return obj;
 }
 
@@ -148,12 +139,19 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   return walls;
 }
 
-RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
-  RoundConfig config(appConfig);
+RoundConfig* RoundConfig::createTestConfig() {
+  RoundConfig* config = new RoundConfig("TestRound");
   
   for (int i = 0; i < 5; i ++) {
-    config.addBall(BallSpec(30, ofRandom(360)));
+    config->addBall(BallSpec(30, ofRandom(360)));
   }
+  
+  std::string paddleWidthModName("paddleWidthMod");
+  StringMap paddleWidthModProps;
+  paddleWidthModProps["amount"] = "1.5";
+  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH, paddleWidthModProps);
+  config->_modifierDefs.insert(std::make_pair(paddleWidthModName,
+                                             paddleWidthModSpec));
   
   int cols = 12;
   int rows = 10;
@@ -164,11 +162,15 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
       BrickSpec spec;
       spec.elevation = 30 + 3 * j;
       spec.heading = s * 360 + j * 2 + ((i % 2) ? 5 : -5);
-      spec.color = ofColor(s * 255, j / (rows * 1.0) * 255, (1 - s) * 255);
+      spec.color = ofColor(s * 255,
+                           j / (rows * 1.0) * 255,
+                           (1 - s) * 255);
       spec.lives = (j % 3 == 1) ? 2 : 1;
       spec.value = 1;
       spec.speed = 0;
-      config.addBrick(spec);
+      if (i % 3 == 0 && j % 3 == 0)
+        spec.modifierName = paddleWidthModName;
+      config->addBrick(spec);
     }
   }
   
@@ -181,16 +183,22 @@ RoundConfig RoundConfig::createTestConfig(const BleepoutConfig &appConfig) {
     spec.width = 10;
     spec.isExit = false;
     spec.speed = 0;
-    config.addCurvedWallSet(spec);
+    config->addCurvedWallSet(spec);
   }
     
-  config.addWall(WallSpec(67,   5, ofVec3f(10, 10, 30), false, 0.02,  80));
-  config.addWall(WallSpec(67, 125, ofVec3f(10, 10, 30), false, 0.02, 200));
-  config.addWall(WallSpec(67, 245, ofVec3f(10, 10, 30), false, 0.02, 320));
+  config->addWall(WallSpec(67,   5, ofVec3f(10, 10, 30),
+                          false, 0.02,  80));
+  config->addWall(WallSpec(67, 125, ofVec3f(10, 10, 30),
+                          false, 0.02, 200));
+  config->addWall(WallSpec(67, 245, ofVec3f(10, 10, 30),
+                          false, 0.02, 320));
   
-  config.addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0), 12, 1, 2, 0, 0.02));
-  config.addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0), 10, 1, 1, 0, -0.02));
-  config.addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0), 8, 2, 2, 0, 0.02));
+  config->addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0),
+                                    12, 1, 2, 0, 0.02));
+  config->addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0),
+                                    10, 1, 1, 0, -0.02));
+  config->addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
+                                    8, 2, 2, 0, 0.02));
 
   //...
   return config;

@@ -28,5 +28,11 @@ private:
   bool _isExit;
 };
 
+template<>
+struct GameObjectTypeTraits<Wall> {
+  static const GameObjectType typeId = GAME_OBJECT_WALL;
+  static const char typeName[];
+};
+
 
 #endif /* defined(__bleepout__Wall__) */

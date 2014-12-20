@@ -21,7 +21,8 @@ class AnimationManager {
 public:
   AnimationManager(const RoundConfig& config);
   
-  void attach(RoundStateEventSource& eventSource);
+  void attachTo(RoundStateEventSource& roundEvents);
+  void detachFrom(RoundStateEventSource& roundEvents);
   
   void draw();
   
