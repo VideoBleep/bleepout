@@ -45,8 +45,6 @@ const std::string MESSAGE_YPR = "ypr";
 // Action 
 const std::string MESSAGE_ACT = "act";
 
-
-
 class PlayerManager
 : public PlayerEventSource
 , public ControlEventSource {
