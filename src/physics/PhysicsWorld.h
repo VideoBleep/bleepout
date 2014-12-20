@@ -35,11 +35,11 @@ public:
     
     void update();
     
-    void notifyCollision(GameObject* a, GameObject* b);
+    void notifyCollision(CollisionArgs& args);
     
     BoundingBox getObjBoundingBox(PhysicsObject* obj);
     
-    static ofEvent<CollisionArgs> collisionEvent;
+    ofEvent<CollisionArgs> collisionEvent;
     
 protected:
     ofPtr<PhysicsImpl> _impl;

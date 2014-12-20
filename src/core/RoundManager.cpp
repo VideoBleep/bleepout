@@ -25,7 +25,7 @@ RoundController::RoundController(RoundConfig config,
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofRemoveListener(_logicController->modifierRemovedEvent, this, &RoundController::onModifierRemoved);
+  ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
   _logicController.reset();
@@ -41,7 +41,7 @@ void RoundController::setup() {
   _logicController->setup();
   ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofAddListener(_logicController->modifierRemovedEvent, this, &RoundController::onModifierRemoved);
+  ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
     
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -96,7 +96,7 @@ void RoundController::onModifierAppeared(ModifierEventArgs& e) {
   _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
 }
 
-void RoundController::onModifierRemoved(ModifierEventArgs &e) {
+void RoundController::onModifierApplied(ModifierEventArgs &e) {
   _spaceController->removeModifier(*e.modifier());
 }
 

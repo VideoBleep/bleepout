@@ -91,46 +91,13 @@ void SpaceController::update() {
 }
 
 void SpaceController::onCollision(CollisionArgs &cdata) {
-    if (cdata.a->type() == GAME_OBJECT_MODIFIER) {
-        modifierHitObject(static_cast<Modifier*>(cdata.a), cdata.b);
-    } else if (cdata.b->type() == GAME_OBJECT_MODIFIER) {
-        modifierHitObject(static_cast<Modifier*>(cdata.b), cdata.a);
-    } else if (cdata.a->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(cdata.a), cdata.b, cdata.normal);
+    ofVec3f normal = cdata.normal;
+    if (cdata.a->type() == GAME_OBJECT_BALL) {
+        Ball& ball = static_cast<Ball&>(*cdata.a);
+        ball.bounce(cdata.normal);
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
-        ballHitObject(static_cast<Ball*>(cdata.b), cdata.a, -cdata.normal);
+        Ball& ball = static_cast<Ball&>(*cdata.b);
+        ball.bounce(-cdata.normal);
     }
+    notifyCollision(cdata.a, cdata.b);
 }
-
-void SpaceController::ballHitObject(Ball *ball, GameObject *obj, ofVec3f normal) {
-  switch (obj->type()) {
-    case GAME_OBJECT_BRICK:
-      notifyBallHitBrick(ball, static_cast<Brick*>(obj));
-      ball->bounce(normal);
-      break;
-    case GAME_OBJECT_PADDLE:
-      notifyBallHitPaddle(ball, static_cast<Paddle*>(obj));
-      ball->bounce(normal);
-      break;
-    case GAME_OBJECT_BALL:
-      notifyBallHitBall(ball, static_cast<Ball*>(obj));
-      break;
-    case GAME_OBJECT_WALL:
-      notifyBallHitWall(ball, static_cast<Wall*>(obj));
-      ball->bounce(normal);
-      break;
-    default:
-      break;
-  }
-}
-
-void SpaceController::modifierHitObject(Modifier *modifier, GameObject *obj) {
-  switch (obj->type()) {
-    case GAME_OBJECT_PADDLE:
-      notifyModifierHitPaddle(modifier, static_cast<Paddle*>(obj));
-      break;
-    default:
-      break;
-  }
-}
-

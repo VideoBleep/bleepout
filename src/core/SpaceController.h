@@ -37,9 +37,6 @@ private:
   void addWall(const WallSpec& wallSpec);
   
   void onCollision(CollisionArgs &cdata);
-    
-  void ballHitObject(Ball* ball, GameObject* obj, ofVec3f normal);
-  void modifierHitObject(Modifier* modifier, GameObject* obj);
 
 private:
   PhysicsWorld _world;

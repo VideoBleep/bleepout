@@ -29,13 +29,14 @@ public:
     typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
     ContactSet* newContacts;
     ContactSet* oldContacts;
-    
+  
+    PhysicsWorld& world;
     btCollisionConfiguration* bt_collision_configuration;
     btCollisionDispatcher* bt_dispatcher;
     btBroadphaseInterface* bt_broadphase;
     btCollisionWorld* bt_collision_world;
     
-    PhysicsImpl() {
+    PhysicsImpl(PhysicsWorld& w) : world(w) {
         bt_collision_configuration = new btDefaultCollisionConfiguration();
         bt_dispatcher = new btCollisionDispatcher(bt_collision_configuration);
         
@@ -204,12 +205,12 @@ public:
                             }
                         }
 
-                        static CollisionArgs args;
+                        CollisionArgs args;
                         args.a = obj1->thisGameObject;
                         args.b = obj2->thisGameObject;
                         args.normal = -normalFromBtoA;
                         ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
-                        ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                        world.notifyCollision(args);
                     }
                 }
             }
@@ -231,8 +232,9 @@ public:
     typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
     ContactSet* newContacts;
     ContactSet* oldContacts;
-    
-    PhysicsImpl() {
+    PhysicsWorld& world;
+  
+    PhysicsImpl(PhysicsWorld& w) : world(w) {
         newContacts = new ContactSet();
         oldContacts = new ContactSet();
     }
@@ -298,7 +300,7 @@ public:
                             args.a = obj1->thisGameObject;
                             args.b = obj2->thisGameObject;
                             args.normal = m.normal;
-                            ofNotifyEvent(PhysicsWorld::collisionEvent, args);
+                            world.notifyCollision(args);
                         }
                     }
                 }
@@ -318,7 +320,7 @@ public:
 #endif
 
 void PhysicsWorld::setup() {
-    _impl.reset(new PhysicsImpl());
+    _impl.reset(new PhysicsImpl(*this));
 }
 
 void PhysicsWorld::addObject(PhysicsObject* obj) {
@@ -347,11 +349,8 @@ void PhysicsWorld::updateCollisionObject(PhysicsObject* obj) {
     }
 }
 
-void PhysicsWorld::notifyCollision(GameObject* a, GameObject* b) {
-    static CollisionArgs args;
-    args.a = a;
-    args.b = b;
-    ofNotifyEvent(collisionEvent, args, this);
+void PhysicsWorld::notifyCollision(CollisionArgs& args) {
+    ofNotifyEvent(collisionEvent, args);
 }
 
 BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
@@ -359,7 +358,4 @@ BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
         return _impl->getObjBoundingBox(obj);
     }
 }
-
-
-ofEvent<CollisionArgs> PhysicsWorld::collisionEvent;
 

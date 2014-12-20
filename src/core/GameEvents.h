@@ -41,30 +41,21 @@ private:
   T* _object;
 };
 
-template<typename T>
-class BallHitObjectEventArgs : public ObjectEventArgs<T> {
+class CollisionEventArgs : public Outputable {
 public:
-  BallHitObjectEventArgs(Ball* ball, T* object)
-  : _ball(ball), ObjectEventArgs<T>(object) { }
+  CollisionEventArgs(GameObject* a, GameObject *b)
+  : _a(a), _b(b) { }
   
-  Ball* ball() { return _ball; }
-  const Ball* ball() const { return _ball; }
+  GameObject* a() { return _a; }
+  const GameObject* a() const { return _a; }
+  GameObject* b() { return _b; }
+  const GameObject* b() const { return _b; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, ball());
-    os << " ";
-    outputField(os, this->object());
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
-  Ball* _ball;
+  GameObject* _a;
+  GameObject* _b;
 };
-
-typedef BallHitObjectEventArgs<Paddle> BallHitPaddleEventArgs;
-typedef BallHitObjectEventArgs<Brick> BallHitBrickEventArgs;
-typedef BallHitObjectEventArgs<Wall> BallHitWallEventArgs;
-typedef BallHitObjectEventArgs<Ball> BallHitBallEventArgs;
 
 class ModifierHitPaddleEventArgs : public Outputable {
 public:
@@ -257,21 +248,13 @@ protected:
 private:
   ofLogLevel _logLevel;
 };
-  
+
 class CollisionEventSource : public EventSource {
 public:
-  ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
-  ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
-  ofEvent<BallHitWallEventArgs> ballHitWallEvent;
-  ofEvent<BallHitBallEventArgs> ballHitBallEvent;
-  ofEvent<ModifierHitPaddleEventArgs> modifierHitPaddleEvent;
+  ofEvent<CollisionEventArgs> collisionEvent;
   
 protected:
-  void notifyBallHitPaddle(Ball* ball, Paddle* paddle);
-  void notifyBallHitBrick(Ball* ball, Brick* brick);
-  void notifyBallHitWall(Ball* ball, Wall* wall);
-  void notifyBallHitBall(Ball* ball, Ball* otherBall);
-  void notifyModifierHitPaddle(Modifier* modifier, Paddle* paddle);
+  void notifyCollision(GameObject* a, GameObject* b);
 };
   
 class RoundStateEventSource : public EventSource {

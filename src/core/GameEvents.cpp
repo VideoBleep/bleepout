@@ -8,6 +8,14 @@
 
 #include "GameEvents.h"
 
+void CollisionEventArgs::output(std::ostream &os) const {
+  os << "(";
+  outputField(os, "a", _a);
+  os << " ";
+  outputField(os, "b", _b);
+  os << ")";
+}
+
 void EventSource::logEvent(const char *name,
                            const Outputable &event) const {
   if (loggingEnabled()) {
@@ -15,34 +23,10 @@ void EventSource::logEvent(const char *name,
   }
 }
 
-void CollisionEventSource::notifyBallHitPaddle(Ball *ball, Paddle *paddle) {
-  BallHitPaddleEventArgs e(ball, paddle);
-  ofNotifyEvent(ballHitPaddleEvent, e);
-  logEvent("BallHitPaddle", e);
-}
-
-void CollisionEventSource::notifyBallHitBrick(Ball *ball, Brick *brick) {
-  BallHitBrickEventArgs e(ball, brick);
-  ofNotifyEvent(ballHitBrickEvent, e);
-  logEvent("BallHitBrick", e);
-}
-
-void CollisionEventSource::notifyBallHitWall(Ball *ball, Wall *wall) {
-  BallHitWallEventArgs e(ball, wall);
-  ofNotifyEvent(ballHitWallEvent, e);
-  logEvent("BallHitWall", e);
-}
-
-void CollisionEventSource::notifyBallHitBall(Ball *ball, Ball *otherBall) {
-  BallHitBallEventArgs e(ball, otherBall);
-  ofNotifyEvent(ballHitBallEvent, e);
-  logEvent("BallHitBall", e);
-}
-
-void CollisionEventSource::notifyModifierHitPaddle(Modifier *modifier, Paddle *paddle) {
-  ModifierHitPaddleEventArgs e(modifier, paddle);
-  ofNotifyEvent(modifierHitPaddleEvent, e);
-  logEvent("ModifierHitPaddle", e);
+void CollisionEventSource::notifyCollision(GameObject *a, GameObject *b) {
+  CollisionEventArgs e(a, b);
+  ofNotifyEvent(collisionEvent, e);
+  logEvent("Collision", e);
 }
 
 void RoundStateEventSource::notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {

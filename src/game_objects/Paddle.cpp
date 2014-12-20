@@ -52,4 +52,5 @@ bool PaddleWidthModifier::applyToTarget(GameObject &target) {
     return false;
   Paddle& paddle = static_cast<Paddle&>(target);
   paddle.addWidthModifier(_amount);
+  return true;
 }
