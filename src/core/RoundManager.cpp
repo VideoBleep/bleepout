@@ -83,7 +83,7 @@ void RoundController::update() {
 
   _spaceController->update();
   _logicController->update();
-  _timedActions.update(TimedActionArgs::now());
+  _timedActions.update(_state);
   _renderer->update();
 }
 
