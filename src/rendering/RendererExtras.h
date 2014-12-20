@@ -18,7 +18,9 @@ class RoundStateEventSource;
 
 class RendererExtras {
 public:
-  void setup(const RoundConfig& config, RoundStateEventSource& eventSource);
+  void setup(const RoundConfig& config);
+  void attachTo(RoundStateEventSource& roundEvents);
+  void detachFrom(RoundStateEventSource& roundEvents);
   void update();
   void draw(RoundState& state, const RoundConfig& config);
   void keyPressed(int key);

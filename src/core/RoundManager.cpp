@@ -26,6 +26,11 @@ RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->modifierRemovedEvent, this, &RoundController::onModifierRemoved);
+  _logicController->detachFrom(*_spaceController);
+  _renderer->detachFrom(*_logicController);
+  _logicController.reset();
+  _renderer.reset();
+  _spaceController.reset();
 }
 
 void RoundController::setup() {
@@ -45,13 +50,14 @@ void RoundController::setup() {
     }
   }
   
-  _spaceController->attachListener(*_logicController);
+  _logicController->attachTo(*_spaceController);
     
   _state.message.text = "START";
   _state.message.color = ofColor(255, 0, 0);
     
   _renderer.reset(new DomeRenderer());
-  _renderer->setup(*this);
+  _renderer->setup(_config);
+  _renderer->attachTo(*_logicController);
   
 	//...
 }

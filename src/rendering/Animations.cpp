@@ -65,8 +65,14 @@ void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
   _animations.add(ofPtr<TimedAction>(newBrickDestructionAnimation(*e.brick(), _config)));
 }
 
-void AnimationManager::attach(RoundStateEventSource &eventSource) {
-  ofAddListener(eventSource.brickDestroyedEvent, this, &AnimationManager::onBrickDestroyed);
+void AnimationManager::attachTo(RoundStateEventSource &roundEvents) {
+  ofAddListener(roundEvents.brickDestroyedEvent, this,
+                &AnimationManager::onBrickDestroyed);
+}
+
+void AnimationManager::detachFrom(RoundStateEventSource &roundEvents) {
+  ofRemoveListener(roundEvents.brickDestroyedEvent, this,
+                   &AnimationManager::onBrickDestroyed);
 }
 
 void AnimationManager::draw() {

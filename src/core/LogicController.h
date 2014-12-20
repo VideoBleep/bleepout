@@ -20,13 +20,16 @@ public:
   void setup();
   void update();
   
+  void attachTo(CollisionEventSource& collisions);
+  void detachFrom(CollisionEventSource& collisions);
+  
+private:
   void onBallHitPaddle(BallHitPaddleEventArgs& e);
   void onBallHitBrick(BallHitBrickEventArgs& e);
   void onBallHitWall(BallHitWallEventArgs& e);
   void onBallHitBall(BallHitBallEventArgs& e);
   void onModifierHitPaddle(ModifierHitPaddleEventArgs& e);
 
-private:
   RoundState& _state;
   RoundConfig& _config;
 };

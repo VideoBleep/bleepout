@@ -15,6 +15,32 @@ void LogicController::setup() {
   
 }
 
+void LogicController::attachTo(CollisionEventSource &collisions) {
+  ofAddListener(collisions.ballHitPaddleEvent, this,
+                &LogicController::onBallHitPaddle);
+  ofAddListener(collisions.ballHitBrickEvent, this,
+                &LogicController::onBallHitBrick);
+  ofAddListener(collisions.ballHitWallEvent, this,
+                &LogicController::onBallHitWall);
+  ofAddListener(collisions.ballHitBallEvent, this,
+                &LogicController::onBallHitBall);
+  ofAddListener(collisions.modifierHitPaddleEvent, this,
+                &LogicController::onModifierHitPaddle);
+}
+
+void LogicController::detachFrom(CollisionEventSource &collisions) {
+  ofRemoveListener(collisions.ballHitPaddleEvent, this,
+                   &LogicController::onBallHitPaddle);
+  ofRemoveListener(collisions.ballHitBrickEvent, this,
+                   &LogicController::onBallHitBrick);
+  ofRemoveListener(collisions.ballHitWallEvent, this,
+                   &LogicController::onBallHitWall);
+  ofRemoveListener(collisions.ballHitBallEvent, this,
+                   &LogicController::onBallHitBall);
+  ofRemoveListener(collisions.modifierHitPaddleEvent, this,
+                   &LogicController::onModifierHitPaddle);
+}
+
 void LogicController::update() {
   
 }

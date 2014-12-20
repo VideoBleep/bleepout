@@ -21,20 +21,8 @@
 #include "Wall.h"
 #include "GameState.h"
 #include "Common.h"
-
-template<typename T>
-void outputField(std::ostream& os, const char* label, const T* obj) {
-  os << label << ": ";
-  if (obj)
-    obj->output(os);
-  else
-    os << "(null)";
-}
-
-template<typename T>
-void outputField(std::ostream& os, const T* obj) {
-  outputField(os, GameObjectTypeTraits<T>::typeName, obj);
-}
+#include "Logging.h"
+#include "BleepoutConfig.h"
 
 template<typename T>
 class ObjectEventArgs : public Outputable {
@@ -78,25 +66,7 @@ typedef BallHitObjectEventArgs<Brick> BallHitBrickEventArgs;
 typedef BallHitObjectEventArgs<Wall> BallHitWallEventArgs;
 typedef BallHitObjectEventArgs<Ball> BallHitBallEventArgs;
 
-class EventSource {
-public:
-  EventSource() : _logLevel(OF_LOG_SILENT) {}
-  void enableLogging(ofLogLevel level) { _logLevel = level; }
-  void disableLogging() { _logLevel = OF_LOG_SILENT; }
-  bool loggingEnabled() const {
-    return _logLevel != OF_LOG_SILENT;
-  }
-protected:
-  void logEvent(const char* name, const Outputable& event) const {
-    if (loggingEnabled()) {
-      ofLog(_logLevel) << "EVENT{" << name << "}: " << event;
-    }
-  }
-private:
-  ofLogLevel _logLevel;
-};
-
-  class ModifierHitPaddleEventArgs : public Outputable {
+class ModifierHitPaddleEventArgs : public Outputable {
 public:
   ModifierHitPaddleEventArgs(Modifier* modifier, Paddle* paddle)
   : _modifier(modifier), _paddle(paddle) { }
@@ -116,59 +86,6 @@ public:
 private:
   Modifier* _modifier;
   Paddle* _paddle;
-};
-
-class CollisionEventSource : public EventSource {
-public:
-  ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
-  ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
-  ofEvent<BallHitWallEventArgs> ballHitWallEvent;
-  ofEvent<BallHitBallEventArgs> ballHitBallEvent;
-  ofEvent<ModifierHitPaddleEventArgs> modifierHitPaddleEvent;
-  
-  template<typename Listener>
-  void attachListener(Listener& listener) {
-    ofAddListener(ballHitPaddleEvent, &listener, &Listener::onBallHitPaddle);
-    ofAddListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
-    ofAddListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
-    ofAddListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
-    ofAddListener(modifierHitPaddleEvent, &listener, &Listener::onModifierHitPaddle);
-  }
-  template<typename Listener>
-  void detachListener(Listener& listener) {
-    ofRemoveListener(ballHitPaddleEvent, &listener, &Listener::onBallHitPaddle);
-    ofRemoveListener(ballHitBrickEvent, &listener, &Listener::onBallHitBrick);
-    ofRemoveListener(ballHitBallEvent, &listener, &Listener::onBallHitBall);
-    ofRemoveListener(ballHitWallEvent, &listener, &Listener::onBallHitWall);
-    ofRemoveListener(modifierHitPaddleEvent, &listener, &Listener::onModifierHitPaddle);
-  }
-  
-protected:
-  void notifyBallHitPaddle(Ball* ball, Paddle* paddle) {
-    BallHitPaddleEventArgs e(ball, paddle);
-    ofNotifyEvent(ballHitPaddleEvent, e);
-    logEvent("BallHitPaddle", e);
-  }
-  void notifyBallHitBrick(Ball* ball, Brick* brick) {
-    BallHitBrickEventArgs e(ball, brick);
-    ofNotifyEvent(ballHitBrickEvent, e);
-    logEvent("BallHitBrick", e);
-  }
-  void notifyBallHitWall(Ball* ball, Wall* wall) {
-    BallHitWallEventArgs e(ball, wall);
-    ofNotifyEvent(ballHitWallEvent, e);
-    logEvent("BallHitWall", e);
-  }
-  void notifyBallHitBall(Ball* ball, Ball* otherBall) {
-    BallHitBallEventArgs e(ball, otherBall);
-    ofNotifyEvent(ballHitBallEvent, e);
-    logEvent("BallHitBall", e);
-  }
-  void notifyModifierHitPaddle(Modifier* modifier, Paddle* paddle) {
-    ModifierHitPaddleEventArgs e(modifier, paddle);
-    ofNotifyEvent(modifierHitPaddleEvent, e);
-    logEvent("ModifierHitPaddle", e);
-  }
 };
 
 class RoundStateEventArgs : public Outputable {
@@ -287,158 +204,26 @@ private:
 typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
 typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
 
-class RoundStateEventSource : public EventSource {
-public:
-  ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
-  ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
-  ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
-  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
-  ofEvent<BallEventArgs> ballDestroyedEvent;
-  ofEvent<BallEventArgs> ballRespawnedEvent;
-  ofEvent<PlayerEventArgs> playerLostEvent;
-  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
-  ofEvent<ModifierEventArgs> modifierAppearedEvent;
-  ofEvent<ModifierEventArgs> modifierAppliedEvent;
-  ofEvent<ModifierEventArgs> modifierRemovedEvent;
-  
-  template<typename Listener>
-  void attachListener(Listener& listener) {
-    ofAddListener(ballOwnerChangedEvent, &listener, &Listener::onBallOwnerChanged);
-    ofAddListener(brickDestroyedEvent, &listener, &Listener::onBrickDestroyed);
-    ofAddListener(playerScoreChangedEvent, &listener, &Listener::onPlayerScoreChanged);
-    ofAddListener(ballDestroyedEvent, &listener, &Listener::onBallDestroyed);
-    ofAddListener(ballRespawnedEvent, &listener, &Listener::onBallRespawned);
-    ofAddListener(playerLostEvent, &listener, &Listener::onPlayerLost);
-    ofAddListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
-    ofAddListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
-    ofAddListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
-    ofAddListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
-    ofAddListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
-  }
-  
-  template<typename Listener>
-  void detachListener(Listener& listener) {
-    ofRemoveListener(ballOwnerChangedEvent, &listener, &Listener::onBallOwnerChanged);
-    ofRemoveListener(brickDestroyedEvent, &listener, &Listener::onBrickDestroyed);
-    ofRemoveListener(playerScoreChangedEvent, &listener, &Listener::onPlayerScoreChanged);
-    ofRemoveListener(ballDestroyedEvent, &listener, &Listener::onBallDestroyed);
-    ofRemoveListener(ballRespawnedEvent, &listener, &Listener::onBallRespawned);
-    ofRemoveListener(playerLostEvent, &listener, &Listener::onPlayerLost);
-    ofRemoveListener(playerLivesChangedEvent, &listener, &Listener::onPlayerLivesChanged);
-    ofRemoveListener(roundEndedEvent, &listener, &Listener::onRoundEnded);
-    ofRemoveListener(modifierAppearedEvent, &listener, &Listener::onModifierAppeared);
-    ofRemoveListener(modifierAppliedEvent, &listener, &Listener::onModifierApplied);
-    ofRemoveListener(modifierRemovedEvent, &listener, &Listener::onModifierRemoved);
-  }
-protected:
-  void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {
-    BallOwnerChangedEventArgs e(state, ball, player, previousPlayer);
-    ofNotifyEvent(ballOwnerChangedEvent, e);
-    logEvent("BallOwnerChanged", e);
-  }
-  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball) {
-    BrickDestroyedEventArgs e(state, brick, ball);
-    ofNotifyEvent(brickDestroyedEvent, e);
-    logEvent("BrickDestroyed", e);
-  }
-  void notifyAllBricksDestroyed(RoundState& state) {
-    RoundStateEventArgs e(state);
-    ofNotifyEvent(allBricksDestroyedEvent, e);
-    logEvent("AllBricksDestroyed", e);
-  }
-  void notifyPlayerScoreChanged(RoundState& state, Player* player) {
-    PlayerEventArgs e(state, player);
-    ofNotifyEvent(playerScoreChangedEvent, e);
-    logEvent("PlayerScoreChanged", e);
-  }
-  void notifyBallDestroyed(RoundState& state, Ball* ball) {
-    BallEventArgs e(state, ball);
-    ofNotifyEvent(ballDestroyedEvent, e);
-    logEvent("BallDestroyed", e);
-  }
-  void notifyBallRespawned(RoundState& state, Ball* ball) {
-    BallEventArgs e(state, ball);
-    ofNotifyEvent(ballRespawnedEvent, e);
-    logEvent("BallRespawned", e);
-  }
-  void notifyPlayerLost(RoundState& state, Player* player) {
-    PlayerEventArgs e(state, player);
-    ofNotifyEvent(playerLostEvent, e);
-    logEvent("PlayerLost", e);
-  }
-  void notifyPlayerLivesChanged(RoundState& state, Player* player) {
-    PlayerEventArgs e(state, player);
-    ofNotifyEvent(playerLivesChangedEvent, e);
-    logEvent("PlayerLivesChanged", e);
-  }
-  void notifyRoundEnded(RoundState& state) {
-    RoundStateEventArgs e(state);
-    ofNotifyEvent(roundEndedEvent, e);
-    logEvent("RoundEnded", e);
-  }
-  void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
-    ModifierEventArgs e(state, modifier, spawnerBrick);
-    ofNotifyEvent(modifierAppearedEvent, e);
-  }
-  void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
-    ModifierEventArgs e(state, modifier, target);
-    ofNotifyEvent(modifierAppliedEvent, e);
-  }
-  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target) {
-    ModifierEventArgs e(state, modifier, target);
-    ofNotifyEvent(modifierRemovedEvent, e);
-  }
-};
-
-class PlayerEventSource {
-public:
-  ofEvent<PlayerEventArgs> playerAddedEvent;
-  ofEvent<PlayerEventArgs> playerRemovedEvent;
-  
-  template<typename Listener>
-  void attachListener(Listener& listener) {
-    ofAddListener(playerAddedEvent, &listener, &Listener::onPlayerAdded);
-    ofAddListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
-  }
-  template<typename Listener>
-  void detachListener(Listener& listener) {
-    ofRemoveListener(playerAddedEvent, &listener, &Listener::onPlayerAdded);
-    ofRemoveListener(playerRemovedEvent, &listener, &Listener::onPlayerRemoved);
-  }
-protected:
-  void notifyPlayerAdded(RoundState& state, Player* player) {
-    PlayerEventArgs e(state, player);
-    ofNotifyEvent(playerAddedEvent, e);
-  }
-  void notifyPlayerRemoved(RoundState& state, Player* player) {
-    PlayerEventArgs e(state, player);
-    ofNotifyEvent(playerRemovedEvent, e);
-  }
-};
-
-class StartRoundEventArgs {
+class StartRoundEventArgs : public Outputable {
 public:
   StartRoundEventArgs(ofPtr<RoundConfig> config,
                       std::list<ofPtr<Player> > players)
   : _config(config) , _players(players) { }
   
   ofPtr<RoundConfig>& config() { return _config; }
+  const ofPtr<RoundConfig>& config() const { return _config; }
   std::list<ofPtr<Player> >& players() { return _players; }
+  const std::list<ofPtr<Player> >& players() const { return _players; }
+  
+  virtual void output(std::ostream& os) const override {
+    os << "(";
+    os << "config:" << config()->name() << ", ";
+    os << "players:" << players().size();
+    os << ")";
+  }
 private:
   ofPtr<RoundConfig> _config;
   std::list<ofPtr<Player> > _players;
-};
-
-class SetupEventSource : public EventSource {
-public:
-  ofEvent<StartRoundEventArgs> startRoundEvent;
-protected:
-  void notifyStartRound(ofPtr<RoundConfig> config,
-                        std::list<ofPtr<Player> > players) {
-    StartRoundEventArgs e(config, players);
-    ofNotifyEvent(startRoundEvent, e);
-  }
 };
   
 class PlayerYawPitchRollEventArgs {
@@ -458,16 +243,90 @@ private:
   float _pitch;
   float _roll;
 };
+  
+class EventSource {
+public:
+  EventSource() : _logLevel(OF_LOG_SILENT) {}
+  void enableLogging(ofLogLevel level) { _logLevel = level; }
+  void disableLogging() { _logLevel = OF_LOG_SILENT; }
+  bool loggingEnabled() const {
+    return _logLevel != OF_LOG_SILENT;
+  }
+protected:
+  void logEvent(const char* name, const Outputable& event) const;
+private:
+  ofLogLevel _logLevel;
+};
+  
+class CollisionEventSource : public EventSource {
+public:
+  ofEvent<BallHitPaddleEventArgs> ballHitPaddleEvent;
+  ofEvent<BallHitBrickEventArgs> ballHitBrickEvent;
+  ofEvent<BallHitWallEventArgs> ballHitWallEvent;
+  ofEvent<BallHitBallEventArgs> ballHitBallEvent;
+  ofEvent<ModifierHitPaddleEventArgs> modifierHitPaddleEvent;
+  
+protected:
+  void notifyBallHitPaddle(Ball* ball, Paddle* paddle);
+  void notifyBallHitBrick(Ball* ball, Brick* brick);
+  void notifyBallHitWall(Ball* ball, Wall* wall);
+  void notifyBallHitBall(Ball* ball, Ball* otherBall);
+  void notifyModifierHitPaddle(Modifier* modifier, Paddle* paddle);
+};
+  
+class RoundStateEventSource : public EventSource {
+public:
+  ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
+  ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
+  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
+  ofEvent<BallEventArgs> ballDestroyedEvent;
+  ofEvent<BallEventArgs> ballRespawnedEvent;
+  ofEvent<PlayerEventArgs> playerLostEvent;
+  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierAppliedEvent;
+  ofEvent<ModifierEventArgs> modifierRemovedEvent;
+  
+protected:
+  void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
+  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);
+  void notifyAllBricksDestroyed(RoundState& state);
+  void notifyPlayerScoreChanged(RoundState& state, Player* player);
+  void notifyBallDestroyed(RoundState& state, Ball* ball);
+  void notifyBallRespawned(RoundState& state, Ball* ball);
+  void notifyPlayerLost(RoundState& state, Player* player);
+  void notifyPlayerLivesChanged(RoundState& state, Player* player);
+  void notifyRoundEnded(RoundState& state);
+  void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
+  void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
+  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target);
+};
+  
+class PlayerEventSource : public EventSource {
+public:
+  ofEvent<PlayerEventArgs> playerAddedEvent;
+  ofEvent<PlayerEventArgs> playerRemovedEvent;
+protected:
+  void notifyPlayerAdded(RoundState& state, Player* player);
+  void notifyPlayerRemoved(RoundState& state, Player* player);
+};
+  
+class SetupEventSource : public EventSource {
+public:
+  ofEvent<StartRoundEventArgs> startRoundEvent;
+protected:
+  void notifyStartRound(ofPtr<RoundConfig> config,
+                        std::list<ofPtr<Player> > players);
+};
 
 class ControlEventSource : public EventSource {
 public:
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
 protected:
   void notifyPlayerYawPitchRoll(Player* player, float yaw,
-                                float pitch, float roll) {
-    PlayerYawPitchRollEventArgs e(player, yaw, pitch, roll);
-    ofNotifyEvent(playerYawPitchRollEvent, e);
-  }
+                                float pitch, float roll);
 };
 
 #endif /* defined(__bleepout__GameEvents__) */
