@@ -10,10 +10,12 @@
 
 const char GameObjectTypeTraits<Paddle>::typeName[] = "paddle";
 
-Paddle::Paddle(Player* player)
+Paddle::Paddle(Player* player, ofVec3f size)
 : GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
   thisGameObject = this;
   _color = ofColor(128, 128, 128);
+  setSize(size);
+  _origSize = size;
 }
 
 const ofColor& Paddle::getColor() const {

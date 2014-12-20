@@ -18,7 +18,7 @@
 
 class Paddle : public GameObject, public PhysicsObject {
 public:
-  Paddle(Player* player);
+  Paddle(Player* player, ofVec3f size);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }
