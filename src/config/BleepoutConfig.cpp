@@ -18,8 +18,8 @@ BleepoutConfig* BleepoutConfig::createTestConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
-  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createTestConfig()));
-  config->_roundConfigs.push_back(ofPtr<RoundConfig>(new RoundConfig("omghi")));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
   return config;
 }
 
@@ -57,7 +57,8 @@ _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
-_name(name) { }
+_name(name),
+_startDelay(0) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;
@@ -139,8 +140,8 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   return walls;
 }
 
-RoundConfig* RoundConfig::createTestConfig() {
-  RoundConfig* config = new RoundConfig("TestRound");
+RoundConfig* RoundConfig::createRoundConfig1() {
+  RoundConfig* config = new RoundConfig("Round1");
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));
@@ -199,7 +200,23 @@ RoundConfig* RoundConfig::createTestConfig() {
                                     10, 1, 1, 0, -0.02));
   config->addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
                                     8, 2, 2, 0, 0.02));
+//  MessageSpec(std::string txt, ofColor c, float s, int trl, float del, float dur)
+//  : text(txt), color(c), size(s), trails(trl)
+//  , delay(del), duration(dur) { }
+  config->addStartMessage(MessageSpec("Video Bleep\npresents",
+                                      ofColor(255), 12, 0, 0, 3));
+  config->addStartMessage(MessageSpec("BLEEPOUT",
+                                      ofColor(0, 120, 240), 50, 4, 3, 4.5));
+  config->addStartMessage(MessageSpec("STAGE 1 START",
+                                      ofColor(0, 255, 0), 25, 0, 7.5, 2.5));
+  config->_startDelay = 10;
 
   //...
+  return config;
+}
+RoundConfig* RoundConfig::createRoundConfig2() {
+  RoundConfig* config = new RoundConfig("Round2");
+  //...
+  config->addStartMessage(MessageSpec("STAGE 2 START", ofColor(0, 255, 0), 25, 0, 2, 2.5));
   return config;
 }

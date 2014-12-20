@@ -22,21 +22,12 @@
 #include "AnimationObject.h"
 #include "GameObjectCollection.h"
 
-struct RoundMessage {
-  RoundMessage() {}
-  RoundMessage(string t, const ofColor& c, float sz = 50, int trail = 0)
-  : text(t), color(c), size(sz), trails(trail) {}
-  string text;
-  ofColor color;
-  float size;
-  int trails;
-};
-
 class RoundState {
 public:
   
   RoundState(const RoundConfig& config,
              std::list<ofPtr<Player> >& players);
+  ~RoundState();
   
   const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
   const GameObjectCollection<Ball>& balls() const { return _balls; }
@@ -70,8 +61,7 @@ public:
   int liveBricks() const { return _liveBricks; }
   
   void output(std::ostream& os) const;
-  
-  RoundMessage message;
+
   float time;
   
 private:

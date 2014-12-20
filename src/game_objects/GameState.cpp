@@ -17,6 +17,15 @@ RoundState::RoundState(const RoundConfig& config,
   }
 }
 
+RoundState::~RoundState() {
+  for (auto& player : _players) {
+    if (player && player->paddle()) {
+      player->setPaddle(NULL);
+    }
+    player.reset();
+  }
+}
+
 void RoundState::addPlayer(ofPtr<Player> player) {
   _players.push_back(player);
 }

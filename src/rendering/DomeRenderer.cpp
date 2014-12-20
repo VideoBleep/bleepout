@@ -9,60 +9,9 @@
 #include "DomeRenderer.h"
 #include "PhysicsUtil.h"
 #include "OrbitalTrajectory.h"
+#include "RendererUtil.h"
 
 namespace {
-    void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, ofMaterial* pMat = NULL, float lineWidth = 1.5, bool alphaBlending = false) {
-        ofPushMatrix();
-        ofPushStyle();
-      
-        if (alphaBlending)
-          ofEnableAlphaBlending();
-        else
-          ofDisableAlphaBlending();
-        
-        ofSetRectMode(OF_RECTMODE_CENTER);
-        ofVec3f dims = object.getSize();
-        ofTranslate(object.getPosition());
-        ofRotateY(object.getRotation());
-        ofNoFill();
-        ofSetLineWidth(lineWidth);
-        ofSetColor(edgeColor);
-        ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
-        ofFill();
-        if (pMat) {
-            pMat->begin();
-        } else {
-            ofSetColor(fillColor);
-        }
-        ofDrawBox(ofVec3f::zero(), dims.x, dims.y, dims.z);
-        if (pMat) {
-            pMat->end();
-        }
-        ofPopStyle();
-        ofPopMatrix();
-    }
-    
-    void drawText(string text, ofColor color, ofTrueTypeFont& font, float size, float radius, float elevation, float heading) {
-        ofPushMatrix();
-        ofPushStyle();
-        
-        ofVec3f pos = sphericalToCartesian(radius, elevation, heading);
-        ofTranslate(pos);
-        ofRotateY(360 - heading - 90);
-        ofRotateX(elevation);
-        
-        float scale = size/(font.getSize() * 1.0);
-        ofScale(scale, scale);
-
-        ofRectangle rect = font.getStringBoundingBox(text, 0, 0);
-        ofTranslate(-rect.width/2, -rect.height/2, 0);
-        
-        ofSetColor(color);
-        font.drawStringAsShapes(text, 0, 0);
-        
-        ofPopStyle();
-        ofPopMatrix();
-    }
     
     template<typename T>
     void drawBoundingBoxes(GameObjectCollection<T> objects) {
@@ -120,7 +69,7 @@ namespace {
 }
 
 
-void DomeRenderer::setup(RoundController& roundController) {
+void DomeRenderer::setup(RoundConfig& config) {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
@@ -132,8 +81,7 @@ void DomeRenderer::setup(RoundController& roundController) {
     _drawLasers = false;
     _drawCometTails = false;
     
-    _font.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-    _extras.setup(roundController);
+    _extras.setup(config);
     
     ofLight light;
     light.setDiffuseColor(ofColor(225, 225, 255));
@@ -156,20 +104,13 @@ void DomeRenderer::setup(RoundController& roundController) {
     wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
 }
 
-void DomeRenderer::attachTo(RoundStateEventSource &roundEvents) {
-  _extras.attachTo(roundEvents);
-}
-
-void DomeRenderer::detachFrom(RoundStateEventSource &roundEvents) {
-  _extras.detachFrom(roundEvents);
-}
-
 void DomeRenderer::update() {
   _extras.update();
 }
 
-void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
-    
+void DomeRenderer::draw(RoundState &state) {
+    const RoundConfig& config = state.config();
+  
     _cam.setDistance(config.domeRadius() * 2.1);
     _cam.begin();
     
@@ -192,7 +133,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
     ofPopStyle();
     ofPopMatrix();
     
-    RendererBase::draw(state, config);
+    RendererBase::draw(state);
     
     if (_debugGraphics) {
         drawBoundingBoxes(state.balls());
@@ -202,24 +143,6 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
         drawTrajectories(state.balls(), ofColor(255, 0, 0, 100), true);
     } else if (_drawTrajectories) {
         drawTrajectories(state.balls(), ofColor(180, 180, 200, 180), false);
-    }
-    
-    if (state.message.text.length()) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < state.message.trails + 1; j++) {
-                ofColor color = state.message.color;
-                float h, s, b;
-                color.getHsb(h, s, b);
-                color.setHsb(h + j * 16, s, b + j * 32);
-                drawText(state.message.text,
-                         color,
-                         _font,
-                         state.message.size - (j * 1.5),
-                         config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
-                         15 - (j * 1.1),
-                         30 + i * 120);
-            }
-        }
     }
     
     for (auto& cw : config.curvedWallSets()) {
@@ -248,7 +171,7 @@ void DomeRenderer::draw(RoundState &state, RoundConfig& config) {
         lights[i].setAttenuation(0,0,0);
     }
     
-    _extras.draw(state, config);
+    _extras.draw(state);
   
     _cam.end();
     

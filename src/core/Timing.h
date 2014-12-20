@@ -65,6 +65,7 @@ public:
 
 protected:
   virtual void call(TimedActionArgs args) = 0;
+  virtual void start();
   virtual void end();
 
 private:

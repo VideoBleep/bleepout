@@ -25,6 +25,7 @@ public:
   virtual void call(TimedActionArgs args) override;
   
 protected:
+  virtual void start() override;
   virtual void end() override;
 private:
   AnimationObject& _animation;
@@ -35,8 +36,14 @@ void AnimationUpdater::call(TimedActionArgs args) {
   _animation.update(args.percentage);
 }
 
+void AnimationUpdater::start() {
+  DurationAction::start();
+  _animation.show();
+}
+
 void AnimationUpdater::end() {
   DurationAction::end();
+  _animation.hide();
   _animationList.eraseObjectById(_animation.id());
 }
 

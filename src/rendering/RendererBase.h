@@ -19,12 +19,12 @@ class RendererBase {
 public:
   virtual ~RendererBase() {}
     
-  virtual void setup(RoundController& roundController) {}
+  virtual void setup(RoundConfig& config) {}
   virtual void attachTo(RoundStateEventSource& roundEvents) {}
   virtual void detachFrom(RoundStateEventSource& roundEvents) {}
 
   virtual void update() {}
-  virtual void draw(RoundState& state, RoundConfig& config);
+  virtual void draw(RoundState& state);
 
   virtual void keyPressed(int key) {}
   virtual void mousePressed(int x, int y, int button) {}

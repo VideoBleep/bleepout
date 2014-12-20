@@ -11,7 +11,9 @@
 #include "BleepoutConfig.h"
 #include "AnimationObject.h"
 #include "RoundManager.h"
+#include "RendererUtil.h"
 #include <ofMain.h>
+#include <ofTrueTypeFont.h>
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
@@ -52,16 +54,54 @@ void BrickDestructionAnimation::draw(const RoundConfig &config) {
   ofPopMatrix();
 }
 
+class MessageAnimation : public AnimationObject {
+public:
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
+  : AnimationObject(message.delay, message.duration)
+  , _message(message), _font(font) { }
+  
+  virtual void draw(const RoundConfig& config) override;
+private:
+  const MessageSpec& _message;
+  ofTrueTypeFont& _font;
+};
+
+void MessageAnimation::draw(const RoundConfig &config) {
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < _message.trails + 1; j++) {
+      ofColor color = _message.color;
+      float h, s, b;
+      color.getHsb(h, s, b);
+      color.setHsb(h + j * 16, s, b + j * 32);
+      drawText(_message.text,
+               color,
+               _font,
+               _message.size - (j * 1.5),
+               config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
+               15 - (j * 1.1),
+               30 + i * 120);
+    }
+  }
+  //...
+}
+
 AnimationManager::AnimationManager(RoundController& roundController)
-: _roundController(roundController) { }
+: _roundController(roundController)
+, _messageFont(){
+  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+}
 
 void AnimationManager::addAnimation(AnimationObject *animation) {
-  _roundController.state().addAnimation(ofPtr<AnimationObject>(animation));
+  _roundController.addAnimation(ofPtr<AnimationObject>(animation));
+}
+
+void AnimationManager::addMessage(const MessageSpec &message) {
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
   auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
-  _roundController.addAnimation(ofPtr<AnimationObject>(anim));
+  addAnimation(anim);
 }
 
 void AnimationManager::attachTo(RoundStateEventSource &roundEvents) {

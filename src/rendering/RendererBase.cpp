@@ -9,7 +9,7 @@
 #include "RendererBase.h"
 
 
-void RendererBase::draw(RoundState &state, RoundConfig& config) {
+void RendererBase::draw(RoundState &state) {
   for (auto& obj : state.bricks()) {
     if (obj && obj->visible())
       drawBrick(state, *obj);
