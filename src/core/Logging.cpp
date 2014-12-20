@@ -44,6 +44,10 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
   os << "id:" << obj.id();
   if (!obj.alive())
     os << ", dead";
+  if (!obj.visible())
+    os << ", invisible";
+  if (!obj.physical())
+    os << ", non-physical";
 }
 
 void PhysicsObject::output(std::ostream& os) const {
