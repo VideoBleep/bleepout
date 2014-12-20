@@ -16,6 +16,9 @@
 #include <iostream>
 #include "Modifier.h"
 
+class RoundState;
+class PaddleWidthModifier;
+
 class Paddle : public GameObject, public PhysicsObject {
 public:
   Paddle(Player* player, ofVec3f size);
@@ -27,13 +30,17 @@ public:
     
   virtual const ofColor& getColor() const override;
   
-  void addWidthModifier(float amount);
+  void updateModifiers(RoundState& state);
+  
+  void addWidthModifier(RoundState& state,
+                        PaddleWidthModifier& modifier);
   void removeWidthModifier();
   
 private:
   Player* _player;
   ofVec3f _origSize;
   bool _hasWidthModifier;
+  float _widthModifierExpiration;
 };
 
 
@@ -46,8 +53,10 @@ struct GameObjectTypeTraits<Paddle> {
 class PaddleWidthModifier : public Modifier {
 public:
   PaddleWidthModifier(const ModifierSpec* spec);
-  virtual bool applyToTarget(GameObject& target) override;
+  virtual bool applyToTarget(RoundState& state, GameObject& target) override;
   virtual void output(std::ostream& os) const override;
+  float amount() const { return _amount; }
+  virtual float duration() const override { return 4.0f; }
 private:
   float _amount;
 };

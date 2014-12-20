@@ -28,12 +28,12 @@ void Player::init() {
   _color.setHsb(ofRandom(255), 255, 200);
 }
 
-bool ExtraLifeModifier::applyToTarget(GameObject &target) {
+bool ExtraLifeModifier::applyToTarget(RoundState& state, GameObject &target) {
   if (target.type() == GAME_OBJECT_PADDLE) {
     Paddle& paddle = static_cast<Paddle&>(target);
     if (!paddle.player())
       return false;
-    return applyToTarget(*paddle.player());
+    return applyToTarget(state, *paddle.player());
   }
   if (target.type() != GAME_OBJECT_PLAYER)
     return false;

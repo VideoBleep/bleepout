@@ -22,7 +22,6 @@ public:
   : GameObject(GAME_OBJECT_ANIMATION)
   , _delay(delay), _duration(duration), _visible(false) { }
   
-  virtual void update(float percentage);
   virtual void draw(const RoundConfig& config) = 0;
   virtual void output(std::ostream& os) const override;
   
@@ -42,6 +41,8 @@ private:
   float _delay;
   float _duration;
   float _percentage;
+  
+  friend class AnimationUpdater;
 };
 
 template<>

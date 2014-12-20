@@ -33,7 +33,7 @@ private:
 };
 
 void AnimationUpdater::call(RoundState& state, float percentage) {
-  _animation.update(percentage);
+  _animation._percentage = percentage;
 }
 
 void AnimationUpdater::start() {
@@ -45,10 +45,6 @@ void AnimationUpdater::end() {
   DurationAction::end();
   _animation.hide();
   _animationList.eraseObjectById(_animation.id());
-}
-
-void AnimationObject::update(float percentage) {
-  _percentage = percentage;
 }
 
 void AnimationObject::output(std::ostream &os) const {

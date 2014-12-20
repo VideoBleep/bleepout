@@ -26,7 +26,11 @@ void LogicController::detachFrom(CollisionEventSource &collisions) {
 }
 
 void LogicController::update() {
-  
+  for (auto& obj : _state.paddles()) {
+    if (obj && obj->alive()) {
+      obj->updateModifiers(_state);
+    }
+  }
 }
 
 void LogicController::onCollision(CollisionEventArgs &e) {
@@ -135,7 +139,7 @@ void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
 }
 
 void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
-  if (modifier.applyToTarget(paddle)) {
+  if (modifier.applyToTarget(_state, paddle)) {
     notifyModifierApplied(_state, &modifier, &paddle);
     _state.modifiers().eraseObjectById(modifier.id());
     //...?

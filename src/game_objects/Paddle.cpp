@@ -7,6 +7,7 @@
 //
 
 #include "Paddle.h"
+#include "GameState.h"
 
 const char GameObjectTypeTraits<Paddle>::typeName[] = "paddle";
 
@@ -26,18 +27,28 @@ const ofColor& Paddle::getColor() const {
     }
 }
 
-void Paddle::addWidthModifier(float amount) {
+void Paddle::addWidthModifier(RoundState& state,
+                              PaddleWidthModifier& modifier) {
   if (!_hasWidthModifier) {
     _origSize = getSize();
     _hasWidthModifier = true;
   }
-  setSize(_origSize * amount);
+  setSize(_origSize * modifier.amount());
+  _widthModifierExpiration = state.time + modifier.duration();
 }
 
 void Paddle::removeWidthModifier() {
   if (_hasWidthModifier) {
     setSize(_origSize);
     _hasWidthModifier = false;
+  }
+}
+
+void Paddle::updateModifiers(RoundState &state) {
+  if (_hasWidthModifier) {
+    if (state.time > _widthModifierExpiration) {
+      removeWidthModifier();
+    }
   }
 }
 
@@ -49,10 +60,10 @@ PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec* spec)
   }
 }
 
-bool PaddleWidthModifier::applyToTarget(GameObject &target) {
+bool PaddleWidthModifier::applyToTarget(RoundState& state, GameObject &target) {
   if (target.type() != GAME_OBJECT_PADDLE)
     return false;
   Paddle& paddle = static_cast<Paddle&>(target);
-  paddle.addWidthModifier(_amount);
+  paddle.addWidthModifier(state, *this);
   return true;
 }

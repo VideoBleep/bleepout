@@ -13,6 +13,8 @@
 #include <ofColor.h>
 #include "Common.h"
 
+class RoundState;
+
 class GameObject {
 public:
   GameObject(GameObjectType t);
