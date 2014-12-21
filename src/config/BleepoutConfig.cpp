@@ -148,16 +148,14 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   }
   
   std::string widePaddleName("widePaddle");
-  ModifierSpec widePaddleSpec(MODIFIER_PADDLE_WIDTH);
-  widePaddleSpec.amount = 1.5f;
-  widePaddleSpec.duration = 5.0f;
-  config->addModifierDef(widePaddleName, widePaddleSpec);
+  config->addModifierDef(widePaddleName, MODIFIER_PADDLE_WIDTH)
+    .setAmount(1.5)
+    .setDuration(5.0);
   
   std::string narrowPaddleName("narrowPaddle");
-  ModifierSpec narrowPaddleSpec(MODIFIER_PADDLE_WIDTH);
-  narrowPaddleSpec.amount = 0.5f;
-  narrowPaddleSpec.duration = 5.0f;
-  config->addModifierDef(narrowPaddleName, narrowPaddleSpec);
+  config->addModifierDef(narrowPaddleName, MODIFIER_PADDLE_WIDTH)
+    .setAmount(0.5)
+    .setDuration(5.0);
   
   int cols = 12;
   int rows = 10;
@@ -165,48 +163,69 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       float s = i / (cols * 1.0);
-      BrickSpec spec;
-      spec.elevation = 30 + 3 * j;
-      spec.heading = s * 360 + j * 2 + ((i % 2) ? 5 : -5);
-      spec.color = ofColor(s * 255,
-                           j / (rows * 1.0) * 255,
-                           (1 - s) * 255);
-      spec.lives = (j % 3 == 1) ? 2 : 1;
-      spec.value = 1;
-      spec.speed = 0;
+      auto& spec = config->addBrick()
+        .setElevation(30 + 3 * j)
+        .setHeading(s * 360 + j * 2 + ((i % 2) ? 5 : -5))
+        .setColor(ofColor(s * 255,
+                          j / (rows * 1.0) * 255,
+                          (1 - s) * 255))
+        .setLives((j % 3 == 1) ? 2 : 1)
+        .setValue(1)
+        .setSpeed(0);
       if (i % 3 == 0 && j % 3 == 0)
         spec.modifierName = widePaddleName;
       else if (i % 7 == 0 && j % 5 == 0)
         spec.modifierName = narrowPaddleName;
-      config->addBrick(spec);
     }
   }
   
   for (int i = 0; i < 6; i++) {
-    CurvedWallSpec spec;
-    spec.elevation1 = 30;
-    spec.heading1 = i * 60 + 15;
-    spec.elevation2 = i % 2 ? 68 : 62;
-    spec.heading2 = i * 60 + 45;
-    spec.width = 10;
-    spec.isExit = false;
-    spec.speed = 0;
-    config->addCurvedWallSet(spec);
+    config->addCurvedWallSet()
+      .setEnd1(30, i * 60 + 15)
+      .setEnd2(i % 2 ? 68 : 62, i * 60 + 45)
+      .setWidth(10);
   }
   
-  config->addWall(WallSpec(67,   5, ofVec3f(10, 10, 30),
-                           false, 0.02,  80));
-  config->addWall(WallSpec(67, 125, ofVec3f(10, 10, 30),
-                           false, 0.02, 200));
-  config->addWall(WallSpec(67, 245, ofVec3f(10, 10, 30),
-                           false, 0.02, 320));
+  // rotating top walls
+  config->addWall()
+    .setElevation(67)
+    .setHeading(5)
+    .setSize(ofVec3f(10, 10, 30))
+    .setSpeed(0.02)
+    .setStopHeading(80);
+  config->addWall()
+    .setElevation(67)
+    .setHeading(125)
+    .setSize(ofVec3f(10, 10, 30))
+    .setSpeed(0.02)
+    .setStopHeading(200);
+  config->addWall()
+    .setElevation(67)
+    .setHeading(245)
+    .setSize(ofVec3f(10, 10, 30))
+    .setSpeed(0.02)
+    .setStopHeading(320);
   
-  config->addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0),
-                                     12, 1, 2, 0, 0.02));
-  config->addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0),
-                                     10, 1, 1, 0, -0.02));
-  config->addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
-                                     8, 2, 2, 0, 0.02));
+  // rotating top brick rings
+  config->addBrickRing()
+    .setElevation(72)
+    .setColor(ofColor::black)
+    .setCount(12)
+    .setValue(2)
+    .setLives(2)
+    .setSpeed(0.02);
+  config->addBrickRing()
+    .setElevation(76)
+    .setColor(ofColor::black)
+    .setCount(10)
+    .setSpeed(-0.02);
+  config->addBrickRing()
+    .setElevation(80)
+    .setColor(ofColor::black)
+    .setCount(8)
+    .setValue(2)
+    .setLives(2)
+    .setSpeed(0.02);
   
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)
@@ -255,7 +274,9 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   //...
-  config->addStartMessage(MessageSpec("STAGE 2 START", ofColor(0, 255, 0), 25, 0, 2, 2.5));
+  config->addStartMessage("STAGE 2 START", ofColor(0, 255, 0))
+    .setSize(25)
+    .setTiming(0, 3);
   
   int cols = 14;
   int rows = 10;
@@ -263,16 +284,15 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   for (int i = 0; i < cols; i++) {
     for (int j = 0; j < rows; j++) {
       float s = i / (cols * 1.0);
-      BrickSpec spec;
-      spec.elevation = 30 + 3 * j;
-      spec.heading = s * 360 + j * 6;
-      spec.color = ofColor(s * 255,
-                           j / (rows * 1.0) * 255,
-                           (1 - s) * 255);
-      spec.lives = (j % 3 == 1) ? 2 : 1;
-      spec.value = 1;
-      spec.speed = 0;
-      config->addBrick(spec);
+      config->addBrick()
+        .setElevation(30 + 3 * j)
+        .setHeading(s * 360 + j * 6)
+        .setColor(ofColor(s * 255,
+                          j / (rows * 1.0) * 255,
+                          (1 - s) * 255))
+        .setLives((j % 3 == 1) ? 2 : 1)
+        .setValue(1)
+        .setSpeed(0);
     }
   }
   return config;

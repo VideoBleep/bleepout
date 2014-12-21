@@ -59,14 +59,30 @@ public:
   void addBrick(BrickSpec brick) {
     _bricks.push_back(brick);
   }
+  BrickSpec& addBrick() {
+    _bricks.push_back(BrickSpec());
+    return _bricks.back();
+  }
   void addBrickRing(BrickRingSpec ring) {
     _brickRings.push_back(ring);
+  }
+  BrickRingSpec& addBrickRing() {
+    _brickRings.push_back(BrickRingSpec());
+    return _brickRings.back();
   }
   void addWall(WallSpec wall) {
     _walls.push_back(wall);
   }
+  WallSpec& addWall() {
+    _walls.push_back(WallSpec());
+    return _walls.back();
+  }
   void addCurvedWallSet(CurvedWallSpec curve) {
     _curvedWallSets.push_back(curve);
+  }
+  CurvedWallSpec& addCurvedWallSet() {
+    _curvedWallSets.push_back(CurvedWallSpec());
+    return _curvedWallSets.back();
   }
   void addModifierDef(std::string name, ModifierSpec spec) {
     _modifierDefs.insert(std::make_pair(name, spec));
@@ -87,6 +103,11 @@ public:
   RingSetSpec& addRingSet() {
     _ringSets.push_back(RingSetSpec());
     return _ringSets.back();
+  }
+  
+  ModifierSpec& addModifierDef(std::string name, ModifierType type) {
+    _modifierDefs[name] = ModifierSpec(name, type);
+    return _modifierDefs.at(name);
   }
   
   const ModifierSpec& modifierDef(std::string name) const {

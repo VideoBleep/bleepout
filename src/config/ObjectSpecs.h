@@ -30,6 +30,15 @@ struct BrickSpec {
             int l, float s = 0, float stop = -1, std::string mod = "")
   : elevation(e), heading(h), color(c), value(v)
   , lives(l), speed(s), stopHeading(stop), modifierName(mod) { }
+  
+  BrickSpec& setElevation(float e) { elevation = e; return *this; }
+  BrickSpec& setHeading(float h) { heading = h; return *this; }
+  BrickSpec& setValue(int v) { value = v; return *this; }
+  BrickSpec& setColor(ofColor c) { color = c; return *this; }
+  BrickSpec& setLives(int l) { lives = l; return *this; }
+  BrickSpec& setSpeed(float s) { speed = s; return *this; }
+  BrickSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  BrickSpec& setModifier(std::string m) { modifierName = m; return *this; }
 };
 
 struct BrickRingSpec {
@@ -42,9 +51,17 @@ struct BrickRingSpec {
   float speed;
   float stopHeading;
   
-  BrickRingSpec() : speed(0), stopHeading(-1) { }
+  BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1) { }
   BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0, float s = 0, float stop = -1)
   : elevation(e), count(n), phase(p), color(c), value(v), lives(l), speed(s), stopHeading(-1) { }
+  BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
+  BrickRingSpec& setCount(int c) { count = c; return *this; }
+  BrickRingSpec& setValue(int v) { value = v; return *this; }
+  BrickRingSpec& setColor(ofColor c) { color = c; return *this; }
+  BrickRingSpec& setLives(int l) { lives = l; return *this; }
+  BrickRingSpec& setSpeed(float s) { speed = s; return *this; }
+  BrickRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  BrickRingSpec& setPhase(float p) { phase = p; return *this; }
 };
 
 struct WallSpec {
@@ -55,9 +72,15 @@ struct WallSpec {
   float speed;
   float stopHeading;
   
-  WallSpec() : speed(0), stopHeading(-1) { }
+  WallSpec() : speed(0), stopHeading(-1), isExit(false) { }
   WallSpec(float e, float h, ofVec3f s, bool exit = false, float sp = 0, float stop = -1)
   : elevation(e), heading(h), size(s), isExit(exit), speed(sp), stopHeading(stop) { }
+  WallSpec& setElevation(float e) { elevation = e; return *this; }
+  WallSpec& setHeading(float h) { heading = h; return *this; }
+  WallSpec& setSize(ofVec3f s) { size = s; return *this; }
+  WallSpec& setIsExit(bool e) { isExit = e; return *this; }
+  WallSpec& setSpeed(float s) { speed = s; return *this; }
+  WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
 
 struct CurvedWallSpec {
@@ -70,9 +93,15 @@ struct CurvedWallSpec {
   float speed;
   float stopHeading;
   
-  CurvedWallSpec() : speed(0), stopHeading(-1) { }
+  CurvedWallSpec() : speed(0), stopHeading(-1), isExit(false) { }
   CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false, float sp = 0, float stop = -1)
   : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit), speed(sp), stopHeading(stop) { }
+  CurvedWallSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
+  CurvedWallSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
+  CurvedWallSpec& setWidth(float w) { width = w; return *this; }
+  CurvedWallSpec& setIsExit(float e) { isExit = e; return *this; }
+  CurvedWallSpec& setSpeed(float s) { speed = s; return *this; }
+  CurvedWallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
 
 struct BallSpec {
@@ -86,11 +115,15 @@ struct BallSpec {
 
 struct ModifierSpec {
   ModifierType type;
+  std::string name;
   float amount;
   float duration;
   
   ModifierSpec() : type(MODIFIER_NONE) { }
-  explicit ModifierSpec(ModifierType t) : type(t) { }
+  ModifierSpec(std::string n, ModifierType t)
+  : type(t), name(n), amount(0), duration(0) { }
+  ModifierSpec& setAmount(float amt) { amount = amt; return *this; }
+  ModifierSpec& setDuration(float dur) { duration = dur; return *this; }
 };
 
 struct MessageSpec {
@@ -145,22 +178,10 @@ struct RingSetSpec {
     spreadOffset = offset;
     return *this;
   }
-  RingSetSpec& setCount(int c) {
-    count = c;
-    return *this;
-  }
-  RingSetSpec& setRadiusScale(float scale) {
-    radiusScale = scale;
-    return *this;
-  }
-  RingSetSpec& setLineWidth(float width) {
-    lineWidth = width;
-    return *this;
-  }
-  RingSetSpec& setColor(ofColor col) {
-    color = col;
-    return *this;
-  }
+  RingSetSpec& setCount(int c) { count = c; return *this; }
+  RingSetSpec& setRadiusScale(float scale) { radiusScale = scale; return *this;  }
+  RingSetSpec& setLineWidth(float width) { lineWidth = width; return *this; }
+  RingSetSpec& setColor(ofColor col) { color = col; return *this; }
 };
 
 #endif /* defined(__bleepout__ObjectSpecs__) */
