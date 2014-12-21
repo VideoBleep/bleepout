@@ -83,8 +83,8 @@ void RoundController::update() {
 
   _spaceController->update();
   _logicController->update();
-  _timedActions.update(TimedActionArgs::now());
-  _renderer->update();
+  _timedActions.update(_state);
+  _renderer->update(_state);
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {

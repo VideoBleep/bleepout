@@ -13,23 +13,15 @@
 #include <list>
 #include <ofTypes.h>
 
-struct TimedActionArgs {
-  float time;
-  float fps;
-  float percentage;
-  
-  TimedActionArgs(float t, float f)
-  : time(t), fps(f), percentage(0) { }
-  
-  static TimedActionArgs now();
-};
+class RoundState;
 
-typedef UnaryAction<TimedActionArgs> TimedFunc;
+typedef UnaryAction<RoundState&> TimedFunc;
+typedef BinaryAction<RoundState&, float> TimedPercentageFunc;
 
 class TimedAction {
 public:
   virtual bool done() const = 0;
-  virtual bool update(TimedActionArgs args) = 0;
+  virtual bool update(RoundState& args) = 0;
 };
 
 class OnceAction : public TimedAction {
@@ -42,9 +34,9 @@ public:
   
   virtual bool done() const override { return _called; }
   
-  virtual void call(TimedActionArgs args) = 0;
+  virtual void call(RoundState& state) = 0;
   
-  virtual bool update(TimedActionArgs args) override;
+  virtual bool update(RoundState& state) override;
 protected:
   bool _called;
   float _triggerTime;
@@ -53,7 +45,7 @@ protected:
 class DurationAction : public TimedAction {
 public:
   static DurationAction*
-  newDurationAction(float start, float end, ofPtr<TimedFunc> fn);
+  newDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn);
 
   DurationAction(float start, float end)
   : _startTime(start), _endTime(end), _started(false), _ended(false) { }
@@ -61,10 +53,10 @@ public:
   bool started() const { return _started; }
   virtual bool done() const override { return _ended; }
   
-  virtual bool update(TimedActionArgs args) override;
+  virtual bool update(RoundState& state) override;
 
 protected:
-  virtual void call(TimedActionArgs args) = 0;
+  virtual void call(RoundState& state, float percentage) = 0;
   virtual void start();
   virtual void end();
 
@@ -83,8 +75,8 @@ public:
   : DurationAction(start, end)
   , _startVal(startVal), _endVal(endVal) { }
   
-  virtual void call(TimedActionArgs args) override {
-    T value = getInterpolated(_startVal, _endVal, args.percentage);
+  virtual void call(RoundState& state, float percentage) override {
+    T value = getInterpolated(_startVal, _endVal, percentage);
     this->applyValue(value);
   }
 protected:
@@ -105,7 +97,7 @@ public:
   
   virtual bool done() const override;
   
-  virtual bool update(TimedActionArgs args) override;
+  virtual bool update(RoundState& state) override;
   
   int size() const { return _actions.size(); }
 private:
@@ -157,11 +149,11 @@ public:
     updateRate();
   }
   
-  const ofVec3f& update(float time, float rate) {
+  const ofVec3f& update(float time) {
     if (_changePulser.update(time)) {
       updateRate();
     }
-    _value += _rate * rate;
+    _value += _rate;
     return _value;
   }
   

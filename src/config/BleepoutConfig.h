@@ -106,7 +106,7 @@ private:
 
 class BleepoutConfig {
 public:
-  static BleepoutConfig* createTestConfig();
+  static BleepoutConfig* createConfig();
   
   BleepoutConfig();
   

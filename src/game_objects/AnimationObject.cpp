@@ -22,7 +22,7 @@ public:
   , _animation(animation)
   , _animationList(animationList) { }
   
-  virtual void call(TimedActionArgs args) override;
+  virtual void call(RoundState& state, float percentage) override;
   
 protected:
   virtual void start() override;
@@ -32,8 +32,8 @@ private:
   GameObjectCollection<AnimationObject>& _animationList;
 };
 
-void AnimationUpdater::call(TimedActionArgs args) {
-  _animation.update(args.percentage);
+void AnimationUpdater::call(RoundState& state, float percentage) {
+  _animation._percentage = percentage;
 }
 
 void AnimationUpdater::start() {
@@ -45,10 +45,6 @@ void AnimationUpdater::end() {
   DurationAction::end();
   _animation.hide();
   _animationList.eraseObjectById(_animation.id());
-}
-
-void AnimationObject::update(float percentage) {
-  _percentage = percentage;
 }
 
 void AnimationObject::output(std::ostream &os) const {

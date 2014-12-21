@@ -90,3 +90,10 @@ bool SetupController::tryStartRound() {
   notifyStartRound(_roundConfig, _players);
   return true;
 }
+
+void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
+                                        std::list<ofPtr<Player> > players) {
+  StartRoundEventArgs e(config, players);
+  ofNotifyEvent(startRoundEvent, e);
+  logEvent("StartRound", e);
+}

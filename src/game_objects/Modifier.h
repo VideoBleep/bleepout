@@ -12,20 +12,20 @@
 #include "GameObject.h"
 #include "ObjectSpecs.h"
 #include "PhysicsObject.h"
+#include "BleepoutConfig.h"
 
-class RoundConfig;
 class Brick;
+class RoundState;
 
 class Modifier : public GameObject, public PhysicsObject {
 public:
-  Modifier(ModifierType modifierType);
+  Modifier(const ModifierSpec &spec);
   
   virtual void setup(const RoundConfig& config, const Brick& spawner);
   
-  ModifierType modifierType() const { return _modifierType; }
-  virtual float duration() { return 0; }
+  ModifierType modifierType() const { return _spec.type; }
   
-  virtual bool applyToTarget(GameObject& target) = 0;
+  virtual bool applyToTarget(RoundState& state, GameObject& target) = 0;
   
   virtual bool visible() const override {
     return this->alive() && _visible;
@@ -40,10 +40,14 @@ public:
   void materialize() { _physical = true; }
   virtual void output(std::ostream& os) const override = 0;
 
+  const ModifierSpec& spec() const { return _spec; }
+
   static Modifier* createModifier(const ModifierSpec& spec);
-  
+
+protected:
+  const ModifierSpec& _spec;
+
 private:
-  const ModifierType _modifierType;
   bool _visible;
   bool _physical;
 };
@@ -54,68 +58,24 @@ struct GameObjectTypeTraits<Modifier> {
   static const char typeName[];
 };
 
-//template<typename T>
-//class TypedModifier : public Modifier {
-//public:
-//  TypedModifier(ModifierType modifierType)
-//  : Modifier(modifierType) { }
-//  
-//  virtual bool applyToTarget(GameObject& target) override {
-//    if (target.type() != GameObjectTypeTraits<T>::typeId) {
-//      return false;
-//    }
-//    return applyToTypedTarget(static_cast<T&>(target));
-//  }
-//protected:
-//  virtual bool applyToTypedTarget(T& target) = 0;
-//};
-
-template<typename ModInstanceType, typename TargetType>
 class ModifierSlot {
 public:
-  ModifierSlot(ModifierType type) : _type(type) { }
-  
-  ModifierType type() const { return _type; }
-  
-  bool active() const { return _active; }
-  
-  bool update(TargetType& target, float time) {
-    if (_endTime > 0.0f && time >= _endTime) {
-      unapply(target);
-      _active = false;
-      return false;
-    }
-    return true;
+  ModifierSlot() : _spec(NULL), _endTime(-1) { }
+  void set(const ModifierSpec &spec, float time) {
+    _spec = &spec;
+    _endTime = time + spec.duration;
+  }
+  void clear() {
+    _spec = NULL;
+  }
+  bool active() const { return !!_spec; }
+  bool checkExpiration(float time) const {
+    return time >= _endTime;
   }
   
-  void add(ModInstanceType& mod, TargetType& target, float time) {
-    apply(mod, target);
-    float dur = mod.duration();
-    if (dur <= 0) {
-      _endTime = 0;
-    } else {
-      _endTime = time + dur;
-    }
-    _active = true;
-  }
-  
-protected:
-  void apply(ModInstanceType& mod, TargetType& target);
-  void unapply(TargetType& target);
 private:
-  const ModifierType _type;
-  bool _active;
+  const ModifierSpec* _spec;
   float _endTime;
 };
-
-//class ModifiableGameObject : public GameObject {
-//public:
-//  ModifiableGameObject(GameObjectType type)
-//  : GameObject(type) { }
-//  
-//  virtual bool applyModifier(Modifier& mod) {
-//    return false;
-//  }
-//};
 
 #endif /* defined(__bleepout__Modifier__) */

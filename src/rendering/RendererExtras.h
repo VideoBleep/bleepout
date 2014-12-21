@@ -18,7 +18,7 @@ class RendererExtrasImpl;
 class RendererExtras {
 public:
   void setup(const RoundConfig& config);
-  void update();
+  void update(RoundState& state);
   void draw(RoundState& state);
   void keyPressed(int key);
 private:

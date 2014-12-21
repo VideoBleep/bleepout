@@ -12,6 +12,7 @@
 #include "AnimationObject.h"
 #include "RoundManager.h"
 #include "RendererUtil.h"
+#include "LogicController.h"
 #include <ofMain.h>
 #include <ofTrueTypeFont.h>
 
@@ -104,12 +105,12 @@ void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
   addAnimation(anim);
 }
 
-void AnimationManager::attachTo(RoundStateEventSource &roundEvents) {
+void AnimationManager::attachTo(LogicController &roundEvents) {
   ofAddListener(roundEvents.brickDestroyedEvent, this,
                 &AnimationManager::onBrickDestroyed);
 }
 
-void AnimationManager::detachFrom(RoundStateEventSource &roundEvents) {
+void AnimationManager::detachFrom(LogicController &roundEvents) {
   ofRemoveListener(roundEvents.brickDestroyedEvent, this,
                    &AnimationManager::onBrickDestroyed);
 }

@@ -16,6 +16,8 @@
 #include "Modifier.h"
 
 class Paddle;
+class RoundState;
+struct ModifierSpec;
 
 class Player : public GameObject {
 public:
@@ -73,8 +75,8 @@ struct GameObjectTypeTraits<Player> {
 
 class ExtraLifeModifier : public Modifier {
 public:
-  ExtraLifeModifier() : Modifier(MODIFIER_EXTRA_LIFE) {}
-  virtual bool applyToTarget(GameObject& target) override;
+  ExtraLifeModifier(const ModifierSpec& spec) : Modifier(spec) { }
+  virtual bool applyToTarget(RoundState& state, GameObject& target) override;
   virtual void output(std::ostream& os) const override;
 };
 

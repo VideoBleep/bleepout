@@ -16,13 +16,14 @@
 #include <ofTrueTypeFont.h>
 
 class RoundController;
+class LogicController;
 
 class AnimationManager {
 public:
   AnimationManager(RoundController& roundController);
   
-  void attachTo(RoundStateEventSource& roundEvents);
-  void detachFrom(RoundStateEventSource& roundEvents);
+  void attachTo(LogicController& roundEvents);
+  void detachFrom(LogicController& roundEvents);
   
   void addMessage(const MessageSpec& message);
   

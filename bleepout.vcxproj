@@ -157,6 +157,7 @@
     <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Server.cpp" />
     <ClCompile Include="src\config\BleepoutConfig.cpp" />
     <ClCompile Include="src\config\JsonUtil.cpp" />
+    <ClCompile Include="src\config\ObjectSpecs.cpp" />
     <ClCompile Include="src\core\BleepoutApp.cpp" />
     <ClCompile Include="src\core\Common.cpp" />
     <ClCompile Include="src\core\GameEvents.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="src\game_objects\Brick.cpp" />
     <ClCompile Include="src\game_objects\GameObject.cpp" />
     <ClCompile Include="src\game_objects\GameState.cpp" />
+    <ClCompile Include="src\game_objects\Modifier.cpp" />
     <ClCompile Include="src\game_objects\Paddle.cpp" />
     <ClCompile Include="src\game_objects\Player.cpp" />
     <ClCompile Include="src\game_objects\Wall.cpp" />
@@ -188,6 +190,7 @@
     <ClCompile Include="src\rendering\Geometry.cpp" />
     <ClCompile Include="src\rendering\RendererBase.cpp" />
     <ClCompile Include="src\rendering\RendererExtras.cpp" />
+    <ClCompile Include="src\rendering\RendererUtil.cpp" />
     <ClCompile Include="src\rendering\TurntableCam.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -269,6 +272,7 @@
     <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Util.h" />
     <ClInclude Include="src\config\BleepoutConfig.h" />
     <ClInclude Include="src\config\JsonUtil.h" />
+    <ClInclude Include="src\config\ObjectSpecs.h" />
     <ClInclude Include="src\core\BleepoutApp.h" />
     <ClInclude Include="src\core\Common.h" />
     <ClInclude Include="src\core\GameEvents.h" />
@@ -285,6 +289,7 @@
     <ClInclude Include="src\game_objects\GameObject.h" />
     <ClInclude Include="src\game_objects\GameObjectCollection.h" />
     <ClInclude Include="src\game_objects\GameState.h" />
+    <ClInclude Include="src\game_objects\Modifier.h" />
     <ClInclude Include="src\game_objects\Paddle.h" />
     <ClInclude Include="src\game_objects\Player.h" />
     <ClInclude Include="src\game_objects\Wall.h" />
@@ -301,6 +306,7 @@
     <ClInclude Include="src\rendering\Geometry.h" />
     <ClInclude Include="src\rendering\RendererBase.h" />
     <ClInclude Include="src\rendering\RendererExtras.h" />
+    <ClInclude Include="src\rendering\RendererUtil.h" />
     <ClInclude Include="src\rendering\TurntableCam.h" />
   </ItemGroup>
   <ItemGroup>

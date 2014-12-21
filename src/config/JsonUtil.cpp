@@ -345,7 +345,7 @@ template<>
 Json::Value toJsonVal(const ModifierSpec& spec) {
   Json::Value obj(Json::objectValue);
   obj["type"] = toJsonVal(spec.type);
-  obj["properties"] = toJsonVal(spec.properties);
+  obj["amount"] = spec.amount;
   return obj;
 }
 
@@ -355,8 +355,9 @@ bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
     result->type = MODIFIER_NONE;
     return true;
   }
-  if (!readJsonVal(val["type"], &result->type) ||
-      !readJsonVal(val["properties"], &result->properties))
+  if (!readJsonVal(val["type"], &result->type))
     return false;
+  if (!readJsonVal(val["amount"], &result->amount))
+    result->amount = 0;
   return true;
 }

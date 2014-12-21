@@ -14,7 +14,7 @@ BleepoutConfig::BleepoutConfig()
 _logLevel(OF_LOG_NOTICE),
 _vsync(true) { }
 
-BleepoutConfig* BleepoutConfig::createTestConfig() {
+BleepoutConfig* BleepoutConfig::createConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
@@ -148,9 +148,9 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   }
   
   std::string paddleWidthModName("paddleWidthMod");
-  StringMap paddleWidthModProps;
-  paddleWidthModProps["amount"] = "1.5";
-  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH, paddleWidthModProps);
+  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH);
+  paddleWidthModSpec.amount = 1.5f;
+  paddleWidthModSpec.duration = 5.0f;
   config->_modifierDefs.insert(std::make_pair(paddleWidthModName,
                                              paddleWidthModSpec));
   

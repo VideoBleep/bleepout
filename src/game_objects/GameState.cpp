@@ -7,6 +7,7 @@
 //
 
 #include "GameState.h"
+#include "BleepoutConfig.h"
 
 RoundState::RoundState(const RoundConfig& config,
                        std::list<ofPtr<Player> >& players)
@@ -31,7 +32,7 @@ void RoundState::addPlayer(ofPtr<Player> player) {
 }
 
 Paddle& RoundState::addPaddle(Player* player) {
-  ofPtr<Paddle> paddle(new Paddle(player));
+  ofPtr<Paddle> paddle(new Paddle(player, _config.paddleSize()));
   _paddles.push_back(paddle);
   return *paddle;
 }

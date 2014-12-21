@@ -24,7 +24,7 @@ private:
   public:
     RingChange(RingSet& ringSet, ofColor color, float lineWidth)
     : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
-    virtual void operator()(TimedActionArgs args) override {
+    virtual void operator()(RoundState& state) override {
       _ringSet._color = _color;
       _ringSet.setLineWidth(_lineWidth);      
     }
@@ -33,14 +33,14 @@ private:
     ofColor _color;
     float _lineWidth;
   };
-  class RingFade : public TimedFunc {
+  class RingFade : public TimedPercentageFunc {
   public:
     RingFade(RingSet& ringSet, ofColor startColor, ofColor endColor)
     : _ringSet(ringSet)
     , _startColor(startColor)
     , _endColor(endColor) { }
-    virtual void operator()(TimedActionArgs args) override {
-      ofColor color = _startColor.getLerped(_endColor, args.percentage);
+    virtual void operator()(RoundState& state, float percentage) override {
+      ofColor color = _startColor.getLerped(_endColor, percentage);
       _ringSet._color = color;
     }
   private:
@@ -86,8 +86,8 @@ public:
     ofSetLineWidth(_lineWidth);
     ofSetColor(_color);
     
-    _spinPulser.update(totalElapsed, rate);
-    _spreadPulser.update(totalElapsed, rate);
+    _spinPulser.update(totalElapsed);
+    _spreadPulser.update(totalElapsed);
     
     rotate3d(_spinPulser.value());
     
@@ -109,7 +109,7 @@ public:
   TimedFunc* newChange(ofColor color, float lineWidth) {
     return new RingChange(*this, color, lineWidth);
   }
-  TimedFunc* newFade(ofColor startColor, ofColor endColor) {
+  TimedPercentageFunc* newFade(ofColor startColor, ofColor endColor) {
     return new RingFade(*this, startColor, endColor);
   }
   DurationAction* newFadeAction(float start, float end,
@@ -138,23 +138,20 @@ public:
   RendererExtrasImpl(const RoundConfig& config)
   : _actions(true)
   , _config(config) {
-    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
+    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.3), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.1), 10.0f, ofVec3f(0)),
                     ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 40.0f, ofVec3f(0)),
+    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.4), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0), ofVec3f(0.5), 40.0f, ofVec3f(0)),
                     ofVec3f(60), 10, 2.3, 0.4, ofColor(255, 127, 0, 63));
-    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
+    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.2), 5.0f, ofVec3f(0)),
+                    SpinPulser(ofVec3f(0.01), ofVec3f(0.16), 10.0f, ofVec3f(0)),
                     ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
   }
-  void update() { }
+  void update(RoundState& state) { }
   void draw(RoundState& state) {
     ofPushMatrix();
     ofPushStyle();
-    
-    float totalElapsed = ofGetElapsedTimef();
-    float rate = ofGetFrameRate();
     
     _ringSet1.draw(state.config());
     _ringSet2.draw(state.config());
@@ -186,9 +183,9 @@ void RendererExtras::setup(const RoundConfig& config) {
   _impl.reset(new RendererExtrasImpl(config));
 }
 
-void RendererExtras::update() {
+void RendererExtras::update(RoundState& state) {
   if (_impl)
-    _impl->update();
+    _impl->update(state);
 }
 
 void RendererExtras::draw(RoundState& state) {

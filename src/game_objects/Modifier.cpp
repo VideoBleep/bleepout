@@ -21,17 +21,17 @@ Modifier* Modifier::createModifier(const ModifierSpec &spec) {
     return NULL;
   switch (spec.type) {
     case MODIFIER_EXTRA_LIFE:
-      return new ExtraLifeModifier();
+      return new ExtraLifeModifier(spec);
     case MODIFIER_PADDLE_WIDTH:
-      return new PaddleWidthModifier(&spec);
+      return new PaddleWidthModifier(spec);
     default:
       return NULL;
   }
 }
 
-Modifier::Modifier(ModifierType modifierType)
+Modifier::Modifier(const ModifierSpec& spec)
 : GameObject(GAME_OBJECT_MODIFIER)
-, _modifierType(modifierType)
+, _spec(spec)
 , _visible(false)
 , _physical(false) {
   thisGameObject = this;

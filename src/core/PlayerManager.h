@@ -47,9 +47,7 @@ const std::string MESSAGE_ACT = "act";
 
 
 
-class PlayerManager
-: public PlayerEventSource
-, public ControlEventSource {
+class PlayerManager : public EventSource {
 public:
 	PlayerManager();
 	
@@ -80,7 +78,18 @@ public:
   void onBroadcast(ofxLibwebsockets::Event& args);
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+
+  ofEvent<PlayerEventArgs> playerAddedEvent;
+  ofEvent<PlayerEventArgs> playerRemovedEvent;
+  
+  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
+  
 private:
+  void notifyPlayerAdded(RoundState& state, Player* player);
+  void notifyPlayerRemoved(RoundState& state, Player* player);
+  void notifyPlayerYawPitchRoll(Player* player, float yaw,
+                                float pitch, float roll);
+  
   bool _inRoundMode;
   std::list<ofPtr<Player> > _players;
 };

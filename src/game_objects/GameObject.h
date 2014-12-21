@@ -13,10 +13,16 @@
 #include <ofColor.h>
 #include "Common.h"
 
+//#define LOG_CONSTRUCTION_DESTRUCTION
+
+
+class RoundState;
+struct ModifierSpec;
+
 class GameObject {
 public:
-  GameObject(GameObjectType t);
-  virtual ~GameObject() {}
+  explicit GameObject(GameObjectType t);
+  virtual ~GameObject();
   
   GameObjectType type() const { return _type; }
   GameObjectId id() const { return _id; }
