@@ -9,7 +9,6 @@ void PlayerController::connect(Player& player) {
 // Player has entered the 'lobby'. Called by PlayerController::configure()
 void PlayerController::queue(Player& player) {
 
-
 };
 
 // Calibrate Player Position

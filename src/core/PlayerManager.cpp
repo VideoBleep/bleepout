@@ -50,8 +50,6 @@ void PlayerManager::draw(){
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 	cout << "on connected" << endl;
 
-
-
 	// Engine.io handshake packet 
 	// sid;
 	// upgrades
