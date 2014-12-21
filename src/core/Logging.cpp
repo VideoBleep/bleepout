@@ -127,6 +127,8 @@ void RoundState::output(std::ostream &os) const {
   outputObjectCollection(os, _bricks);
   outputObjectCollection(os, _players);
   outputObjectCollection(os, _walls);
+  outputObjectCollection(os, _modifiers);
+  outputObjectCollection(os, _animations);
   os << "}";
 }
 

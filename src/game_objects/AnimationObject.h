@@ -15,6 +15,7 @@
 #include "GameObjectCollection.h"
 
 class RoundConfig;
+class RoundState;
 
 class AnimationObject : public GameObject {
 public:
@@ -33,7 +34,7 @@ public:
   }
   
   DurationAction*
-  createUpdaterAction(GameObjectCollection<AnimationObject>& animationList);
+  createUpdaterAction(RoundState& state);
 protected:
   inline float percentage() const { return _percentage; }
 private:
