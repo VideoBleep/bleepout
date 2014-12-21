@@ -23,7 +23,7 @@ public:
   virtual void attachTo(LogicController& roundEvents) {}
   virtual void detachFrom(LogicController& roundEvents) {}
 
-  virtual void update() {}
+  virtual void update(RoundState& state) {}
   virtual void draw(RoundState& state);
 
   virtual void keyPressed(int key) {}

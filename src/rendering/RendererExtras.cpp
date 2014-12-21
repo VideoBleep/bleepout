@@ -10,6 +10,8 @@
 #include <ofMain.h>
 #include "Timing.h"
 #include "Animations.h"
+#include "ObjectSpecs.h"
+#include <vector>
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -18,50 +20,12 @@ static void rotate3d(ofVec3f rotations) {
   ofRotateZ(rotations.z);
 }
 
-class RingSet {
-private:
-  class RingChange : public TimedFunc {
-  public:
-    RingChange(RingSet& ringSet, ofColor color, float lineWidth)
-    : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
-    virtual void operator()(RoundState& state) override {
-      _ringSet._color = _color;
-      _ringSet.setLineWidth(_lineWidth);      
-    }
-  private:
-    RingSet& _ringSet;
-    ofColor _color;
-    float _lineWidth;
-  };
-  class RingFade : public TimedPercentageFunc {
-  public:
-    RingFade(RingSet& ringSet, ofColor startColor, ofColor endColor)
-    : _ringSet(ringSet)
-    , _startColor(startColor)
-    , _endColor(endColor) { }
-    virtual void operator()(RoundState& state, float percentage) override {
-      ofColor color = _startColor.getLerped(_endColor, percentage);
-      _ringSet._color = color;
-    }
-  private:
-    RingSet& _ringSet;
-    ofColor _startColor;
-    ofColor _endColor;
-  };
-  class RingFadeAction : public ValueRampAction<ofColor> {
-  public:
-    RingFadeAction(RingSet& ringSet, float start, float end,
-                   const ofColor& startVal, const ofColor& endVal)
-    :ValueRampAction<ofColor>(start, end, startVal, endVal)
-    , _ringSet(ringSet) { }
-    
-  protected:
-    virtual void applyValue(const ofColor& value) override {
-      _ringSet._color = value;
-    }
-  private:
-    RingSet& _ringSet;
-  };
+class Drawable {
+public:
+  virtual void draw(RoundState& state) = 0;
+};
+
+class RingSet : public Drawable {
 public:
   RingSet() { }
   
@@ -74,9 +38,18 @@ public:
     _lineWidth = lineWidth;
     _color = color;
   }
+  explicit RingSet(const RingSetSpec& spec) {
+    _spinPulser = createSpinPulser(spec.spin);
+    _spreadPulser = createSpinPulser(spec.spread);
+    _spreadOffset = spec.spreadOffset;
+    _count = spec.count;
+    _radiusScale = spec.radiusScale;
+    _lineWidth = spec.lineWidth;
+    _color = spec.color;
+  }
   
-  void draw(const RoundConfig& config) {
-    float radius = config.domeRadius() * _radiusScale;
+  virtual void draw(RoundState& state) override {
+    float radius = state.config().domeRadius() * _radiusScale;
     float totalElapsed = ofGetElapsedTimef();
     float rate = ofGetFrameRate();
     ofPushMatrix();
@@ -86,8 +59,8 @@ public:
     ofSetLineWidth(_lineWidth);
     ofSetColor(_color);
     
-    _spinPulser.update(totalElapsed, rate);
-    _spreadPulser.update(totalElapsed, rate);
+    _spinPulser.update(totalElapsed);
+    _spreadPulser.update(totalElapsed);
     
     rotate3d(_spinPulser.value());
     
@@ -99,22 +72,6 @@ public:
     
     ofPopStyle();
     ofPopMatrix();
-  }
-  
-  ofColor& color() { return _color; }
-  
-  float lineWidth() const { return _lineWidth; }
-  void setLineWidth(float lineWidth) { _lineWidth = lineWidth; }
-  
-  TimedFunc* newChange(ofColor color, float lineWidth) {
-    return new RingChange(*this, color, lineWidth);
-  }
-  TimedPercentageFunc* newFade(ofColor startColor, ofColor endColor) {
-    return new RingFade(*this, startColor, endColor);
-  }
-  DurationAction* newFadeAction(float start, float end,
-                                const ofColor& startVal, const ofColor& endVal) {
-    return new RingFadeAction(*this, start, end, startVal, endVal);
   }
 private:
   SpinPulser _spinPulser;
@@ -128,67 +85,36 @@ private:
 
 class RendererExtrasImpl {
 private:
-  
-  RingSet _ringSet1;
-  RingSet _ringSet2;
-  RingSet _ringSet3;
-  TimedActionSet _actions;
-  const RoundConfig& _config;
+  std::vector<ofPtr<Drawable> > _drawables;
 public:
-  RendererExtrasImpl(const RoundConfig& config)
-  : _actions(true)
-  , _config(config) {
-    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.02), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.03), 10.0f, ofVec3f(0)),
-                    ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 40.0f, ofVec3f(0)),
-                    ofVec3f(60), 10, 2.3, 0.4, ofColor(255, 127, 0, 63));
-    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.01), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.04), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
+  RendererExtrasImpl(const RoundConfig& config) {
+    for (const auto& spec : config.ringSets()) {
+      ofPtr<RingSet> ringSet(new RingSet(spec));
+      _drawables.push_back(ringSet);
+    }
   }
-  void update() { }
+  void update(RoundState& state) { }
   void draw(RoundState& state) {
     ofPushMatrix();
     ofPushStyle();
     
-    float totalElapsed = ofGetElapsedTimef();
-    float rate = ofGetFrameRate();
-    
-    _ringSet1.draw(state.config());
-    _ringSet2.draw(state.config());
-    _ringSet3.draw(state.config());
+    for (auto& obj : _drawables) {
+      obj->draw(state);
+    }
     
     ofPopStyle();
     ofPopMatrix();
   }
-  void keyPressed(int key) {
-    if (key == 'z') {
-      _ringSet1.color().setHueAngle(_ringSet1.color().getHueAngle() + 20);
-      ofColor newColor(_ringSet1.color());
-      newColor.setHueAngle((newColor.getHueAngle() + 30));
-      ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
-      _actions.add(ofPtr<TimedAction>(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn)));
-    } else if (key == 'x') {
-      ofColor startColor(255, 0, 0, 63);
-      ofColor endColor(0, 0, 255, 63);
-//      ofPtr<TimedFunc> fn(_ringSet2.newFade(startColor, endColor));
-//      _actions.add(ofPtr<TimedAction>(DurationAction::newDurationAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, fn)));
-      _actions.add(ofPtr<TimedAction>(_ringSet2.newFadeAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, startColor, endColor)));
-    } else if (key == 'v') {
-      ofLogNotice() << "queued actions: " << _actions.size();
-    }
-  }
+  void keyPressed(int key) { }
 };
 
 void RendererExtras::setup(const RoundConfig& config) {
   _impl.reset(new RendererExtrasImpl(config));
 }
 
-void RendererExtras::update() {
+void RendererExtras::update(RoundState& state) {
   if (_impl)
-    _impl->update();
+    _impl->update(state);
 }
 
 void RendererExtras::draw(RoundState& state) {
