@@ -15,9 +15,11 @@
 #include "PhysicsWorld.h"
 #include <ofMain.h>
 
-class SpaceController : public CollisionEventSource {
+class SpaceController : public EventSource {
 public:
   SpaceController(RoundState& state, RoundConfig& config);
+  
+  ofEvent<CollisionEventArgs> collisionEvent;
   
   void setup();
   void update();
@@ -37,6 +39,8 @@ private:
   void addWall(const WallSpec& wallSpec);
   
   void onCollision(CollisionArgs &cdata);
+
+  void notifyCollision(GameObject* a, GameObject* b);
 
 private:
   PhysicsWorld _world;
