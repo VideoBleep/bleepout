@@ -32,7 +32,7 @@ public:
 	void connect(Player& player);
 	// Player configuring - called by message from player
 	void configure(Player& player);
-	// Player has entered the 'lobby' - called by ... ?
+	// Player has entered the 'lobby' - called by player controller itself
 	void queue(Player& player);
 	// Calibrate Player Position - called by player, but this likely is a complicated step
 	void calibrate(Player& player);

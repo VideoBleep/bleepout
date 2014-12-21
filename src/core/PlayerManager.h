@@ -36,10 +36,17 @@ const std::string MESSAGE_YPR = "ypr";
 const std::string MESSAGE_ACT = "act";
 
 // Action message prefixes
-const std::string ACTION_CONFIGURE = "cfg";
-const std::string ACTION_START = "start";
-const std::string ACTION_CALIBRATE = "cal";
-const std::string ACTION_QUIT = "quit";
+const std::string ACTION_CONFIGURE = "cfg"; // set color
+const std::string ACTION_CALIBRATE = "cal"; // set position offsets
+const std::string ACTION_START = "start"; // player ready
+const std::string ACTION_QUIT = "quit"; // quit game
+
+// State message prefixes
+const std::string STATE_QUEUED = "que"; // player is queued, holding for game ready
+const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
+const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
+const std::string STATE_PLAY = "play"; // game is playing, free to send control
+
 
 class PlayerManager
 : public PlayerEventSource
