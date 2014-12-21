@@ -160,21 +160,21 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   int cols = 12;
   int rows = 10;
   
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      float s = i / (cols * 1.0);
+  for (int col = 0; col < cols; col++) {
+    for (int row = 0; row < rows; row++) {
+      float s = col / (cols * 1.0);
       auto& spec = config->addBrick()
-        .setElevation(30 + 3 * j)
-        .setHeading(s * 360 + j * 2 + ((i % 2) ? 5 : -5))
+        .setElevation(30 + 3 * row)
+        .setHeading(s * 360 + row * 2 + ((col % 2) ? 5 : -5))
         .setColor(ofColor(s * 255,
-                          j / (rows * 1.0) * 255,
+                          row / (rows * 1.0) * 255,
                           (1 - s) * 255))
-        .setLives((j % 3 == 1) ? 2 : 1)
+        .setLives((row % 3 == 1) ? 2 : 1)
         .setValue(1)
         .setSpeed(0);
-      if (i % 3 == 0 && j % 3 == 0)
+      if (col % 3 == 0 && row % 3 == 0)
         spec.modifierName = widePaddleName;
-      else if (i % 7 == 0 && j % 5 == 0)
+      else if (col % 7 == 0 && row % 5 == 0)
         spec.modifierName = narrowPaddleName;
     }
   }
@@ -281,16 +281,14 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   int cols = 14;
   int rows = 10;
   
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      float s = i / (cols * 1.0);
+  for (int col = 0; col < cols; col++) {
+    for (int row = 0; row < rows; row++) {
+      float s = col / (cols * 1.0);
       config->addBrick()
-        .setElevation(30 + 3 * j)
-        .setHeading(s * 360 + j * 6)
-        .setColor(ofColor(s * 255,
-                          j / (rows * 1.0) * 255,
-                          (1 - s) * 255))
-        .setLives((j % 3 == 1) ? 2 : 1)
+        .setElevation(30 + 3 * row)
+        .setHeading(s * 360 + row * 6)
+        .setColor((row % 3 == 1) ? ofColor::green : ofColor::brown)
+        .setLives((row % 3 == 1) ? 2 : 1)
         .setValue(1)
         .setSpeed(0);
     }
