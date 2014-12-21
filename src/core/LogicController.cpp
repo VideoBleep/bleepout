@@ -29,7 +29,10 @@ void LogicController::detachFrom(SpaceController &collisions) {
 void LogicController::update() {
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
-      obj->updateModifiers(_state);
+      const ModifierSpec* mod = obj->updateWidthModifier(_state);
+      if (mod) {
+        notifyModifierRemoved(_state, *mod, obj.get());
+      }
     }
   }
 }
@@ -203,7 +206,7 @@ void LogicController::notifyModifierApplied(RoundState& state, Modifier* modifie
   ofNotifyEvent(modifierAppliedEvent, e);
   logEvent("ModifierApplied", e);
 }
-void LogicController::notifyModifierRemoved(RoundState& state, ModifierSpec& modifierSpec, GameObject* target) {
+void LogicController::notifyModifierRemoved(RoundState& state, const ModifierSpec& modifierSpec, GameObject* target) {
   ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
   logEvent("ModifierRemoved", e);

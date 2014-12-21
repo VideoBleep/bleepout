@@ -129,16 +129,16 @@ private:
 class ModifierRemovedEventArgs
 : public RoundStateEventArgs {
 public:
-  ModifierRemovedEventArgs(RoundState& state, ModifierSpec& modifierSpec, GameObject* target)
+  ModifierRemovedEventArgs(RoundState& state, const ModifierSpec& modifierSpec, GameObject* target)
   : RoundStateEventArgs(state), _modifierSpec(modifierSpec)
   , _target(target) { }
   
-  ModifierSpec& modifierSpec() { return _modifierSpec; }
+  const ModifierSpec& modifierSpec() const { return _modifierSpec; }
   GameObject* target() { return _target; }
   
   virtual void output(std::ostream& os) const override;
 private:
-  ModifierSpec& _modifierSpec;
+  const ModifierSpec& _modifierSpec;
   GameObject* _target;
 };
 

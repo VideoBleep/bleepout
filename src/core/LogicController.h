@@ -50,7 +50,7 @@ private:
   void notifyRoundEnded(RoundState& state);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
-  void notifyModifierRemoved(RoundState& state, ModifierSpec &modifierSpec, GameObject* target);
+  void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
   
   void onCollision(CollisionEventArgs& e);
   
