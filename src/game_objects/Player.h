@@ -13,8 +13,11 @@
 #include <iostream>
 #include <ofTypes.h>
 #include <Connection.h>
+#include "Modifier.h"
 
 class Paddle;
+class RoundState;
+struct ModifierSpec;
 
 class Player : public GameObject {
 public:
@@ -38,6 +41,7 @@ public:
       kill();
     } else {
       _lives = lives;
+      revive();
     }
   }
   int adjustLives(int amount) {
@@ -45,9 +49,10 @@ public:
     return _lives;
   }
   
-  void output(std::ostream& os) const override;
+  virtual bool physical() const override { return false; }
+  virtual bool visible() const override { return false; }
   
-  static const char* typeName() { return "player"; }
+  void output(std::ostream& os) const override;
   
   ofxLibwebsockets::Connection* connection() { return _conn; }
   void connection(ofxLibwebsockets::Connection* conn) { _conn = conn; }
@@ -60,6 +65,19 @@ private:
   int _score;
   int _lives;
   
+};
+
+template<>
+struct GameObjectTypeTraits<Player> {
+  static const GameObjectType typeId = GAME_OBJECT_PLAYER;
+  static const char typeName[];
+};
+
+class ExtraLifeModifier : public Modifier {
+public:
+  ExtraLifeModifier(const ModifierSpec& spec) : Modifier(spec) { }
+  virtual bool applyToTarget(RoundState& state, GameObject& target) override;
+  virtual void output(std::ostream& os) const override;
 };
 
 #endif /* defined(__bleepout__Player__) */

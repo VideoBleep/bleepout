@@ -7,6 +7,7 @@
 //
 
 #include "GameState.h"
+#include "BleepoutConfig.h"
 
 RoundState::RoundState(const RoundConfig& config,
                        std::list<ofPtr<Player> >& players)
@@ -17,12 +18,21 @@ RoundState::RoundState(const RoundConfig& config,
   }
 }
 
+RoundState::~RoundState() {
+  for (auto& player : _players) {
+    if (player && player->paddle()) {
+      player->setPaddle(NULL);
+    }
+    player.reset();
+  }
+}
+
 void RoundState::addPlayer(ofPtr<Player> player) {
   _players.push_back(player);
 }
 
 Paddle& RoundState::addPaddle(Player* player) {
-  ofPtr<Paddle> paddle(new Paddle(player));
+  ofPtr<Paddle> paddle(new Paddle(player, _config.paddleSize()));
   _paddles.push_back(paddle);
   return *paddle;
 }
@@ -45,4 +55,12 @@ Ball& RoundState::addBall(const BallSpec& ballSpec) {
   ofPtr<Ball> ball(new Ball(&_config, &ballSpec));
   _balls.push_back(ball);
   return *ball;
+}
+
+void RoundState::addModifier(ofPtr<Modifier> modifier) {
+  _modifiers.push_back(modifier);
+}
+
+void RoundState::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
 }

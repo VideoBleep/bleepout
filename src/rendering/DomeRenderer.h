@@ -12,16 +12,17 @@
 #include "RendererBase.h"
 #include "RoundManager.h"
 #include "TurntableCam.h"
-#include <ofTrueTypeFont.h>
 #include "RendererExtras.h"
 #include "Geometry.h"
+
+class RoundConfig;
 
 class DomeRenderer : public RendererBase {
 public:
     virtual ~DomeRenderer() {}
-    virtual void setup(RoundController& roundController) override;
-    virtual void update() override;
-    virtual void draw(RoundState& round, RoundConfig& config) override;
+    virtual void setup(RoundConfig& config) override;
+    virtual void update(RoundState& state) override;
+    virtual void draw(RoundState& state) override;
     
     virtual void keyPressed(int key);
     virtual void mousePressed(int x, int y, int button);
@@ -33,6 +34,7 @@ protected:
     virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
     virtual void drawWall(RoundState& round, Wall& wall) override;
     virtual void drawBall(RoundState& round, Ball& ball) override;
+    virtual void drawModifier(RoundState& round, Modifier& modifier) override;
     
     void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
     
@@ -41,8 +43,7 @@ protected:
     bool _drawTrajectories;
     bool _drawLasers;
     bool _drawCometTails;
-    
-    ofTrueTypeFont _font;
+  
     RendererExtras _extras;
     
     vector<ofLight> lights;

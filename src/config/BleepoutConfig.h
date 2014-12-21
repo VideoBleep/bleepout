@@ -13,116 +13,27 @@
 #include <string>
 #include <vector>
 #include <json.h> // it's included as part of ofxLibwebsockets
+#include "ObjectSpecs.h"
 #include "JsonUtil.h"
-
-class BleepoutConfig {
-public:
-  static BleepoutConfig createTestConfig();
-  
-  BleepoutConfig();
-  BleepoutConfig(const BleepoutConfig& other);
-  
-  BleepoutConfig& operator=(const BleepoutConfig& other);
-  
-  void loadJsonFile(std::string path);
-  void saveJsonFile(std::string path) const;
-  
-  int fps() const { return _fps; }
-  ofLogLevel logLevel() const { return _logLevel; }
-  bool vsync() const { return _vsync; }
-  
-  const std::string& syphonServerName() const { return _syphonServerName; }
-  const std::string syphonAppName() const { return _syphonAppName; }
-  
-  Json::Value toJsonVal() const;
-private:
-  int _fps;
-  ofLogLevel _logLevel;
-  bool _vsync;
-  std::string _syphonServerName;
-  std::string _syphonAppName;
-};
-
-struct BrickSpec {
-  float elevation;
-  float heading;
-  int value;
-  int lives;
-  ofColor color;
-  float speed;
-  float stopHeading;
-  
-  BrickSpec() : speed(0), stopHeading(-1) { }
-  BrickSpec(float e, float h, ofColor c, int v, int l, float s = 0, float stop = -1)
-  : elevation(e), heading(h), color(c), value(v), lives(l), speed(s), stopHeading(stop) { }
-};
-
-struct BrickRingSpec {
-  float elevation;
-  ofColor color;
-  int value;
-  int lives;
-  int count;
-  float phase;
-  float speed;
-  float stopHeading;
-  
-  BrickRingSpec() : speed(0), stopHeading(-1) { }
-  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0, float s = 0, float stop = -1)
-  : elevation(e), count(n), phase(p), color(c), value(v), lives(l), speed(s), stopHeading(-1) { }
-};
-
-struct WallSpec {
-  float elevation;
-  float heading;
-  ofVec3f size;
-  bool isExit;
-  float speed;
-  float stopHeading;
-  
-  WallSpec() : speed(0), stopHeading(-1) { }
-  WallSpec(float e, float h, ofVec3f s, bool exit = false, float sp = 0, float stop = -1)
-  : elevation(e), heading(h), size(s), isExit(exit), speed(sp), stopHeading(stop) { }
-};
-
-struct CurvedWallSpec {
-  float elevation1;
-  float heading1;
-  float elevation2;
-  float heading2;
-  float width;
-  bool isExit;
-  float speed;
-  float stopHeading;
-  
-    CurvedWallSpec() : speed(0), stopHeading(-1) { }
-  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false, float sp = 0, float stop = -1)
-  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit), speed(sp), stopHeading(stop) { }
-};
-
-struct BallSpec {
-  float elevation;
-  float heading;
-  
-  BallSpec() { }
-  BallSpec(float e, float h)
-  : elevation(e), heading(h) { }
-};
 
 class RoundConfig {
 public:
+  static RoundConfig* createRoundConfig1();
+  static RoundConfig* createRoundConfig2();
   
-  static RoundConfig createTestConfig(const BleepoutConfig& appConfig);
-  
-  RoundConfig(const BleepoutConfig& appConfig);
+  RoundConfig(std::string name);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
+  const std::string& name() const { return _name; }
+  
+  float startDelay() const { return _startDelay; }
   const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
+  float modifierRadius() const { return _modifierRadius; }
   
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
@@ -132,12 +43,14 @@ public:
   const std::vector<BrickRingSpec>& brickRings() const { return _brickRings; }
   const std::vector<WallSpec>& walls() const { return _walls; }
   const std::vector<CurvedWallSpec>& curvedWallSets() const { return _curvedWallSets; }
+  const std::vector<MessageSpec>& startMessages() const { return _startMessages; }
   
   std::vector<BallSpec>& balls() { return _balls; }
   std::vector<BrickSpec>& bricks() { return _bricks; }
   std::vector<BrickRingSpec>& brickRings() { return _brickRings; }
   std::vector<WallSpec>& walls() { return _walls; }
   std::vector<CurvedWallSpec>& curvedWallSets() { return _curvedWallSets; }
+  std::vector<MessageSpec>& startMessages() { return _startMessages; }
   
   void addBall(BallSpec ball) {
     _balls.push_back(ball);
@@ -154,21 +67,31 @@ public:
   void addCurvedWallSet(CurvedWallSpec curve) {
     _curvedWallSets.push_back(curve);
   }
+  void addModifierDef(std::string name, ModifierSpec spec) {
+    _modifierDefs.insert(std::make_pair(name, spec));
+  }
+  
+  void addStartMessage(MessageSpec spec) {
+    _startMessages.push_back(spec);
+  }
+  
+  const ModifierSpec& modifierDef(std::string name) const {
+    return _modifierDefs.at(name);
+  }
   
   std::vector<BrickSpec> allBricks() const;
   
   std::vector<WallSpec> allWalls() const;
   
-  const BleepoutConfig& appConfig() const { return _appConfig; }
-  
   Json::Value toJsonVal() const;
 private:
-  const BleepoutConfig& _appConfig;
+  std::string _name;
+  float _startDelay;
   ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;
-    
+  float _modifierRadius;
   float _domeRadius;
   float _domeMargin;
   
@@ -177,6 +100,38 @@ private:
   std::vector<BrickRingSpec> _brickRings;
   std::vector<WallSpec> _walls;
   std::vector<CurvedWallSpec> _curvedWallSets;
+  std::map<std::string, ModifierSpec> _modifierDefs;
+  std::vector<MessageSpec> _startMessages;
+};
+
+class BleepoutConfig {
+public:
+  static BleepoutConfig* createConfig();
+  
+  BleepoutConfig();
+  
+  void loadJsonFile(std::string path);
+  void saveJsonFile(std::string path) const;
+  
+  int fps() const { return _fps; }
+  ofLogLevel logLevel() const { return _logLevel; }
+  bool vsync() const { return _vsync; }
+  
+  const std::string& syphonServerName() const { return _syphonServerName; }
+  const std::string syphonAppName() const { return _syphonAppName; }
+  
+  const std::vector<ofPtr<RoundConfig> >& roundConfigs() const {
+    return _roundConfigs;
+  }
+  
+  Json::Value toJsonVal() const;
+private:
+  int _fps;
+  ofLogLevel _logLevel;
+  bool _vsync;
+  std::string _syphonServerName;
+  std::string _syphonAppName;
+  std::vector<ofPtr<RoundConfig> > _roundConfigs;
 };
 
 #endif /* defined(__bleepout__BleepoutConfig__) */

@@ -16,7 +16,7 @@
 #include <list>
 #include <ofTypes.h>
 
-class SetupController : public SetupEventSource {
+class SetupController : public EventSource {
 public:
   SetupController(const BleepoutConfig& appConfig);
   void setup();
@@ -24,7 +24,12 @@ public:
   void draw();
   void keyPressed(int key);
   
+  ofEvent<StartRoundEventArgs> startRoundEvent;
+  
 private:
+  void notifyStartRound(ofPtr<RoundConfig> config,
+                        std::list<ofPtr<Player> > players);
+  
   bool tryStartRound();
   bool canStartRound() const;
   

@@ -9,38 +9,24 @@
 #include "Animations.h"
 
 #include "BleepoutConfig.h"
+#include "AnimationObject.h"
+#include "RoundManager.h"
+#include "RendererUtil.h"
+#include "LogicController.h"
 #include <ofMain.h>
-#include "math.h"
+#include <ofTrueTypeFont.h>
 
-
-class BrickDestruction : public DurationAction {
+class BrickDestructionAnimation : public AnimationObject {
 public:
-  BrickDestruction(const Brick& brick, float start, float end)
-  : DurationAction(start, end)
+  BrickDestructionAnimation(const Brick& brick,
+                            const RoundConfig& config)
+  : AnimationObject(0, config.brickFadeTime())
   , _brickColor(brick.getColor())
   , _brickSize(brick.getSize())
   , _brickPosition(brick.getPosition())
   , _brickRotation(brick.getRotation()) { }
   
-  virtual void call(TimedActionArgs args) override {
-    ofPushMatrix();
-    ofPushStyle();
-    ofEnableAlphaBlending();
-    
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    ofVec3f size = _brickSize;
-    size *= ofMap(args.percentage, 0, 1, 1, 1.5);
-    ofColor color = _brickColor;
-    color.a = (unsigned char)std::floor(ofMap(args.percentage, 0, 1, 255, 0));
-    ofTranslate(_brickPosition);
-    ofRotateY(_brickRotation);
-    ofFill();
-    ofSetColor(color);
-    ofDrawBox(size.x, size.y, size.z);
-    //...
-    ofPopStyle();
-    ofPopMatrix();
-  }
+  virtual void draw(const RoundConfig& config) override;
 private:
   ofColor _brickColor;
   ofVec3f _brickSize;
@@ -48,27 +34,83 @@ private:
   float _brickRotation;
 };
 
-DurationAction*
-newBrickDestructionAnimation(const Brick& brick, const RoundConfig &config) {
-  float time = ofGetElapsedTimef();
-  float duration = config.brickFadeTime();
-  return new BrickDestruction(brick, time, time + duration);
+void BrickDestructionAnimation::draw(const RoundConfig &config) {
+  ofPushMatrix();
+  ofPushStyle();
+  ofEnableAlphaBlending();
+  
+  ofSetRectMode(OF_RECTMODE_CENTER);
+  ofVec3f size = _brickSize;
+  size *= ofMap(percentage(), 0, 1, 1, 1.5);
+  ofColor color = _brickColor;
+  color.a = (unsigned char)std::floor(ofMap(percentage(),
+                                            0, 1, 255, 0));
+  ofTranslate(_brickPosition);
+  ofRotateY(_brickRotation);
+  ofFill();
+  ofSetColor(color);
+  ofDrawBox(size.x, size.y, size.z);
+  //...
+  ofPopStyle();
+  ofPopMatrix();
 }
 
-AnimationManager::AnimationManager(const RoundConfig& config)
-: _config(config)
-, _animations(true) {
+class MessageAnimation : public AnimationObject {
+public:
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
+  : AnimationObject(message.delay, message.duration)
+  , _message(message), _font(font) { }
   
+  virtual void draw(const RoundConfig& config) override;
+private:
+  const MessageSpec& _message;
+  ofTrueTypeFont& _font;
+};
+
+void MessageAnimation::draw(const RoundConfig &config) {
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < _message.trails + 1; j++) {
+      ofColor color = _message.color;
+      float h, s, b;
+      color.getHsb(h, s, b);
+      color.setHsb(h + j * 16, s, b + j * 32);
+      drawText(_message.text,
+               color,
+               _font,
+               _message.size - (j * 1.5),
+               config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
+               15 - (j * 1.1),
+               30 + i * 120);
+    }
+  }
+  //...
+}
+
+AnimationManager::AnimationManager(RoundController& roundController)
+: _roundController(roundController)
+, _messageFont(){
+  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+}
+
+void AnimationManager::addAnimation(AnimationObject *animation) {
+  _roundController.addAnimation(ofPtr<AnimationObject>(animation));
+}
+
+void AnimationManager::addMessage(const MessageSpec &message) {
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
-  _animations.add(ofPtr<TimedAction>(newBrickDestructionAnimation(*e.brick(), _config)));
+  auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
+  addAnimation(anim);
 }
 
-void AnimationManager::attach(RoundStateEventSource &eventSource) {
-  ofAddListener(eventSource.brickDestroyedEvent, this, &AnimationManager::onBrickDestroyed);
+void AnimationManager::attachTo(LogicController &roundEvents) {
+  ofAddListener(roundEvents.brickDestroyedEvent, this,
+                &AnimationManager::onBrickDestroyed);
 }
 
-void AnimationManager::draw() {
-  _animations.update(TimedActionArgs::now());
+void AnimationManager::detachFrom(LogicController &roundEvents) {
+  ofRemoveListener(roundEvents.brickDestroyedEvent, this,
+                   &AnimationManager::onBrickDestroyed);
 }

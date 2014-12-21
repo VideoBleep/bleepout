@@ -14,13 +14,13 @@ BleepoutApp::BleepoutApp()
 void BleepoutApp::setup() {
   // load config....
   
-  _config = BleepoutConfig::createTestConfig();
-  ofSetFrameRate(_config.fps());
-  ofSetLogLevel(_config.logLevel());
-  ofSetVerticalSync(_config.vsync());
+  _config.reset(BleepoutConfig::createConfig());
+  ofSetFrameRate(_config->fps());
+  ofSetLogLevel(_config->logLevel());
+  ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
-  _setupController.reset(new SetupController(_config));
+  _setupController.reset(new SetupController(*_config));
   _setupController->setup();
   ofAddListener(_setupController->startRoundEvent, this,
                 &BleepoutApp::onStartRound);
@@ -31,7 +31,8 @@ void BleepoutApp::setup() {
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
-  _syphonClient.set(_config.syphonServerName(), _config.syphonAppName());
+  _syphonClient.set(_config->syphonServerName(),
+                    _config->syphonAppName());
 #endif // ENABLE_SYPHON
 }
 

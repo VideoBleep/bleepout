@@ -8,10 +8,7 @@
 
 #include "Timing.h"
 #include <ofMain.h>
-
-TimedActionArgs TimedActionArgs::now() {
-  return TimedActionArgs(ofGetElapsedTimef(), ofGetFrameRate());
-}
+#include "GameState.h"
 
 template<>
 void ValuePulser<ofVec3f>::updateRate() {
@@ -20,12 +17,12 @@ void ValuePulser<ofVec3f>::updateRate() {
   _rate.z = ofRandom(_minRate.z, _maxRate.z);
 }
 
-bool OnceAction::update(TimedActionArgs args) {
+bool OnceAction::update(RoundState& state) {
   if (_called)
     return true;
-  if (args.time < _triggerTime)
+  if (state.time < _triggerTime)
     return false;
-  this->call(args);
+  this->call(state);
   _called = true;
   return true;
 }
@@ -35,8 +32,8 @@ public:
   FunctorOnceAction(float triggerTime, ofPtr<TimedFunc> fn)
   : OnceAction(triggerTime), _function(fn) { }
   
-  virtual void call(TimedActionArgs args) override {
-    (*_function)(args);
+  virtual void call(RoundState& state) override {
+    (*_function)(state);
   }
 private:
   ofPtr<TimedFunc> _function;
@@ -48,41 +45,47 @@ OnceAction::newOnceAction(float triggerTime,
   return new FunctorOnceAction(triggerTime, fn);
 }
 
-bool DurationAction::update(TimedActionArgs args) {
+bool DurationAction::update(RoundState& state) {
   if (_ended)
     return true;
   if (!_started) {
-    if (args.time >= _startTime)
-      _started = true;
+    if (state.time >= _startTime)
+      this->start();
     else
       return false;
   } else {
-    if (args.time >= _endTime) {
-      _ended = true;
+    if (state.time >= _endTime) {
+      this->end();
       return true;
     }
   }
-  // note that since args isn't passed in by reference, setting
-  // percentage doesn't affect the any other actions being called
-  args.percentage = ofMap(args.time, _startTime, _endTime, 0, 1);
-  call(args);
+  float percentage = ofMap(state.time, _startTime, _endTime, 0, 1);
+  call(state, percentage);
   return false;
+}
+
+void DurationAction::start() {
+  _started = true;
+}
+
+void DurationAction::end() {
+  _ended = true;
 }
 
 class FunctorDurationAction : public DurationAction {
 public:
-  FunctorDurationAction(float start, float end, ofPtr<TimedFunc> fn)
+  FunctorDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn)
   : DurationAction(start, end), _function(fn) { }
   
-  virtual void call(TimedActionArgs args) override {
-    (*_function)(args);
+  virtual void call(RoundState& state, float percentage) override {
+    (*_function)(state, percentage);
   }
 private:
-  ofPtr<TimedFunc> _function;
+  ofPtr<TimedPercentageFunc> _function;
 };
 
 DurationAction*
-DurationAction::newDurationAction(float start, float end, ofPtr<TimedFunc> fn) {
+DurationAction::newDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn) {
   return new FunctorDurationAction(start, end, fn);
 }
 
@@ -94,7 +97,7 @@ bool TimedActionSet::done() const {
   return true;
 }
 
-bool TimedActionSet::update(TimedActionArgs args) {
+bool TimedActionSet::update(RoundState& state) {
   bool allDone = true;
   for (auto i = _actions.begin();
        i != _actions.end(); ) {
@@ -103,7 +106,7 @@ bool TimedActionSet::update(TimedActionArgs args) {
     if (!action) {
       done = true;
     } else {
-      action->update(args);
+      action->update(state);
       if (action->done())
         done = true;
     }

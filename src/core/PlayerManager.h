@@ -48,9 +48,7 @@ const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
 const std::string STATE_PLAY = "play"; // game is playing, free to send control
 
 
-class PlayerManager
-: public PlayerEventSource
-, public ControlEventSource {
+class PlayerManager : public EventSource {
 public:
 	PlayerManager();
 	
@@ -82,7 +80,17 @@ public:
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
+  ofEvent<PlayerEventArgs> playerAddedEvent;
+  ofEvent<PlayerEventArgs> playerRemovedEvent;
+  
+  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
+  
 private:
+  void notifyPlayerAdded(RoundState& state, Player* player);
+  void notifyPlayerRemoved(RoundState& state, Player* player);
+  void notifyPlayerYawPitchRoll(Player* player, float yaw,
+                                float pitch, float roll);
+  
   bool _inRoundMode;
   std::list<ofPtr<Player> > _players;
 };

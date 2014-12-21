@@ -13,19 +13,56 @@
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
 
-class LogicController : public RoundStateEventSource {
+class SpaceController;
+
+class LogicController : public EventSource {
 public:
   LogicController(RoundState& state, RoundConfig& config);
+  
+  ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
+  ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
+  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
+  ofEvent<BallEventArgs> ballDestroyedEvent;
+  ofEvent<BallEventArgs> ballRespawnedEvent;
+  ofEvent<PlayerEventArgs> playerLostEvent;
+  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierAppliedEvent;
+  ofEvent<ModifierEventArgs> modifierRemovedEvent;
   
   void setup();
   void update();
   
-  void onBallHitPaddle(BallHitPaddleEventArgs& e);
-  void onBallHitBrick(BallHitBrickEventArgs& e);
-  void onBallHitWall(BallHitWallEventArgs& e);
-  void onBallHitBall(BallHitBallEventArgs& e);
-
+  void attachTo(SpaceController& collisions);
+  void detachFrom(SpaceController& collisions);
+  
 private:
+  void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
+  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);
+  void notifyAllBricksDestroyed(RoundState& state);
+  void notifyPlayerScoreChanged(RoundState& state, Player* player);
+  void notifyBallDestroyed(RoundState& state, Ball* ball);
+  void notifyBallRespawned(RoundState& state, Ball* ball);
+  void notifyPlayerLost(RoundState& state, Player* player);
+  void notifyPlayerLivesChanged(RoundState& state, Player* player);
+  void notifyRoundEnded(RoundState& state);
+  void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
+  void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
+  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target);
+  
+  void onCollision(CollisionEventArgs& e);
+  
+  void onBallHitObject(Ball& ball, GameObject& object);
+  void onModifierHitObject(Modifier& modifier, GameObject& object);
+  
+  void onBallHitPaddle(Ball& ball, Paddle& paddle);
+  void onBallHitBrick(Ball& ball, Brick& brick);
+  void onBallHitWall(Ball& ball, Wall& wall);
+  void onBallHitBall(Ball& ball, Ball& otherBall);
+  void onModifierHitPaddle(Modifier& modifier, Paddle& paddle);
+
   RoundState& _state;
   RoundConfig& _config;
 };

@@ -13,23 +13,26 @@
 #include "Timing.h"
 #include "GameEvents.h"
 #include "GameState.h"
+#include <ofTrueTypeFont.h>
 
-class RoundState;
-class RoundConfig;
+class RoundController;
+class LogicController;
 
 class AnimationManager {
 public:
-  AnimationManager(const RoundConfig& config);
+  AnimationManager(RoundController& roundController);
   
-  void attach(RoundStateEventSource& eventSource);
+  void attachTo(LogicController& roundEvents);
+  void detachFrom(LogicController& roundEvents);
   
-  void draw();
+  void addMessage(const MessageSpec& message);
   
 private:
+  void addAnimation(AnimationObject* animation);
   void onBrickDestroyed(BrickDestroyedEventArgs& e);
 private:
-  const RoundConfig& _config;
-  TimedActionSet _animations;
+  RoundController& _roundController;
+  ofTrueTypeFont _messageFont;
 };
 
 #endif /* defined(__bleepout__Animations__) */

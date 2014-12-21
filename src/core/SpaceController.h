@@ -15,9 +15,11 @@
 #include "PhysicsWorld.h"
 #include <ofMain.h>
 
-class SpaceController : public CollisionEventSource {
+class SpaceController : public EventSource {
 public:
   SpaceController(RoundState& state, RoundConfig& config);
+  
+  ofEvent<CollisionEventArgs> collisionEvent;
   
   void setup();
   void update();
@@ -27,14 +29,18 @@ public:
     
   void addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
+  
+  void setUpModifier(Modifier& modifier,
+                     Brick& spawnerBrick);
+  void removeModifier(Modifier& modifier);
     
 private:
   void addBrick(const BrickSpec& brickSpec);
   void addWall(const WallSpec& wallSpec);
   
   void onCollision(CollisionArgs &cdata);
-    
-  void ballHitObject(Ball* ball, GameObject* obj, ofVec3f normal);
+
+  void notifyCollision(GameObject* a, GameObject* b);
 
 private:
   PhysicsWorld _world;

@@ -11,26 +11,24 @@
 
 #include <iostream>
 #include <ofColor.h>
+#include "Common.h"
 
-enum GameObjectType {
-  GAME_OBJECT_OTHER,
-  GAME_OBJECT_BRICK,
-  GAME_OBJECT_PADDLE,
-  GAME_OBJECT_BALL,
-  GAME_OBJECT_PLAYER,
-  GAME_OBJECT_WALL,
-  GAME_OBJECT_ANIMATION
-};
-typedef int GameObjectId;
+//#define LOG_CONSTRUCTION_DESTRUCTION
+
+
+class RoundState;
+struct ModifierSpec;
 
 class GameObject {
 public:
-  GameObject(GameObjectType t);
-  virtual ~GameObject() {}
+  explicit GameObject(GameObjectType t);
+  virtual ~GameObject();
   
   GameObjectType type() const { return _type; }
   GameObjectId id() const { return _id; }
   bool alive() const { return _alive; }
+  virtual bool visible() const { return this->alive(); }
+  virtual bool physical() const { return this->alive(); }
   
   void kill() { _alive = false; }
   void revive() { _alive = true; }
@@ -45,6 +43,10 @@ private:
   bool _alive;
 protected:
   ofColor _color;
+};
+
+template<typename T>
+struct GameObjectTypeTraits {
 };
 
 #endif /* defined(__bleepout__GameObject__) */
