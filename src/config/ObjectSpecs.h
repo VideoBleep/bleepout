@@ -106,7 +106,7 @@ struct MessageSpec {
   : text(txt), color(c), size(s), trails(trl)
   , delay(del), duration(dur) { }
   MessageSpec(std::string txt, ofColor c)
-  : text(txt), color(c) { }
+  : text(txt), color(c), trails(0) { }
   MessageSpec& setSize(float s) { size = s; return *this; }
   MessageSpec& setTrails(int t) { trails = t; return *this; }
   MessageSpec& setTiming(float del, float dur) {
