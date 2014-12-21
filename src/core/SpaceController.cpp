@@ -100,3 +100,9 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     }
     notifyCollision(cdata.a, cdata.b);
 }
+
+void SpaceController::notifyCollision(GameObject *a, GameObject *b) {
+  CollisionEventArgs e(a, b);
+  ofNotifyEvent(collisionEvent, e);
+  logEvent("Collision", e);
+}

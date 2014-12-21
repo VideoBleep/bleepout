@@ -12,7 +12,7 @@
 #include "GameState.h"
 
 class RoundConfig;
-class RoundStateEventSource;
+class LogicController;
 class RoundController;
 
 class RendererBase {
@@ -20,8 +20,8 @@ public:
   virtual ~RendererBase() {}
     
   virtual void setup(RoundConfig& config) {}
-  virtual void attachTo(RoundStateEventSource& roundEvents) {}
-  virtual void detachFrom(RoundStateEventSource& roundEvents) {}
+  virtual void attachTo(LogicController& roundEvents) {}
+  virtual void detachFrom(LogicController& roundEvents) {}
 
   virtual void update() {}
   virtual void draw(RoundState& state);
