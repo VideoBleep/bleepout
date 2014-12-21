@@ -248,22 +248,5 @@ protected:
 private:
   ofLogLevel _logLevel;
 };
-  
-class PlayerEventSource : public EventSource {
-public:
-  ofEvent<PlayerEventArgs> playerAddedEvent;
-  ofEvent<PlayerEventArgs> playerRemovedEvent;
-protected:
-  void notifyPlayerAdded(RoundState& state, Player* player);
-  void notifyPlayerRemoved(RoundState& state, Player* player);
-};
-
-class ControlEventSource : public EventSource {
-public:
-  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
-protected:
-  void notifyPlayerYawPitchRoll(Player* player, float yaw,
-                                float pitch, float roll);
-};
 
 #endif /* defined(__bleepout__GameEvents__) */
