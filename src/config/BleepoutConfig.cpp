@@ -151,8 +151,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH);
   paddleWidthModSpec.amount = 1.5f;
   paddleWidthModSpec.duration = 5.0f;
-  config->_modifierDefs.insert(std::make_pair(paddleWidthModName,
-                                             paddleWidthModSpec));
+  config->addModifierDef(paddleWidthModName, paddleWidthModSpec);
   
   int cols = 12;
   int rows = 10;
@@ -210,13 +209,11 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   config->addStartMessage(MessageSpec("STAGE 1 START",
                                       ofColor(0, 255, 0), 25, 0, 7.5, 2.5));
   config->_startDelay = 10;
-  
-  
-//  void setup(SpinPulser spinPulser, SpinPulser spreadPulser, ofVec3f spreadOffset, int count, float radiusScale, float lineWidth, ofColor color)
+
   {
     RingSetSpec spec;
-    spec.spin = SpinPulserSpec(0, 0.3, 5.0f, ofVec3f(0));
-    spec.spread = SpinPulserSpec(0, 0.1f, 10.0f, ofVec3f(20));
+    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0));
+    spec.spread = ValuePulserSpec<ofVec3f>(0, 0.1f, 10.0f, ofVec3f(20));
     spec.spreadOffset.set(20);
     spec.count = 30;
     spec.radiusScale = 1.95;
@@ -226,8 +223,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   }
   {
     RingSetSpec spec;
-    spec.spin = SpinPulserSpec(0, 0.4, 5.0f, ofVec3f(0));
-    spec.spread = SpinPulserSpec(0, 0.5, 40.0f, ofVec3f(0));
+    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.4, 5.0f, ofVec3f(0));
+    spec.spread = ValuePulserSpec<ofVec3f>(0, 0.5, 40.0f, ofVec3f(0));
     spec.spreadOffset.set(60);
     spec.count = 60;
     spec.radiusScale = 2.3;
@@ -237,8 +234,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   }
   {
     RingSetSpec spec;
-    spec.spin = SpinPulserSpec(0, 0.2, 5.0f, ofVec3f(0));
-    spec.spread = SpinPulserSpec(0.01, 0.16, 10.0f, ofVec3f(0));
+    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0));
+    spec.spread = ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0));
     spec.spreadOffset.set(60);
     spec.count = 50;
     spec.radiusScale = 2;
@@ -252,7 +249,30 @@ RoundConfig* RoundConfig::createRoundConfig1() {
 }
 RoundConfig* RoundConfig::createRoundConfig2() {
   RoundConfig* config = new RoundConfig("Round2");
+  
+  for (int i = 0; i < 5; i ++) {
+    config->addBall(BallSpec(30, ofRandom(360)));
+  }
   //...
   config->addStartMessage(MessageSpec("STAGE 2 START", ofColor(0, 255, 0), 25, 0, 2, 2.5));
+  
+  int cols = 14;
+  int rows = 10;
+  
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      float s = i / (cols * 1.0);
+      BrickSpec spec;
+      spec.elevation = 30 + 3 * j;
+      spec.heading = s * 360 + j * 6;
+      spec.color = ofColor(s * 255,
+                           j / (rows * 1.0) * 255,
+                           (1 - s) * 255);
+      spec.lives = (j % 3 == 1) ? 2 : 1;
+      spec.value = 1;
+      spec.speed = 0;
+      config->addBrick(spec);
+    }
+  }
   return config;
 }

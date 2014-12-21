@@ -107,20 +107,20 @@ struct MessageSpec {
   , delay(del), duration(dur) { }
 };
 
-struct SpinPulserSpec {
+template<typename T>
+struct ValuePulserSpec {
   float minRate;
   float maxRate;
   float changeInterval;
-  ofVec3f startValue;
-  
-  SpinPulserSpec() { }
-  SpinPulserSpec(float min, float max, float interval, ofVec3f start)
+  T startValue;
+  ValuePulserSpec() { }
+  ValuePulserSpec(float min, float max, float interval, T start)
   : minRate(min), maxRate(max), changeInterval(interval), startValue(start) { }
 };
 
 struct RingSetSpec {
-  SpinPulserSpec spin;
-  SpinPulserSpec spread;
+  ValuePulserSpec<ofVec3f> spin;
+  ValuePulserSpec<ofVec3f> spread;
   ofVec3f spreadOffset;
   int count;
   float radiusScale;

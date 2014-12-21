@@ -12,6 +12,7 @@
 #include "Animations.h"
 #include "ObjectSpecs.h"
 #include <vector>
+#include "PhysicsUtil.h"
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -27,20 +28,9 @@ public:
 
 class RingSet : public Drawable {
 public:
-  RingSet() { }
-  
-  void setup(SpinPulser spinPulser, SpinPulser spreadPulser, ofVec3f spreadOffset, int count, float radiusScale, float lineWidth, ofColor color) {
-    _spinPulser = spinPulser;
-    _spreadPulser = spreadPulser;
-    _spreadOffset = spreadOffset;
-    _count = count;
-    _radiusScale = radiusScale;
-    _lineWidth = lineWidth;
-    _color = color;
-  }
   explicit RingSet(const RingSetSpec& spec) {
-    _spinPulser = createSpinPulser(spec.spin);
-    _spreadPulser = createSpinPulser(spec.spread);
+    _spinPulser = createValuePulser(spec.spin);
+    _spreadPulser = createValuePulser(spec.spread);
     _spreadOffset = spec.spreadOffset;
     _count = spec.count;
     _radiusScale = spec.radiusScale;
@@ -50,8 +40,6 @@ public:
   
   virtual void draw(RoundState& state) override {
     float radius = state.config().domeRadius() * _radiusScale;
-    float totalElapsed = ofGetElapsedTimef();
-    float rate = ofGetFrameRate();
     ofPushMatrix();
     ofPushStyle();
     
@@ -59,8 +47,8 @@ public:
     ofSetLineWidth(_lineWidth);
     ofSetColor(_color);
     
-    _spinPulser.update(totalElapsed);
-    _spreadPulser.update(totalElapsed);
+    _spinPulser.update(state.time);
+    _spreadPulser.update(state.time);
     
     rotate3d(_spinPulser.value());
     
@@ -83,6 +71,35 @@ private:
   float _lineWidth;
 };
 
+class SphereRingSet : public Drawable {
+public:
+  virtual void draw(RoundState& state) override {
+    float radius = state.config().domeRadius() * _radiusScale;
+    ofPushMatrix();
+    ofPushStyle();
+    ofEnableAlphaBlending();
+    ofFill();
+    ofSetColor(_color);
+    
+    for (int i = 0; i < _count; i++) {
+      float heading = ofMap((float)i, 0, _count - 1, 0, 360);
+      heading += _headingPulser.update(state.time);
+      ofVec3f pos = cylindricalToCartesian(radius, heading, 1.0f);
+      ofDrawSphere(pos, _sphereRadius);
+    }
+    
+    //...
+    ofPopStyle();
+    ofPopMatrix();
+  }
+//private:
+  int _count;
+  float _radiusScale;
+  float _sphereRadius;
+  ValuePulser<float> _headingPulser;
+  ofColor _color;
+};
+
 class RendererExtrasImpl {
 private:
   std::vector<ofPtr<Drawable> > _drawables;
@@ -92,6 +109,13 @@ public:
       ofPtr<RingSet> ringSet(new RingSet(spec));
       _drawables.push_back(ringSet);
     }
+    ofPtr<SphereRingSet> spheres(new SphereRingSet());
+    spheres->_count = 30;
+    spheres->_radiusScale = 1.5;
+    spheres->_sphereRadius = 6.0f;
+    spheres->_headingPulser.setup(0, 0.02f, 5.0f, 0);
+    spheres->_color.set(0, 255, 0, 63);
+    _drawables.push_back(spheres);
   }
   void update(RoundState& state) { }
   void draw(RoundState& state) {
