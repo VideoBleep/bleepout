@@ -193,65 +193,58 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     spec.speed = 0;
     config->addCurvedWallSet(spec);
   }
-    
+  
   config->addWall(WallSpec(67,   5, ofVec3f(10, 10, 30),
-                          false, 0.02,  80));
+                           false, 0.02,  80));
   config->addWall(WallSpec(67, 125, ofVec3f(10, 10, 30),
-                          false, 0.02, 200));
+                           false, 0.02, 200));
   config->addWall(WallSpec(67, 245, ofVec3f(10, 10, 30),
-                          false, 0.02, 320));
+                           false, 0.02, 320));
   
   config->addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0),
-                                    12, 1, 2, 0, 0.02));
+                                     12, 1, 2, 0, 0.02));
   config->addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0),
-                                    10, 1, 1, 0, -0.02));
+                                     10, 1, 1, 0, -0.02));
   config->addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
-                                    8, 2, 2, 0, 0.02));
-//  MessageSpec(std::string txt, ofColor c, float s, int trl, float del, float dur)
-//  : text(txt), color(c), size(s), trails(trl)
-//  , delay(del), duration(dur) { }
-  config->addStartMessage(MessageSpec("Video Bleep\npresents",
-                                      ofColor(255), 12, 0, 0, 3));
-  config->addStartMessage(MessageSpec("BLEEPOUT",
-                                      ofColor(0, 120, 240), 50, 4, 3, 4.5));
-  config->addStartMessage(MessageSpec("STAGE 1 START",
-                                      ofColor(0, 255, 0), 25, 0, 7.5, 2.5));
+                                     8, 2, 2, 0, 0.02));
+  
+  config->addStartMessage("Video Bleep\npresents", ofColor(255))
+    .setSize(12)
+    .setTiming(0, 3);
+  config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
+    .setSize(50)
+    .setTrails(4)
+    .setTiming(3, 4.5);
+  config->addStartMessage("STAGE 1 START", ofColor(0, 255, 0))
+    .setSize(25)
+    .setTiming(7.5, 2.5);
   config->_startDelay = 10;
-
-  {
-    RingSetSpec spec;
-    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0));
-    spec.spread = ValuePulserSpec<ofVec3f>(0, 0.1f, 10.0f, ofVec3f(20));
-    spec.spreadOffset.set(20);
-    spec.count = 30;
-    spec.radiusScale = 1.95;
-    spec.lineWidth = 1.2;
-    spec.color.set(0, 0, 255, 63);
-    config->addRingSet(spec);
-  }
-  {
-    RingSetSpec spec;
-    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.4, 5.0f, ofVec3f(0));
-    spec.spread = ValuePulserSpec<ofVec3f>(0, 0.5, 40.0f, ofVec3f(0));
-    spec.spreadOffset.set(60);
-    spec.count = 60;
-    spec.radiusScale = 2.3;
-    spec.lineWidth = 1.4;
-    spec.color.set(0, 255, 255, 63);
-    config->addRingSet(spec);
-  }
-  {
-    RingSetSpec spec;
-    spec.spin = ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0));
-    spec.spread = ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0));
-    spec.spreadOffset.set(60);
-    spec.count = 50;
-    spec.radiusScale = 2;
-    spec.lineWidth = 0.9;
-    spec.color.set(127, 172, 255, 63);
-    config->addRingSet(spec);
-  }
-
+  
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.1f, 10.0f, ofVec3f(20)),
+               ofVec3f(20))
+    .setCount(30)
+    .setRadiusScale(1.95)
+    .setLineWidth(1.2)
+    .setColor(ofColor(0, 0, 255, 63));
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.4, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.5, 40.0f, ofVec3f(0)),
+               ofVec3f(60))
+    .setCount(60)
+    .setRadiusScale(2.3)
+    .setLineWidth(1.4)
+    .setColor(ofColor(0, 255, 255, 63));
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0)),
+               ofVec3f(60))
+    .setCount(50)
+    .setRadiusScale(2)
+    .setLineWidth(0.9)
+    .setColor(ofColor(127, 172, 255, 63));
+  
   //...
   return config;
 }

@@ -105,6 +105,15 @@ struct MessageSpec {
   MessageSpec(std::string txt, ofColor c, float s, int trl, float del, float dur)
   : text(txt), color(c), size(s), trails(trl)
   , delay(del), duration(dur) { }
+  MessageSpec(std::string txt, ofColor c)
+  : text(txt), color(c) { }
+  MessageSpec& setSize(float s) { size = s; return *this; }
+  MessageSpec& setTrails(int t) { trails = t; return *this; }
+  MessageSpec& setTiming(float del, float dur) {
+    delay = del;
+    duration = dur;
+    return *this;
+  }
 };
 
 template<typename T>
@@ -126,6 +135,32 @@ struct RingSetSpec {
   float radiusScale;
   float lineWidth;
   ofColor color;
+  
+  RingSetSpec& setSpin(ValuePulserSpec<ofVec3f> pulser) {
+    spin = pulser;
+    return *this;
+  }
+  RingSetSpec& setSpread(ValuePulserSpec<ofVec3f> pulser, ofVec3f offset) {
+    spread = pulser;
+    spreadOffset = offset;
+    return *this;
+  }
+  RingSetSpec& setCount(int c) {
+    count = c;
+    return *this;
+  }
+  RingSetSpec& setRadiusScale(float scale) {
+    radiusScale = scale;
+    return *this;
+  }
+  RingSetSpec& setLineWidth(float width) {
+    lineWidth = width;
+    return *this;
+  }
+  RingSetSpec& setColor(ofColor col) {
+    color = col;
+    return *this;
+  }
 };
 
 #endif /* defined(__bleepout__ObjectSpecs__) */

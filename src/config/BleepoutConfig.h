@@ -75,9 +75,18 @@ public:
   void addStartMessage(MessageSpec spec) {
     _startMessages.push_back(spec);
   }
+  MessageSpec& addStartMessage(std::string text, ofColor color) {
+    _startMessages.push_back(MessageSpec(text, color));
+    return _startMessages.back();
+  }
   
   void addRingSet(RingSetSpec spec) {
     _ringSets.push_back(spec);
+  }
+  
+  RingSetSpec& addRingSet() {
+    _ringSets.push_back(RingSetSpec());
+    return _ringSets.back();
   }
   
   const ModifierSpec& modifierDef(std::string name) const {
