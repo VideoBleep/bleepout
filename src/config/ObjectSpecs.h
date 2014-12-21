@@ -87,6 +87,7 @@ struct BallSpec {
 struct ModifierSpec {
   ModifierType type;
   float amount;
+  float duration;
   
   ModifierSpec() : type(MODIFIER_NONE) { }
   explicit ModifierSpec(ModifierType t) : type(t) { }

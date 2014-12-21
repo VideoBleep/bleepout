@@ -39,8 +39,7 @@ public:
 private:
   Player* _player;
   ofVec3f _origSize;
-  bool _hasWidthModifier;
-  float _widthModifierExpiration;
+  ModifierSlot _widthModifier;
 };
 
 
@@ -55,10 +54,7 @@ public:
   PaddleWidthModifier(const ModifierSpec& spec);
   virtual bool applyToTarget(RoundState& state, GameObject& target) override;
   virtual void output(std::ostream& os) const override;
-  float amount() const { return _amount; }
-  virtual float duration() const override { return 4.0f; }
-private:
-  float _amount;
+  float amount() const { return spec().amount; }
 };
 
 #endif /* defined(__bleepout__Paddle__) */

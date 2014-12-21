@@ -29,34 +29,26 @@ const ofColor& Paddle::getColor() const {
 
 void Paddle::addWidthModifier(RoundState& state,
                               PaddleWidthModifier& modifier) {
-  if (!_hasWidthModifier) {
-    _origSize = getSize();
-    _hasWidthModifier = true;
-  }
+  _widthModifier.set(modifier.spec(), state.time);
   setSize(_origSize * modifier.amount());
-  _widthModifierExpiration = state.time + modifier.duration();
 }
 
 void Paddle::removeWidthModifier() {
-  if (_hasWidthModifier) {
+  if (_widthModifier.active()) {
     setSize(_origSize);
-    _hasWidthModifier = false;
+    _widthModifier.clear();
   }
 }
 
 void Paddle::updateModifiers(RoundState &state) {
-  if (_hasWidthModifier) {
-    if (state.time > _widthModifierExpiration) {
-      removeWidthModifier();
-    }
+  if (_widthModifier.active() &&
+      _widthModifier.checkExpiration(state.time)) {
+    removeWidthModifier();
   }
 }
 
 PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec& spec)
-: Modifier(spec)
-, _amount(1.2f) {
-  _amount = _spec.amount;
-}
+: Modifier(spec) { }
 
 bool PaddleWidthModifier::applyToTarget(RoundState& state, GameObject &target) {
   if (target.type() != GAME_OBJECT_PADDLE)

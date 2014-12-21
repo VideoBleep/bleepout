@@ -210,7 +210,7 @@ std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
 }
 
 void PaddleWidthModifier::output(std::ostream &os) const {
-  os << "PaddleWidthModifier{amount:" << _amount;
+  os << "PaddleWidthModifier{amount:" << amount();
   os << ", ";
   outputGameObjectFields(os, *this);
   os << ", ";
