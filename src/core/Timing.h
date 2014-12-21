@@ -149,11 +149,11 @@ public:
     updateRate();
   }
   
-  const ofVec3f& update(float time, float rate) {
+  const ofVec3f& update(float time) {
     if (_changePulser.update(time)) {
       updateRate();
     }
-    _value += _rate * rate;
+    _value += _rate;
     return _value;
   }
   
