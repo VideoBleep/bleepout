@@ -16,9 +16,12 @@
 #include <iostream>
 #include "Modifier.h"
 
+class RoundState;
+class PaddleWidthModifier;
+
 class Paddle : public GameObject, public PhysicsObject {
 public:
-  Paddle(Player* player);
+  Paddle(Player* player, ofVec3f size);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }
@@ -27,13 +30,16 @@ public:
     
   virtual const ofColor& getColor() const override;
   
-  void addWidthModifier(float amount);
+  void updateModifiers(RoundState& state);
+  
+  void addWidthModifier(RoundState& state,
+                        PaddleWidthModifier& modifier);
   void removeWidthModifier();
   
 private:
   Player* _player;
   ofVec3f _origSize;
-  bool _hasWidthModifier;
+  ModifierSlot _widthModifier;
 };
 
 
@@ -45,11 +51,10 @@ struct GameObjectTypeTraits<Paddle> {
 
 class PaddleWidthModifier : public Modifier {
 public:
-  PaddleWidthModifier(const ModifierSpec* spec);
-  virtual bool applyToTarget(GameObject& target) override;
+  PaddleWidthModifier(const ModifierSpec& spec);
+  virtual bool applyToTarget(RoundState& state, GameObject& target) override;
   virtual void output(std::ostream& os) const override;
-private:
-  float _amount;
+  float amount() const { return spec().amount; }
 };
 
 #endif /* defined(__bleepout__Paddle__) */

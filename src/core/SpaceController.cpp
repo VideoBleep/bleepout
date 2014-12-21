@@ -66,7 +66,6 @@ void SpaceController::addPaddle(float heading, Player* player) {
     Paddle& paddle = _state.addPaddle(player);
     player->setPaddle(&paddle);
     paddle.setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
-    paddle.setSize(_config.paddleSize());
 
     _world.addObject(&paddle);
 }

@@ -24,7 +24,7 @@ private:
   public:
     RingChange(RingSet& ringSet, ofColor color, float lineWidth)
     : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
-    virtual void operator()(TimedActionArgs args) override {
+    virtual void operator()(RoundState& state) override {
       _ringSet._color = _color;
       _ringSet.setLineWidth(_lineWidth);      
     }
@@ -33,14 +33,14 @@ private:
     ofColor _color;
     float _lineWidth;
   };
-  class RingFade : public TimedFunc {
+  class RingFade : public TimedPercentageFunc {
   public:
     RingFade(RingSet& ringSet, ofColor startColor, ofColor endColor)
     : _ringSet(ringSet)
     , _startColor(startColor)
     , _endColor(endColor) { }
-    virtual void operator()(TimedActionArgs args) override {
-      ofColor color = _startColor.getLerped(_endColor, args.percentage);
+    virtual void operator()(RoundState& state, float percentage) override {
+      ofColor color = _startColor.getLerped(_endColor, percentage);
       _ringSet._color = color;
     }
   private:
@@ -109,7 +109,7 @@ public:
   TimedFunc* newChange(ofColor color, float lineWidth) {
     return new RingChange(*this, color, lineWidth);
   }
-  TimedFunc* newFade(ofColor startColor, ofColor endColor) {
+  TimedPercentageFunc* newFade(ofColor startColor, ofColor endColor) {
     return new RingFade(*this, startColor, endColor);
   }
   DurationAction* newFadeAction(float start, float end,

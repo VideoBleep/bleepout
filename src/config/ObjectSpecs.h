@@ -86,20 +86,11 @@ struct BallSpec {
 
 struct ModifierSpec {
   ModifierType type;
-  StringMap properties;
+  float amount;
+  float duration;
   
-  bool getProperty(const std::string& name, float* result) const {
-    auto iter = properties.find(name);
-    if (iter == properties.end())
-      return false;
-    *result = ofFromString<float>(iter->second);
-    return true;
-  }
-  
-  ModifierSpec() : type(MODIFIER_NONE), properties() { }
-  ModifierSpec(ModifierType t) : type(t), properties() { }
-  ModifierSpec(ModifierType t, StringMap p)
-  : type(t), properties(p) { }
+  ModifierSpec() : type(MODIFIER_NONE) { }
+  explicit ModifierSpec(ModifierType t) : type(t) { }
 };
 
 struct MessageSpec {

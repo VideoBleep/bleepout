@@ -44,6 +44,10 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
   os << "id:" << obj.id();
   if (!obj.alive())
     os << ", dead";
+  if (!obj.visible())
+    os << ", invisible";
+  if (!obj.physical())
+    os << ", non-physical";
 }
 
 void PhysicsObject::output(std::ostream& os) const {
@@ -174,8 +178,39 @@ std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
   return os;
 }
 
+std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
+  switch (type) {
+    case GAME_OBJECT_BRICK:
+      os << GameObjectTypeTraits<Brick>::typeName;
+      break;
+    case GAME_OBJECT_PADDLE:
+      os << GameObjectTypeTraits<Paddle>::typeName;
+      break;
+    case GAME_OBJECT_BALL:
+      os << GameObjectTypeTraits<Ball>::typeName;
+      break;
+    case GAME_OBJECT_PLAYER:
+      os << GameObjectTypeTraits<Player>::typeName;
+      break;
+    case GAME_OBJECT_WALL:
+      os << GameObjectTypeTraits<Wall>::typeName;
+      break;
+    case GAME_OBJECT_ANIMATION:
+      os << GameObjectTypeTraits<AnimationObject>::typeName;
+      break;
+    case GAME_OBJECT_MODIFIER:
+      os << GameObjectTypeTraits<Modifier>::typeName;
+      break;
+    case GAME_OBJECT_OTHER:
+    default:
+      os << "Unknown{" << (int)type << "}";
+      break;
+  }
+  return os;
+}
+
 void PaddleWidthModifier::output(std::ostream &os) const {
-  os << "PaddleWidthModifier{amount:" << _amount;
+  os << "PaddleWidthModifier{amount:" << amount();
   os << ", ";
   outputGameObjectFields(os, *this);
   os << ", ";
