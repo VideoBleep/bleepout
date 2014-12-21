@@ -209,6 +209,30 @@ std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
   return os;
 }
 
+std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
+  switch (type) {
+    case MODIFIER_EXTRA_LIFE:
+      os << "ExtraLife";
+      break;
+    case MODIFIER_PADDLE_WIDTH:
+      os << "PaddleWidth";
+      break;
+    case MODIFIER_NONE:
+    default:
+      os << "Unknown{" << (int)type << "}";
+      break;
+  }
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec) {
+  os << "(type:" << spec.type
+     << ", duration:" << spec.duration
+     << ", amount:" << spec.amount
+     << ")";
+  return os;
+}
+
 void PaddleWidthModifier::output(std::ostream &os) const {
   os << "PaddleWidthModifier{amount:" << amount();
   os << ", ";
