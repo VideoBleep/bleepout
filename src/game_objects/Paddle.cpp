@@ -52,12 +52,10 @@ void Paddle::updateModifiers(RoundState &state) {
   }
 }
 
-PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec* spec)
-: Modifier(MODIFIER_PADDLE_WIDTH)
+PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec& spec)
+: Modifier(spec)
 , _amount(1.2f) {
-  if (spec) {
-    spec->getProperty("amount", &_amount);
-  }
+  _amount = _spec.amount;
 }
 
 bool PaddleWidthModifier::applyToTarget(RoundState& state, GameObject &target) {

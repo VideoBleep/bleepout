@@ -28,6 +28,7 @@ std::ostream& operator<<(std::ostream& os, const RoundState& state);
 std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory);
 std::ostream& operator<<(std::ostream& os, const BoundingBox& box);
 std::ostream& operator<<(std::ostream& os, const CollisionShape& shape);
+std::ostream& operator<<(std::ostream& os, const GameObjectType& type);
 
 template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {

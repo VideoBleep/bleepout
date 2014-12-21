@@ -148,9 +148,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   }
   
   std::string paddleWidthModName("paddleWidthMod");
-  StringMap paddleWidthModProps;
-  paddleWidthModProps["amount"] = "1.5";
-  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH, paddleWidthModProps);
+  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH);
+  paddleWidthModSpec.amount = 1.5f;
   config->_modifierDefs.insert(std::make_pair(paddleWidthModName,
                                              paddleWidthModSpec));
   

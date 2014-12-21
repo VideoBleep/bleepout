@@ -52,7 +52,7 @@ struct GameObjectTypeTraits<Paddle> {
 
 class PaddleWidthModifier : public Modifier {
 public:
-  PaddleWidthModifier(const ModifierSpec* spec);
+  PaddleWidthModifier(const ModifierSpec& spec);
   virtual bool applyToTarget(RoundState& state, GameObject& target) override;
   virtual void output(std::ostream& os) const override;
   float amount() const { return _amount; }

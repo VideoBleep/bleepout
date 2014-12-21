@@ -12,18 +12,18 @@
 #include "GameObject.h"
 #include "ObjectSpecs.h"
 #include "PhysicsObject.h"
+#include "BleepoutConfig.h"
 
-class RoundConfig;
 class Brick;
 class RoundState;
 
 class Modifier : public GameObject, public PhysicsObject {
 public:
-  Modifier(ModifierType modifierType);
+  Modifier(const ModifierSpec &spec);
   
   virtual void setup(const RoundConfig& config, const Brick& spawner);
   
-  ModifierType modifierType() const { return _modifierType; }
+  ModifierType modifierType() const { return _spec.type; }
   virtual float duration() const { return 0; }
   
   virtual bool applyToTarget(RoundState& state, GameObject& target) = 0;
@@ -42,9 +42,11 @@ public:
   virtual void output(std::ostream& os) const override = 0;
 
   static Modifier* createModifier(const ModifierSpec& spec);
-  
+
+protected:
+  const ModifierSpec& _spec;
+
 private:
-  const ModifierType _modifierType;
   bool _visible;
   bool _physical;
 };
@@ -92,5 +94,9 @@ struct GameObjectTypeTraits<Modifier> {
 //  bool _active;
 //  float _endTime;
 //};
+
+class ModifierInstance {
+  
+};
 
 #endif /* defined(__bleepout__Modifier__) */
