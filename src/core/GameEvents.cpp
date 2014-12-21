@@ -74,6 +74,14 @@ void StartRoundEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void ModifierRemovedEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "spec:" << _modifierSpec;
+  os << " ";
+  outputField(os, "target", _target);
+  os << ")";
+}
+
 void EventSource::logEvent(const char *name,
                            const Outputable &event) const {
   if (loggingEnabled()) {

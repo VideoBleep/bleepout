@@ -196,12 +196,15 @@ void LogicController::notifyRoundEnded(RoundState& state) {
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
   ofNotifyEvent(modifierAppearedEvent, e);
+  logEvent("ModifierAppeared", e);
 }
 void LogicController::notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
   ModifierEventArgs e(state, modifier, target);
   ofNotifyEvent(modifierAppliedEvent, e);
+  logEvent("ModifierApplied", e);
 }
-void LogicController::notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target) {
-  ModifierEventArgs e(state, modifier, target);
+void LogicController::notifyModifierRemoved(RoundState& state, ModifierSpec& modifierSpec, GameObject* target) {
+  ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
+  logEvent("ModifierRemoved", e);
 }

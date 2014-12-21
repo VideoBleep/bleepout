@@ -30,7 +30,7 @@ public:
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
-  ofEvent<ModifierEventArgs> modifierRemovedEvent;
+  ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
   
   void setup();
   void update();
@@ -50,7 +50,7 @@ private:
   void notifyRoundEnded(RoundState& state);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
-  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target);
+  void notifyModifierRemoved(RoundState& state, ModifierSpec &modifierSpec, GameObject* target);
   
   void onCollision(CollisionEventArgs& e);
   

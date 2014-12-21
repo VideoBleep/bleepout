@@ -126,6 +126,22 @@ private:
   GameObject* _target;
 };
 
+class ModifierRemovedEventArgs
+: public RoundStateEventArgs {
+public:
+  ModifierRemovedEventArgs(RoundState& state, ModifierSpec& modifierSpec, GameObject* target)
+  : RoundStateEventArgs(state), _modifierSpec(modifierSpec)
+  , _target(target) { }
+  
+  ModifierSpec& modifierSpec() { return _modifierSpec; }
+  GameObject* target() { return _target; }
+  
+  virtual void output(std::ostream& os) const override;
+private:
+  ModifierSpec& _modifierSpec;
+  GameObject* _target;
+};
+
 class BallStateEventArgs : public RoundStateEventArgs {
 public:
   BallStateEventArgs(RoundState& state, Ball* ball)
