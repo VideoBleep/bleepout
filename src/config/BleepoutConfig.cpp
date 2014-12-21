@@ -14,7 +14,7 @@ BleepoutConfig::BleepoutConfig()
 _logLevel(OF_LOG_NOTICE),
 _vsync(true) { }
 
-BleepoutConfig* BleepoutConfig::createTestConfig() {
+BleepoutConfig* BleepoutConfig::createConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";

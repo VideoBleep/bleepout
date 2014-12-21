@@ -104,8 +104,8 @@ void DomeRenderer::setup(RoundConfig& config) {
     wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
 }
 
-void DomeRenderer::update() {
-  _extras.update();
+void DomeRenderer::update(RoundState& state) {
+  _extras.update(state);
 }
 
 void DomeRenderer::draw(RoundState &state) {

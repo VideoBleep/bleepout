@@ -14,7 +14,7 @@ BleepoutApp::BleepoutApp()
 void BleepoutApp::setup() {
   // load config....
   
-  _config.reset(BleepoutConfig::createTestConfig());
+  _config.reset(BleepoutConfig::createConfig());
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
