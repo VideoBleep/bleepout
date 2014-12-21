@@ -185,4 +185,7 @@ protected:
 
 typedef ValuePulser<ofVec3f> SpinPulser;
 
+struct SpinPulserSpec;
+SpinPulser createSpinPulser(const SpinPulserSpec& spec);
+
 #endif

@@ -107,4 +107,25 @@ struct MessageSpec {
   , delay(del), duration(dur) { }
 };
 
+struct SpinPulserSpec {
+  float minRate;
+  float maxRate;
+  float changeInterval;
+  ofVec3f startValue;
+  
+  SpinPulserSpec() { }
+  SpinPulserSpec(float min, float max, float interval, ofVec3f start)
+  : minRate(min), maxRate(max), changeInterval(interval), startValue(start) { }
+};
+
+struct RingSetSpec {
+  SpinPulserSpec spin;
+  SpinPulserSpec spread;
+  ofVec3f spreadOffset;
+  int count;
+  float radiusScale;
+  float lineWidth;
+  ofColor color;
+};
+
 #endif /* defined(__bleepout__ObjectSpecs__) */

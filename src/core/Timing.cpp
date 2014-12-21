@@ -9,12 +9,20 @@
 #include "Timing.h"
 #include <ofMain.h>
 #include "GameState.h"
+#include "ObjectSpecs.h"
 
 template<>
 void ValuePulser<ofVec3f>::updateRate() {
   _rate.x = ofRandom(_minRate.x, _maxRate.x);
   _rate.y = ofRandom(_minRate.y, _maxRate.y);
   _rate.z = ofRandom(_minRate.z, _maxRate.z);
+}
+
+SpinPulser createSpinPulser(const SpinPulserSpec& spec) {
+  return SpinPulser(ofVec3f(spec.minRate),
+                    ofVec3f(spec.maxRate),
+                    spec.changeInterval,
+                    spec.startValue);
 }
 
 bool OnceAction::update(RoundState& state) {
