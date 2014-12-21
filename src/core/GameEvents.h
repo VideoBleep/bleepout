@@ -20,26 +20,6 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "GameState.h"
-#include "Common.h"
-#include "Logging.h"
-#include "BleepoutConfig.h"
-
-template<typename T>
-class ObjectEventArgs : public Outputable {
-public:
-  explicit ObjectEventArgs(T* obj) : _object(obj) { }
-  
-  T* object() { return _object; }
-  const T* object() const { return _object; }
-  
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, object());
-    os << ")";
-  }
-private:
-  T* _object;
-};
 
 class CollisionEventArgs : public Outputable {
 public:
@@ -67,13 +47,7 @@ public:
   Paddle* paddle() { return _paddle; }
   const Paddle* paddle() const { return _paddle; }
 
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, modifier());
-    os << " ";
-    outputField(os, paddle());
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
   Modifier* _modifier;
   Paddle* _paddle;
@@ -85,9 +59,7 @@ public:
   
   RoundState& state() { return _state; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "()";
-  }
+  virtual void output(std::ostream& os) const override;
   
 private:
   RoundState& _state;
@@ -112,15 +84,7 @@ public:
   Player* previousPlayer() { return _previousPlayer; }
   const Player* previousPlayer() const { return _previousPlayer; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, ball());
-    os << " ";
-    outputField(os, player());
-    os << " ";
-    outputField(os, "previousPlayer", previousPlayer());
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
   Ball* _ball;
   Player* _player;
@@ -138,34 +102,10 @@ public:
   Ball* ball() { return _ball; }
   const Ball* ball() const { return _ball; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, brick());
-    os << " ";
-    outputField(os, ball());
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
   Brick* _brick;
   Ball* _ball;
-};
-
-template<typename T>
-class RoundStateObjectEventArgs
-: public RoundStateEventArgs {
-public:
-  RoundStateObjectEventArgs(RoundState& state, T* obj)
-  : RoundStateEventArgs(state)
-  , _object(obj) { }
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, _object);
-    os << ")";
-  }
-  T* object() { return _object; }
-  const T* object() const { return _object; }
-private:
-  T* _object;
 };
 
 class ModifierEventArgs
@@ -180,20 +120,35 @@ public:
   Modifier* modifier() { return _modifier; }
   GameObject* target() { return _target; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    outputField(os, _modifier);
-    os << " ";
-    outputField(os, "target", _target);
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
   Modifier* _modifier;
   GameObject* _target;
 };
 
-typedef RoundStateObjectEventArgs<Player> PlayerEventArgs;
-typedef RoundStateObjectEventArgs<Ball> BallEventArgs;
+class BallStateEventArgs : public RoundStateEventArgs {
+public:
+  BallStateEventArgs(RoundState& state, Ball* ball)
+  : RoundStateEventArgs(state), _ball(ball) { }
+  
+  Ball* ball() { return _ball; }
+  const Ball* ball() const { return _ball; }
+  
+  virtual void output(std::ostream& os) const override;
+private:
+  Ball* _ball;
+};
+
+class PlayerStateEventArgs : public RoundStateEventArgs {
+public:
+  PlayerStateEventArgs(RoundState& state, Player* player)
+  : RoundStateEventArgs(state), _player(player) { }
+  Player* player() { return _player; }
+  const Player* player() const { return _player; }
+  virtual void output(std::ostream& os) const override;
+private:
+  Player* _player;
+};
 
 class StartRoundEventArgs : public Outputable {
 public:
@@ -206,12 +161,7 @@ public:
   std::list<ofPtr<Player> >& players() { return _players; }
   const std::list<ofPtr<Player> >& players() const { return _players; }
   
-  virtual void output(std::ostream& os) const override {
-    os << "(";
-    os << "config:" << config()->name() << ", ";
-    os << "players:" << players().size();
-    os << ")";
-  }
+  virtual void output(std::ostream& os) const override;
 private:
   ofPtr<RoundConfig> _config;
   std::list<ofPtr<Player> > _players;
@@ -240,9 +190,7 @@ public:
   EventSource() : _logLevel(OF_LOG_SILENT) {}
   void enableLogging(ofLogLevel level) { _logLevel = level; }
   void disableLogging() { _logLevel = OF_LOG_SILENT; }
-  bool loggingEnabled() const {
-    return _logLevel != OF_LOG_SILENT;
-  }
+  bool loggingEnabled() const { return _logLevel != OF_LOG_SILENT; }
 protected:
   void logEvent(const char* name, const Outputable& event) const;
 private:

@@ -22,11 +22,11 @@ public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
-  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
-  ofEvent<BallEventArgs> ballDestroyedEvent;
-  ofEvent<BallEventArgs> ballRespawnedEvent;
-  ofEvent<PlayerEventArgs> playerLostEvent;
-  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
+  ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
+  ofEvent<BallStateEventArgs> ballDestroyedEvent;
+  ofEvent<BallStateEventArgs> ballRespawnedEvent;
+  ofEvent<PlayerStateEventArgs> playerLostEvent;
+  ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;

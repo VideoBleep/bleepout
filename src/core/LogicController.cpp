@@ -164,27 +164,27 @@ void LogicController::notifyAllBricksDestroyed(RoundState& state) {
   logEvent("AllBricksDestroyed", e);
 }
 void LogicController::notifyPlayerScoreChanged(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerScoreChangedEvent, e);
   logEvent("PlayerScoreChanged", e);
 }
 void LogicController::notifyBallDestroyed(RoundState& state, Ball* ball) {
-  BallEventArgs e(state, ball);
+  BallStateEventArgs e(state, ball);
   ofNotifyEvent(ballDestroyedEvent, e);
   logEvent("BallDestroyed", e);
 }
 void LogicController::notifyBallRespawned(RoundState& state, Ball* ball) {
-  BallEventArgs e(state, ball);
+  BallStateEventArgs e(state, ball);
   ofNotifyEvent(ballRespawnedEvent, e);
   logEvent("BallRespawned", e);
 }
 void LogicController::notifyPlayerLost(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerLostEvent, e);
   logEvent("PlayerLost", e);
 }
 void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
