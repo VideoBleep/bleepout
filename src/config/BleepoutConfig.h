@@ -44,6 +44,7 @@ public:
   const std::vector<WallSpec>& walls() const { return _walls; }
   const std::vector<CurvedWallSpec>& curvedWallSets() const { return _curvedWallSets; }
   const std::vector<MessageSpec>& startMessages() const { return _startMessages; }
+  const std::vector<RingSetSpec>& ringSets() const { return _ringSets; }
   
   std::vector<BallSpec>& balls() { return _balls; }
   std::vector<BrickSpec>& bricks() { return _bricks; }
@@ -75,6 +76,10 @@ public:
     _startMessages.push_back(spec);
   }
   
+  void addRingSet(RingSetSpec spec) {
+    _ringSets.push_back(spec);
+  }
+  
   const ModifierSpec& modifierDef(std::string name) const {
     return _modifierDefs.at(name);
   }
@@ -102,6 +107,7 @@ private:
   std::vector<CurvedWallSpec> _curvedWallSets;
   std::map<std::string, ModifierSpec> _modifierDefs;
   std::vector<MessageSpec> _startMessages;
+  std::vector<RingSetSpec> _ringSets;
 };
 
 class BleepoutConfig {

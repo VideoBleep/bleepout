@@ -210,6 +210,42 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   config->addStartMessage(MessageSpec("STAGE 1 START",
                                       ofColor(0, 255, 0), 25, 0, 7.5, 2.5));
   config->_startDelay = 10;
+  
+  
+//  void setup(SpinPulser spinPulser, SpinPulser spreadPulser, ofVec3f spreadOffset, int count, float radiusScale, float lineWidth, ofColor color)
+  {
+    RingSetSpec spec;
+    spec.spin = SpinPulserSpec(0, 0.3, 5.0f, ofVec3f(0));
+    spec.spread = SpinPulserSpec(0, 0.1f, 10.0f, ofVec3f(20));
+    spec.spreadOffset.set(20);
+    spec.count = 30;
+    spec.radiusScale = 1.95;
+    spec.lineWidth = 1.2;
+    spec.color.set(0, 0, 255, 63);
+    config->addRingSet(spec);
+  }
+  {
+    RingSetSpec spec;
+    spec.spin = SpinPulserSpec(0, 0.4, 5.0f, ofVec3f(0));
+    spec.spread = SpinPulserSpec(0, 0.5, 40.0f, ofVec3f(0));
+    spec.spreadOffset.set(60);
+    spec.count = 60;
+    spec.radiusScale = 2.3;
+    spec.lineWidth = 1.4;
+    spec.color.set(0, 255, 255, 63);
+    config->addRingSet(spec);
+  }
+  {
+    RingSetSpec spec;
+    spec.spin = SpinPulserSpec(0, 0.2, 5.0f, ofVec3f(0));
+    spec.spread = SpinPulserSpec(0.01, 0.16, 10.0f, ofVec3f(0));
+    spec.spreadOffset.set(60);
+    spec.count = 50;
+    spec.radiusScale = 2;
+    spec.lineWidth = 0.9;
+    spec.color.set(127, 172, 255, 63);
+    config->addRingSet(spec);
+  }
 
   //...
   return config;
