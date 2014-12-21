@@ -22,15 +22,15 @@ public:
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
-  ofEvent<PlayerEventArgs > playerScoreChangedEvent;
-  ofEvent<BallEventArgs> ballDestroyedEvent;
-  ofEvent<BallEventArgs> ballRespawnedEvent;
-  ofEvent<PlayerEventArgs> playerLostEvent;
-  ofEvent<PlayerEventArgs> playerLivesChangedEvent;
+  ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
+  ofEvent<BallStateEventArgs> ballDestroyedEvent;
+  ofEvent<BallStateEventArgs> ballRespawnedEvent;
+  ofEvent<PlayerStateEventArgs> playerLostEvent;
+  ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
-  ofEvent<ModifierEventArgs> modifierRemovedEvent;
+  ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
   
   void setup();
   void update();
@@ -50,7 +50,7 @@ private:
   void notifyRoundEnded(RoundState& state);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
-  void notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target);
+  void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
   
   void onCollision(CollisionEventArgs& e);
   

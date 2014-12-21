@@ -359,8 +359,21 @@ void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
   ofRotateY(45);
   ofSetLineWidth(8.0);
   ofFill();
-  ofSetColor(255, 0, 0);
-  ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+  switch (modifier.modifierType()) {
+    case MODIFIER_PADDLE_WIDTH:
+      if (modifier.spec().amount > 1)
+        ofSetColor(0, 0, 255);
+      else
+        ofSetColor(255, 0, 0);
+      ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+      break;
+    case MODIFIER_EXTRA_LIFE:
+      ofSetColor(255, 0, 0);
+      ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+      break;
+    default:
+      break;
+  }
   
   ofPopMatrix();
   

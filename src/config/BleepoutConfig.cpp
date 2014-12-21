@@ -147,11 +147,17 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   
-  std::string paddleWidthModName("paddleWidthMod");
-  ModifierSpec paddleWidthModSpec(MODIFIER_PADDLE_WIDTH);
-  paddleWidthModSpec.amount = 1.5f;
-  paddleWidthModSpec.duration = 5.0f;
-  config->addModifierDef(paddleWidthModName, paddleWidthModSpec);
+  std::string widePaddleName("widePaddle");
+  ModifierSpec widePaddleSpec(MODIFIER_PADDLE_WIDTH);
+  widePaddleSpec.amount = 1.5f;
+  widePaddleSpec.duration = 5.0f;
+  config->addModifierDef(widePaddleName, widePaddleSpec);
+  
+  std::string narrowPaddleName("narrowPaddle");
+  ModifierSpec narrowPaddleSpec(MODIFIER_PADDLE_WIDTH);
+  narrowPaddleSpec.amount = 0.5f;
+  narrowPaddleSpec.duration = 5.0f;
+  config->addModifierDef(narrowPaddleName, narrowPaddleSpec);
   
   int cols = 12;
   int rows = 10;
@@ -169,7 +175,9 @@ RoundConfig* RoundConfig::createRoundConfig1() {
       spec.value = 1;
       spec.speed = 0;
       if (i % 3 == 0 && j % 3 == 0)
-        spec.modifierName = paddleWidthModName;
+        spec.modifierName = widePaddleName;
+      else if (i % 7 == 0 && j % 5 == 0)
+        spec.modifierName = narrowPaddleName;
       config->addBrick(spec);
     }
   }

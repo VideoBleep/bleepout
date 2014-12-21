@@ -79,8 +79,8 @@ public:
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
-  ofEvent<PlayerEventArgs> playerAddedEvent;
-  ofEvent<PlayerEventArgs> playerRemovedEvent;
+  ofEvent<PlayerStateEventArgs> playerAddedEvent;
+  ofEvent<PlayerStateEventArgs> playerRemovedEvent;
   
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
