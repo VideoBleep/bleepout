@@ -116,6 +116,12 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
   return allBricks;
 }
 
+static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
+  for (int i = 0; i < ring.count; i++) {
+    walls.push_back(WallSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.size, ring.isExit, ring.speed, ring.stopHeading));
+  }
+}
+
 static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<WallSpec>& walls) {
   float theta = curve.elevation1;
   float phi = curve.heading1;
@@ -137,143 +143,8 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   for (const CurvedWallSpec& curve : _curvedWallSets) {
     createCurveWalls(curve, r, walls);
   }
+  for (const WallRingSpec& ring : _wallRings) {
+    createRingWalls(ring, walls);
+  }
   return walls;
-}
-
-RoundConfig* RoundConfig::createRoundConfig1() {
-  RoundConfig* config = new RoundConfig("Round1");
-  
-  for (int i = 0; i < 5; i ++) {
-    config->addBall(BallSpec(30, ofRandom(360)));
-  }
-  
-  std::string widePaddleName("widePaddle");
-  ModifierSpec widePaddleSpec(MODIFIER_PADDLE_WIDTH);
-  widePaddleSpec.amount = 1.5f;
-  widePaddleSpec.duration = 5.0f;
-  config->addModifierDef(widePaddleName, widePaddleSpec);
-  
-  std::string narrowPaddleName("narrowPaddle");
-  ModifierSpec narrowPaddleSpec(MODIFIER_PADDLE_WIDTH);
-  narrowPaddleSpec.amount = 0.5f;
-  narrowPaddleSpec.duration = 5.0f;
-  config->addModifierDef(narrowPaddleName, narrowPaddleSpec);
-  
-  int cols = 12;
-  int rows = 10;
-  
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      float s = i / (cols * 1.0);
-      BrickSpec spec;
-      spec.elevation = 30 + 3 * j;
-      spec.heading = s * 360 + j * 2 + ((i % 2) ? 5 : -5);
-      spec.color = ofColor(s * 255,
-                           j / (rows * 1.0) * 255,
-                           (1 - s) * 255);
-      spec.lives = (j % 3 == 1) ? 2 : 1;
-      spec.value = 1;
-      spec.speed = 0;
-      if (i % 3 == 0 && j % 3 == 0)
-        spec.modifierName = widePaddleName;
-      else if (i % 7 == 0 && j % 5 == 0)
-        spec.modifierName = narrowPaddleName;
-      config->addBrick(spec);
-    }
-  }
-  
-  for (int i = 0; i < 6; i++) {
-    CurvedWallSpec spec;
-    spec.elevation1 = 30;
-    spec.heading1 = i * 60 + 15;
-    spec.elevation2 = i % 2 ? 68 : 62;
-    spec.heading2 = i * 60 + 45;
-    spec.width = 10;
-    spec.isExit = false;
-    spec.speed = 0;
-    config->addCurvedWallSet(spec);
-  }
-  
-  config->addWall(WallSpec(67,   5, ofVec3f(10, 10, 30),
-                           false, 0.02,  80));
-  config->addWall(WallSpec(67, 125, ofVec3f(10, 10, 30),
-                           false, 0.02, 200));
-  config->addWall(WallSpec(67, 245, ofVec3f(10, 10, 30),
-                           false, 0.02, 320));
-  
-  config->addBrickRing(BrickRingSpec(72, ofColor(0, 0, 0),
-                                     12, 1, 2, 0, 0.02));
-  config->addBrickRing(BrickRingSpec(76, ofColor(0, 0, 0),
-                                     10, 1, 1, 0, -0.02));
-  config->addBrickRing(BrickRingSpec(80, ofColor(0, 0, 0),
-                                     8, 2, 2, 0, 0.02));
-  
-  config->addStartMessage("Video Bleep\npresents", ofColor(255))
-    .setSize(12)
-    .setTiming(0, 3);
-  config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
-    .setSize(50)
-    .setTrails(4)
-    .setTiming(3, 4.5);
-  config->addStartMessage("STAGE 1 START", ofColor(0, 255, 0))
-    .setSize(25)
-    .setTiming(7.5, 2.5);
-  config->_startDelay = 10;
-  
-  config->addRingSet()
-    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0)))
-    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.1f, 10.0f, ofVec3f(20)),
-               ofVec3f(20))
-    .setCount(30)
-    .setRadiusScale(1.95)
-    .setLineWidth(1.2)
-    .setColor(ofColor(0, 0, 255, 63));
-  config->addRingSet()
-    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.4, 5.0f, ofVec3f(0)))
-    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.5, 40.0f, ofVec3f(0)),
-               ofVec3f(60))
-    .setCount(60)
-    .setRadiusScale(2.3)
-    .setLineWidth(1.4)
-    .setColor(ofColor(0, 255, 255, 63));
-  config->addRingSet()
-    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0)))
-    .setSpread(ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0)),
-               ofVec3f(60))
-    .setCount(50)
-    .setRadiusScale(2)
-    .setLineWidth(0.9)
-    .setColor(ofColor(127, 172, 255, 63));
-  
-  //...
-  return config;
-}
-RoundConfig* RoundConfig::createRoundConfig2() {
-  RoundConfig* config = new RoundConfig("Round2");
-  
-  for (int i = 0; i < 5; i ++) {
-    config->addBall(BallSpec(30, ofRandom(360)));
-  }
-  //...
-  config->addStartMessage(MessageSpec("STAGE 2 START", ofColor(0, 255, 0), 25, 0, 2, 2.5));
-  
-  int cols = 14;
-  int rows = 10;
-  
-  for (int i = 0; i < cols; i++) {
-    for (int j = 0; j < rows; j++) {
-      float s = i / (cols * 1.0);
-      BrickSpec spec;
-      spec.elevation = 30 + 3 * j;
-      spec.heading = s * 360 + j * 6;
-      spec.color = ofColor(s * 255,
-                           j / (rows * 1.0) * 255,
-                           (1 - s) * 255);
-      spec.lives = (j % 3 == 1) ? 2 : 1;
-      spec.value = 1;
-      spec.speed = 0;
-      config->addBrick(spec);
-    }
-  }
-  return config;
 }
