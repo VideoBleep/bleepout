@@ -28,22 +28,34 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   config->addStartMessage("STAGE 2 START", ofColor(0, 255, 255))
     .setSize(25)
     .setTiming(7.5, 3);
+  config->_startDelay = 10;
   
-  int cols = 18;
-  int rows = 10;
+  std::string laserModName("laser");
+  config->addModifierDef(laserModName, MODIFIER_LASER_BALL)
+    .setColor(ofColor::green)
+    .setDuration(20);
   
-  for (int col = 0; col < cols; col++) {
-    for (int row = 0; row < rows; row++) {
-      float s = col / (cols * 1.0);
-      config->addBrick()
-      .setElevation(35 + 5 * row)
-      .setHeading(s * 360 + row * 6)
-      .setColor((row % 3 == 1) ? ofColor(0, 127, 255)
-                : ofColor::green)
-      .setLives((row % 3 == 1) ? 2 : 1)
+  {
+    int cols = 18;
+    int rows = 10;
+    BrickSpec prototype = BrickSpec()
       .setValue(1)
       .setSpeed(0)
       .setSize(ofVec3f(5.0f, 2.0f, 10.0f));
+    for (int col = 0; col < cols; col++) {
+      for (int row = 0; row < rows; row++) {
+        float s = col / (cols * 1.0);
+        auto& spec = config->addBrick()
+          .copyFrom(prototype)
+          .setElevation(35 + 5 * row)
+          .setHeading(s * 360 + row * 6)
+          .setColor((row % 3 == 1) ? ofColor(0, 127, 255)
+                    : ofColor::green)
+          .setLives((row % 3 == 1) ? 2 : 1);
+        if (col % 6 == 0 && row == 1) {
+          spec.setModifier(laserModName);
+        }
+      }
     }
   }
   
