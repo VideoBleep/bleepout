@@ -113,7 +113,7 @@ static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& 
                      .setValue(ring.value)
                      .setLives(ring.lives)
                      .setSpeed(ring.speed)
-                     .setStopHeading(heading + ring.stopHeading));
+                     .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
   }
 }
 
@@ -134,7 +134,7 @@ static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& wal
                     .setSize(ring.size)
                     .setIsExit(ring.isExit)
                     .setSpeed(ring.speed)
-                    .setStopHeading(heading + ring.stopHeading)
+                    .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading))
                     .setVisible(ring.visible));
   }
 }
@@ -154,7 +154,7 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
                     .setSize(ofVec3f(curve.width))
                     .setIsExit(curve.isExit)
                     .setSpeed(curve.speed)
-                    .setStopHeading(phi + curve.stopHeading)
+                    .setStopHeading(curve.stopHeading < 0 ? -1 : (phi + curve.stopHeading))
                     .setVisible(false));
     theta += dtheta;
     phi += dphi;
