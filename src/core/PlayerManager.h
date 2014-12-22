@@ -9,7 +9,9 @@
 #ifndef __bleepout__PlayerManager__
 #define __bleepout__PlayerManager__
 
+//#include "BleepoutApp.h"
 #include "Player.h"
+#include "PlayerController.h"
 #include <ofMain.h>
 #include "GameObjectCollection.h"
 #include "GameState.h"
@@ -47,23 +49,25 @@ const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
 const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
 const std::string STATE_PLAY = "play"; // game is playing, free to send control
 
+class BleepoutApp; 
 
 class PlayerManager : public EventSource {
 public:
-	PlayerManager();
+	//PlayerManager();
+	PlayerManager(BleepoutApp& bApp);
 	
   std::list<ofPtr<Player> >& players() { return _players; }
 
-  ofPtr<Player> addPlayer();
-
   // Sockets Server
   ofxLibwebsockets::Server server;
+  PlayerController controller;
 
   void setup();
   void update();
   void draw();
   void gotMessage(ofMessage msg);
   
+  ofPtr<Player> addPlayer();
   void setIsInRound(bool r) { _inRoundMode = r; }
 
   // Message queue (temporary?)
@@ -92,6 +96,8 @@ private:
                                 float pitch, float roll);
   
   bool _inRoundMode;
+
+  BleepoutApp& _bleepoutApp;
   std::list<ofPtr<Player> > _players;
 };
 

@@ -1,18 +1,42 @@
+/*
+	PlayerController.cpp
+	
+	By Jim Ankrom
+	
+	PlayerController coordinates player actions and state
+	
+	Actions are routed to the controller from messages recieved by PlayerManager
+
+	The player lifecycle is as follows:
+
+	* Connect
+	* Configure
+	* Queue
+	* Calibrate
+*/
 
 #include "PlayerController.h"
 
-// Player connected
-void PlayerController::connect(Player& player) {
+PlayerController::PlayerController(SetupController& setup)
+	: _setup(setup) 
+{
 
+}
+
+// Player connected
+void PlayerController::connect(ofPtr<Player> player) {
+	_setup.Lobby().push_back(player);
+	// TODO: Set player state to 'select color'
+	// TODO: send message to player that they are in that state
 };
 
 // Player has entered the 'lobby'. Called by PlayerController::configure()
-void PlayerController::queue(Player& player) {
+void PlayerController::queue(ofPtr<Player>  player) {
 
 };
 
 // Calibrate Player Position
-void PlayerController::calibrate(Player& player) {
+void PlayerController::calibrate(ofPtr<Player> player) {
 	/*
 		1. Show player a stationary object in the position we believe them to be pointing
 		2. Player should now point to the target object with their phone, and click the action button on their screen
@@ -23,11 +47,17 @@ void PlayerController::calibrate(Player& player) {
 
 };
 
+void PlayerController::configure(ofPtr<Player>  player) {
+
+};
+
 // Player has started their game.
-void PlayerController::start(Player& player) {};
+void PlayerController::start(ofPtr<Player> player) {
+	// TODO: implement
+};
 
 // Player has quit. Called by player.
-void PlayerController::quit(Player& player) {};
+void PlayerController::quit(ofPtr<Player> player) {};
 
 // Player's playtime is up. Evaluated at round end.
-void PlayerController::expire(Player& player) {};
+void PlayerController::expire(ofPtr<Player> player) {};

@@ -26,6 +26,12 @@ class BleepoutApp : public ofBaseApp {
 public:
   BleepoutApp();
   
+  // Public properties
+  ofPtr<SetupController> Setup() { return _setupController; }
+  ofPtr<RoundController> Round() { return _roundController; }
+  const BleepoutConfig& config() const { return *_config; }
+
+  // oF interface methods
   void setup() override;
   void update() override;
   void draw() override;
@@ -35,7 +41,8 @@ public:
   void mouseMoved(int x, int y );
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
-  const BleepoutConfig& config() const { return *_config; }
+
+
 
 private:
   void onStartRound(StartRoundEventArgs& e);
@@ -45,6 +52,7 @@ private:
 	ofPtr<PlayerManager> _playerManager;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
+
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
 #endif // ENABLE_SYPHON

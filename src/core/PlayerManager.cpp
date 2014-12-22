@@ -6,17 +6,17 @@
 //  
 //
 
-
+#include "BleepoutApp.h"
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "Logging.h"
 
 std::string messageDelimiter = "|";
 
-PlayerManager::PlayerManager()
-{
-
-}
+PlayerManager::PlayerManager(BleepoutApp& bApp) 
+	: _bleepoutApp(bApp),
+	controller(*(bApp.Setup()))
+	{ }
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
@@ -92,29 +92,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 
 	ofPtr<Player> player = findPlayer(args.conn);
 
-	if (msgPrefix == MESSAGE_NEW) {
-		if (_inRoundMode) {
-			ofLogWarning() << "Ignoring create player message in setup mode";
-			return;
-		}
-		if (player) {
-			ofLogWarning() << "Got create player message for existing player: " << *player;
-			return;
-		}
-		int id___UNUSED = ofHexToInt(parts[1]);
-		ofColor color(ofHexToInt(parts[2]),
-									ofHexToInt(parts[3]),
-									ofHexToInt(parts[4]));
-		player.reset(new Player(&args.conn));
-		player->setColor(color);
-		_players.push_back(player);
-		
-		ofLogNotice() << "Player Created - id#" << id___UNUSED;
-		// Pong
-		args.conn.send("hello");
-		return;
-	}
-
+	// LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == MESSAGE_YPR) {
 		if (!_inRoundMode) {
@@ -137,6 +115,50 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
 	}
 	// click messages? Other?
+
+
+
+	if (msgPrefix == MESSAGE_NEW) {
+		if (_inRoundMode) {
+			ofLogWarning() << "Ignoring create player message in setup mode";
+			return;
+		}
+		if (player) {
+			ofLogWarning() << "Got create player message for existing player: " << *player;
+			return;
+		}
+		int id___UNUSED = ofHexToInt(parts[1]);
+		ofColor color(ofHexToInt(parts[2]),
+									ofHexToInt(parts[3]),
+									ofHexToInt(parts[4]));
+		player.reset(new Player(&args.conn));
+		player->setColor(color);
+		//_players.push_back(player);
+		controller.connect(player);
+
+		ofLogNotice() << "Player Created - id#" << id___UNUSED;
+		// Pong
+		args.conn.send("hello");
+		return;
+	}
+
+	// Set color
+	if (msgPrefix == ACTION_CONFIGURE) {
+		controller.configure(player);
+	}
+	
+	if (msgPrefix == ACTION_CALIBRATE) {
+		controller.calibrate(player);
+	}
+	
+	if (msgPrefix == ACTION_START) {
+		controller.start(player);
+	}
+
+	if (msgPrefix == ACTION_QUIT) {
+		controller.quit(player);
+	}
+
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){

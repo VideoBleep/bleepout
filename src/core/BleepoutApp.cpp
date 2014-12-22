@@ -25,7 +25,7 @@ void BleepoutApp::setup() {
   ofAddListener(_setupController->startRoundEvent, this,
                 &BleepoutApp::onStartRound);
 
-  _playerManager.reset(new PlayerManager());
+  _playerManager.reset(new PlayerManager(*this));
   _playerManager->setup();
   _playerManager->addPlayer();
   

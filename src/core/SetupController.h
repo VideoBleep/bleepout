@@ -12,9 +12,10 @@
 #include "Player.h"
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
-#include "PlayerManager.h"
 #include <list>
 #include <ofTypes.h>
+
+//class PlayerManager;
 
 class SetupController : public EventSource {
 public:
@@ -26,16 +27,24 @@ public:
   
   ofEvent<StartRoundEventArgs> startRoundEvent;
   
+  // TODO: Please Review this; is this the appropriate way to return a reference to the private _lobby?
+  std::list<ofPtr<Player>>& Lobby() { return _lobby; }
+
 private:
-  void notifyStartRound(ofPtr<RoundConfig> config,
+	//ofPtr<PlayerManager> _playerManager;
+	// Lobby is the list of players queued for the game
+	std::list<ofPtr<Player> > _lobby;
+	// ConnectedPlayers is all current players
+	std::list<ofPtr<Player> > _connectedPlayers;
+
+	
+	void notifyStartRound(ofPtr<RoundConfig> config,
                         std::list<ofPtr<Player> > players);
   
   bool tryStartRound();
   bool canStartRound() const;
   
-  ofPtr<PlayerManager> _playerManager;
   const BleepoutConfig& _appConfig;
-  std::list<ofPtr<Player> > _players;
   ofPtr<RoundConfig> _roundConfig;
 };
 
