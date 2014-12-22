@@ -51,8 +51,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 }
 
 RoundConfig::RoundConfig(std::string name)
-: _brickSize(7.0f, 5.0f, 17.0f),
-_paddleSize(16.0f, 8.0f, 40.0f),
+: _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
 _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
@@ -66,7 +65,6 @@ void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;
   if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(obj["brickSize"], &_brickSize);
   readJsonVal(obj["paddleSize"], &_paddleSize);
   readJsonVal(obj["ballRadius"], &_ballRadius);
   readJsonVal(obj["modifierRadius"], &_modifierRadius);
@@ -83,7 +81,6 @@ void RoundConfig::loadJsonFile(std::string path) {
 
 Json::Value RoundConfig::toJsonVal() const {
   Json::Value obj;
-  obj["brickSize"] = ::toJsonVal(_brickSize);
   obj["paddleSize"] = ::toJsonVal(_paddleSize);
   obj["ballRadius"] = _ballRadius;
   obj["modifierRadius"] = _modifierRadius;
@@ -110,6 +107,7 @@ static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& 
     bricks.push_back(BrickSpec()
                      .setElevation(ring.elevation)
                      .setHeading(heading)
+                     .setSize(ring.size)
                      .setColor(ring.color)
                      .setValue(ring.value)
                      .setLives(ring.lives)

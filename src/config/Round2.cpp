@@ -10,7 +10,6 @@
 
 RoundConfig* RoundConfig::createRoundConfig2() {
   RoundConfig* config = new RoundConfig("Round2");
-  config->_brickSize.set(5.0f, 2.0f, 10.0f);
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
@@ -43,7 +42,8 @@ RoundConfig* RoundConfig::createRoundConfig2() {
                 : ofColor::green)
       .setLives((row % 3 == 1) ? 2 : 1)
       .setValue(1)
-      .setSpeed(0);
+      .setSpeed(0)
+      .setSize(ofVec3f(5.0f, 2.0f, 10.0f));
     }
   }
   

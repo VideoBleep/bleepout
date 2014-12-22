@@ -10,7 +10,6 @@
 
 RoundConfig* RoundConfig::createRoundConfig1() {
   RoundConfig* config = new RoundConfig("Round1");
-  config->_brickSize.set(7.0f, 5.0f, 17.0f);
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
@@ -45,7 +44,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
                           (1 - s) * 255))
         .setLives((row % 3 == 1) ? 2 : 1)
         .setValue(1)
-        .setSpeed(0);
+        .setSpeed(0)
+        .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
       if (col % 3 == 0 && row % 3 == 0)
         spec.modifierName = widePaddleName;
       else if (col % 7 == 0 && row % 5 == 0)
@@ -87,19 +87,22 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setCount(12)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02);
+    .setSpeed(0.02)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(76)
     .setColor(ofColor::black)
     .setCount(10)
-    .setSpeed(-0.02);
+    .setSpeed(-0.02)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(80)
     .setColor(ofColor::black)
     .setCount(8)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02);
+    .setSpeed(0.02)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   // Create the floor exit wall
   float d = (config->domeMargin() + config->domeRadius()) * 5;

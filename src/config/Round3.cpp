@@ -20,28 +20,31 @@ static void createBrickGroups(RoundConfig* config,
     .setCount(count)
     .setColor(color1)
     .setPhase(-hSpace)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
     .setValue(2).setLives(2);
   config->addBrickRing()
     .setElevation(elevation - eSpace)
     .setCount(count)
     .setColor(color2)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
     .setPhase(hSpace);
   config->addBrickRing()
     .setElevation(elevation + eSpace)
     .setCount(count)
     .setColor(color2)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
     .setPhase(-hSpace);
   config->addBrickRing()
     .setElevation(elevation + eSpace)
     .setCount(count)
     .setColor(color1)
     .setPhase(hSpace)
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
     .setValue(2).setLives(2);
 }
 
 RoundConfig* RoundConfig::createRoundConfig3() {
   RoundConfig* config = new RoundConfig("Round3");
-  config->_brickSize.set(7.0f, 5.0f, 17.0f);
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
@@ -58,7 +61,8 @@ RoundConfig* RoundConfig::createRoundConfig3() {
   config->addBrickRing()
     .setElevation(30)
     .setCount(24)
-    .setColor(ofColor(0, 255, 255));
+    .setColor(ofColor(0, 255, 255))
+    .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   config->addWallRing()
     .setElevation(65)

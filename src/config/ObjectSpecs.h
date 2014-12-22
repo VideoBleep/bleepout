@@ -18,6 +18,7 @@ typedef std::map<std::string, std::string> StringMap;
 struct BrickSpec {
   float elevation;
   float heading;
+  ofVec3f size;
   int value;
   int lives;
   ofColor color;
@@ -25,14 +26,11 @@ struct BrickSpec {
   float stopHeading;
   std::string modifierName;
   
-  BrickSpec() : speed(0), stopHeading(-1), modifierName() { }
-  BrickSpec(float e, float h, ofColor c, int v,
-            int l, float s = 0, float stop = -1, std::string mod = "")
-  : elevation(e), heading(h), color(c), value(v)
-  , lives(l), speed(s), stopHeading(stop), modifierName(mod) { }
+  BrickSpec() : speed(0), stopHeading(-1), modifierName(), size(7.0f, 5.0f, 17.0f) { }
   
   BrickSpec& setElevation(float e) { elevation = e; return *this; }
   BrickSpec& setHeading(float h) { heading = h; return *this; }
+  BrickSpec& setSize(ofVec3f s) { size = s; return *this; }
   BrickSpec& setValue(int v) { value = v; return *this; }
   BrickSpec& setColor(ofColor c) { color = c; return *this; }
   BrickSpec& setLives(int l) { lives = l; return *this; }
@@ -43,6 +41,7 @@ struct BrickSpec {
 
 struct BrickRingSpec {
   float elevation;
+  ofVec3f size;
   ofColor color;
   int value;
   int lives;
@@ -51,8 +50,9 @@ struct BrickRingSpec {
   float speed;
   float stopHeading;
   
-  BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1) { }
+  BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1), size(7.0f, 5.0f, 17.0f) { }
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
+  BrickRingSpec& setSize(ofVec3f s) { size = s; return *this; }
   BrickRingSpec& setCount(int c) { count = c; return *this; }
   BrickRingSpec& setValue(int v) { value = v; return *this; }
   BrickRingSpec& setColor(ofColor c) { color = c; return *this; }
