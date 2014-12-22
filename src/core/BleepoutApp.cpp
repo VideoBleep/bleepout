@@ -33,6 +33,7 @@ void BleepoutApp::setup() {
   _syphonClient.setup();
   _syphonClient.set(_config->syphonServerName(),
                     _config->syphonAppName());
+  _syphonEnabled = true;
 #endif // ENABLE_SYPHON
 }
 
@@ -47,7 +48,8 @@ void BleepoutApp::update() {
 void BleepoutApp::draw() {
   ofBackground(0, 0, 0);
 #ifdef ENABLE_SYPHON
-  _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
+  if (_syphonEnabled)
+    _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
 #endif // ENABLE_SYPHON
   if (_roundController) {
    _roundController->draw();
@@ -82,6 +84,11 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
 }
 
 void BleepoutApp::keyPressed(int key) {
+#ifdef ENABLE_SYPHON
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY) && key == 'y') {
+    _syphonEnabled = !_syphonEnabled;
+  }
+#endif
   if (_roundController) {
     _roundController->keyPressed(key);
   } else if (_setupController) {

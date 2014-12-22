@@ -218,6 +218,9 @@ std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
     case MODIFIER_PADDLE_WIDTH:
       os << "PaddleWidth";
       break;
+    case MODIFIER_LASER_BALL:
+      os << "LaserBall";
+      break;
     case MODIFIER_NONE:
     default:
       os << "Unknown{" << (int)type << "}";
@@ -245,8 +248,16 @@ void PaddleWidthModifier::output(std::ostream &os) const {
 
 void ExtraLifeModifier::output(std::ostream &os) const {
   os << "ExtraLifeModifier{";
-  os << ", ";
   outputGameObjectFields(os, *this);
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
+  os << "}";
+}
+
+void BallModifier::output(std::ostream &os) const {
+  os << "BallModifier{";
+  outputGameObjectFields(os, *this);
+  os << ", type: " << modifierType();
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";

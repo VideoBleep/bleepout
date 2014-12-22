@@ -35,6 +35,14 @@ void LogicController::update() {
       }
     }
   }
+  for (auto& obj : _state.balls()) {
+    if (obj && obj->alive()) {
+      const ModifierSpec* mod = obj->updateLaserModifier(_state);
+      if (mod) {
+        notifyModifierRemoved(_state, *mod, obj.get());
+      }
+    }
+  }
 }
 
 void LogicController::onCollision(CollisionEventArgs &e) {
@@ -86,8 +94,14 @@ void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
   Player* previousPlayer = ball.player();
   Player& player = paddle.player();
   ball.setPlayer(&player);
-  if (previousPlayer == NULL || player.id() != previousPlayer->id()) {
+  if (previousPlayer == NULL ||
+      player.id() != previousPlayer->id()) {
     notifyBallOwnerChanged(_state, &ball, &player, previousPlayer);
+  }
+  ModifierSpec modifierSpec;
+  if (player.tryDequeueBallModifier(&modifierSpec)) {
+    ball.applyModifier(_state, modifierSpec);
+    //... event?
   }
 }
 

@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Paddle.h"
 #include "Brick.h"
+#include "Ball.h"
 #include "BleepoutConfig.h"
 #include "OrbitalTrajectory.h"
 #include "PhysicsUtil.h"
@@ -24,6 +25,8 @@ Modifier* Modifier::createModifier(const ModifierSpec &spec) {
       return new ExtraLifeModifier(spec);
     case MODIFIER_PADDLE_WIDTH:
       return new PaddleWidthModifier(spec);
+    case MODIFIER_LASER_BALL:
+      return new BallModifier(spec);
     default:
       return NULL;
   }

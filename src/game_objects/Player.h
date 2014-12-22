@@ -14,6 +14,7 @@
 #include <ofTypes.h>
 #include <Connection.h>
 #include "Modifier.h"
+#include <list>
 
 class Paddle;
 class RoundState;
@@ -56,6 +57,9 @@ public:
   
   ofxLibwebsockets::Connection* connection() { return _conn; }
   void connection(ofxLibwebsockets::Connection* conn) { _conn = conn; }
+  
+  void enqueueBallModifier(const ModifierSpec& modifierSpec);
+  bool tryDequeueBallModifier(ModifierSpec* modifierSpec);
 
 private:
   void init();
@@ -65,6 +69,7 @@ private:
   int _score;
   int _lives;
   
+  std::list<ModifierSpec> _ballModifierQueue;
 };
 
 template<>

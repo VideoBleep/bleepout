@@ -276,7 +276,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
 
-    if (!_drawLasers) {
+    if (!_drawLasers && !ball.isLaser()) {
         
         ofPushStyle();
         ofPushMatrix();

@@ -36,7 +36,8 @@ typedef int GameObjectId;
 enum ModifierType {
   MODIFIER_NONE,
   MODIFIER_EXTRA_LIFE,
-  MODIFIER_PADDLE_WIDTH
+  MODIFIER_PADDLE_WIDTH,
+  MODIFIER_LASER_BALL
 };
 
 struct Nothing { };
