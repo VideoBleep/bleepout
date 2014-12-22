@@ -14,6 +14,7 @@
 		322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322D59D71A454BCF00150050 /* RendererUtil.cpp */; };
 		325750E61A4792A500CC375A /* Round1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E51A4792A500CC375A /* Round1.cpp */; };
 		325750E91A4792E200CC375A /* Round2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E81A4792E200CC375A /* Round2.cpp */; };
+		325750F11A47BA9A00CC375A /* Round3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750F01A47BA9A00CC375A /* Round3.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
 		32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */; };
@@ -136,9 +137,9 @@
 		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; };
 		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; };
 		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; };
-		3243A2931A3AA550000BB599 /* basicRound.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = basicRound.json; sourceTree = "<group>"; };
 		325750E51A4792A500CC375A /* Round1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round1.cpp; sourceTree = "<group>"; };
 		325750E81A4792E200CC375A /* Round2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round2.cpp; sourceTree = "<group>"; };
+		325750F01A47BA9A00CC375A /* Round3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round3.cpp; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		32F95B431A2EB2CF008913CC /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		32F95B451A2EB2CF008913CC /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
@@ -385,14 +386,6 @@
 			name = src;
 			sourceTree = "<group>";
 		};
-		3243A2921A3AA550000BB599 /* config */ = {
-			isa = PBXGroup;
-			children = (
-				3243A2931A3AA550000BB599 /* basicRound.json */,
-			);
-			path = config;
-			sourceTree = "<group>";
-		};
 		32F95B401A2EB2CF008913CC /* ofxXmlSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,6 +617,7 @@
 				320111C81A428F6B00EFCC35 /* ObjectSpecs.h */,
 				325750E51A4792A500CC375A /* Round1.cpp */,
 				325750E81A4792E200CC375A /* Round2.cpp */,
+				325750F01A47BA9A00CC375A /* Round3.cpp */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -822,7 +816,6 @@
 			isa = PBXGroup;
 			children = (
 				5BB4E59F1A400F500047F957 /* src */,
-				3243A2921A3AA550000BB599 /* config */,
 				5B557D681A35207F00967B7B /* openFrameworksDebug.a */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
@@ -948,6 +941,7 @@
 				5BB4E5EC1A400F500047F957 /* Ball.cpp in Sources */,
 				66CA411C5A9664E27326BF36 /* ofxTCPServer.cpp in Sources */,
 				5B0E834C1A369EC30091AB99 /* ofxBulletStaticPlane.cpp in Sources */,
+				325750F11A47BA9A00CC375A /* Round3.cpp in Sources */,
 				E2564CF7DDB3713772BB682E /* ofxUDPManager.cpp in Sources */,
 				5BB4E5E31A400F500047F957 /* GameEvents.cpp in Sources */,
 				5B0E83451A369EC30091AB99 /* ofxBulletBox.cpp in Sources */,

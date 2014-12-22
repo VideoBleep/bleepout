@@ -241,9 +241,7 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    if (!wall.isExit() && wall.isDynamic()) {
-        drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), &wallMaterial, 1.5);
-    }
+    drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), &wallMaterial, 1.5);
 }
 
 void drawCometTail(Ball& ball, float width, float length, int order, const ofColor& color) {

@@ -20,6 +20,7 @@ class RoundConfig {
 public:
   static RoundConfig* createRoundConfig1();
   static RoundConfig* createRoundConfig2();
+  static RoundConfig* createRoundConfig3();
   
   RoundConfig(std::string name);
   
@@ -29,7 +30,6 @@ public:
   const std::string& name() const { return _name; }
   
   float startDelay() const { return _startDelay; }
-  const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
@@ -129,7 +129,6 @@ public:
 private:
   std::string _name;
   float _startDelay;
-  ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;

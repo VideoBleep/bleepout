@@ -20,6 +20,7 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   config->_syphonAppName = "Arena";
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig3()));
   return config;
 }
 
@@ -50,8 +51,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 }
 
 RoundConfig::RoundConfig(std::string name)
-: _brickSize(7.0f, 5.0f, 17.0f),
-_paddleSize(16.0f, 8.0f, 40.0f),
+: _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
 _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
@@ -65,7 +65,6 @@ void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;
   if (!readJsonFile(path, &obj))
     return;
-  readJsonVal(obj["brickSize"], &_brickSize);
   readJsonVal(obj["paddleSize"], &_paddleSize);
   readJsonVal(obj["ballRadius"], &_ballRadius);
   readJsonVal(obj["modifierRadius"], &_modifierRadius);
@@ -82,7 +81,6 @@ void RoundConfig::loadJsonFile(std::string path) {
 
 Json::Value RoundConfig::toJsonVal() const {
   Json::Value obj;
-  obj["brickSize"] = ::toJsonVal(_brickSize);
   obj["paddleSize"] = ::toJsonVal(_paddleSize);
   obj["ballRadius"] = _ballRadius;
   obj["modifierRadius"] = _modifierRadius;
@@ -104,8 +102,19 @@ void RoundConfig::saveJsonFile(std::string path) const {
 }
 
 static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
+  BrickSpec prototype = BrickSpec()
+    .setElevation(ring.elevation)
+    .setSize(ring.size)
+    .setColor(ring.color)
+    .setValue(ring.value)
+    .setLives(ring.lives)
+    .setSpeed(ring.speed);
   for (int i = 0; i < ring.count; i++) {
-    bricks.push_back(BrickSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.color, ring.value, ring.lives, ring.speed));
+    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
+    bricks.push_back(BrickSpec()
+                     .copyFrom(prototype)
+                     .setHeading(heading)
+                     .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
   }
 }
 
@@ -118,8 +127,18 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
 }
 
 static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
+  WallSpec prototype = WallSpec()
+    .setElevation(ring.elevation)
+    .setSize(ring.size)
+    .setIsExit(ring.isExit)
+    .setSpeed(ring.speed)
+    .setVisible(ring.visible);
   for (int i = 0; i < ring.count; i++) {
-    walls.push_back(WallSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.size, ring.isExit, ring.speed, ring.stopHeading));
+    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
+    walls.push_back(WallSpec()
+                    .copyFrom(prototype)
+                    .setHeading(heading)
+                    .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
   }
 }
 
@@ -131,8 +150,17 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   int steps = floor(max((r * dtheta * PI/180.0) / curve.width, (r * dphi * PI/180.0) / curve.width));
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
+  WallSpec prototype = WallSpec()
+    .setSize(ofVec3f(curve.width))
+    .setIsExit(curve.isExit)
+    .setSpeed(curve.speed)
+    .setVisible(false);
   for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit, curve.speed));
+    walls.push_back(WallSpec()
+                    .copyFrom(prototype)
+                    .setElevation(theta)
+                    .setHeading(phi)
+                    .setStopHeading(curve.stopHeading < 0 ? -1 : (phi + curve.stopHeading)));
     theta += dtheta;
     phi += dphi;
   }
