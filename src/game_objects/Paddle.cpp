@@ -11,7 +11,7 @@
 
 const char GameObjectTypeTraits<Paddle>::typeName[] = "paddle";
 
-Paddle::Paddle(Player* player, ofVec3f size)
+Paddle::Paddle(Player& player, ofVec3f size)
 : GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
   thisGameObject = this;
   _color = ofColor(128, 128, 128);
@@ -20,11 +20,7 @@ Paddle::Paddle(Player* player, ofVec3f size)
 }
 
 const ofColor& Paddle::getColor() const {
-    if (_player) {
-        return _player->getColor();
-    } else {
-        return _color;
-    }
+  return _player.getColor();
 }
 
 void Paddle::addWidthModifier(RoundState& state,

@@ -17,15 +17,20 @@ struct WallSpec;
 
 class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(const RoundConfig* config = NULL, const WallSpec* spec = NULL);
+  Wall(const RoundConfig& config, const WallSpec& spec);
   
   bool isExit() const { return _isExit; }
   
+  virtual bool visible() const override {
+    return alive() && _visible;
+  }
+
   void output(std::ostream& os) const override;
   
   static const char* typeName() { return "wall"; }
 private:
   bool _isExit;
+  bool _visible;
 };
 
 template<>

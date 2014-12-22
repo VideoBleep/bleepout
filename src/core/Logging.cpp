@@ -69,8 +69,7 @@ void Brick::output(std::ostream &os) const {
 void Paddle::output(std::ostream &os) const {
   os << "Paddle{";
   outputGameObjectFields(os, *this);
-  os << ", player:";
-  outputObjectId(os, player());
+  os << ", player:" << player().id();
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";

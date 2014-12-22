@@ -19,7 +19,7 @@ struct BrickSpec;
 
 class Brick : public GameObject, public PhysicsObject {
 public:
-  Brick(const RoundConfig* config = NULL, const BrickSpec* spec = NULL);
+  Brick(const RoundConfig& config, const BrickSpec& spec);
   
   int value() const { return _value; }
   void setValue(int value) { _value = value; }

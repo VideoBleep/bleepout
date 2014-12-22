@@ -84,10 +84,10 @@ void LogicController::onModifierHitObject(Modifier &modifier, GameObject &object
 
 void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
   Player* previousPlayer = ball.player();
-  Player* player = paddle.player();
-  ball.setPlayer(player);
-  if (player != previousPlayer) {
-    notifyBallOwnerChanged(_state, &ball, player, previousPlayer);
+  Player& player = paddle.player();
+  ball.setPlayer(&player);
+  if (previousPlayer == NULL || player.id() != previousPlayer->id()) {
+    notifyBallOwnerChanged(_state, &ball, &player, previousPlayer);
   }
 }
 
