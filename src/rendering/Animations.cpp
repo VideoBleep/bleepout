@@ -102,20 +102,22 @@ void MessageAnimation::output(std::ostream &os) const {
   << "}";
 }
 
-class ModifierAppliedAnimation : public AnimationObject {
+class ModifierAnimation : public AnimationObject {
 public:
-  ModifierAppliedAnimation(const ModifierSpec& modifierSpec, const GameObject& target, const RoundConfig& config)
+  ModifierAnimation(const ModifierSpec& modifierSpec, const GameObject& target, const RoundConfig& config, bool isRemove)
   : AnimationObject(0, config.modifierFadeTime())
-  , _modifierSpec(modifierSpec), _target(target) { }
+  , _modifierSpec(modifierSpec), _target(target)
+  , _isRemove(isRemove) { }
   
   virtual void draw(const RoundConfig& config) override;
   virtual void output(std::ostream& os) const override;
 private:
   const ModifierSpec& _modifierSpec;
   const GameObject& _target;
+  const bool _isRemove;
 };
 
-void ModifierAppliedAnimation::draw(const RoundConfig &config) {
+void ModifierAnimation::draw(const RoundConfig &config) {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -124,10 +126,16 @@ void ModifierAppliedAnimation::draw(const RoundConfig &config) {
     const Paddle& paddle = static_cast<const Paddle&>(_target);
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofVec3f size = paddle.getSize();
-    size *= ofMap(percentage(), 0, 1, 1.5, 1);
     ofColor color = _modifierSpec.color;
-    color.a = (unsigned char)std::floor(ofMap(percentage(),
-                                              0, 1, 0, 192));
+    if (_isRemove) {
+      size *= ofMap(percentage(), 0, 1, 1, 1.5);
+      color.a = (unsigned char)std::floor(ofMap(percentage(),
+                                                0, 1, 127, 0));
+    } else {
+      size *= ofMap(percentage(), 0, 1, 1.5, 1);
+      color.a = (unsigned char)std::floor(ofMap(percentage(),
+                                                0, 1, 0, 192));
+    }
     ofTranslate(paddle.getPosition());
     ofRotateY(paddle.getRotation());
     ofFill();
@@ -142,10 +150,11 @@ void ModifierAppliedAnimation::draw(const RoundConfig &config) {
   ofPopMatrix();
 }
 
-void ModifierAppliedAnimation::output(std::ostream &os) const {
-  os << "ModifierAppliedAnimation{id:" << id()
+void ModifierAnimation::output(std::ostream &os) const {
+  os << "ModifierAnimation{id:" << id()
   << ", type: " << _modifierSpec.type
   << ", target: " << _target.id()
+  << ", action: " << (_isRemove ? "removed" : "applied")
   << "}";
 }
 
@@ -169,9 +178,16 @@ void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
 }
 
 void AnimationManager::onModifierApplied(ModifierEventArgs &e) {
-  auto anim = new ModifierAppliedAnimation(e.modifier()->spec(),
-                                           *e.target(),
-                                           _roundController.config());
+  auto anim = new ModifierAnimation(e.modifier()->spec(),
+                                    *e.target(),
+                                    _roundController.config(), false);
+  addAnimation(anim);
+}
+
+void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
+  auto anim = new ModifierAnimation(e.modifierSpec(),
+                                    *e.target(),
+                                    _roundController.config(), true);
   addAnimation(anim);
 }
 
@@ -180,6 +196,8 @@ void AnimationManager::attachTo(LogicController &roundEvents) {
                 &AnimationManager::onBrickDestroyed);
   ofAddListener(roundEvents.modifierAppliedEvent, this,
                 &AnimationManager::onModifierApplied);
+  ofAddListener(roundEvents.modifierRemovedEvent, this,
+                &AnimationManager::onModifierRemoved);
 }
 
 void AnimationManager::detachFrom(LogicController &roundEvents) {
@@ -187,4 +205,6 @@ void AnimationManager::detachFrom(LogicController &roundEvents) {
                    &AnimationManager::onBrickDestroyed);
   ofRemoveListener(roundEvents.modifierAppliedEvent, this,
                    &AnimationManager::onModifierApplied);
+  ofRemoveListener(roundEvents.modifierRemovedEvent, this,
+                   &AnimationManager::onModifierRemoved);
 }
