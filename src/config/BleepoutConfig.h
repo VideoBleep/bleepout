@@ -42,6 +42,7 @@ public:
   const std::vector<BrickSpec>& bricks() const { return _bricks; }
   const std::vector<BrickRingSpec>& brickRings() const { return _brickRings; }
   const std::vector<WallSpec>& walls() const { return _walls; }
+  const std::vector<WallRingSpec>& wallRings() const { return _wallRings; }
   const std::vector<CurvedWallSpec>& curvedWallSets() const { return _curvedWallSets; }
   const std::vector<MessageSpec>& startMessages() const { return _startMessages; }
   const std::vector<RingSetSpec>& ringSets() const { return _ringSets; }
@@ -49,6 +50,7 @@ public:
   std::vector<BallSpec>& balls() { return _balls; }
   std::vector<BrickSpec>& bricks() { return _bricks; }
   std::vector<BrickRingSpec>& brickRings() { return _brickRings; }
+  std::vector<WallRingSpec>& wallRings() { return _wallRings; }
   std::vector<WallSpec>& walls() { return _walls; }
   std::vector<CurvedWallSpec>& curvedWallSets() { return _curvedWallSets; }
   std::vector<MessageSpec>& startMessages() { return _startMessages; }
@@ -76,6 +78,10 @@ public:
   WallSpec& addWall() {
     _walls.push_back(WallSpec());
     return _walls.back();
+  }
+  WallRingSpec& addWallRing() {
+    _wallRings.push_back(WallRingSpec());
+    return _wallRings.back();
   }
   void addCurvedWallSet(CurvedWallSpec curve) {
     _curvedWallSets.push_back(curve);
@@ -134,6 +140,7 @@ private:
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
   std::vector<WallSpec> _walls;
+  std::vector<WallRingSpec> _wallRings;
   std::vector<CurvedWallSpec> _curvedWallSets;
   std::map<std::string, ModifierSpec> _modifierDefs;
   std::vector<MessageSpec> _startMessages;

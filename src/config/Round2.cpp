@@ -41,5 +41,19 @@ RoundConfig* RoundConfig::createRoundConfig2() {
         .setSpeed(0);
     }
   }
+  
+  config->addWallRing()
+    .setElevation(25)
+    .setCount(5)
+    .setSpeed(0.04)
+    .setSize(ofVec3f(10, 10, 30));
+  
+//  config->addWall()
+//    .setElevation(25)
+//    .setHeading(0)
+//    .setSize(ofVec3f(10, 10, 30))
+//    .setSpeed(0.04)
+//    .setStopHeading(180);
+  
   return config;
 }

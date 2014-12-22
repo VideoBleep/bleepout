@@ -116,6 +116,12 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
   return allBricks;
 }
 
+static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
+  for (int i = 0; i < ring.count; i++) {
+    walls.push_back(WallSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.size, ring.isExit, ring.speed, ring.stopHeading));
+  }
+}
+
 static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<WallSpec>& walls) {
   float theta = curve.elevation1;
   float phi = curve.heading1;
@@ -136,6 +142,9 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   float r = domeRadius() + domeMargin();
   for (const CurvedWallSpec& curve : _curvedWallSets) {
     createCurveWalls(curve, r, walls);
+  }
+  for (const WallRingSpec& ring : _wallRings) {
+    createRingWalls(ring, walls);
   }
   return walls;
 }
