@@ -27,6 +27,18 @@ struct BrickSpec {
   std::string modifierName;
   
   BrickSpec() : speed(0), stopHeading(-1), modifierName(), size(7.0f, 5.0f, 17.0f) { }
+  BrickSpec& copyFrom(const BrickSpec& other) {
+    elevation = other.elevation;
+    heading = other.heading;
+    size = other.size;
+    value = other.value;
+    lives = other.lives;
+    color = other.color;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    modifierName = other.modifierName;
+    return *this;
+  }
   
   BrickSpec& setElevation(float e) { elevation = e; return *this; }
   BrickSpec& setHeading(float h) { heading = h; return *this; }
@@ -51,6 +63,18 @@ struct BrickRingSpec {
   float stopHeading;
   
   BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1), size(7.0f, 5.0f, 17.0f) { }
+  BrickRingSpec& copyFrom(const BrickRingSpec& other) {
+    elevation = other.elevation;
+    size = other.size;
+    color = other.color;
+    value = other.value;
+    lives = other.lives;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
   BrickRingSpec& setSize(ofVec3f s) { size = s; return *this; }
   BrickRingSpec& setCount(int c) { count = c; return *this; }
@@ -72,6 +96,16 @@ struct WallSpec {
   bool visible;
   
   WallSpec() : speed(0), stopHeading(-1), isExit(false), visible(true) { }
+  WallSpec& copyFrom(const WallSpec& other) {
+    elevation = other.elevation;
+    heading = other.heading;
+    size = other.size;
+    isExit = other.isExit;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    visible = other.visible;
+    return *this;
+  }
   WallSpec& setElevation(float e) { elevation = e; return *this; }
   WallSpec& setHeading(float h) { heading = h; return *this; }
   WallSpec& setSize(ofVec3f s) { size = s; return *this; }

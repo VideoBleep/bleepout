@@ -102,16 +102,18 @@ void RoundConfig::saveJsonFile(std::string path) const {
 }
 
 static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
+  BrickSpec prototype = BrickSpec()
+    .setElevation(ring.elevation)
+    .setSize(ring.size)
+    .setColor(ring.color)
+    .setValue(ring.value)
+    .setLives(ring.lives)
+    .setSpeed(ring.speed);
   for (int i = 0; i < ring.count; i++) {
     float heading = i * 360 / (ring.count * 1.0) + ring.phase;
     bricks.push_back(BrickSpec()
-                     .setElevation(ring.elevation)
+                     .copyFrom(prototype)
                      .setHeading(heading)
-                     .setSize(ring.size)
-                     .setColor(ring.color)
-                     .setValue(ring.value)
-                     .setLives(ring.lives)
-                     .setSpeed(ring.speed)
                      .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
   }
 }
@@ -125,16 +127,18 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
 }
 
 static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
+  WallSpec prototype = WallSpec()
+    .setElevation(ring.elevation)
+    .setSize(ring.size)
+    .setIsExit(ring.isExit)
+    .setSpeed(ring.speed)
+    .setVisible(ring.visible);
   for (int i = 0; i < ring.count; i++) {
     float heading = i * 360 / (ring.count * 1.0) + ring.phase;
     walls.push_back(WallSpec()
-                    .setElevation(ring.elevation)
+                    .copyFrom(prototype)
                     .setHeading(heading)
-                    .setSize(ring.size)
-                    .setIsExit(ring.isExit)
-                    .setSpeed(ring.speed)
-                    .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading))
-                    .setVisible(ring.visible));
+                    .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
   }
 }
 
@@ -146,15 +150,17 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   int steps = floor(max((r * dtheta * PI/180.0) / curve.width, (r * dphi * PI/180.0) / curve.width));
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
+  WallSpec prototype = WallSpec()
+    .setSize(ofVec3f(curve.width))
+    .setIsExit(curve.isExit)
+    .setSpeed(curve.speed)
+    .setVisible(false);
   for (int i = 0; i < steps; i++) {
     walls.push_back(WallSpec()
+                    .copyFrom(prototype)
                     .setElevation(theta)
                     .setHeading(phi)
-                    .setSize(ofVec3f(curve.width))
-                    .setIsExit(curve.isExit)
-                    .setSpeed(curve.speed)
-                    .setStopHeading(curve.stopHeading < 0 ? -1 : (phi + curve.stopHeading))
-                    .setVisible(false));
+                    .setStopHeading(curve.stopHeading < 0 ? -1 : (phi + curve.stopHeading)));
     theta += dtheta;
     phi += dphi;
   }
