@@ -42,18 +42,21 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     }
   }
   
+  // bottom moving walls
   config->addWallRing()
     .setElevation(25)
     .setCount(5)
     .setSpeed(0.04)
     .setSize(ofVec3f(10, 10, 30));
   
-//  config->addWall()
-//    .setElevation(25)
-//    .setHeading(0)
-//    .setSize(ofVec3f(10, 10, 30))
-//    .setSpeed(0.04)
-//    .setStopHeading(180);
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.01, 10.0, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0.2, 0.5, 10.0, ofVec3f(0.3)),
+               ofVec3f(50, 90, 0))
+    .setColor(ofColor(255, 0, 0, 63))
+    .setCount(80)
+    .setLineWidth(2.3)
+    .setRadiusScale(2.3);
   
   return config;
 }
