@@ -13,11 +13,12 @@
 const char GameObjectTypeTraits<Wall>::typeName[] = "wall";
 
 Wall::Wall(const RoundConfig* config /*= NULL*/, const WallSpec* spec /*= NULL*/)
-: GameObject(GAME_OBJECT_WALL)
+: GameObject(GAME_OBJECT_WALL), _visible(true)
 {
     thisGameObject = this;
   if (config && spec) {
     _isExit = spec->isExit;
+    _visible = spec->visible;
     this->setPositionSpherical(config->domeRadius() + config->domeMargin(), spec->elevation, spec->heading);
     this->setSize(spec->size);
     if (spec->speed == 0) {

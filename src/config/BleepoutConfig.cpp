@@ -105,7 +105,15 @@ void RoundConfig::saveJsonFile(std::string path) const {
 
 static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
   for (int i = 0; i < ring.count; i++) {
-    bricks.push_back(BrickSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.color, ring.value, ring.lives, ring.speed));
+    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
+    bricks.push_back(BrickSpec()
+                     .setElevation(ring.elevation)
+                     .setHeading(heading)
+                     .setColor(ring.color)
+                     .setValue(ring.value)
+                     .setLives(ring.lives)
+                     .setSpeed(ring.speed)
+                     .setStopHeading(heading + ring.stopHeading));
   }
 }
 
@@ -119,7 +127,15 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
 
 static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
   for (int i = 0; i < ring.count; i++) {
-    walls.push_back(WallSpec(ring.elevation, i * 360 / (ring.count * 1.0) + ring.phase, ring.size, ring.isExit, ring.speed, ring.stopHeading));
+    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
+    walls.push_back(WallSpec()
+                    .setElevation(ring.elevation)
+                    .setHeading(heading)
+                    .setSize(ring.size)
+                    .setIsExit(ring.isExit)
+                    .setSpeed(ring.speed)
+                    .setStopHeading(heading + ring.stopHeading)
+                    .setVisible(ring.visible));
   }
 }
 
@@ -132,7 +148,14 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
   dtheta /= steps * 1.0;
   dphi /= steps * 1.0;
   for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec(theta, phi, ofVec3f(curve.width), curve.isExit, curve.speed));
+    walls.push_back(WallSpec()
+                    .setElevation(theta)
+                    .setHeading(phi)
+                    .setSize(ofVec3f(curve.width))
+                    .setIsExit(curve.isExit)
+                    .setSpeed(curve.speed)
+                    .setStopHeading(phi + curve.stopHeading)
+                    .setVisible(false));
     theta += dtheta;
     phi += dphi;
   }

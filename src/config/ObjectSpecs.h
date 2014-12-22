@@ -52,8 +52,6 @@ struct BrickRingSpec {
   float stopHeading;
   
   BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1) { }
-  BrickRingSpec(float e, ofColor c, int n, int v, int l, float p = 0, float s = 0, float stop = -1)
-  : elevation(e), count(n), phase(p), color(c), value(v), lives(l), speed(s), stopHeading(-1) { }
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
   BrickRingSpec& setCount(int c) { count = c; return *this; }
   BrickRingSpec& setValue(int v) { value = v; return *this; }
@@ -71,14 +69,14 @@ struct WallSpec {
   bool isExit;
   float speed;
   float stopHeading;
+  bool visible;
   
-  WallSpec() : speed(0), stopHeading(-1), isExit(false) { }
-  WallSpec(float e, float h, ofVec3f s, bool exit = false, float sp = 0, float stop = -1)
-  : elevation(e), heading(h), size(s), isExit(exit), speed(sp), stopHeading(stop) { }
+  WallSpec() : speed(0), stopHeading(-1), isExit(false), visible(true) { }
   WallSpec& setElevation(float e) { elevation = e; return *this; }
   WallSpec& setHeading(float h) { heading = h; return *this; }
   WallSpec& setSize(ofVec3f s) { size = s; return *this; }
   WallSpec& setIsExit(bool e) { isExit = e; return *this; }
+  WallSpec& setVisible(bool v) { visible = v; return *this; }
   WallSpec& setSpeed(float s) { speed = s; return *this; }
   WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
@@ -87,15 +85,17 @@ struct WallRingSpec {
   float elevation;
   ofVec3f size;
   bool isExit;
+  bool visible;
   int count;
   float phase;
   float speed;
   float stopHeading;
-  WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1) { }
+  WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1), visible(true) { }
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
   WallRingSpec& setIsExit(bool e) { isExit = e; return *this; }
+  WallRingSpec& setVisible(bool v) { visible = v; return *this; }
   WallRingSpec& setSpeed(float s) { speed = s; return *this; }
   WallRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
   WallRingSpec& setPhase(float p) { phase = p; return *this; }
@@ -112,8 +112,6 @@ struct CurvedWallSpec {
   float stopHeading;
   
   CurvedWallSpec() : speed(0), stopHeading(-1), isExit(false) { }
-  CurvedWallSpec(float e1, float h1, float e2, float h2, float w, bool exit = false, float sp = 0, float stop = -1)
-  : elevation1(e1), heading1(h1), elevation2(e2), heading2(h2), width(w), isExit(exit), speed(sp), stopHeading(stop) { }
   CurvedWallSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
   CurvedWallSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
   CurvedWallSpec& setWidth(float w) { width = w; return *this; }

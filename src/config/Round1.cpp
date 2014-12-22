@@ -98,6 +98,14 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setLives(2)
     .setSpeed(0.02);
   
+  // Create the floor exit wall
+  float d = (config->domeMargin() + config->domeRadius()) * 5;
+  config->addWall()
+    .setElevation(-10)
+    .setHeading(0)
+    .setSize(ofVec3f(d, 10, d))
+    .setIsExit(true);
+  
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)
     .setTiming(0, 3);
