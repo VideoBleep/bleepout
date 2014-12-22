@@ -30,6 +30,7 @@ public:
 private:
   void addAnimation(AnimationObject* animation);
   void onBrickDestroyed(BrickDestroyedEventArgs& e);
+  void onModifierApplied(ModifierEventArgs& e);
 private:
   RoundController& _roundController;
   ofTrueTypeFont _messageFont;
