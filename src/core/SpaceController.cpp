@@ -89,10 +89,12 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     ofVec3f normal = cdata.normal;
     if (cdata.a->type() == GAME_OBJECT_BALL) {
         Ball& ball = static_cast<Ball&>(*cdata.a);
-        ball.bounce(cdata.normal);
+        if (!ball.isLaser() || cdata.b->type() != GAME_OBJECT_BRICK)
+            ball.bounce(cdata.normal);
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
         Ball& ball = static_cast<Ball&>(*cdata.b);
-        ball.bounce(-cdata.normal);
+        if (!ball.isLaser() || cdata.a->type() != GAME_OBJECT_BRICK)
+            ball.bounce(-cdata.normal);
     }
     notifyCollision(cdata.a, cdata.b);
 }

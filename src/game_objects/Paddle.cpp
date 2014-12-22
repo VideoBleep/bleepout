@@ -23,8 +23,8 @@ const ofColor& Paddle::getColor() const {
   return _player.getColor();
 }
 
-void Paddle::addWidthModifier(RoundState& state,
-                              PaddleWidthModifier& modifier) {
+void Paddle::addWidthModifier(const RoundState& state,
+                              const PaddleWidthModifier& modifier) {
   _widthModifier.set(modifier.spec(), state.time);
   setSize(_origSize * modifier.amount());
 }
@@ -37,7 +37,7 @@ const ModifierSpec* Paddle::removeWidthModifier() {
   return NULL;
 }
 
-const ModifierSpec* Paddle::updateWidthModifier(RoundState &state) {
+const ModifierSpec* Paddle::updateWidthModifier(const RoundState &state) {
   if (_widthModifier.active() &&
       _widthModifier.checkExpiration(state.time)) {
     return removeWidthModifier();
