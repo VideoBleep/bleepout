@@ -47,6 +47,7 @@ private:
   ofPtr<RoundController> _roundController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
+  bool _syphonEnabled;
 #endif // ENABLE_SYPHON
 };
 
