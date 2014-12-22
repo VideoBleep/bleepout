@@ -8,6 +8,37 @@
 
 #include "BleepoutConfig.h"
 
+static void createBrickGroups(RoundConfig* config,
+                              float elevation,
+                              int count,
+                              float eSpace,
+                              float hSpace) {
+  ofColor color1(0, 255, 0);
+  ofColor color2(0, 127, 127);
+  config->addBrickRing()
+    .setElevation(elevation - eSpace)
+    .setCount(count)
+    .setColor(color1)
+    .setPhase(-hSpace)
+    .setValue(2).setLives(2);
+  config->addBrickRing()
+    .setElevation(elevation - eSpace)
+    .setCount(count)
+    .setColor(color2)
+    .setPhase(hSpace);
+  config->addBrickRing()
+    .setElevation(elevation + eSpace)
+    .setCount(count)
+    .setColor(color2)
+    .setPhase(-hSpace);
+  config->addBrickRing()
+    .setElevation(elevation + eSpace)
+    .setCount(count)
+    .setColor(color1)
+    .setPhase(hSpace)
+    .setValue(2).setLives(2);
+}
+
 RoundConfig* RoundConfig::createRoundConfig3() {
   RoundConfig* config = new RoundConfig("Round3");
   config->_brickSize.set(7.0f, 5.0f, 17.0f);
@@ -19,56 +50,60 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   
-  {
-    int groups = 12;
-    float elevation = 35;
-    float eSpace = 1.5;
-    float hSpace = 4;
-    for (int group = 0; group < groups; group++) {
-      float heading = (group / (float)(groups)) * 360.0;
-      ofColor color1(0, 255, 0);
-      ofColor color2(0, 127, 127);
-      config->addBrick()
-        .setElevation(elevation + eSpace)
-        .setHeading(heading - hSpace)
-        .setColor(color1);
-      config->addBrick()
-        .setElevation(elevation + eSpace)
-        .setHeading(heading + hSpace)
-        .setColor(color2)
-        .setValue(2)
-        .setLives(2);
-      config->addBrick()
-        .setElevation(elevation - eSpace)
-        .setHeading(heading - hSpace)
-        .setColor(color2)
-        .setValue(2)
-        .setLives(2);
-      config->addBrick()
-        .setElevation(elevation - eSpace)
-        .setHeading(heading + hSpace)
-        .setColor(color1);
-    }
-  }
+  createBrickGroups(config, 45, 12, 1.5, 4);
+  createBrickGroups(config, 55, 12, 1.5, 4);
+  createBrickGroups(config, 65, 3, 1.5, 8);
+  createBrickGroups(config, 75, 3, 1.5, 12);
+  
+  config->addBrickRing()
+    .setElevation(30)
+    .setCount(24)
+    .setColor(ofColor(0, 255, 255));
   
   config->addWallRing()
-    .setElevation(30)
+    .setElevation(65)
+    .setPhase(60)
+    .setCount(3)
+    .setSize(ofVec3f(8, 3, 28))
+    .setVisible(true);
+  config->addWallRing()
+    .setElevation(75)
+    .setPhase(60)
+    .setCount(3)
+    .setSize(ofVec3f(8, 3, 26))
+    .setVisible(true);
+  config->addWallRing()
+    .setElevation(60)
     .setPhase(360 / 24.0)
     .setCount(12)
     .setSize(ofVec3f(8, 3, 25))
     .setVisible(true);
   config->addWallRing()
-    .setElevation(33)
+    .setElevation(55)
     .setPhase(360 / 24.0)
     .setCount(12)
-    .setSize(ofVec3f(8, 3, 25))
+    .setSize(ofVec3f(8, 3, 20))
     .setVisible(true);
   config->addWallRing()
-    .setElevation(36)
+    .setElevation(50)
     .setPhase(360 / 24.0)
     .setCount(12)
-    .setSize(ofVec3f(8, 3, 25))
+    .setSize(ofVec3f(8, 3, 15))
     .setVisible(true);
+  config->addWallRing()
+    .setElevation(45)
+    .setPhase(360 / 24.0)
+    .setCount(12)
+    .setSize(ofVec3f(8, 3, 10))
+    .setVisible(true);
+  
+  // moving lower walls
+  config->addWallRing()
+    .setElevation(35)
+    .setCount(6)
+    .setSize(ofVec3f(8, 3, 25))
+    .setVisible(true)
+    .setSpeed(0.007);
   
   // Create the floor exit wall
   float d = (config->domeMargin() + config->domeRadius()) * 5;
