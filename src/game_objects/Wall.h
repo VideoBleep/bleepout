@@ -17,7 +17,7 @@ struct WallSpec;
 
 class Wall : public GameObject, public PhysicsObject {
 public:
-  Wall(const RoundConfig* config = NULL, const WallSpec* spec = NULL);
+  Wall(const RoundConfig& config, const WallSpec& spec);
   
   bool isExit() const { return _isExit; }
   

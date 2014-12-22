@@ -32,7 +32,7 @@ void RoundState::addPlayer(ofPtr<Player> player) {
 }
 
 Paddle& RoundState::addPaddle(Player* player) {
-  ofPtr<Paddle> paddle(new Paddle(player, _config.paddleSize()));
+  ofPtr<Paddle> paddle(new Paddle(*player, _config.paddleSize()));
   _paddles.push_back(paddle);
   return *paddle;
 }
@@ -46,7 +46,7 @@ Brick& RoundState::addBrick(const BrickSpec& brickSpec) {
 }
 
 Wall& RoundState::addWall(const WallSpec& wallSpec) {
-  ofPtr<Wall> wall(new Wall(&_config, &wallSpec));
+  ofPtr<Wall> wall(new Wall(_config, wallSpec));
   _walls.push_back(wall);
   return *wall;
 }
