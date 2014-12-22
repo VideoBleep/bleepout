@@ -18,11 +18,22 @@ void ValuePulser<ofVec3f>::updateRate() {
   _rate.z = ofRandom(_minRate.z, _maxRate.z);
 }
 
-SpinPulser createSpinPulser(const SpinPulserSpec& spec) {
+template<>
+void ValuePulser<float>::updateRate() {
+  _rate = ofRandom(_minRate, _maxRate);
+}
+
+template<>
+ValuePulser<ofVec3f> createValuePulser(const ValuePulserSpec<ofVec3f>& spec) {
   return SpinPulser(ofVec3f(spec.minRate),
                     ofVec3f(spec.maxRate),
                     spec.changeInterval,
                     spec.startValue);
+}
+
+ValuePulser<float> createValuePulser(const ValuePulserSpec<float>& spec) {
+  return ValuePulser<float>(spec.minRate, spec.maxRate,
+                            spec.changeInterval, spec.startValue);
 }
 
 bool OnceAction::update(RoundState& state) {

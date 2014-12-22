@@ -15,19 +15,23 @@
 #include "LogicController.h"
 #include <ofMain.h>
 #include <ofTrueTypeFont.h>
+#include "Logging.h"
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
   BrickDestructionAnimation(const Brick& brick,
                             const RoundConfig& config)
   : AnimationObject(0, config.brickFadeTime())
+  , _brickId(brick.id())
   , _brickColor(brick.getColor())
   , _brickSize(brick.getSize())
   , _brickPosition(brick.getPosition())
   , _brickRotation(brick.getRotation()) { }
   
   virtual void draw(const RoundConfig& config) override;
+  virtual void output(std::ostream& os) const override;
 private:
+  GameObjectId _brickId;
   ofColor _brickColor;
   ofVec3f _brickSize;
   ofVec3f _brickPosition;
@@ -55,6 +59,12 @@ void BrickDestructionAnimation::draw(const RoundConfig &config) {
   ofPopMatrix();
 }
 
+void BrickDestructionAnimation::output(std::ostream &os) const {
+  os << "BrickDestructionAnimation{id:" << id()
+  << ", brick:" << _brickId
+  << "}";
+}
+
 class MessageAnimation : public AnimationObject {
 public:
   MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
@@ -62,6 +72,7 @@ public:
   , _message(message), _font(font) { }
   
   virtual void draw(const RoundConfig& config) override;
+  virtual void output(std::ostream& os) const override;
 private:
   const MessageSpec& _message;
   ofTrueTypeFont& _font;
@@ -84,6 +95,12 @@ void MessageAnimation::draw(const RoundConfig &config) {
     }
   }
   //...
+}
+
+void MessageAnimation::output(std::ostream &os) const {
+  os << "MessageAnimation{id:" << id()
+  << ", message:" << _message.text
+  << "}";
 }
 
 AnimationManager::AnimationManager(RoundController& roundController)
