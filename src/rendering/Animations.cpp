@@ -94,12 +94,67 @@ void MessageAnimation::draw(const RoundConfig &config) {
                30 + i * 120);
     }
   }
-  //...
 }
 
 void MessageAnimation::output(std::ostream &os) const {
   os << "MessageAnimation{id:" << id()
   << ", message:" << _message.text
+  << "}";
+}
+
+class ModifierAnimation : public AnimationObject {
+public:
+  ModifierAnimation(const ModifierSpec& modifierSpec, const GameObject& target, const RoundConfig& config, bool isRemove)
+  : AnimationObject(0, config.modifierFadeTime())
+  , _modifierSpec(modifierSpec), _target(target)
+  , _isRemove(isRemove) { }
+  
+  virtual void draw(const RoundConfig& config) override;
+  virtual void output(std::ostream& os) const override;
+private:
+  const ModifierSpec& _modifierSpec;
+  const GameObject& _target;
+  const bool _isRemove;
+};
+
+void ModifierAnimation::draw(const RoundConfig &config) {
+  ofPushMatrix();
+  ofPushStyle();
+  ofEnableAlphaBlending();
+  
+  if (_target.type() == GAME_OBJECT_PADDLE) {
+    const Paddle& paddle = static_cast<const Paddle&>(_target);
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    ofVec3f size = paddle.getSize();
+    ofColor color = _modifierSpec.color;
+    if (_isRemove) {
+      size *= ofMap(percentage(), 0, 1, 1, 1.5);
+      color.a = (unsigned char)std::floor(ofMap(percentage(),
+                                                0, 1, 127, 0));
+    } else {
+      size *= ofMap(percentage(), 0, 1, 1.5, 1);
+      color.a = (unsigned char)std::floor(ofMap(percentage(),
+                                                0, 1, 0, 192));
+    }
+    ofTranslate(paddle.getPosition());
+    ofRotateY(paddle.getRotation());
+    ofFill();
+    ofSetColor(color);
+    ofDrawBox(size.x, size.y, size.z);
+    
+  } else {
+    //...???
+  }
+  
+  ofPopStyle();
+  ofPopMatrix();
+}
+
+void ModifierAnimation::output(std::ostream &os) const {
+  os << "ModifierAnimation{id:" << id()
+  << ", type: " << _modifierSpec.type
+  << ", target: " << _target.id()
+  << ", action: " << (_isRemove ? "removed" : "applied")
   << "}";
 }
 
@@ -122,12 +177,34 @@ void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
   addAnimation(anim);
 }
 
+void AnimationManager::onModifierApplied(ModifierEventArgs &e) {
+  auto anim = new ModifierAnimation(e.modifier()->spec(),
+                                    *e.target(),
+                                    _roundController.config(), false);
+  addAnimation(anim);
+}
+
+void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
+  auto anim = new ModifierAnimation(e.modifierSpec(),
+                                    *e.target(),
+                                    _roundController.config(), true);
+  addAnimation(anim);
+}
+
 void AnimationManager::attachTo(LogicController &roundEvents) {
   ofAddListener(roundEvents.brickDestroyedEvent, this,
                 &AnimationManager::onBrickDestroyed);
+  ofAddListener(roundEvents.modifierAppliedEvent, this,
+                &AnimationManager::onModifierApplied);
+  ofAddListener(roundEvents.modifierRemovedEvent, this,
+                &AnimationManager::onModifierRemoved);
 }
 
 void AnimationManager::detachFrom(LogicController &roundEvents) {
   ofRemoveListener(roundEvents.brickDestroyedEvent, this,
                    &AnimationManager::onBrickDestroyed);
+  ofRemoveListener(roundEvents.modifierAppliedEvent, this,
+                   &AnimationManager::onModifierApplied);
+  ofRemoveListener(roundEvents.modifierRemovedEvent, this,
+                   &AnimationManager::onModifierRemoved);
 }

@@ -19,12 +19,14 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   std::string widePaddleName("widePaddle");
   config->addModifierDef(widePaddleName, MODIFIER_PADDLE_WIDTH)
     .setAmount(1.5)
-    .setDuration(5.0);
+    .setDuration(5.0)
+    .setColor(ofColor::blue);
   
   std::string narrowPaddleName("narrowPaddle");
   config->addModifierDef(narrowPaddleName, MODIFIER_PADDLE_WIDTH)
     .setAmount(0.5)
-    .setDuration(5.0);
+    .setDuration(5.0)
+    .setColor(ofColor::red);
   
   int cols = 12;
   int rows = 10;
