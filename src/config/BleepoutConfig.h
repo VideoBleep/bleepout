@@ -34,6 +34,7 @@ public:
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
   float modifierRadius() const { return _modifierRadius; }
+  float modifierFadeTime() const { return _modifierFadeTime; }
   
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
@@ -133,6 +134,7 @@ private:
   float _ballRadius;
   float _brickFadeTime;
   float _modifierRadius;
+  float _modifierFadeTime;
   float _domeRadius;
   float _domeMargin;
   
