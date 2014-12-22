@@ -20,6 +20,7 @@ class RoundConfig {
 public:
   static RoundConfig* createRoundConfig1();
   static RoundConfig* createRoundConfig2();
+  static RoundConfig* createRoundConfig3();
   
   RoundConfig(std::string name);
   

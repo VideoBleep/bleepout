@@ -11,6 +11,9 @@
 RoundConfig* RoundConfig::createRoundConfig2() {
   RoundConfig* config = new RoundConfig("Round2");
   config->_brickSize.set(5.0f, 2.0f, 10.0f);
+  config->_paddleSize.set(16.0f, 8.0f, 40.0f);
+  config->_ballRadius = 8.0f;
+  config->_modifierRadius = 9.0f;
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));

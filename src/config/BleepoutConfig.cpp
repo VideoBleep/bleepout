@@ -20,6 +20,7 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   config->_syphonAppName = "Arena";
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig3()));
   return config;
 }
 
