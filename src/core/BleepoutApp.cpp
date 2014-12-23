@@ -15,12 +15,13 @@ void BleepoutApp::setup() {
   // load config....
   
   _config.reset(BleepoutConfig::createConfig());
+  _appParams.reset(new BleepoutParameters(*_config));
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
-  _adminController.reset(new AdminController(*_config));
+  _adminController.reset(new AdminController(*_appParams));
   _adminController->setup();
   
   _setupController.reset(new SetupController(*_config));

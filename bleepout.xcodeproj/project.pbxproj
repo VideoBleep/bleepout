@@ -62,6 +62,7 @@
 		325751861A48F63C00CC375A /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325751551A48F63C00CC375A /* ofxUIWidget.cpp */; };
 		325751871A48F63C00CC375A /* ofxUIWidgetWithLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325751571A48F63C00CC375A /* ofxUIWidgetWithLabel.cpp */; };
 		325751911A48F83B00CC375A /* AdminController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3257518F1A48F83B00CC375A /* AdminController.cpp */; };
+		3257520E1A4903EF00CC375A /* BleepoutParameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3257520C1A4903EF00CC375A /* BleepoutParameters.cpp */; };
 		32F95B491A2EB2CF008913CC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */; };
 		32F95B4A1A2EB2CF008913CC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B451A2EB2CF008913CC /* tinyxml.cpp */; };
 		32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F95B471A2EB2CF008913CC /* tinyxmlerror.cpp */; };
@@ -286,6 +287,8 @@
 		325751591A48F63C00CC375A /* ofxUIWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxUIWrapper.h; sourceTree = "<group>"; };
 		3257518F1A48F83B00CC375A /* AdminController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdminController.cpp; sourceTree = "<group>"; };
 		325751901A48F83B00CC375A /* AdminController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdminController.h; sourceTree = "<group>"; };
+		3257520C1A4903EF00CC375A /* BleepoutParameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BleepoutParameters.cpp; sourceTree = "<group>"; };
+		3257520D1A4903EF00CC375A /* BleepoutParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BleepoutParameters.h; sourceTree = "<group>"; };
 		32F95B421A2EB2CF008913CC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		32F95B431A2EB2CF008913CC /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		32F95B451A2EB2CF008913CC /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
@@ -877,6 +880,8 @@
 				325750E51A4792A500CC375A /* Round1.cpp */,
 				325750E81A4792E200CC375A /* Round2.cpp */,
 				325750F01A47BA9A00CC375A /* Round3.cpp */,
+				3257520C1A4903EF00CC375A /* BleepoutParameters.cpp */,
+				3257520D1A4903EF00CC375A /* BleepoutParameters.h */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -1202,6 +1207,7 @@
 				5BB4E6041A4077970047F957 /* PointHistory.cpp in Sources */,
 				5BB4E5F31A400F500047F957 /* OrbitalTrajectory.cpp in Sources */,
 				5BB4E5FE1A40150F0047F957 /* Trajectory.cpp in Sources */,
+				3257520E1A4903EF00CC375A /* BleepoutParameters.cpp in Sources */,
 				3257517E1A48F63C00CC375A /* ofxUISuperCanvas.cpp in Sources */,
 				3257516A1A48F63C00CC375A /* ofxUIImageSlider.cpp in Sources */,
 				3257515C1A48F63C00CC375A /* ofxUIBaseDraws.cpp in Sources */,

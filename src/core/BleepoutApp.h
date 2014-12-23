@@ -13,6 +13,7 @@
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 #include "RendererBase.h"
 #include "Common.h"
 #include "SetupController.h"
@@ -43,6 +44,7 @@ private:
   void onRoundEnded(RoundStateEventArgs& e);
   
   ofPtr<BleepoutConfig> _config;
+  ofPtr<BleepoutParameters> _appParams;
 	ofPtr<PlayerManager> _playerManager;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;

@@ -11,10 +11,13 @@
 
 #include "ofxUI.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
+
+struct AdminUIControls;
 
 class AdminController {
 public:
-  AdminController(BleepoutConfig& appConfig);
+  AdminController(BleepoutParameters& appParams);
   ~AdminController();
   void setup();
   void update();
@@ -22,8 +25,10 @@ public:
 private:
   void onUIEvent(ofxUIEventArgs& e);
   
-  ofxUICanvas* _gui;
+  BleepoutParameters& _appParams;
   BleepoutConfig& _appConfig;
+  ofxUICanvas* _gui;
+  AdminUIControls* _controls;
 };
 
 #endif /* defined(__bleepout__AdminController__) */
