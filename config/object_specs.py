@@ -1,5 +1,3 @@
-import json
-
 def build_color(color):
   if not color:
     return None
@@ -149,7 +147,7 @@ class ModifierType:
   LaserBall = 'LaserBall'
 
 class ModifierSpec:
-  def __init__(self, type = None, name = None, amount = 0, duration = 0, color = None):
+  def __init__(self, type, name, amount = 0, duration = 0, color = None):
     self.type = type
     self.name = name
     self.amount = amount
@@ -262,3 +260,28 @@ class RoundConfig:
              ringSets = build_all(self.ringSets))
     return d
 
+class LogLevel:
+  Verbose = 'Verbose'
+  Notice = 'Notice'
+  Warning = 'Warning'
+  Error = 'Error'
+  FatalError = 'FatalError'
+  Silent = 'Silent'
+
+class BleepoutConfig:
+  def __init__(self):
+    self.fps = 30
+    self.logLevel = LogLevel.Notice
+    self.vsync = True
+    self.syphonServerName = 'Composition'
+    self.syphonAppName = 'Arena'
+    self.roundConfigs = []
+
+  def build(self):
+    d = dict(fps = self.fps,
+             logLevel = self.logLevel,
+             vsync = self.vsync,
+             syphonServerName = self.syphonServerName,
+             syphonAppName = self.syphonAppName,
+             roundConfigs = build_all(self.roundConfigs))
+    return d
