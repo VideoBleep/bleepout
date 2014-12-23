@@ -20,6 +20,9 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
+  _adminController.reset(new AdminController(*_config));
+  _adminController->setup();
+  
   _setupController.reset(new SetupController(*_config));
   _setupController->setup();
   ofAddListener(_setupController->startRoundEvent, this,
@@ -38,6 +41,7 @@ void BleepoutApp::setup() {
 }
 
 void BleepoutApp::update() {
+  _adminController->update();
   if (_roundController) {
     _roundController->update();
   } else if (_setupController) {
@@ -56,6 +60,7 @@ void BleepoutApp::draw() {
   } else if (_setupController) {
     _setupController->draw();
   }
+  _adminController->draw();
 }
 
 void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
