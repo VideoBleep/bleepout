@@ -9,7 +9,7 @@
 #ifndef __bleepout__AdminController__
 #define __bleepout__AdminController__
 
-#include "ofxUI.h"
+#include <ofxUI.h>
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
 

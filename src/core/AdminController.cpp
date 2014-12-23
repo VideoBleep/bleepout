@@ -15,8 +15,29 @@ static const int uiWidth = 300;
 static const int uiHeight = 500;
 static const int roundQueueLength = 5;
 
+class RoundQueueSlot {
+public:
+  RoundQueueSlot(ofxUIRadio* radio)
+  : _radio(radio) { }
+  std::string getSelected() const {
+    const auto selected = _radio->getActive();
+    if (selected)
+      return selected->getName();
+    return "";
+  }
+  bool matchesEvent(const ofxUIEventArgs& e) const {
+    for (const auto& toggle : _radio->getToggles()) {
+      if (e.widget == toggle)
+        return true;
+    }
+    return false;
+  }
+private:
+  ofxUIRadio* _radio;
+};
+
 struct AdminUIControls {
-  std::vector<ofxUIDropDownList*> roundQueueSlots;
+  std::vector<RoundQueueSlot*> roundQueueSlots;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -30,8 +51,12 @@ AdminController::~AdminController() {
                      &AdminController::onUIEvent);
     delete _gui;
   }
-  if (_controls)
+  if (_controls) {
+    for (auto slot : _controls->roundQueueSlots) {
+      delete slot;
+    }
     delete _controls;
+  }
 }
 
 void AdminController::setup() {
@@ -48,11 +73,12 @@ void AdminController::setup() {
   
   const auto& allRoundNames = _appParams.queuedRoundNames();
   for (int i = 0; i < roundQueueLength; i++) {
-    ofxUIDropDownList* slot = new ofxUIDropDownList("RoundQueueSlot" + ofToString(i), allRoundNames);
-    _gui->addWidgetDown(slot);
-    _controls->roundQueueSlots.push_back(slot);
+    ofxUIRadio* radio = _gui->addRadio("RoundQueueSlot" + ofToString(i), allRoundNames);
+    _controls->roundQueueSlots.push_back(new RoundQueueSlot(radio));
     _gui->addSpacer();
   }
+  
+  _gui->addRadio("fooo", allRoundNames);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -68,8 +94,8 @@ void AdminController::draw() {
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
   for (auto& slot : _controls->roundQueueSlots) {
-    if (slot == e.widget) {
-      ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
+    if (slot->matchesEvent(e)) {
+      ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
       return;
     }
   }
