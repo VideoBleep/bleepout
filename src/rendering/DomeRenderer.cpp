@@ -227,7 +227,7 @@ void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
                           63, 255);
       edgeColor = ofColor((unsigned char)ofMap(brick.lives(),
                                                1, brick.maxLives(),
-                                               255, 31));
+                                               255, 128));
       edgeColor.a = fillColor.a;
       alphaBlending = true;
       float lineWidth = ofMap(brick.lives(), 1, 4,

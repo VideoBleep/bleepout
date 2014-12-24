@@ -160,13 +160,13 @@ ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	return ofPtr<Player>();
 }
 
-void PlayerManager::notifyPlayerAdded(RoundState& state, Player* player) {
-  PlayerStateEventArgs e(state, player);
+void PlayerManager::notifyPlayerAdded(ofPtr<Player> player) {
+  PlayerEventArgs e(player);
   ofNotifyEvent(playerAddedEvent, e);
   logEvent("PlayerAdded", e);
 }
-void PlayerManager::notifyPlayerRemoved(RoundState& state, Player* player) {
-  PlayerStateEventArgs e(state, player);
+void PlayerManager::notifyPlayerRemoved(ofPtr<Player> player) {
+  PlayerEventArgs e(player);
   ofNotifyEvent(playerRemovedEvent, e);
   logEvent("PlayerRemoved", e);
 }
