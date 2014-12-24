@@ -14,6 +14,15 @@ BleepoutConfig::BleepoutConfig()
 _logLevel(OF_LOG_NOTICE),
 _vsync(true) { }
 
+ofPtr<RoundConfig>
+BleepoutConfig::getRound(const std::string &name) {
+  for (const auto& round : _roundConfigs) {
+    if (round->name() == name)
+      return round;
+  }
+  return ofPtr<RoundConfig>();
+}
+
 BleepoutConfig* BleepoutConfig::createConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";

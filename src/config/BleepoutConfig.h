@@ -168,6 +168,8 @@ public:
     return _roundConfigs;
   }
   
+  ofPtr<RoundConfig> getRound(const std::string& name);
+  
   Json::Value toJsonVal() const;
 private:
   int _fps;

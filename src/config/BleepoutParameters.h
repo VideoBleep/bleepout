@@ -12,7 +12,7 @@
 #include <ofParameterGroup.h>
 #include "BleepoutConfig.h"
 #include <ofTypes.h>
-#include <vector>
+#include <deque>
 #include <string>
 
 // parameters are things that can change, whereas config is fixed
@@ -24,14 +24,15 @@ public:
   const BleepoutConfig& appConfig() const { return _appConfig; }
   BleepoutConfig& appConfig() { return _appConfig; }
   const RoundConfig* currentRoundConfig() const { return _currentRoundConfig.get(); }
-  std::vector<std::string>& queuedRoundNames() { return _queuedRoundNames; }
+  std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
   
-  std::string popNextRound();
+  ofPtr<RoundConfig> popNextRound();
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _currentRoundConfig;
-  std::vector<std::string> _queuedRoundNames;
+  std::string _currentRoundName;
+  std::deque<std::string> _queuedRoundNames;
 };
 
 #endif /* defined(__bleepout__BleepoutParameters__) */
