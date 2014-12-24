@@ -145,10 +145,7 @@ void RoundController::keyPressed(int key) {
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
     } else if (key == 'o') {
-      if (_logicController->loggingEnabled())
-        _logicController->disableLogging();
-      else
-        _logicController->enableLogging(OF_LOG_NOTICE);
+      _logicController->toggleLogging(OF_LOG_NOTICE);
     } else if (key == 'b') {
       // add a new ball
       _spaceController->addBall(BallSpec(30, ofRandom(360)));

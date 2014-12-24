@@ -218,6 +218,9 @@ public:
   void enableLogging(ofLogLevel level) { _logLevel = level; }
   void disableLogging() { _logLevel = OF_LOG_SILENT; }
   bool loggingEnabled() const { return _logLevel != OF_LOG_SILENT; }
+  void toggleLogging(ofLogLevel level) {
+    _logLevel = loggingEnabled() ? OF_LOG_SILENT : level;
+  }
 protected:
   void logEvent(const char* name, const Outputable& event) const;
 private:
