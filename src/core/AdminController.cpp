@@ -23,6 +23,15 @@ public:
     _valueIndex = i % config.roundConfigs().size();
     _button->setLabelText(config.roundConfigs()[_valueIndex]->name());
   }
+  void setSelectedValue(const std::string& name, const BleepoutConfig& config) {
+    for (int i = 0; i < config.roundConfigs().size(); i++) {
+      if (config.roundConfigs()[i]->name() == name) {
+        _valueIndex = i;
+        _button->setLabelText(name);
+        return;
+      }
+    }
+  }
   std::string getSelected() const {
     return _button->getLabel()->getLabel();
   }
@@ -60,6 +69,24 @@ struct AdminUIControls {
   ofxUIToggle* enableSyphon;
   ofxUITextInput* syphonAppName;
   ofxUITextInput* syphonServerName;
+  
+  ~AdminUIControls() {
+    for (auto& slot : roundQueueSlots)
+      delete slot;
+  }
+  
+  void updateQueueSlots(BleepoutParameters& appParams) {
+    // going to assume that the number of slots hasn't changed.
+    // eventually we should do something better with that..
+    auto nameIter = appParams.queuedRoundNames().begin();
+    auto slotIter = roundQueueSlots.begin();
+    while (nameIter != appParams.queuedRoundNames().end() &&
+           slotIter != roundQueueSlots.end()) {
+      (*slotIter)->setSelectedValue(*nameIter, appParams.appConfig());
+      nameIter++;
+      slotIter++;
+    }
+  }
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -74,9 +101,6 @@ AdminController::~AdminController() {
     delete _gui;
   }
   if (_controls) {
-    for (auto slot : _controls->roundQueueSlots) {
-      delete slot;
-    }
     delete _controls;
   }
 }
@@ -89,12 +113,10 @@ void AdminController::setup() {
                          uiWidth, totalHeight - 20);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
   
-  _gui->addWidgetDown(new ofxUILabel("BLEEPOUT ADMIN",
-                                     OFX_UI_FONT_LARGE));
+  _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
   _gui->addSpacer();
-  _controls->inRound = _gui->addLabel("Not in round");
-  _gui->addWidgetDown(new ofxUILabel("Round Queue",
-                                     OFX_UI_FONT_MEDIUM));
+  _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
+  _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
   
   const auto& allRoundNames = _appParams.queuedRoundNames();
   for (int i = 0; i < _appParams.queuedRoundNames().size(); i++) {
