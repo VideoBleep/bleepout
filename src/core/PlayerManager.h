@@ -79,14 +79,14 @@ public:
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
-  ofEvent<PlayerStateEventArgs> playerAddedEvent;
-  ofEvent<PlayerStateEventArgs> playerRemovedEvent;
+  ofEvent<PlayerEventArgs> playerAddedEvent;
+  ofEvent<PlayerEventArgs> playerRemovedEvent;
   
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
 private:
-  void notifyPlayerAdded(RoundState& state, Player* player);
-  void notifyPlayerRemoved(RoundState& state, Player* player);
+  void notifyPlayerAdded(ofPtr<Player> player);
+  void notifyPlayerRemoved(ofPtr<Player> player);
   void notifyPlayerYawPitchRoll(Player* player, float yaw,
                                 float pitch, float roll);
   

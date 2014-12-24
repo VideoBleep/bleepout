@@ -61,6 +61,12 @@ void PlayerStateEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void PlayerEventArgs::output(std::ostream &os) const {
+  os << "(";
+  outputField(os, _player.get());
+  os << ")";
+}
+
 void BallStateEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, _ball);
