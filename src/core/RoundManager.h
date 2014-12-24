@@ -23,7 +23,7 @@
 
 class RendererBase;
 
-class RoundController
+class RoundController : public EventSource
 {
 public:
   RoundController(RoundConfig config,
@@ -37,7 +37,7 @@ public:
   void draw();
   void update();
   
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
@@ -60,11 +60,13 @@ public:
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
-  void onRoundEnded(RoundStateEventArgs& e);
   void onModifierAppeared(ModifierEventArgs& e);
   void onModifierDestroyed(ModifierEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
-  void endRound();
+  
+  void onRoundEnded(RoundStateEventArgs& e);
+  void onTryEndRound(EndRoundEventArgs& e);
+  bool notifyTryEndRound(EndRoundEventArgs &e);
   
   bool _paused;
   float _startTime;

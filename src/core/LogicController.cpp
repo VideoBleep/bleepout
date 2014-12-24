@@ -40,7 +40,7 @@ void LogicController::update() {
     _lastSpecifiedTimeLimitOffset = limit;
   }
   if (_endTime > 0 && _state.time >= _endTime) {
-    notifyRoundEnded(_state);
+    notifyTryEndRound();
     return;
   }
   for (auto& obj : _state.paddles()) {
@@ -231,10 +231,10 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-void LogicController::notifyRoundEnded(RoundState& state) {
-  RoundStateEventArgs e(state);
-  ofNotifyEvent(roundEndedEvent, e);
-  logEvent("RoundEnded", e);
+bool LogicController::notifyTryEndRound() {
+  EndRoundEventArgs e;
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);

@@ -22,7 +22,6 @@ RoundController::RoundController(RoundConfig config,
 , _state(_config, players)
 , _playerManager(playerManager)
 , _timedActions(true) {
-  ofAddListener(playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
 }
 
 RoundController::~RoundController() {
@@ -30,6 +29,7 @@ RoundController::~RoundController() {
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
   ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
+  ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
@@ -43,12 +43,13 @@ void RoundController::setup() {
   _startTime = ofGetElapsedTimef();
   _state.time = 0;
   
+  ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   _spaceController.reset(new SpaceController(_state, _config, _appParams));
   _logicController.reset(new LogicController(_state, _config, _appParams));
   _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
-  ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
+  ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofAddListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
   ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
@@ -129,12 +130,17 @@ void RoundController::onModifierApplied(ModifierEventArgs &e) {
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
+  _timedActions.clear();
 }
 
-void RoundController::endRound() {
-  _timedActions.clear();
-  RoundStateEventArgs e(_state);
-  ofNotifyEvent(roundEndedEvent, e);
+void RoundController::onTryEndRound(EndRoundEventArgs &e) {
+  notifyTryEndRound(e);
+}
+
+bool RoundController::notifyTryEndRound(EndRoundEventArgs &e) {
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
+  return e.handled();
 }
 
 void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
@@ -150,7 +156,8 @@ void RoundController::addTimedAction(ofPtr<TimedAction> action) {
 void RoundController::keyPressed(int key) {
   if (!ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     if (key == 'q') {
-      endRound();
+      EndRoundEventArgs e;
+      notifyTryEndRound(e);
     } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {

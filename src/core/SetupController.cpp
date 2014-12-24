@@ -87,13 +87,13 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no round config selected";
     return false;
   }
-  notifyStartRound(_roundConfig, _players);
-  return true;
+  return notifyTryStartRound(_roundConfig, _players);
 }
 
-void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
-                                        std::list<ofPtr<Player> > players) {
+bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
+                                          std::list<ofPtr<Player> > players) {
   StartRoundEventArgs e(config, players);
-  ofNotifyEvent(startRoundEvent, e);
-  logEvent("StartRound", e);
+  ofNotifyEvent(tryStartRoundEvent, e);
+  logEvent("TryStartRound", e);
+  return e.handled();
 }

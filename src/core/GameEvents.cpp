@@ -80,7 +80,14 @@ void BallStateEventArgs::output(std::ostream &os) const {
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
   os << "config:" << config()->name() << ", ";
-  os << "players:" << players().size();
+  os << "players:" << players().size() << ", ";
+  os << "handled:" << std::boolalpha << handled();
+  os << ")";
+}
+
+void EndRoundEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "handled:" << std::boolalpha << handled();
   os << ")";
 }
 

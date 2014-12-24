@@ -18,7 +18,8 @@ class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config, BleepoutParameters& appParams);
+  LogicController(RoundState& state, RoundConfig& config,
+                  BleepoutParameters& appParams);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
@@ -28,7 +29,7 @@ public:
   ofEvent<BallStateEventArgs> ballRespawnedEvent;
   ofEvent<PlayerStateEventArgs> playerLostEvent;
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
   ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
@@ -49,7 +50,7 @@ private:
   void notifyBallRespawned(RoundState& state, Ball* ball);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  void notifyRoundEnded(RoundState& state);
+  bool notifyTryEndRound();
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);

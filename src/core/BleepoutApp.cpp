@@ -21,14 +21,15 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
-  _adminController.reset(new AdminController(*_appParams));
-  _adminController->setup();
-  _adminController->attachTo(*this);
-  
   _setupController.reset(new SetupController(*_config));
   _setupController->setup();
-  ofAddListener(_setupController->startRoundEvent, this,
-                &BleepoutApp::onStartRound);
+  ofAddListener(_setupController->tryStartRoundEvent, this,
+                &BleepoutApp::onTryStartRound);
+  
+  _adminController.reset(new AdminController(*_appParams, *_setupController));
+  _adminController->setup();
+  _adminController->attachTo(*this);
+  ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
 
   _playerManager.reset(new PlayerManager());
   _playerManager->setup();
@@ -71,10 +72,14 @@ void BleepoutApp::draw() {
   _adminController->draw();
 }
 
-void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
+void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
+  if (!e.config() || e.players().empty()) {
+    ofLogWarning() << "Cannot start round: " << e;
+    return;
+  }
   if (_roundController) {
-    ofRemoveListener(_roundController->roundEndedEvent, this,
-                     &BleepoutApp::onRoundEnded);
+    ofRemoveListener(_roundController->tryEndRoundEvent, this,
+                     &BleepoutApp::onTryEndRound);
     ofLogError() << "Round has already been started";
     return;
   }
@@ -85,18 +90,20 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
-  ofAddListener(_roundController->roundEndedEvent, this,
-                &BleepoutApp::onRoundEnded);
+  ofAddListener(_roundController->tryEndRoundEvent, this,
+                &BleepoutApp::onTryEndRound);
+  e.markHandled();
   notifyRoundStarted(_roundController->state());
 }
 
-void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
+void BleepoutApp::onTryEndRound(EndRoundEventArgs &e) {
   if (!_roundController) {
     ofLogError() << "Round was not active";
     return;
   }
   _playerManager->setIsInRound(false);
   _roundController.reset();
+  e.markHandled();
   notifyRoundEnded();
 }
 

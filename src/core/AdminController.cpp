@@ -12,6 +12,7 @@
 #include <ofMain.h>
 #include "GameEvents.h"
 #include "BleepoutApp.h"
+#include "SetupController.h"
 
 static const int uiWidth = 300;
 
@@ -69,6 +70,8 @@ struct AdminUIControls {
   ofxUIToggle* enableSyphon;
   ofxUITextInput* syphonAppName;
   ofxUITextInput* syphonServerName;
+  ofxUIButton* startRound;
+  ofxUIButton* endRound;
   
   ~AdminUIControls() {
     for (auto& slot : roundQueueSlots)
@@ -89,19 +92,21 @@ struct AdminUIControls {
   }
 };
 
-AdminController::AdminController(BleepoutParameters& appParams)
+AdminController::AdminController(BleepoutParameters& appParams,
+                                 SetupController& setupController)
 : _appParams(appParams)
 , _appConfig(appParams.appConfig())
+, _setupController(setupController)
 , _gui(NULL), _controls(NULL) { }
 
 AdminController::~AdminController() {
+  if (_controls) {
+    delete _controls;
+  }
   if (_gui) {
     ofRemoveListener(_gui->newGUIEvent, this,
                      &AdminController::onUIEvent);
     delete _gui;
-  }
-  if (_controls) {
-    delete _controls;
   }
 }
 
@@ -128,6 +133,9 @@ void AdminController::setup() {
     slot->setSelectedIndex(i, _appConfig);
     _controls->roundQueueSlots.push_back(slot);
   }
+  
+  _controls->startRound = _gui->addButton("Start Round", false);
+  _controls->endRound = _gui->addButton("End Round", false);
   
   _gui->addSpacer();
   
@@ -237,6 +245,10 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
     } else {
       _appParams.rules().unsetTimeLimit();
     }
+  } else if (e.widget == _controls->startRound) {
+    tryStartRound();
+  } else if (e.widget == _controls->endRound) {
+    tryEndRound();
   } else {
     for (auto& slot : _controls->roundQueueSlots) {
       if (slot->handleEvent(e, _appConfig)) {
@@ -249,3 +261,42 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
     ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
   }
 }
+
+bool AdminController::tryStartRound() {
+  return _setupController.tryStartRound();
+}
+
+bool AdminController::canStartRound() {
+  return _setupController.canStartRound();
+}
+
+void AdminController::tryEndRound() {
+  notifyTryEndRound();
+}
+void AdminController::notifyStartRound(ofPtr<RoundConfig> config,
+                      std::list<ofPtr<Player> > players) {
+  StartRoundEventArgs e(config, players);
+  ofNotifyEvent(startRoundEvent, e);
+  logEvent("StartRound", e);
+}
+
+bool AdminController::notifyTryEndRound() {
+  EndRoundEventArgs e;
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
+  return e.handled();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

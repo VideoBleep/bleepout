@@ -43,8 +43,8 @@ public:
   const BleepoutConfig& config() const { return *_config; }
 
 private:
-  void onStartRound(StartRoundEventArgs& e);
-  void onRoundEnded(RoundStateEventArgs& e);
+  void onTryStartRound(StartRoundEventArgs& e);
+  void onTryEndRound(EndRoundEventArgs& e);
   
   void notifyRoundStarted(RoundState& state);
   void notifyRoundEnded();

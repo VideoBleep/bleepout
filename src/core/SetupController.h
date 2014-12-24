@@ -24,11 +24,11 @@ public:
   void draw();
   void keyPressed(int key);
   
-  ofEvent<StartRoundEventArgs> startRoundEvent;
+  ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   
 private:
-  void notifyStartRound(ofPtr<RoundConfig> config,
-                        std::list<ofPtr<Player> > players);
+  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+                           std::list<ofPtr<Player> > players);
   
   bool tryStartRound();
   bool canStartRound() const;
@@ -37,6 +37,9 @@ private:
   const BleepoutConfig& _appConfig;
   std::list<ofPtr<Player> > _players;
   ofPtr<RoundConfig> _roundConfig;
+  
+  // yes, this is ugly, but it's temporary
+  friend class AdminController;
 };
 
 #endif /* defined(__bleepout__SetupController__) */
