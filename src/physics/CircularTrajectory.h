@@ -26,7 +26,7 @@ public:
     
     virtual void setPosition(const ofVec3f& position) override;
     
-    virtual void reflect(const ofVec3f& planeNormal) override;
+    virtual void reflect(const ofVec3f& planeNormal, float trueHitFactor = 0.0) override;
     
     virtual void output(std::ostream& os) const override;
     

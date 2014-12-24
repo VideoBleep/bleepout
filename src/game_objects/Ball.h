@@ -32,7 +32,7 @@ public:
   virtual const ofColor& getColor() const override;
     
   void output(std::ostream& os) const override;
-  void bounce(ofVec3f normal);
+  void bounce(ofVec3f normal, float trueHitFactor = 0.0);
   
   void applyModifier(const RoundState& state,
                      const ModifierSpec& modifierSpec);
