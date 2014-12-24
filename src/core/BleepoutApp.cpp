@@ -95,8 +95,6 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
   }
   _playerManager->setIsInRound(false);
   _roundController.reset();
-  int foo = 123;
-  (void)foo;
 }
 
 void BleepoutApp::keyPressed(int key) {
