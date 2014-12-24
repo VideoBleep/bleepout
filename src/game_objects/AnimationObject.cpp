@@ -9,6 +9,7 @@
 #include "AnimationObject.h"
 #include "GameState.h"
 #include <ofUtils.h>
+#include "Logging.h"
 
 const char GameObjectTypeTraits<AnimationObject>::typeName[] = "animation";
 
@@ -37,11 +38,13 @@ void AnimationUpdater::call(RoundState& state, float percentage) {
 }
 
 void AnimationUpdater::start() {
+//  ofLogNotice() << "Starting animation update action: " << _animation;
   DurationAction::start();
   _animation.show();
 }
 
 void AnimationUpdater::end() {
+//  ofLogNotice() << "Ending animation update action: " << _animation;
   DurationAction::end();
   _animation.hide();
   _animationList.eraseObjectById(_animation.id());
@@ -52,8 +55,10 @@ void AnimationObject::output(std::ostream &os) const {
 }
 
 DurationAction*
-AnimationObject::createUpdaterAction(GameObjectCollection<AnimationObject>& animationList) {
-  float start = ofGetElapsedTimef() + _delay;
+AnimationObject::createUpdaterAction(RoundState& state) {
+  float now = state.time;
+  float start = now + _delay;
+//  ofLogNotice() << "Creating updater action to start at " << start << " and end at " << (start + _duration) << ". Current time: " << now;
   return new AnimationUpdater(start, start + _duration,
-                              *this, animationList);
+                              *this, state.animations());
 }

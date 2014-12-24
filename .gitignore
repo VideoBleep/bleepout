@@ -231,4 +231,4 @@ xcuserdata
 *.xcbkptlist
 
 zprivate/
-
+.idea/

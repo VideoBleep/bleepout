@@ -69,8 +69,7 @@ void Brick::output(std::ostream &os) const {
 void Paddle::output(std::ostream &os) const {
   os << "Paddle{";
   outputGameObjectFields(os, *this);
-  os << ", player:";
-  outputObjectId(os, player());
+  os << ", player:" << player().id();
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";
@@ -127,6 +126,8 @@ void RoundState::output(std::ostream &os) const {
   outputObjectCollection(os, _bricks);
   outputObjectCollection(os, _players);
   outputObjectCollection(os, _walls);
+  outputObjectCollection(os, _modifiers);
+  outputObjectCollection(os, _animations);
   os << "}";
 }
 
@@ -209,6 +210,33 @@ std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
   return os;
 }
 
+std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
+  switch (type) {
+    case MODIFIER_EXTRA_LIFE:
+      os << "ExtraLife";
+      break;
+    case MODIFIER_PADDLE_WIDTH:
+      os << "PaddleWidth";
+      break;
+    case MODIFIER_LASER_BALL:
+      os << "LaserBall";
+      break;
+    case MODIFIER_NONE:
+    default:
+      os << "Unknown{" << (int)type << "}";
+      break;
+  }
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec) {
+  os << "(type:" << spec.type
+     << ", duration:" << spec.duration
+     << ", amount:" << spec.amount
+     << ")";
+  return os;
+}
+
 void PaddleWidthModifier::output(std::ostream &os) const {
   os << "PaddleWidthModifier{amount:" << amount();
   os << ", ";
@@ -220,8 +248,16 @@ void PaddleWidthModifier::output(std::ostream &os) const {
 
 void ExtraLifeModifier::output(std::ostream &os) const {
   os << "ExtraLifeModifier{";
-  os << ", ";
   outputGameObjectFields(os, *this);
+  os << ", ";
+  outputPhysicsObjectFields(os, *this);
+  os << "}";
+}
+
+void BallModifier::output(std::ostream &os) const {
+  os << "BallModifier{";
+  outputGameObjectFields(os, *this);
+  os << ", type: " << modifierType();
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";

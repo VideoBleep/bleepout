@@ -28,12 +28,22 @@ void Player::init() {
   _color.setHsb(ofRandom(255), 255, 200);
 }
 
+void Player::enqueueBallModifier(const ModifierSpec &modifierSpec) {
+  _ballModifierQueue.push_back(modifierSpec);
+}
+
+bool Player::tryDequeueBallModifier(ModifierSpec *modifierSpec) {
+  if (_ballModifierQueue.empty())
+    return false;
+  *modifierSpec = _ballModifierQueue.front();
+  _ballModifierQueue.pop_front();
+  return true;
+}
+
 bool ExtraLifeModifier::applyToTarget(RoundState& state, GameObject &target) {
   if (target.type() == GAME_OBJECT_PADDLE) {
     Paddle& paddle = static_cast<Paddle&>(target);
-    if (!paddle.player())
-      return false;
-    return applyToTarget(state, *paddle.player());
+    return applyToTarget(state, paddle.player());
   }
   if (target.type() != GAME_OBJECT_PLAYER)
     return false;

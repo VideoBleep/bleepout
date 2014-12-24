@@ -56,6 +56,7 @@ private:
 
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
+  bool _syphonEnabled;
 #endif // ENABLE_SYPHON
 };
 

@@ -65,9 +65,12 @@ public:
     _spec = &spec;
     _endTime = time + spec.duration;
   }
-  void clear() {
+  const ModifierSpec* clear() {
+    const ModifierSpec* s = _spec;
     _spec = NULL;
+    return s;
   }
+  const ModifierSpec* spec() const { return _spec; }
   bool active() const { return !!_spec; }
   bool checkExpiration(float time) const {
     return time >= _endTime;

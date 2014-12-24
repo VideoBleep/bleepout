@@ -21,23 +21,23 @@ class PaddleWidthModifier;
 
 class Paddle : public GameObject, public PhysicsObject {
 public:
-  Paddle(Player* player, ofVec3f size);
+  Paddle(Player& player, ofVec3f size);
   
-  Player* player() { return _player; }
-  const Player* player() const { return _player; }
+  Player& player() { return _player; }
+  const Player& player() const { return _player; }
   
   void output(std::ostream& os) const override;
     
   virtual const ofColor& getColor() const override;
   
-  void updateModifiers(RoundState& state);
+  const ModifierSpec* updateWidthModifier(const RoundState& state);
   
-  void addWidthModifier(RoundState& state,
-                        PaddleWidthModifier& modifier);
-  void removeWidthModifier();
+  void addWidthModifier(const RoundState& state,
+                        const PaddleWidthModifier& modifier);
+  const ModifierSpec* removeWidthModifier();
   
 private:
-  Player* _player;
+  Player& _player;
   ofVec3f _origSize;
   ModifierSlot _widthModifier;
 };

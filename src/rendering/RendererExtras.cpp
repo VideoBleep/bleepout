@@ -10,6 +10,9 @@
 #include <ofMain.h>
 #include "Timing.h"
 #include "Animations.h"
+#include "ObjectSpecs.h"
+#include <vector>
+#include "PhysicsUtil.h"
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -18,67 +21,25 @@ static void rotate3d(ofVec3f rotations) {
   ofRotateZ(rotations.z);
 }
 
-class RingSet {
-private:
-  class RingChange : public TimedFunc {
-  public:
-    RingChange(RingSet& ringSet, ofColor color, float lineWidth)
-    : _ringSet(ringSet), _color(color), _lineWidth(lineWidth) { }
-    virtual void operator()(RoundState& state) override {
-      _ringSet._color = _color;
-      _ringSet.setLineWidth(_lineWidth);      
-    }
-  private:
-    RingSet& _ringSet;
-    ofColor _color;
-    float _lineWidth;
-  };
-  class RingFade : public TimedPercentageFunc {
-  public:
-    RingFade(RingSet& ringSet, ofColor startColor, ofColor endColor)
-    : _ringSet(ringSet)
-    , _startColor(startColor)
-    , _endColor(endColor) { }
-    virtual void operator()(RoundState& state, float percentage) override {
-      ofColor color = _startColor.getLerped(_endColor, percentage);
-      _ringSet._color = color;
-    }
-  private:
-    RingSet& _ringSet;
-    ofColor _startColor;
-    ofColor _endColor;
-  };
-  class RingFadeAction : public ValueRampAction<ofColor> {
-  public:
-    RingFadeAction(RingSet& ringSet, float start, float end,
-                   const ofColor& startVal, const ofColor& endVal)
-    :ValueRampAction<ofColor>(start, end, startVal, endVal)
-    , _ringSet(ringSet) { }
-    
-  protected:
-    virtual void applyValue(const ofColor& value) override {
-      _ringSet._color = value;
-    }
-  private:
-    RingSet& _ringSet;
-  };
+class Drawable {
 public:
-  RingSet() { }
-  
-  void setup(SpinPulser spinPulser, SpinPulser spreadPulser, ofVec3f spreadOffset, int count, float radiusScale, float lineWidth, ofColor color) {
-    _spinPulser = spinPulser;
-    _spreadPulser = spreadPulser;
-    _spreadOffset = spreadOffset;
-    _count = count;
-    _radiusScale = radiusScale;
-    _lineWidth = lineWidth;
-    _color = color;
+  virtual void draw(RoundState& state) = 0;
+};
+
+class RingSet : public Drawable {
+public:
+  explicit RingSet(const RingSetSpec& spec) {
+    _spinPulser = createValuePulser(spec.spin);
+    _spreadPulser = createValuePulser(spec.spread);
+    _spreadOffset = spec.spreadOffset;
+    _count = spec.count;
+    _radiusScale = spec.radiusScale;
+    _lineWidth = spec.lineWidth;
+    _color = spec.color;
   }
   
-  void draw(const RoundConfig& config) {
-    float radius = config.domeRadius() * _radiusScale;
-    float totalElapsed = ofGetElapsedTimef();
-    float rate = ofGetFrameRate();
+  virtual void draw(RoundState& state) override {
+    float radius = state.config().domeRadius() * _radiusScale;
     ofPushMatrix();
     ofPushStyle();
     
@@ -86,8 +47,8 @@ public:
     ofSetLineWidth(_lineWidth);
     ofSetColor(_color);
     
-    _spinPulser.update(totalElapsed);
-    _spreadPulser.update(totalElapsed);
+    _spinPulser.update(state.time);
+    _spreadPulser.update(state.time);
     
     rotate3d(_spinPulser.value());
     
@@ -100,22 +61,6 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
-  
-  ofColor& color() { return _color; }
-  
-  float lineWidth() const { return _lineWidth; }
-  void setLineWidth(float lineWidth) { _lineWidth = lineWidth; }
-  
-  TimedFunc* newChange(ofColor color, float lineWidth) {
-    return new RingChange(*this, color, lineWidth);
-  }
-  TimedPercentageFunc* newFade(ofColor startColor, ofColor endColor) {
-    return new RingFade(*this, startColor, endColor);
-  }
-  DurationAction* newFadeAction(float start, float end,
-                                const ofColor& startVal, const ofColor& endVal) {
-    return new RingFadeAction(*this, start, end, startVal, endVal);
-  }
 private:
   SpinPulser _spinPulser;
   SpinPulser _spreadPulser;
@@ -126,57 +71,65 @@ private:
   float _lineWidth;
 };
 
+class SphereRingSet : public Drawable {
+public:
+  virtual void draw(RoundState& state) override {
+    float radius = state.config().domeRadius() * _radiusScale;
+    ofPushMatrix();
+    ofPushStyle();
+    ofEnableAlphaBlending();
+    ofFill();
+    ofSetColor(_color);
+    
+    for (int i = 0; i < _count; i++) {
+      float heading = ofMap((float)i, 0, _count - 1, 0, 360);
+      heading += _headingPulser.update(state.time);
+      ofVec3f pos = cylindricalToCartesian(radius, heading, 1.0f);
+      ofDrawSphere(pos, _sphereRadius);
+    }
+    
+    //...
+    ofPopStyle();
+    ofPopMatrix();
+  }
+//private:
+  int _count;
+  float _radiusScale;
+  float _sphereRadius;
+  ValuePulser<float> _headingPulser;
+  ofColor _color;
+};
+
 class RendererExtrasImpl {
 private:
-  
-  RingSet _ringSet1;
-  RingSet _ringSet2;
-  RingSet _ringSet3;
-  TimedActionSet _actions;
-  const RoundConfig& _config;
+  std::vector<ofPtr<Drawable> > _drawables;
 public:
-  RendererExtrasImpl(const RoundConfig& config)
-  : _actions(true)
-  , _config(config) {
-    _ringSet1.setup(SpinPulser(ofVec3f(0), ofVec3f(0.3), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.1), 10.0f, ofVec3f(0)),
-                    ofVec3f(20), 30, 1.95, 0.4, ofColor(0, 0, 127, 63));
-    _ringSet2.setup(SpinPulser(ofVec3f(0), ofVec3f(0.4), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0), ofVec3f(0.5), 40.0f, ofVec3f(0)),
-                    ofVec3f(60), 10, 2.3, 0.4, ofColor(255, 127, 0, 63));
-    _ringSet3.setup(SpinPulser(ofVec3f(0), ofVec3f(0.2), 5.0f, ofVec3f(0)),
-                    SpinPulser(ofVec3f(0.01), ofVec3f(0.16), 10.0f, ofVec3f(0)),
-                    ofVec3f(60), 150, 2, 0.2, ofColor(0, 127, 127, 63));
+  RendererExtrasImpl(const RoundConfig& config) {
+    for (const auto& spec : config.ringSets()) {
+      ofPtr<RingSet> ringSet(new RingSet(spec));
+      _drawables.push_back(ringSet);
+    }
+//    ofPtr<SphereRingSet> spheres(new SphereRingSet());
+//    spheres->_count = 30;
+//    spheres->_radiusScale = 1.5;
+//    spheres->_sphereRadius = 6.0f;
+//    spheres->_headingPulser.setup(0, 0.02f, 5.0f, 0);
+//    spheres->_color.set(0, 255, 0, 63);
+//    _drawables.push_back(spheres);
   }
   void update(RoundState& state) { }
   void draw(RoundState& state) {
     ofPushMatrix();
     ofPushStyle();
     
-    _ringSet1.draw(state.config());
-    _ringSet2.draw(state.config());
-    _ringSet3.draw(state.config());
+    for (auto& obj : _drawables) {
+      obj->draw(state);
+    }
     
     ofPopStyle();
     ofPopMatrix();
   }
-  void keyPressed(int key) {
-    if (key == 'z') {
-      _ringSet1.color().setHueAngle(_ringSet1.color().getHueAngle() + 20);
-      ofColor newColor(_ringSet1.color());
-      newColor.setHueAngle((newColor.getHueAngle() + 30));
-      ofPtr<TimedFunc> fn(_ringSet1.newChange(newColor, _ringSet1.lineWidth() + 4));
-      _actions.add(ofPtr<TimedAction>(OnceAction::newOnceAction(ofGetElapsedTimef() + 5.0f, fn)));
-    } else if (key == 'x') {
-      ofColor startColor(255, 0, 0, 63);
-      ofColor endColor(0, 0, 255, 63);
-//      ofPtr<TimedFunc> fn(_ringSet2.newFade(startColor, endColor));
-//      _actions.add(ofPtr<TimedAction>(DurationAction::newDurationAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, fn)));
-      _actions.add(ofPtr<TimedAction>(_ringSet2.newFadeAction(ofGetElapsedTimef() + 2.0f, ofGetElapsedTimef() + 8.0f, startColor, endColor)));
-    } else if (key == 'v') {
-      ofLogNotice() << "queued actions: " << _actions.size();
-    }
-  }
+  void keyPressed(int key) { }
 };
 
 void RendererExtras::setup(const RoundConfig& config) {

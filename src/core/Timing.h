@@ -149,7 +149,7 @@ public:
     updateRate();
   }
   
-  const ofVec3f& update(float time) {
+  const T& update(float time) {
     if (_changePulser.update(time)) {
       updateRate();
     }
@@ -165,7 +165,7 @@ public:
     updateRate();
   }
   
-  void setRange(ofVec3f minRate, ofVec3f maxRate) {
+  void setRange(T minRate, T maxRate) {
     _minRate = minRate;
     _maxRate = maxRate;
   }
@@ -184,5 +184,11 @@ protected:
 };
 
 typedef ValuePulser<ofVec3f> SpinPulser;
+
+template<typename T>
+struct ValuePulserSpec;
+
+template<typename T>
+ValuePulser<T> createValuePulser(const ValuePulserSpec<T>& spec);
 
 #endif

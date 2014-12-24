@@ -227,7 +227,7 @@ void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
                           63, 255);
       edgeColor = ofColor((unsigned char)ofMap(brick.lives(),
                                                1, brick.maxLives(),
-                                               255, 31));
+                                               255, 128));
       edgeColor.a = fillColor.a;
       alphaBlending = true;
       float lineWidth = ofMap(brick.lives(), 1, 4,
@@ -241,9 +241,7 @@ void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
 }
 
 void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
-    if (!wall.isExit() && wall.isDynamic()) {
-        drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), &wallMaterial, 1.5);
-    }
+    drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), &wallMaterial, 1.5);
 }
 
 void drawCometTail(Ball& ball, float width, float length, int order, const ofColor& color) {
@@ -278,7 +276,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 
 void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
 
-    if (!_drawLasers) {
+    if (!_drawLasers && !ball.isLaser()) {
         
         ofPushStyle();
         ofPushMatrix();
@@ -359,7 +357,7 @@ void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
   ofRotateY(45);
   ofSetLineWidth(8.0);
   ofFill();
-  ofSetColor(255, 0, 0);
+  ofSetColor(modifier.spec().color);
   ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
   
   ofPopMatrix();

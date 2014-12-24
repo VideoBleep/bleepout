@@ -29,7 +29,18 @@ void LogicController::detachFrom(SpaceController &collisions) {
 void LogicController::update() {
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
-      obj->updateModifiers(_state);
+      const ModifierSpec* mod = obj->updateWidthModifier(_state);
+      if (mod) {
+        notifyModifierRemoved(_state, *mod, obj.get());
+      }
+    }
+  }
+  for (auto& obj : _state.balls()) {
+    if (obj && obj->alive()) {
+      const ModifierSpec* mod = obj->updateLaserModifier(_state);
+      if (mod) {
+        notifyModifierRemoved(_state, *mod, obj.get());
+      }
     }
   }
 }
@@ -81,10 +92,16 @@ void LogicController::onModifierHitObject(Modifier &modifier, GameObject &object
 
 void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
   Player* previousPlayer = ball.player();
-  Player* player = paddle.player();
-  ball.setPlayer(player);
-  if (player != previousPlayer) {
-    notifyBallOwnerChanged(_state, &ball, player, previousPlayer);
+  Player& player = paddle.player();
+  ball.setPlayer(&player);
+  if (previousPlayer == NULL ||
+      player.id() != previousPlayer->id()) {
+    notifyBallOwnerChanged(_state, &ball, &player, previousPlayer);
+  }
+  ModifierSpec modifierSpec;
+  if (player.tryDequeueBallModifier(&modifierSpec)) {
+    ball.applyModifier(_state, modifierSpec);
+    //... event?
   }
 }
 
@@ -164,27 +181,27 @@ void LogicController::notifyAllBricksDestroyed(RoundState& state) {
   logEvent("AllBricksDestroyed", e);
 }
 void LogicController::notifyPlayerScoreChanged(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerScoreChangedEvent, e);
   logEvent("PlayerScoreChanged", e);
 }
 void LogicController::notifyBallDestroyed(RoundState& state, Ball* ball) {
-  BallEventArgs e(state, ball);
+  BallStateEventArgs e(state, ball);
   ofNotifyEvent(ballDestroyedEvent, e);
   logEvent("BallDestroyed", e);
 }
 void LogicController::notifyBallRespawned(RoundState& state, Ball* ball) {
-  BallEventArgs e(state, ball);
+  BallStateEventArgs e(state, ball);
   ofNotifyEvent(ballRespawnedEvent, e);
   logEvent("BallRespawned", e);
 }
 void LogicController::notifyPlayerLost(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerLostEvent, e);
   logEvent("PlayerLost", e);
 }
 void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player) {
-  PlayerEventArgs e(state, player);
+  PlayerStateEventArgs e(state, player);
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
@@ -196,12 +213,15 @@ void LogicController::notifyRoundEnded(RoundState& state) {
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
   ofNotifyEvent(modifierAppearedEvent, e);
+  logEvent("ModifierAppeared", e);
 }
 void LogicController::notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
   ModifierEventArgs e(state, modifier, target);
   ofNotifyEvent(modifierAppliedEvent, e);
+  logEvent("ModifierApplied", e);
 }
-void LogicController::notifyModifierRemoved(RoundState& state, Modifier* modifier, GameObject* target) {
-  ModifierEventArgs e(state, modifier, target);
+void LogicController::notifyModifierRemoved(RoundState& state, const ModifierSpec& modifierSpec, GameObject* target) {
+  ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
+  logEvent("ModifierRemoved", e);
 }

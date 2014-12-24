@@ -11,7 +11,7 @@
 
 const char GameObjectTypeTraits<Paddle>::typeName[] = "paddle";
 
-Paddle::Paddle(Player* player, ofVec3f size)
+Paddle::Paddle(Player& player, ofVec3f size)
 : GameObject(GAME_OBJECT_PADDLE), PhysicsObject(CollisionBox), _player(player) {
   thisGameObject = this;
   _color = ofColor(128, 128, 128);
@@ -20,31 +20,29 @@ Paddle::Paddle(Player* player, ofVec3f size)
 }
 
 const ofColor& Paddle::getColor() const {
-    if (_player) {
-        return _player->getColor();
-    } else {
-        return _color;
-    }
+  return _player.getColor();
 }
 
-void Paddle::addWidthModifier(RoundState& state,
-                              PaddleWidthModifier& modifier) {
+void Paddle::addWidthModifier(const RoundState& state,
+                              const PaddleWidthModifier& modifier) {
   _widthModifier.set(modifier.spec(), state.time);
   setSize(_origSize * modifier.amount());
 }
 
-void Paddle::removeWidthModifier() {
+const ModifierSpec* Paddle::removeWidthModifier() {
   if (_widthModifier.active()) {
     setSize(_origSize);
-    _widthModifier.clear();
+    return _widthModifier.clear();
   }
+  return NULL;
 }
 
-void Paddle::updateModifiers(RoundState &state) {
+const ModifierSpec* Paddle::updateWidthModifier(const RoundState &state) {
   if (_widthModifier.active() &&
       _widthModifier.checkExpiration(state.time)) {
-    removeWidthModifier();
+    return removeWidthModifier();
   }
+  return NULL;
 }
 
 PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec& spec)

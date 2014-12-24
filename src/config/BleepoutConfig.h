@@ -20,6 +20,7 @@ class RoundConfig {
 public:
   static RoundConfig* createRoundConfig1();
   static RoundConfig* createRoundConfig2();
+  static RoundConfig* createRoundConfig3();
   
   RoundConfig(std::string name);
   
@@ -29,11 +30,11 @@ public:
   const std::string& name() const { return _name; }
   
   float startDelay() const { return _startDelay; }
-  const ofVec3f& brickSize() const { return _brickSize; }
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
   float modifierRadius() const { return _modifierRadius; }
+  float modifierFadeTime() const { return _modifierFadeTime; }
   
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
@@ -42,12 +43,15 @@ public:
   const std::vector<BrickSpec>& bricks() const { return _bricks; }
   const std::vector<BrickRingSpec>& brickRings() const { return _brickRings; }
   const std::vector<WallSpec>& walls() const { return _walls; }
+  const std::vector<WallRingSpec>& wallRings() const { return _wallRings; }
   const std::vector<CurvedWallSpec>& curvedWallSets() const { return _curvedWallSets; }
   const std::vector<MessageSpec>& startMessages() const { return _startMessages; }
+  const std::vector<RingSetSpec>& ringSets() const { return _ringSets; }
   
   std::vector<BallSpec>& balls() { return _balls; }
   std::vector<BrickSpec>& bricks() { return _bricks; }
   std::vector<BrickRingSpec>& brickRings() { return _brickRings; }
+  std::vector<WallRingSpec>& wallRings() { return _wallRings; }
   std::vector<WallSpec>& walls() { return _walls; }
   std::vector<CurvedWallSpec>& curvedWallSets() { return _curvedWallSets; }
   std::vector<MessageSpec>& startMessages() { return _startMessages; }
@@ -58,14 +62,34 @@ public:
   void addBrick(BrickSpec brick) {
     _bricks.push_back(brick);
   }
+  BrickSpec& addBrick() {
+    _bricks.push_back(BrickSpec());
+    return _bricks.back();
+  }
   void addBrickRing(BrickRingSpec ring) {
     _brickRings.push_back(ring);
+  }
+  BrickRingSpec& addBrickRing() {
+    _brickRings.push_back(BrickRingSpec());
+    return _brickRings.back();
   }
   void addWall(WallSpec wall) {
     _walls.push_back(wall);
   }
+  WallSpec& addWall() {
+    _walls.push_back(WallSpec());
+    return _walls.back();
+  }
+  WallRingSpec& addWallRing() {
+    _wallRings.push_back(WallRingSpec());
+    return _wallRings.back();
+  }
   void addCurvedWallSet(CurvedWallSpec curve) {
     _curvedWallSets.push_back(curve);
+  }
+  CurvedWallSpec& addCurvedWallSet() {
+    _curvedWallSets.push_back(CurvedWallSpec());
+    return _curvedWallSets.back();
   }
   void addModifierDef(std::string name, ModifierSpec spec) {
     _modifierDefs.insert(std::make_pair(name, spec));
@@ -73,6 +97,24 @@ public:
   
   void addStartMessage(MessageSpec spec) {
     _startMessages.push_back(spec);
+  }
+  MessageSpec& addStartMessage(std::string text, ofColor color) {
+    _startMessages.push_back(MessageSpec(text, color));
+    return _startMessages.back();
+  }
+  
+  void addRingSet(RingSetSpec spec) {
+    _ringSets.push_back(spec);
+  }
+  
+  RingSetSpec& addRingSet() {
+    _ringSets.push_back(RingSetSpec());
+    return _ringSets.back();
+  }
+  
+  ModifierSpec& addModifierDef(std::string name, ModifierType type) {
+    _modifierDefs[name] = ModifierSpec(name, type);
+    return _modifierDefs.at(name);
   }
   
   const ModifierSpec& modifierDef(std::string name) const {
@@ -87,11 +129,11 @@ public:
 private:
   std::string _name;
   float _startDelay;
-  ofVec3f _brickSize;
   ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;
   float _modifierRadius;
+  float _modifierFadeTime;
   float _domeRadius;
   float _domeMargin;
   
@@ -99,9 +141,11 @@ private:
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
   std::vector<WallSpec> _walls;
+  std::vector<WallRingSpec> _wallRings;
   std::vector<CurvedWallSpec> _curvedWallSets;
   std::map<std::string, ModifierSpec> _modifierDefs;
   std::vector<MessageSpec> _startMessages;
+  std::vector<RingSetSpec> _ringSets;
 };
 
 class BleepoutConfig {
