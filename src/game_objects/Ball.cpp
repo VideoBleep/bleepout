@@ -32,9 +32,9 @@ Ball::Ball(const RoundConfig* config /*= NULL*/, const BallSpec* spec /*= NULL*/
     }
 }
 
-void Ball::bounce(ofVec3f normal) {
+void Ball::bounce(ofVec3f normal, float trueHitFactor /* = 0.0 */) {
     if (trajectory) {
-        trajectory->reflect(normal);
+        trajectory->reflect(normal, trueHitFactor);
     }
 }
 

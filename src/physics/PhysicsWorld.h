@@ -19,7 +19,9 @@ class CollisionArgs : public ofEventArgs {
 public:
     GameObject* a;
     GameObject* b;
-    ofVec3f normal;
+    ofVec3f normalOnA;
+    ofVec3f pointOnA;
+    ofVec3f pointOnB;
 };
 
 class PhysicsImpl;

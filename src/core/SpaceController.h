@@ -44,7 +44,6 @@ private:
   void onCollision(CollisionArgs &cdata);
 
   void notifyCollision(GameObject* a, GameObject* b);
-  bool shouldBounce(const Ball& ball, const GameObject& object) const;
 
 private:
   PhysicsWorld _world;

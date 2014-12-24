@@ -26,7 +26,7 @@ public:
     virtual float getTime() const { return _t; }
     virtual void setTime(float t) { _t = t; }
     
-    virtual void reflect(const ofVec3f& planeNormal) = 0;
+    virtual void reflect(const ofVec3f& planeNormal, float trueHitFactor = 0.0) = 0;
     
     virtual void output(std::ostream& os) const = 0;
     
