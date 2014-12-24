@@ -36,6 +36,8 @@ public:
   void setUpModifier(Modifier& modifier,
                      Brick& spawnerBrick);
   void removeModifier(Modifier& modifier);
+  
+  const char* eventSourceName() const override { return "SpaceController"; }
     
 private:
   void addBrick(const BrickSpec& brickSpec);

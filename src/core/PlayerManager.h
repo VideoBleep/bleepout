@@ -84,6 +84,8 @@ public:
   
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
+  const char* eventSourceName() const override { return "PlayerManager"; }
+  
 private:
   void notifyPlayerAdded(ofPtr<Player> player);
   void notifyPlayerRemoved(ofPtr<Player> player);

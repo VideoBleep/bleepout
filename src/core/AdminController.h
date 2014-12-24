@@ -36,6 +36,8 @@ public:
   void keyPressed(int key);
   void attachTo(BleepoutApp& app);
   void detachFrom(BleepoutApp& app);
+  
+  const char* eventSourceName() const override { return "AdminController"; }
 private:
   void onUIEvent(ofxUIEventArgs& e);
   void onRoundStarted(RoundStateEventArgs& e);

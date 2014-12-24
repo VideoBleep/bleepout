@@ -41,6 +41,8 @@ public:
   void attachTo(SpaceController& collisions);
   void detachFrom(SpaceController& collisions);
   
+  const char* eventSourceName() const override { return "LogicController"; }
+  
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
   void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);

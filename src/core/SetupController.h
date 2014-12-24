@@ -26,6 +26,8 @@ public:
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   
+  const char* eventSourceName() const override { return "SetupController"; }
+  
 private:
   bool notifyTryStartRound(ofPtr<RoundConfig> config,
                            std::list<ofPtr<Player> > players);

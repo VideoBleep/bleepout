@@ -57,6 +57,8 @@ public:
   
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
+  
+  const char* eventSourceName() const override { return "RoundController"; }
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);

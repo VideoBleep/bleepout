@@ -246,6 +246,7 @@ public:
   void toggleLogging(ofLogLevel level) {
     _logLevel = loggingEnabled() ? OF_LOG_SILENT : level;
   }
+  virtual const char* eventSourceName() const = 0;
 protected:
   void logEvent(const char* name, const Outputable& event) const;
 private:

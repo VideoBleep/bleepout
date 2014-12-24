@@ -102,6 +102,6 @@ void ModifierRemovedEventArgs::output(std::ostream &os) const {
 void EventSource::logEvent(const char *name,
                            const Outputable &event) const {
   if (loggingEnabled()) {
-    ofLog(_logLevel) << "EVENT{" << name << "}: " << event;
+    ofLog(_logLevel) << eventSourceName() << ":EVENT{" << name << "}: " << event;
   }
 }

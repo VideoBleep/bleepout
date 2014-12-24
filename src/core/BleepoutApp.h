@@ -41,6 +41,8 @@ public:
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
   const BleepoutConfig& config() const { return *_config; }
+  
+  const char* eventSourceName() const override { return "BleepoutApp"; }
 
 private:
   void onTryStartRound(StartRoundEventArgs& e);
