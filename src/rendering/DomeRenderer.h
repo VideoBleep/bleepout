@@ -27,7 +27,6 @@ public:
     virtual void update() override;
     virtual void draw() override;
     
-    virtual void keyPressed(int key);
     virtual void mousePressed(int x, int y, int button);
     virtual void mouseReleased(int x, int y, int button);
     virtual void mouseDragged(int x, int y, int button);
@@ -42,10 +41,6 @@ protected:
     void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
     
     ofxTurntableCam _cam;
-    bool _debugGraphics;
-    bool _drawTrajectories;
-    bool _drawLasers;
-    bool _drawCometTails;
   
     RendererExtras _extras;
     

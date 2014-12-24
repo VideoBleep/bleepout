@@ -82,11 +82,6 @@ void DomeRenderer::setup() {
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
     _cam.setRotation(0.0, 0.66);
     _cam.setupPerspective(false);
-
-    _debugGraphics = false;
-    _drawTrajectories = false;
-    _drawLasers = false;
-    _drawCometTails = false;
     
     _extras.setup();
     
@@ -140,13 +135,13 @@ void DomeRenderer::draw() {
     
     RendererBase::draw();
     
-    if (_debugGraphics) {
+    if (_appParams.debugGraphics) {
         drawBoundingBoxes(_state.balls());
         drawBoundingBoxes(_state.paddles());
         drawBoundingBoxes(_state.bricks());
         drawBoundingBoxes(_state.walls());
         drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
-    } else if (_drawTrajectories) {
+    } else if (_appParams.drawTrajectories) {
         drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
     }
     
@@ -194,20 +189,6 @@ void DomeRenderer::drawGenMesh(const GenMesh& gm, ofMaterial& mat, const ofColor
     ofSetLineWidth(lineWidth);
     ofTranslate(_cam.getLookAtDir().normalized() * -0.2);
     gm.outline->draw();
-}
-
-void DomeRenderer::keyPressed(int key) {
-    if (key == 'd') {
-        _debugGraphics = !_debugGraphics;
-    } else if (key == 't') {
-        _drawTrajectories = !_drawTrajectories;
-    } else if (key == 'l') {
-        _drawLasers = !_drawLasers;
-    } else if (key == 'c') {
-        _drawCometTails = !_drawCometTails;
-    } else {
-      _extras.keyPressed(key);
-    }
 }
 
 void DomeRenderer::mousePressed(int x, int y, int button) {
@@ -281,7 +262,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 
 void DomeRenderer::drawBall(Ball &ball) {
 
-    if (!_drawLasers && !ball.isLaser()) {
+    if (!_appParams.allLasers && !ball.isLaser()) {
         
         ofPushStyle();
         ofPushMatrix();
@@ -302,7 +283,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     
         ofPopMatrix();
         
-        if (_drawCometTails) {
+        if (_appParams.drawComets) {
             drawCometTail(ball, 6.8, 50,  0, ofColor(255, 120, 30, 200));
             drawCometTail(ball, 5.0, 30, -1, ofColor(255, 200, 50, 200));
             drawCometTail(ball, 5.0, 30,  1, ofColor(255, 200, 50, 200));

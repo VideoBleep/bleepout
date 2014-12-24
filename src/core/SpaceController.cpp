@@ -8,17 +8,21 @@
 
 #include "SpaceController.h"
 #include "PhysicsUtil.h"
+#include "BleepoutParameters.h"
 
 namespace {
     
-  static ofVec3f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
+  static ofVec3f getBallStartPosition(int i, int numPlayers,
+                                      const RoundConfig& config) {
     return ofVec3f(0, config.domeRadius() + config.domeMargin());
   }
   
 }
 
-SpaceController::SpaceController(RoundState& state, RoundConfig & config)
-: _state(state), _config(config) {
+SpaceController::SpaceController(RoundState& state,
+                                 const RoundConfig& config,
+                                 const BleepoutParameters& appParams)
+: RoundComponent(state, config, appParams) {
 }
 
 void SpaceController::addInitialPaddles() {
@@ -85,15 +89,23 @@ void SpaceController::update() {
     _world.update();
 }
 
+bool SpaceController::shouldBounce(const Ball &ball, const GameObject &object) const {
+    if (object.type() != GAME_OBJECT_BRICK)
+        return true;
+    if (ball.isLaser() || _appParams.allLasers)
+        return false;
+    return true;
+}
+
 void SpaceController::onCollision(CollisionArgs &cdata) {
     ofVec3f normal = cdata.normal;
     if (cdata.a->type() == GAME_OBJECT_BALL) {
-        Ball& ball = static_cast<Ball&>(*cdata.a);
-        if (!ball.isLaser() || cdata.b->type() != GAME_OBJECT_BRICK)
+      Ball& ball = static_cast<Ball&>(*cdata.a);
+        if (shouldBounce(ball, *cdata.b))
             ball.bounce(cdata.normal);
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
         Ball& ball = static_cast<Ball&>(*cdata.b);
-        if (!ball.isLaser() || cdata.a->type() != GAME_OBJECT_BRICK)
+        if (shouldBounce(ball, *cdata.a))
             ball.bounce(-cdata.normal);
     }
     notifyCollision(cdata.a, cdata.b);

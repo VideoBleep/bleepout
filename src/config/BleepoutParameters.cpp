@@ -10,7 +10,12 @@
 
 BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 : _appConfig(appConfig)
-, _paused(false) {
+, paused(false)
+, exitsEnabled(false)
+, debugGraphics(false)
+, drawTrajectories(false)
+, drawComets(false)
+, allLasers(false) {
   for (const auto& round : _appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }

@@ -42,7 +42,7 @@ void RoundController::setup() {
   _startTime = ofGetElapsedTimef();
   _state.time = 0;
   
-  _spaceController.reset(new SpaceController(_state, _config));
+  _spaceController.reset(new SpaceController(_state, _config, _appParams));
   _logicController.reset(new LogicController(_state, _config, _appParams));
   _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
@@ -75,14 +75,14 @@ void RoundController::draw() {
 }
 
 void RoundController::update() {
-  if (_paused && !_appParams.paused()) {
+  if (_paused && !_appParams.paused) {
 //    float footime = ofGetElapsedTimef() - _startTime;
 //    float diff = footime - _state.time;
 //    _startTime += diff;
     _startTime = ofGetElapsedTimef() - _state.time;
     _paused = false;
   }
-  _paused = _appParams.paused();
+  _paused = _appParams.paused;
   if (_paused)
     return;
   _state.time = ofGetElapsedTimef() - _startTime;
@@ -135,9 +135,7 @@ void RoundController::addTimedAction(ofPtr<TimedAction> action) {
 }
 
 void RoundController::keyPressed(int key) {
-  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
-    _renderer->keyPressed(key);
-  } else {
+  if (!ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     if (key == 'q') {
       endRound();
     } else if (key == 'l') {

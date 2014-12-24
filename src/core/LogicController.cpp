@@ -152,7 +152,7 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
-  if (wall.isExit() && _appParams.exitsEnabled()) {
+  if (wall.isExit() && _appParams.exitsEnabled) {
     Player* player = ball.player();
     
     ball.kill();

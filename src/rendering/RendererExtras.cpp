@@ -130,7 +130,6 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
-  void keyPressed(int key) { }
 };
 
 RendererExtras::RendererExtras(RoundState& state,
@@ -150,9 +149,4 @@ void RendererExtras::update() {
 void RendererExtras::draw() {
   if (_impl)
     _impl->draw(_state);
-}
-
-void RendererExtras::keyPressed(int key) {
-  if (_impl)
-    _impl->keyPressed(key);
 }

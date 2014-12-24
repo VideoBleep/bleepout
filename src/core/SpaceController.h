@@ -13,11 +13,14 @@
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
 #include "PhysicsWorld.h"
+#include "RoundComponent.h"
 #include <ofMain.h>
 
-class SpaceController : public EventSource {
+class SpaceController : public EventSource, public RoundComponent {
 public:
-  SpaceController(RoundState& state, RoundConfig& config);
+  SpaceController(RoundState& state,
+                  const RoundConfig& config,
+                  const BleepoutParameters& appParams);
   
   ofEvent<CollisionEventArgs> collisionEvent;
   
@@ -41,11 +44,10 @@ private:
   void onCollision(CollisionArgs &cdata);
 
   void notifyCollision(GameObject* a, GameObject* b);
+  bool shouldBounce(const Ball& ball, const GameObject& object) const;
 
 private:
   PhysicsWorld _world;
-  RoundState& _state;
-  RoundConfig& _config;
 };
 
 #endif /* defined(__bleepout__SpaceController__) */

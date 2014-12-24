@@ -49,6 +49,10 @@ struct AdminUIControls {
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
   ofxUIToggle* exitsEnabled;
+  ofxUIToggle* debugGraphics;
+  ofxUIToggle* drawTrajectories;
+  ofxUIToggle* drawComets;
+  ofxUIToggle* allLasers;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -105,17 +109,31 @@ void AdminController::setup() {
   _controls->timeLimit = _gui->addNumberDialer("Time Limit", 10, 6000, 30, 0);
   _controls->timeLimit->setDisplayLabel(true);
   
-  _controls->pause = _gui->addLabelToggle("Pause", _appParams.getPausedPtr());
-  _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", _appParams.getExitsEnabledPtr());
+  _controls->pause = _gui->addLabelToggle("Pause", &_appParams.paused);
+  _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &_appParams.exitsEnabled);
+  _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &_appParams.debugGraphics);
+  _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
+  _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
+  _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
 }
 
 void AdminController::keyPressed(int key) {
-  if (key == 'e') {
-    // toggle exits on and off
-    _appParams.setExitsEnabled(!_appParams.exitsEnabled());
+  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
+    if (key == 'e') {
+      // toggle exits on and off
+      _appParams.exitsEnabled = !_appParams.exitsEnabled;
+    } else if (key == 't') {
+      _appParams.drawTrajectories = !_appParams.drawTrajectories;
+    } else if (key == 'd') {
+      _appParams.debugGraphics = !_appParams.debugGraphics;
+    } else if (key == 'l') {
+      _appParams.allLasers = !_appParams.allLasers;
+    } else if (key == 'c') {
+      _appParams.drawComets= !_appParams.drawComets;
+    }
   }
 }
 
