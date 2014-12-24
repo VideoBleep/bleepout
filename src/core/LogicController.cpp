@@ -43,12 +43,16 @@ void LogicController::update() {
       }
     }
   }
+  std::vector<ofPtr<Modifier> > deadModifiers;
   for (auto& obj : _state.modifiers()) {
     if (obj && obj->alive()) {
       if (obj->getPosition().y <= 0) {
-        notifyModifierDestroyed(_state, obj.get());
+        deadModifiers.push_back(obj);
       }
     }
+  }
+  for (auto& obj : deadModifiers) {
+    notifyModifierDestroyed(_state, obj.get());
   }
 }
 
