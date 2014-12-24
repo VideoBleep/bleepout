@@ -45,6 +45,8 @@ private:
 
 struct AdminUIControls {
   std::vector<RoundQueueSlot*> roundQueueSlots;
+  ofxUIToggle* timeLimitToggle;
+  ofxUINumberDialer* timeLimit;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -94,6 +96,13 @@ void AdminController::setup() {
     _gui->addSpacer();
   }
   
+  _controls->timeLimitToggle = _gui->addToggle("Time Limit Enabled", false);
+  _controls->timeLimitToggle->setLabelVisible(true);
+  _controls->timeLimitToggle->setValue(_appParams.rules().specifiesTimeLimit());
+  
+  _controls->timeLimit = _gui->addNumberDialer("Time Limit", 10, 6000, 30, 0);
+  _controls->timeLimit->setDisplayLabel(true);
+  
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
 }
@@ -122,6 +131,15 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
       dumpRoundQueue(_appParams);
       return;
     }
+  }
+  if (e.widget == _controls->timeLimitToggle ||
+      e.widget == _controls->timeLimit) {
+    if (_controls->timeLimitToggle->getValue()) {
+      _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
+    } else {
+      _appParams.rules().unsetTimeLimit();
+    }
+    return;
   }
   ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
   //...

@@ -25,6 +25,7 @@ public:
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
   void unsetTimeLimit() { _timeLimit.unset(); }
+  bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
   
   void setBackup(const GameRules* backup) { _backup = backup; }
 private:
