@@ -14,6 +14,9 @@
 #include "BleepoutParameters.h"
 
 struct AdminUIControls;
+class BleepoutApp;
+class EmptyEventArgs;
+class RoundStateEventArgs;
 
 class AdminController {
 public:
@@ -23,8 +26,12 @@ public:
   void update();
   void draw();
   void keyPressed(int key);
+  void attachTo(BleepoutApp& app);
+  void detachFrom(BleepoutApp& app);
 private:
   void onUIEvent(ofxUIEventArgs& e);
+  void onRoundStarted(RoundStateEventArgs& e);
+  void onRoundEnded(EmptyEventArgs& e);
   
   BleepoutParameters& _appParams;
   BleepoutConfig& _appConfig;

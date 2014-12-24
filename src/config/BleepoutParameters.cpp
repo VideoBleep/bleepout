@@ -11,6 +11,7 @@
 BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 : _appConfig(appConfig)
 , paused(false)
+, inRound(false)
 , exitsEnabled(false)
 , debugGraphics(false)
 , drawTrajectories(false)

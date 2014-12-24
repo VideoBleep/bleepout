@@ -23,6 +23,7 @@ void BleepoutApp::setup() {
   
   _adminController.reset(new AdminController(*_appParams));
   _adminController->setup();
+  _adminController->attachTo(*this);
   
   _setupController.reset(new SetupController(*_config));
   _setupController->setup();
@@ -86,6 +87,7 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
   _roundController->setup();
   ofAddListener(_roundController->roundEndedEvent, this,
                 &BleepoutApp::onRoundEnded);
+  notifyRoundStarted(_roundController->state());
 }
 
 void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
@@ -95,6 +97,19 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
   }
   _playerManager->setIsInRound(false);
   _roundController.reset();
+  notifyRoundEnded();
+}
+
+void BleepoutApp::notifyRoundStarted(RoundState &state) {
+  RoundStateEventArgs e(state);
+  ofNotifyEvent(roundStartedEvent, e);
+  logEvent("RoundStarted", e);
+}
+
+void BleepoutApp::notifyRoundEnded() {
+  EmptyEventArgs e;
+  ofNotifyEvent(roundEndedEvent, e);
+  logEvent("RoundEnded", e);
 }
 
 void BleepoutApp::keyPressed(int key) {

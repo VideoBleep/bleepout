@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 #include <ofMain.h>
+#include "GameEvents.h"
+#include "BleepoutApp.h"
 
 static const int uiWidth = 300;
 
@@ -47,6 +49,7 @@ struct AdminUIControls {
   ofxUIToggle* timeLimitToggle;
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
+  ofxUILabel* inRound;
   ofxUIToggle* exitsEnabled;
   ofxUIToggle* debugGraphics;
   ofxUIToggle* drawTrajectories;
@@ -89,9 +92,9 @@ void AdminController::setup() {
   _gui->addWidgetDown(new ofxUILabel("BLEEPOUT ADMIN",
                                      OFX_UI_FONT_LARGE));
   _gui->addSpacer();
+  _controls->inRound = _gui->addLabel("Not in round");
   _gui->addWidgetDown(new ofxUILabel("Round Queue",
                                      OFX_UI_FONT_MEDIUM));
-  _gui->addSpacer();
   
   const auto& allRoundNames = _appParams.queuedRoundNames();
   for (int i = 0; i < _appParams.queuedRoundNames().size(); i++) {
@@ -129,6 +132,30 @@ void AdminController::setup() {
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
+}
+
+void AdminController::attachTo(BleepoutApp &app) {
+  ofAddListener(app.roundStartedEvent, this,
+                &AdminController::onRoundStarted);
+  ofAddListener(app.roundEndedEvent, this,
+                &AdminController::onRoundEnded);
+}
+
+void AdminController::detachFrom(BleepoutApp &app) {
+  ofRemoveListener(app.roundEndedEvent, this,
+                   &AdminController::onRoundEnded);
+  ofRemoveListener(app.roundStartedEvent, this,
+                   &AdminController::onRoundStarted);
+}
+
+void AdminController::onRoundStarted(RoundStateEventArgs &e) {
+  _controls->inRound->setLabel("In round: " + e.state().config().name());
+  _appParams.inRound = true;
+}
+
+void AdminController::onRoundEnded(EmptyEventArgs &e) {
+  _controls->inRound->setLabel("Not in round");
+  _appParams.inRound = false;
 }
 
 void AdminController::keyPressed(int key) {

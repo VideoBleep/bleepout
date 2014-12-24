@@ -21,6 +21,11 @@
 #include "Wall.h"
 #include "GameState.h"
 
+class EmptyEventArgs : public Outputable {
+public:
+  void output(std::ostream& os) const override;
+};
+
 class CollisionEventArgs : public Outputable {
 public:
   CollisionEventArgs(GameObject* a, GameObject *b)

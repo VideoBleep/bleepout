@@ -9,6 +9,10 @@
 #include "GameEvents.h"
 #include "Logging.h"
 
+void EmptyEventArgs::output(std::ostream &os) const {
+  os << "()";
+}
+
 void CollisionEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, "a", _a);

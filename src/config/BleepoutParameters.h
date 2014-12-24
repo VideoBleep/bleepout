@@ -32,6 +32,7 @@ public:
   GameRules& rules() { return _rulesOverrides; }
   const GameRules& rules() const { return _rulesOverrides; }
   
+  bool inRound;
   bool paused;
   bool exitsEnabled;
   bool debugGraphics;

@@ -24,9 +24,12 @@
 #include <ofxSyphonClient.h>
 #endif // ENABLE_SYPHON
 
-class BleepoutApp : public ofBaseApp {
+class BleepoutApp : public ofBaseApp, public EventSource {
 public:
   BleepoutApp();
+  
+  ofEvent<RoundStateEventArgs> roundStartedEvent;
+  ofEvent<EmptyEventArgs> roundEndedEvent;
   
   void setup() override;
   void update() override;
@@ -42,6 +45,9 @@ public:
 private:
   void onStartRound(StartRoundEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
+  
+  void notifyRoundStarted(RoundState& state);
+  void notifyRoundEnded();
   
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
