@@ -30,6 +30,7 @@ public:
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
   ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
   
@@ -50,6 +51,7 @@ private:
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
   void notifyRoundEnded(RoundState& state);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
+  void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
   void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
   

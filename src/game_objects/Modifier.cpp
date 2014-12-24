@@ -55,11 +55,3 @@ void Modifier::setup(const RoundConfig &config,
   _physical = true;
   _visible = true;
 }
-
-void Modifier::tick() {
-    PhysicsObject::tick();
-    if (getPosition().y < 0) {
-        kill();
-        dematerialize();
-    }
-}

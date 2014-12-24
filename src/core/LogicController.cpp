@@ -59,6 +59,13 @@ void LogicController::update() {
       }
     }
   }
+  for (auto& obj : _state.modifiers()) {
+    if (obj && obj->alive()) {
+      if (obj->getPosition().y <= 0) {
+        notifyModifierDestroyed(_state, obj.get());
+      }
+    }
+  }
 }
 
 void LogicController::onCollision(CollisionEventArgs &e) {
@@ -175,7 +182,6 @@ void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
 void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
   if (modifier.applyToTarget(_state, paddle)) {
     notifyModifierApplied(_state, &modifier, &paddle);
-    _state.modifiers().eraseObjectById(modifier.id());
     //...?
   }
   //...
@@ -230,6 +236,11 @@ void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifi
   ModifierEventArgs e(state, modifier, spawnerBrick);
   ofNotifyEvent(modifierAppearedEvent, e);
   logEvent("ModifierAppeared", e);
+}
+void LogicController::notifyModifierDestroyed(RoundState &state, Modifier *modifier) {
+  ModifierEventArgs e(state, modifier, NULL);
+  ofNotifyEvent(modifierDestroyedEvent, e);
+  logEvent("ModifierDestroyed", e);
 }
 void LogicController::notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
   ModifierEventArgs e(state, modifier, target);
