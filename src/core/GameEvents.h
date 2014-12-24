@@ -166,6 +166,17 @@ private:
   Player* _player;
 };
 
+class PlayerEventArgs : public Outputable {
+public:
+  PlayerEventArgs(ofPtr<Player> player)
+  : _player(player) { }
+  ofPtr<Player>& player() { return _player; }
+  const ofPtr<Player>& player() const { return _player; }
+  virtual void output(std::ostream& os) const override;
+private:
+  ofPtr<Player> _player;
+};
+
 class StartRoundEventArgs : public Outputable {
 public:
   StartRoundEventArgs(ofPtr<RoundConfig> config,

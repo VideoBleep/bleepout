@@ -6,15 +6,13 @@
 //
 //
 
-#define USE_BULLET_COLLISIONS 1
-
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
 #include "GameObject.h"
 #include "OrbitalTrajectory.h"
 #include "Logging.h"
 
-#if USE_BULLET_COLLISIONS
+#ifdef USE_BULLET_COLLISIONS
 
 #include <ofxBullet.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
