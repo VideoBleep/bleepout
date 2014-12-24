@@ -34,8 +34,11 @@ public:
   
   bool paused() const { return _paused; }
   void setPaused(bool paused) { _paused = paused; }
-  
   bool* getPausedPtr() { return &_paused; }
+  
+  bool exitsEnabled() const { return _exitsEnabled; }
+  void setExitsEnabled(bool enabled) { _exitsEnabled = enabled; }
+  bool* getExitsEnabledPtr() { return &_exitsEnabled; }
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;
@@ -44,6 +47,7 @@ private:
   std::deque<std::string> _queuedRoundNames;
   GameRules _rulesOverrides;
   bool _paused;
+  bool _exitsEnabled;
 };
 
 #endif /* defined(__bleepout__BleepoutParameters__) */

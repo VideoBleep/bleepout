@@ -99,6 +99,7 @@ void BleepoutApp::keyPressed(int key) {
     _syphonEnabled = !_syphonEnabled;
   }
 #endif
+  _adminController->keyPressed(key);
   if (_roundController) {
     _roundController->keyPressed(key);
   } else if (_setupController) {

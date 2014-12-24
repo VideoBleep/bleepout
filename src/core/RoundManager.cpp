@@ -144,27 +144,11 @@ void RoundController::keyPressed(int key) {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
-    } else if (key == 'p') {
-      if (_spaceController->loggingEnabled())
-        _spaceController->disableLogging();
-      else
-        _spaceController->enableLogging(OF_LOG_NOTICE);
     } else if (key == 'o') {
       if (_logicController->loggingEnabled())
         _logicController->disableLogging();
       else
         _logicController->enableLogging(OF_LOG_NOTICE);
-    } else if (key == 'e') {
-      // toggle exits on and off
-      for (auto& wall : _state.walls()) {
-        if (wall->isExit()) {
-          if (wall->alive()) {
-            wall->kill();
-          } else {
-            wall->revive();
-          }
-        }
-      }
     } else if (key == 'b') {
       // add a new ball
       _spaceController->addBall(BallSpec(30, ofRandom(360)));

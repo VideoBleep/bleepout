@@ -48,6 +48,7 @@ struct AdminUIControls {
   ofxUIToggle* timeLimitToggle;
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
+  ofxUIToggle* exitsEnabled;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -105,9 +106,17 @@ void AdminController::setup() {
   _controls->timeLimit->setDisplayLabel(true);
   
   _controls->pause = _gui->addLabelToggle("Pause", _appParams.getPausedPtr());
+  _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", _appParams.getExitsEnabledPtr());
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
+}
+
+void AdminController::keyPressed(int key) {
+  if (key == 'e') {
+    // toggle exits on and off
+    _appParams.setExitsEnabled(!_appParams.exitsEnabled());
+  }
 }
 
 void AdminController::update() {

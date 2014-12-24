@@ -22,6 +22,7 @@ public:
   void setup();
   void update();
   void draw();
+  void keyPressed(int key);
 private:
   void onUIEvent(ofxUIEventArgs& e);
   
