@@ -44,6 +44,8 @@ public:
 
   static Modifier* createModifier(const ModifierSpec& spec);
 
+  virtual void tick() override;
+
 protected:
   const ModifierSpec& _spec;
 
