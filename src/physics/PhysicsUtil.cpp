@@ -35,8 +35,10 @@ void cartesianToSpherical(const ofVec3f& xyz, float *pElevation, float* pHeading
     }
     
     float r = xyz.length();
-    *pElevation = atan(xyz.y / xyz.x);
-    *pHeading = acos(xyz.z / r);
+    float phi = fmod(atan2(xyz.z, xyz.x) + 2 * PI, 2 * PI);
+    float theta = acos(xyz.y / r);
+    *pHeading = phi * 180/PI;
+    *pElevation = (PI/2.0 - theta) * 180/PI;
     
     if (pRadius) {
         *pRadius = r;
