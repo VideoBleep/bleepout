@@ -9,7 +9,8 @@
 #include "BleepoutParameters.h"
 
 BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
-: _appConfig(appConfig) {
+: _appConfig(appConfig)
+, _paused(false) {
   for (const auto& round : _appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }

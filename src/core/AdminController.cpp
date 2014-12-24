@@ -47,6 +47,7 @@ struct AdminUIControls {
   std::vector<RoundQueueSlot*> roundQueueSlots;
   ofxUIToggle* timeLimitToggle;
   ofxUINumberDialer* timeLimit;
+  ofxUIToggle* pause;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -92,9 +93,9 @@ void AdminController::setup() {
     RoundQueueSlot* slot = new RoundQueueSlot(button, i);
     slot->setSelectedIndex(i, _appConfig);
     _controls->roundQueueSlots.push_back(slot);
-    
-    _gui->addSpacer();
   }
+  
+  _gui->addSpacer();
   
   _controls->timeLimitToggle = _gui->addToggle("Time Limit Enabled", false);
   _controls->timeLimitToggle->setLabelVisible(true);
@@ -102,6 +103,8 @@ void AdminController::setup() {
   
   _controls->timeLimit = _gui->addNumberDialer("Time Limit", 10, 6000, 30, 0);
   _controls->timeLimit->setDisplayLabel(true);
+  
+  _controls->pause = _gui->addLabelToggle("Pause", _appParams.getPausedPtr());
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);

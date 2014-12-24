@@ -75,6 +75,16 @@ void RoundController::draw() {
 }
 
 void RoundController::update() {
+  if (_paused && !_appParams.paused()) {
+//    float footime = ofGetElapsedTimef() - _startTime;
+//    float diff = footime - _state.time;
+//    _startTime += diff;
+    _startTime = ofGetElapsedTimef() - _state.time;
+    _paused = false;
+  }
+  _paused = _appParams.paused();
+  if (_paused)
+    return;
   _state.time = ofGetElapsedTimef() - _startTime;
   
   if (_state.time >= _config.startDelay()) {
@@ -106,7 +116,11 @@ void RoundController::onModifierApplied(ModifierEventArgs &e) {
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
+}
+
+void RoundController::endRound() {
   _timedActions.clear();
+  RoundStateEventArgs e(_state);
   ofNotifyEvent(roundEndedEvent, e);
 }
 
@@ -125,9 +139,7 @@ void RoundController::keyPressed(int key) {
     _renderer->keyPressed(key);
   } else {
     if (key == 'q') {
-      RoundStateEventArgs e(_state);
-      ofNotifyEvent(roundEndedEvent, e);
-      //....
+      endRound();
     } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {

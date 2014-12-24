@@ -63,7 +63,9 @@ private:
   void onRoundEnded(RoundStateEventArgs& e);
   void onModifierAppeared(ModifierEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
+  void endRound();
   
+  bool _paused;
   float _startTime;
   BleepoutParameters& _appParams;
   PlayerManager& _playerManager;
