@@ -158,6 +158,9 @@
     <ClCompile Include="src\config\BleepoutConfig.cpp" />
     <ClCompile Include="src\config\JsonUtil.cpp" />
     <ClCompile Include="src\config\ObjectSpecs.cpp" />
+    <ClCompile Include="src\config\Round1.cpp" />
+    <ClCompile Include="src\config\Round2.cpp" />
+    <ClCompile Include="src\config\Round3.cpp" />
     <ClCompile Include="src\core\BleepoutApp.cpp" />
     <ClCompile Include="src\core\Common.cpp" />
     <ClCompile Include="src\core\GameEvents.cpp" />

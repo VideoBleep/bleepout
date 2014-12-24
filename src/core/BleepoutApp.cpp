@@ -30,7 +30,7 @@ void BleepoutApp::setup() {
   _playerManager->addPlayer();
 
   // Handle playerCreate event
-  ofAddListener(_playerManager->playerAddedEvent, &_setupController, _setupController->handlePlayerConnected);
+//  ofAddListener(_playerManager->playerAddedEvent, &_setupController, _setupController->handlePlayerConnected);
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
