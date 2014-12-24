@@ -48,7 +48,7 @@ private:
 	ofPtr<PlayerManager> _playerManager;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
-//  ofPtr<AdminController> _adminController;
+  ofPtr<AdminController> _adminController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
   bool _syphonEnabled;
