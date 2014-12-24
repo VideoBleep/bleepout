@@ -100,6 +100,8 @@ public:
   virtual bool update(RoundState& state) override;
   
   int size() const { return _actions.size(); }
+  
+  void clear();
 private:
   bool _autoRemove;
   std::list<ofPtr<TimedAction> > _actions;

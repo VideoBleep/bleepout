@@ -186,3 +186,14 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   }
   return walls;
 }
+
+GameRules::GameRules()
+: _backup(NULL), _timeLimit() {}
+
+GameRules::GameRules(const GameRules& other)
+: _backup(other._backup)
+, _timeLimit(other._timeLimit) { }
+
+float GameRules::timeLimit() const {
+  return _timeLimit.get(_backup ? &_backup->_timeLimit : NULL, -1);
+}

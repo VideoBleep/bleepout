@@ -72,7 +72,9 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
+  _appParams->setCurrentRound(e.config()->name());
   _roundController.reset(new RoundController(*e.config(),
+                                             *_appParams,
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
@@ -87,6 +89,8 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
   }
   _playerManager->setIsInRound(false);
   _roundController.reset();
+  int foo = 123;
+  (void)foo;
 }
 
 void BleepoutApp::keyPressed(int key) {

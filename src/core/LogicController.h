@@ -12,12 +12,13 @@
 #include "GameState.h"
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config);
+  LogicController(RoundState& state, RoundConfig& config, BleepoutParameters& appParams);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
@@ -65,6 +66,7 @@ private:
 
   RoundState& _state;
   RoundConfig& _config;
+  BleepoutParameters& _appParams;
 };
 
 #endif /* defined(__bleepout__LogicController__) */

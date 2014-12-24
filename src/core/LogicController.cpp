@@ -9,8 +9,10 @@
 #include "LogicController.h"
 #include "SpaceController.h"
 
-LogicController::LogicController(RoundState& state, RoundConfig& config)
-:_state(state), _config(config) {}
+LogicController::LogicController(RoundState& state,
+                                 RoundConfig& config,
+                                 BleepoutParameters& appParams)
+:_state(state), _config(config), _appParams(appParams) { }
 
 void LogicController::setup() {
   
@@ -27,6 +29,11 @@ void LogicController::detachFrom(SpaceController &collisions) {
 }
 
 void LogicController::update() {
+  float limit = _appParams.rules().timeLimit();
+  if (limit > 0 && _state.time >= limit) {
+    notifyRoundEnded(_state);
+    return;
+  }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
       const ModifierSpec* mod = obj->updateWidthModifier(_state);

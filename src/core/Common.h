@@ -125,4 +125,40 @@ public:
 template<typename T>
 T getInterpolated(const T& a, const T& b, float amount);
 
+template<typename T>
+class Optional {
+public:
+  Optional() : _hasValue(false) { }
+  explicit Optional(T value) : _hasValue(true), _value(value) { }
+  explicit Optional(const Optional<T>& other) : _hasValue(other._hasValue), _value(other._value) { }
+  
+  bool hasValue() const { return _hasValue; }
+  bool tryGet(T* value, const Optional<T>* backup) const {
+    if (_hasValue) {
+      *value = _value;
+      return true;
+    }
+    if (backup) {
+      return backup->tryGet(value, NULL);
+    }
+    return false;
+  }
+  T get(const Optional<T>* backup, T defaultValue) const {
+    T value;
+    if (tryGet(&value, backup))
+      return value;
+    return defaultValue;
+  }
+  void set(T value) {
+    _value = value;
+    _hasValue = true;
+  }
+  void unset() {
+    _hasValue = false;
+  }
+private:
+  T _value;
+  bool _hasValue;
+};
+
 #endif

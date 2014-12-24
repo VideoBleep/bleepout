@@ -14,9 +14,11 @@
 #include "Logging.h"
 
 RoundController::RoundController(RoundConfig config,
+                                 BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
 : _config(config)
+, _appParams(appParams)
 , _state(_config, players)
 , _playerManager(playerManager)
 , _timedActions(true) {
@@ -41,7 +43,7 @@ void RoundController::setup() {
   _state.time = 0;
   
   _spaceController.reset(new SpaceController(_state, _config));
-  _logicController.reset(new LogicController(_state, _config));
+  _logicController.reset(new LogicController(_state, _config, _appParams));
   _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
@@ -82,10 +84,13 @@ void RoundController::update() {
     }
   }
   
-  _spaceController->update();
-  _logicController->update();
+  if (_spaceController)
+    _spaceController->update();
+  if (_logicController)
+    _logicController->update();
   _timedActions.update(_state);
-  _renderer->update(_state);
+  if (_renderer)
+    _renderer->update(_state);
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {
@@ -101,6 +106,7 @@ void RoundController::onModifierApplied(ModifierEventArgs &e) {
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
+  _timedActions.clear();
   ofNotifyEvent(roundEndedEvent, e);
 }
 

@@ -25,14 +25,19 @@ public:
   BleepoutConfig& appConfig() { return _appConfig; }
   const RoundConfig* currentRoundConfig() const { return _currentRoundConfig.get(); }
   std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
+  RoundConfig* setCurrentRound(const std::string& name);
   
-  ofPtr<RoundConfig> popNextRound();
+  RoundConfig* popNextRound();
+  
+  GameRules& rules() { return _rulesOverrides; }
+  const GameRules& rules() const { return _rulesOverrides; }
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _currentRoundConfig;
   std::string _currentRoundName;
   std::deque<std::string> _queuedRoundNames;
+  GameRules _rulesOverrides;
 };
 
 #endif /* defined(__bleepout__BleepoutParameters__) */
