@@ -21,10 +21,16 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   ofVec3f dims = object.getSize();
   ofTranslate(object.getPosition());
   ofRotateY(object.getRotation());
+
+  // Edge lines
   ofNoFill();
+  ofDisableLighting();
   ofSetLineWidth(lineWidth);
   ofSetColor(edgeColor);
   ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
+  
+  // Faces
+  ofEnableLighting();
   ofFill();
   if (pMat) {
     pMat->begin();
@@ -35,6 +41,7 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   if (pMat) {
     pMat->end();
   }
+    
   ofPopStyle();
   ofPopMatrix();
 }
