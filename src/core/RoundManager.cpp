@@ -94,6 +94,11 @@ void RoundController::update() {
     }
   }
   
+  while (_appParams.ballsToAdd) {
+    _appParams.ballsToAdd--;
+    // add a new ball
+    _spaceController->addBall(BallSpec(30, ofRandom(360)));
+  }
   if (_spaceController)
     _spaceController->update();
   if (_logicController)
@@ -144,9 +149,6 @@ void RoundController::keyPressed(int key) {
       dumpConfig(OF_LOG_NOTICE);
     } else if (key == 'o') {
       _logicController->toggleLogging(OF_LOG_NOTICE);
-    } else if (key == 'b') {
-      // add a new ball
-      _spaceController->addBall(BallSpec(30, ofRandom(360)));
     }
   }
 }

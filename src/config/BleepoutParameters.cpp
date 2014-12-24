@@ -15,7 +15,8 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 , debugGraphics(false)
 , drawTrajectories(false)
 , drawComets(false)
-, allLasers(false) {
+, allLasers(false)
+, ballsToAdd(0) {
   for (const auto& round : _appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }

@@ -53,6 +53,7 @@ struct AdminUIControls {
   ofxUIToggle* drawTrajectories;
   ofxUIToggle* drawComets;
   ofxUIToggle* allLasers;
+  ofxUIButton* addBall;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -115,6 +116,7 @@ void AdminController::setup() {
   _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
   _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
+  _controls->addBall = _gui->addButton("Add Ball", false);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -133,6 +135,9 @@ void AdminController::keyPressed(int key) {
       _appParams.allLasers = !_appParams.allLasers;
     } else if (key == 'c') {
       _appParams.drawComets= !_appParams.drawComets;
+    } else if (key == 'b') {
+      // add a new ball
+      _appParams.ballsToAdd++;
     }
   }
 }
@@ -154,13 +159,9 @@ static void dumpRoundQueue(BleepoutParameters& params) {
 }
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
-  for (auto& slot : _controls->roundQueueSlots) {
-    if (slot->handleEvent(e, _appConfig)) {
-      slot->updateSlot(_appParams);
-      ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
-      dumpRoundQueue(_appParams);
-      return;
-    }
+  if (e.widget == _controls->addBall) {
+    _appParams.ballsToAdd++;
+    return;
   }
   if (e.widget == _controls->timeLimitToggle ||
       e.widget == _controls->timeLimit) {
@@ -170,6 +171,14 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
       _appParams.rules().unsetTimeLimit();
     }
     return;
+  }
+  for (auto& slot : _controls->roundQueueSlots) {
+    if (slot->handleEvent(e, _appConfig)) {
+      slot->updateSlot(_appParams);
+      ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
+      dumpRoundQueue(_appParams);
+      return;
+    }
   }
   ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
   //...

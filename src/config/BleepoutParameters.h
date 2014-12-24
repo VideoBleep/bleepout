@@ -38,6 +38,7 @@ public:
   bool drawTrajectories;
   bool drawComets;
   bool allLasers;
+  int ballsToAdd;
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;
