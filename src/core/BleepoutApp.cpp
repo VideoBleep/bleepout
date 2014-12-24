@@ -35,13 +35,19 @@ void BleepoutApp::setup() {
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
-  _syphonClient.set(_config->syphonServerName(),
-                    _config->syphonAppName());
-  _syphonEnabled = true;
+  _syphonEnabled = false;
 #endif // ENABLE_SYPHON
 }
 
 void BleepoutApp::update() {
+#ifdef ENABLE_SYPHON
+  if (!_syphonEnabled && _appParams->enableSyphon) {
+    _syphonEnabled = true;
+    _syphonClient.set(_appParams->syphonServerName,
+                      _appParams->syphonAppName);
+  }
+  _syphonEnabled = _appParams->enableSyphon;
+#endif
   _adminController->update();
   if (_roundController) {
     _roundController->update();

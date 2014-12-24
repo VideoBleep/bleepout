@@ -12,7 +12,6 @@
 #include <ofMain.h>
 
 static const int uiWidth = 300;
-static const int uiHeight = 500;
 
 class RoundQueueSlot {
 public:
@@ -52,8 +51,12 @@ struct AdminUIControls {
   ofxUIToggle* debugGraphics;
   ofxUIToggle* drawTrajectories;
   ofxUIToggle* drawComets;
+  ofxUIToggle* drawExtras;
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
+  ofxUIToggle* enableSyphon;
+  ofxUITextInput* syphonAppName;
+  ofxUITextInput* syphonServerName;
 };
 
 AdminController::AdminController(BleepoutParameters& appParams)
@@ -80,7 +83,7 @@ void AdminController::setup() {
   const int totalHeight = ofGetHeight();
   _controls = new AdminUIControls();
   _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 10,
-                         uiWidth, uiHeight);
+                         uiWidth, totalHeight - 20);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
   
   _gui->addWidgetDown(new ofxUILabel("BLEEPOUT ADMIN",
@@ -115,8 +118,14 @@ void AdminController::setup() {
   _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &_appParams.debugGraphics);
   _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
   _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
+  _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &_appParams.drawExtras);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
   _controls->addBall = _gui->addButton("Add Ball", false);
+  _controls->enableSyphon = _gui->addLabelToggle("Syphon", &_appParams.enableSyphon);
+  _controls->syphonAppName = _gui->addTextInput("Syphon App", _appParams.syphonAppName);
+  _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
+  _controls->syphonServerName = _gui->addTextInput("Syphon Server", _appParams.syphonServerName);
+  _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -159,27 +168,30 @@ static void dumpRoundQueue(BleepoutParameters& params) {
 }
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
-  if (e.widget == _controls->addBall) {
+  if (e.widget == _controls->syphonAppName) {
+    _appParams.syphonAppName = _controls->syphonAppName->getTextString();
+  } else if (e.widget == _controls->syphonServerName) {
+    _appParams.syphonServerName = _controls->syphonServerName->getTextString();
+  } else if (e.widget == _controls->enableSyphon) {
+    _appParams.enableSyphon = _controls->enableSyphon->getValue();
+  } else if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
     _appParams.ballsToAdd++;
-    return;
-  }
-  if (e.widget == _controls->timeLimitToggle ||
+  } else if (e.widget == _controls->timeLimitToggle ||
       e.widget == _controls->timeLimit) {
     if (_controls->timeLimitToggle->getValue()) {
       _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
       _appParams.rules().unsetTimeLimit();
     }
-    return;
-  }
-  for (auto& slot : _controls->roundQueueSlots) {
-    if (slot->handleEvent(e, _appConfig)) {
-      slot->updateSlot(_appParams);
-      ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
-      dumpRoundQueue(_appParams);
-      return;
+  } else {
+    for (auto& slot : _controls->roundQueueSlots) {
+      if (slot->handleEvent(e, _appConfig)) {
+        slot->updateSlot(_appParams);
+        ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
+        dumpRoundQueue(_appParams);
+        return;
+      }
     }
+    ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
   }
-  ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
-  //...
 }

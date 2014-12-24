@@ -51,8 +51,8 @@ private:
   ofPtr<AdminController> _adminController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
-  bool _syphonEnabled;
 #endif // ENABLE_SYPHON
+  bool _syphonEnabled;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

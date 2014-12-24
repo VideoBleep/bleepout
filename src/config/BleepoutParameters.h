@@ -37,8 +37,12 @@ public:
   bool debugGraphics;
   bool drawTrajectories;
   bool drawComets;
+  bool drawExtras;
   bool allLasers;
   int ballsToAdd;
+  bool enableSyphon;
+  std::string syphonAppName;
+  std::string syphonServerName;
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;

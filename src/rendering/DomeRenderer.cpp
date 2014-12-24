@@ -170,8 +170,9 @@ void DomeRenderer::draw() {
     for (int i = 0; i < lights.size(); i++) {
         lights[i].setAttenuation(0,0,0);
     }
-    
-    _extras.draw();
+  
+    if (_appParams.drawExtras)
+        _extras.draw();
   
     _cam.end();
     

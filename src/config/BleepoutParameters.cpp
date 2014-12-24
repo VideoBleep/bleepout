@@ -15,8 +15,12 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 , debugGraphics(false)
 , drawTrajectories(false)
 , drawComets(false)
+, drawExtras(true)
 , allLasers(false)
-, ballsToAdd(0) {
+, ballsToAdd(0)
+, enableSyphon(true)
+, syphonAppName(appConfig.syphonAppName())
+, syphonServerName(appConfig.syphonServerName()) {
   for (const auto& round : _appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }
