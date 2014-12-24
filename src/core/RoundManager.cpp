@@ -61,8 +61,8 @@ void RoundController::setup() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer());
-  _renderer->setup(_config);
+  _renderer.reset(new DomeRenderer(_state, _config, _appParams));
+  _renderer->setup();
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config.startMessages()) {
@@ -71,7 +71,7 @@ void RoundController::setup() {
 }
 
 void RoundController::draw() {
-  _renderer->draw(_state);
+  _renderer->draw();
 }
 
 void RoundController::update() {
@@ -100,7 +100,7 @@ void RoundController::update() {
     _logicController->update();
   _timedActions.update(_state);
   if (_renderer)
-    _renderer->update(_state);
+    _renderer->update();
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {

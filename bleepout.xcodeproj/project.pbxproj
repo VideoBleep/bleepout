@@ -11,6 +11,7 @@
 		320111C31A427FA500EFCC35 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C11A427FA500EFCC35 /* Modifier.cpp */; };
 		320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */; };
 		3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3205CA341A412FDC0030EE68 /* SetupController.cpp */; };
+		32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B791A4A861400EF6DE4 /* RoundComponent.cpp */; };
 		322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322D59D71A454BCF00150050 /* RendererUtil.cpp */; };
 		325750E61A4792A500CC375A /* Round1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E51A4792A500CC375A /* Round1.cpp */; };
 		325750E91A4792E200CC375A /* Round2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E81A4792E200CC375A /* Round2.cpp */; };
@@ -183,6 +184,8 @@
 		320111C81A428F6B00EFCC35 /* ObjectSpecs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectSpecs.h; sourceTree = "<group>"; };
 		3205CA341A412FDC0030EE68 /* SetupController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetupController.cpp; sourceTree = "<group>"; };
 		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; };
+		32269B791A4A861400EF6DE4 /* RoundComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoundComponent.cpp; sourceTree = "<group>"; };
+		32269B7A1A4A861400EF6DE4 /* RoundComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundComponent.h; sourceTree = "<group>"; };
 		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; };
 		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; };
 		325750E51A4792A500CC375A /* Round1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round1.cpp; sourceTree = "<group>"; };
@@ -912,6 +915,8 @@
 				3205CA341A412FDC0030EE68 /* SetupController.cpp */,
 				3257518F1A48F83B00CC375A /* AdminController.cpp */,
 				325751901A48F83B00CC375A /* AdminController.h */,
+				32269B791A4A861400EF6DE4 /* RoundComponent.cpp */,
+				32269B7A1A4A861400EF6DE4 /* RoundComponent.h */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1258,6 +1263,7 @@
 				5B0DD90D1A3C497600E8BBD1 /* SyphonNameboundClient.m in Sources */,
 				5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */,
 				325751841A48F63C00CC375A /* ofxUIValuePlotter.cpp in Sources */,
+				32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */,
 				5BB4E5E61A400F500047F957 /* main.cpp in Sources */,
 				5BB4E5E91A400F500047F957 /* SpaceController.cpp in Sources */,
 				5BB4E5E41A400F500047F957 /* Logging.cpp in Sources */,

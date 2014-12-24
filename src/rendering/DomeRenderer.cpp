@@ -10,6 +10,8 @@
 #include "PhysicsUtil.h"
 #include "OrbitalTrajectory.h"
 #include "RendererUtil.h"
+#include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 namespace {
     
@@ -68,8 +70,13 @@ namespace {
     
 }
 
+DomeRenderer::DomeRenderer(RoundState& state,
+                           const RoundConfig& config,
+                           const BleepoutParameters& appParams)
+: RendererBase(state, config, appParams)
+, _extras(state, config, appParams) { }
 
-void DomeRenderer::setup(RoundConfig& config) {
+void DomeRenderer::setup() {
     ofEnableDepthTest();
     ofSetCircleResolution(64);
     _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
@@ -81,7 +88,7 @@ void DomeRenderer::setup(RoundConfig& config) {
     _drawLasers = false;
     _drawCometTails = false;
     
-    _extras.setup(config);
+    _extras.setup();
     
     ofLight light;
     light.setDiffuseColor(ofColor(225, 225, 255));
@@ -104,19 +111,17 @@ void DomeRenderer::setup(RoundConfig& config) {
     wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
 }
 
-void DomeRenderer::update(RoundState& state) {
-  _extras.update(state);
+void DomeRenderer::update() {
+  _extras.update();
 }
 
-void DomeRenderer::draw(RoundState &state) {
-    const RoundConfig& config = state.config();
-  
-    _cam.setDistance(config.domeRadius() * 2.1);
+void DomeRenderer::draw() {
+    _cam.setDistance(_config.domeRadius() * 2.1);
     _cam.begin();
     
     float t = ofGetElapsedTimef() * 0.3;
     for (int i = 0; i < lights.size(); i++) {
-        lights[i].setPosition(sphericalToCartesian(config.domeRadius() * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
+        lights[i].setPosition(sphericalToCartesian(_config.domeRadius() * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
         lights[i].setAttenuation(0.25, 0.007, 0.0);
         lights[i].enable();
     }
@@ -128,25 +133,25 @@ void DomeRenderer::draw(RoundState &state) {
     ofNoFill();
     ofRotateX(90);
     ofSetLineWidth(1.5);
-    ofCircle(0, 0, 0, config.domeRadius());
+    ofCircle(0, 0, 0, _config.domeRadius());
 
     ofPopStyle();
     ofPopMatrix();
     
-    RendererBase::draw(state);
+    RendererBase::draw();
     
     if (_debugGraphics) {
-        drawBoundingBoxes(state.balls());
-        drawBoundingBoxes(state.paddles());
-        drawBoundingBoxes(state.bricks());
-        drawBoundingBoxes(state.walls());
-        drawTrajectories(state.balls(), ofColor(255, 0, 0, 100), true);
+        drawBoundingBoxes(_state.balls());
+        drawBoundingBoxes(_state.paddles());
+        drawBoundingBoxes(_state.bricks());
+        drawBoundingBoxes(_state.walls());
+        drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
     } else if (_drawTrajectories) {
-        drawTrajectories(state.balls(), ofColor(180, 180, 200, 180), false);
+        drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
     }
     
-    for (auto& cw : config.curvedWallSets()) {
-        float r = config.domeRadius() + config.domeMargin();
+    for (auto& cw : _config.curvedWallSets()) {
+        float r = _config.domeRadius() + _config.domeMargin();
         float d = cw.width / 4.0;
         int steps = 20;
         
@@ -171,7 +176,7 @@ void DomeRenderer::draw(RoundState &state) {
         lights[i].setAttenuation(0,0,0);
     }
     
-    _extras.draw(state);
+    _extras.draw();
   
     _cam.end();
     
@@ -217,7 +222,7 @@ void DomeRenderer::mouseDragged(int x, int y, int button) {
     _cam.mouseDragged(x, y, button);
 }
 
-void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
+void DomeRenderer::drawBrick(Brick &brick) {
     ofColor edgeColor = ofColor::white;
     ofColor fillColor = brick.getColor();
     float lineWidth = 1.5f;
@@ -236,11 +241,11 @@ void DomeRenderer::drawBrick(RoundState& round, Brick &brick) {
     drawBoxObject(brick, edgeColor, fillColor, NULL, lineWidth, alphaBlending);
 }
 
-void DomeRenderer::drawPaddle(RoundState& round, Paddle &paddle) {
+void DomeRenderer::drawPaddle(Paddle &paddle) {
     drawBoxObject(paddle, ofColor(0, 0, 0), paddle.getColor());
 }
 
-void DomeRenderer::drawWall(RoundState& round, Wall &wall) {
+void DomeRenderer::drawWall(Wall &wall) {
     drawBoxObject(wall, ofColor(80, 80, 90), ofColor(98, 98, 118), &wallMaterial, 1.5);
 }
 
@@ -274,7 +279,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
     ofEnableLighting();
 }
 
-void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
+void DomeRenderer::drawBall(Ball &ball) {
 
     if (!_drawLasers && !ball.isLaser()) {
         
@@ -347,7 +352,7 @@ void DomeRenderer::drawBall(RoundState& round, Ball &ball) {
     
 }
 
-void DomeRenderer::drawModifier(RoundState &round, Modifier &modifier) {
+void DomeRenderer::drawModifier(Modifier &modifier) {
   //...?
   ofPushStyle();
   ofPushMatrix();
