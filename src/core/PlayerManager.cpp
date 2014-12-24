@@ -144,7 +144,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 
 	// Set color
 	if (msgPrefix == ACTION_CONFIGURE) {
-		controller.configure(player);
+		controller.configure(player, parts);
 	}
 	
 	if (msgPrefix == ACTION_CALIBRATE) {

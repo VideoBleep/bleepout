@@ -28,6 +28,9 @@ void BleepoutApp::setup() {
   _playerManager.reset(new PlayerManager(*this));
   _playerManager->setup();
   _playerManager->addPlayer();
+
+  // Handle playerCreate event
+  ofAddListener(_playerManager->playerAddedEvent, &_setupController, _setupController->handlePlayerConnected);
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
@@ -70,6 +73,7 @@ void BleepoutApp::onStartRound(StartRoundEventArgs &e) {
   _roundController->setup();
   ofAddListener(_roundController->roundEndedEvent, this,
                 &BleepoutApp::onRoundEnded);
+
 }
 
 void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {

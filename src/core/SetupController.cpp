@@ -103,3 +103,7 @@ void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
   ofNotifyEvent(startRoundEvent, e);
   logEvent("StartRound", e);
 }
+
+void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
+	_lobby.push_back(e.object());
+}

@@ -84,6 +84,7 @@ public:
 
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
+  ofEvent<PlayerEventArgs> playerConnectedEvent;
   ofEvent<PlayerEventArgs> playerAddedEvent;
   ofEvent<PlayerEventArgs> playerRemovedEvent;
   

@@ -47,7 +47,7 @@ void PlayerController::calibrate(ofPtr<Player> player) {
 
 };
 
-void PlayerController::configure(ofPtr<Player>  player) {
+void PlayerController::configure(ofPtr<Player> player, vector<string> parts) {
 
 };
 

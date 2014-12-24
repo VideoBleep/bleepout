@@ -10,6 +10,7 @@
 #define __bleepout__BleepoutApp__
 
 #include <ofMain.h>
+#include <ofTypes.h>
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"

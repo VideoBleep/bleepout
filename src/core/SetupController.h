@@ -30,6 +30,9 @@ public:
   // TODO: Please Review this; is this the appropriate way to return a reference to the private _lobby?
   std::list<ofPtr<Player>>& Lobby() { return _lobby; }
 
+  // Event Handlers
+  void handlePlayerConnected(PlayerEventArgs& e);
+
 private:
 	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game

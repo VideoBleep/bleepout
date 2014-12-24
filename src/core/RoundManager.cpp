@@ -44,10 +44,12 @@ void RoundController::setup() {
   _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
+
   ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
     
+
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
     if (wall->isExit()) {

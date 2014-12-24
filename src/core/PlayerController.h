@@ -35,7 +35,7 @@ public:
 	// Player connected - called by message from player
 	void connect(ofPtr<Player> player);
 	// Player configuring - called by message from player
-	void configure(ofPtr<Player> player);
+	void configure(ofPtr<Player> player, vector<string> parts); // , std::string[] & messageParts);
 	// Player has entered the 'lobby' - called by player controller itself
 	void queue(ofPtr<Player> player);
 	// Calibrate Player Position - called by player, but this likely is a complicated step
