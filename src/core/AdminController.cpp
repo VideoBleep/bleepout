@@ -13,27 +13,34 @@
 
 static const int uiWidth = 300;
 static const int uiHeight = 500;
-static const int roundQueueLength = 5;
 
 class RoundQueueSlot {
 public:
-  RoundQueueSlot(ofxUIRadio* radio)
-  : _radio(radio) { }
-  std::string getSelected() const {
-    const auto selected = _radio->getActive();
-    if (selected)
-      return selected->getName();
-    return "";
+  RoundQueueSlot(ofxUILabelButton* button, int slotIndex)
+  : _button(button), _slotIndex(slotIndex) { }
+  void setSelectedIndex(int i, const BleepoutConfig& config) {
+    _valueIndex = i % config.roundConfigs().size();
+    _button->setLabelText(config.roundConfigs()[_valueIndex]->name());
   }
-  bool matchesEvent(const ofxUIEventArgs& e) const {
-    for (const auto& toggle : _radio->getToggles()) {
-      if (e.widget == toggle)
-        return true;
+  std::string getSelected() const {
+    return _button->getLabel()->getLabel();
+  }
+  bool handleEvent(const ofxUIEventArgs& e,
+                   const BleepoutConfig& config) {
+    if ((e.widget == _button || e.widget == _button->getLabel()) &&
+        _button->getValue()) {
+      setSelectedIndex(_valueIndex + 1, config);
+      return true;
     }
     return false;
   }
+  void updateSlot(BleepoutParameters& params) const {
+    params.queuedRoundNames()[_slotIndex] = getSelected();
+  }
 private:
-  ofxUIRadio* _radio;
+  ofxUILabelButton* _button;
+  int _slotIndex;
+  int _valueIndex;
 };
 
 struct AdminUIControls {
@@ -65,20 +72,27 @@ void AdminController::setup() {
   _controls = new AdminUIControls();
   _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 10,
                          uiWidth, uiHeight);
+  _gui->setColorBack(ofColor(0, 0, 0, 63));
+  
   _gui->addWidgetDown(new ofxUILabel("BLEEPOUT ADMIN",
                                      OFX_UI_FONT_LARGE));
   _gui->addSpacer();
-  _gui->addWidgetDown(new ofxUILabel("Round", OFX_UI_FONT_MEDIUM));
+  _gui->addWidgetDown(new ofxUILabel("Round Queue",
+                                     OFX_UI_FONT_MEDIUM));
   _gui->addSpacer();
   
   const auto& allRoundNames = _appParams.queuedRoundNames();
-  for (int i = 0; i < roundQueueLength; i++) {
-    ofxUIRadio* radio = _gui->addRadio("RoundQueueSlot" + ofToString(i), allRoundNames);
-    _controls->roundQueueSlots.push_back(new RoundQueueSlot(radio));
+  for (int i = 0; i < _appParams.queuedRoundNames().size(); i++) {
+    ofxUILabelButton* button = _gui->addLabelButton("RoundQueueSlot" + ofToString(i), true);
+    button->setColorBack(ofColor(0, 255, 0));
+    button->setColorFill(ofColor(0, 0, 0));
+    button->setColorFillHighlight(ofColor(0, 0, 0));
+    RoundQueueSlot* slot = new RoundQueueSlot(button, i);
+    slot->setSelectedIndex(i, _appConfig);
+    _controls->roundQueueSlots.push_back(slot);
+    
     _gui->addSpacer();
   }
-  
-  _gui->addRadio("fooo", allRoundNames);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -92,10 +106,20 @@ void AdminController::draw() {
   _gui->draw();
 }
 
+static void dumpRoundQueue(BleepoutParameters& params) {
+  ofLog log(OF_LOG_NOTICE);
+  log << "Round queue:";
+  for (const auto& name : params.queuedRoundNames()) {
+    log << " " << name;
+  }
+}
+
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
   for (auto& slot : _controls->roundQueueSlots) {
-    if (slot->matchesEvent(e)) {
+    if (slot->handleEvent(e, _appConfig)) {
+      slot->updateSlot(_appParams);
       ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
+      dumpRoundQueue(_appParams);
       return;
     }
   }

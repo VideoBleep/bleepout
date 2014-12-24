@@ -14,3 +14,7 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
     _queuedRoundNames.push_back(round->name());
   }
 }
+
+std::string BleepoutParameters::popNextRound() {
+  //...
+}

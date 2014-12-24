@@ -13,6 +13,7 @@
 #include "BleepoutConfig.h"
 #include <ofTypes.h>
 #include <vector>
+#include <string>
 
 // parameters are things that can change, whereas config is fixed
 class BleepoutParameters {
@@ -24,6 +25,8 @@ public:
   BleepoutConfig& appConfig() { return _appConfig; }
   const RoundConfig* currentRoundConfig() const { return _currentRoundConfig.get(); }
   std::vector<std::string>& queuedRoundNames() { return _queuedRoundNames; }
+  
+  std::string popNextRound();
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;
