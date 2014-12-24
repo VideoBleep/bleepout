@@ -100,11 +100,6 @@ void BleepoutApp::onRoundEnded(RoundStateEventArgs &e) {
 }
 
 void BleepoutApp::keyPressed(int key) {
-#ifdef ENABLE_SYPHON
-  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY) && key == 'y') {
-    _syphonEnabled = !_syphonEnabled;
-  }
-#endif
   _adminController->keyPressed(key);
   if (_roundController) {
     _roundController->keyPressed(key);

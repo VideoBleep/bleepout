@@ -136,18 +136,29 @@ void AdminController::keyPressed(int key) {
     if (key == 'e') {
       // toggle exits on and off
       _appParams.exitsEnabled = !_appParams.exitsEnabled;
+      _controls->exitsEnabled->setValue(_appParams.exitsEnabled);
     } else if (key == 't') {
       _appParams.drawTrajectories = !_appParams.drawTrajectories;
+      _controls->debugGraphics->setValue(_appParams.drawTrajectories);
     } else if (key == 'd') {
       _appParams.debugGraphics = !_appParams.debugGraphics;
+      _controls->debugGraphics->setValue(_appParams.debugGraphics);
     } else if (key == 'l') {
       _appParams.allLasers = !_appParams.allLasers;
+      _controls->allLasers->setValue(_appParams.allLasers);
     } else if (key == 'c') {
       _appParams.drawComets= !_appParams.drawComets;
+      _controls->drawComets->setValue(_appParams.drawComets);
     } else if (key == 'b') {
       // add a new ball
       _appParams.ballsToAdd++;
     }
+#ifdef ENABLE_SYPHON
+    else if (key == 'y') {
+      _appParams.enableSyphon = !_appParams.enableSyphon;
+      _controls->enableSyphon->setValue(_appParams.enableSyphon);
+    }
+#endif
   }
 }
 
