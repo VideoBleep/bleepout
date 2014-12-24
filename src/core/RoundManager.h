@@ -60,6 +60,7 @@ private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
   void onModifierAppeared(ModifierEventArgs& e);
+  void onModifierDestroyed(ModifierEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   
   float _startTime;
