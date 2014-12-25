@@ -191,6 +191,8 @@ public:
                     if (oldContacts->find(contact) == oldContacts->end()) {
                         
                         ofVec3f normalFromBtoA;
+                        ofVec3f contactPointOnA;
+                        ofVec3f contactPointOnB;
                         double penDist = -9999;
                         
                         for (int j = 0; j < numContacts; j++) {
@@ -198,15 +200,26 @@ public:
                             double ptdist = pt.getDistance();
                             if (ptdist > penDist) {
                                 penDist = ptdist;
-                                btVector3 n = pt.m_normalWorldOnB;
+                                const btVector3& n = pt.m_normalWorldOnB;
                                 normalFromBtoA = ofVec3f(n.x(), n.y(), n.z());
+                                
+                                const btVector3& posA = pt.getPositionWorldOnA();
+                                btVector3 relA = obA->getWorldTransform().inverse() * posA;
+                                contactPointOnA = ofVec3f(relA.x(), relA.y(), relA.z());
+
+                                const btVector3& posB = pt.getPositionWorldOnB();
+                                btVector3 relB = obB->getWorldTransform().inverse() * posB;
+                                contactPointOnB = ofVec3f(relB.x(), relB.y(), relB.z());
                             }
                         }
 
                         CollisionArgs args;
                         args.a = obj1->thisGameObject;
                         args.b = obj2->thisGameObject;
-                        args.normal = -normalFromBtoA;
+                        args.normalOnA = -normalFromBtoA;
+                        args.pointOnA = contactPointOnA;
+                        args.pointOnB = contactPointOnB;
+                        
                         ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
                         world.notifyCollision(args);
                     }
@@ -298,6 +311,8 @@ public:
                             args.a = obj1->thisGameObject;
                             args.b = obj2->thisGameObject;
                             args.normal = m.normal;
+
+                            
                             world.notifyCollision(args);
                         }
                     }

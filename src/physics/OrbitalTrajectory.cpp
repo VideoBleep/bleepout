@@ -45,9 +45,13 @@ void OrbitalTrajectory::tick() {
     history.push(_position);
 }
 
-void OrbitalTrajectory::reflect(const ofVec3f& planeNormal) {
+void OrbitalTrajectory::reflect(const ofVec3f& planeNormal, float trueHitFactor /* = 0.0 */) {
     ofVec3f vel = getInstantaneousVelocity();
     float d = vel.dot(planeNormal);
     ofVec3f reflectedVelocity = vel - 2 * d * planeNormal;
+    if (trueHitFactor > 0) {
+        ofVec3f trueReflection = vel.length() * -planeNormal;
+        reflectedVelocity.interpolate(trueReflection, trueHitFactor);
+    }
     initWithTwoPoints(_position, _position + reflectedVelocity);
 }
