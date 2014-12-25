@@ -275,7 +275,7 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
-  auto& players = _setupController._players;
+  auto& players = _setupController._lobby;
   ofPtr<RoundConfig> roundConfig = _appParams.getNextRound();
   if (!roundConfig)
     return false;

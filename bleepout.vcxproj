@@ -158,12 +158,16 @@
     <ClCompile Include="src\config\BleepoutConfig.cpp" />
     <ClCompile Include="src\config\JsonUtil.cpp" />
     <ClCompile Include="src\config\ObjectSpecs.cpp" />
+    <ClCompile Include="src\config\Round1.cpp" />
+    <ClCompile Include="src\config\Round2.cpp" />
+    <ClCompile Include="src\config\Round3.cpp" />
     <ClCompile Include="src\core\BleepoutApp.cpp" />
     <ClCompile Include="src\core\Common.cpp" />
     <ClCompile Include="src\core\GameEvents.cpp" />
     <ClCompile Include="src\core\Logging.cpp" />
     <ClCompile Include="src\core\LogicController.cpp" />
     <ClCompile Include="src\core\main.cpp" />
+    <ClCompile Include="src\core\PlayerController.cpp" />
     <ClCompile Include="src\core\PlayerManager.cpp" />
     <ClCompile Include="src\core\RoundManager.cpp" />
     <ClCompile Include="src\core\SetupController.cpp" />
@@ -278,6 +282,7 @@
     <ClInclude Include="src\core\GameEvents.h" />
     <ClInclude Include="src\core\Logging.h" />
     <ClInclude Include="src\core\LogicController.h" />
+    <ClInclude Include="src\core\PlayerController.h" />
     <ClInclude Include="src\core\PlayerManager.h" />
     <ClInclude Include="src\core\RoundManager.h" />
     <ClInclude Include="src\core\SetupController.h" />

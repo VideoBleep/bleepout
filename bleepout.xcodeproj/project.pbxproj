@@ -12,6 +12,7 @@
 		320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */; };
 		3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3205CA341A412FDC0030EE68 /* SetupController.cpp */; };
 		32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B791A4A861400EF6DE4 /* RoundComponent.cpp */; };
+		32269B9B1A4CA55A00EF6DE4 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */; };
 		322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322D59D71A454BCF00150050 /* RendererUtil.cpp */; };
 		325750E61A4792A500CC375A /* Round1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E51A4792A500CC375A /* Round1.cpp */; };
 		325750E91A4792E200CC375A /* Round2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E81A4792E200CC375A /* Round2.cpp */; };
@@ -186,6 +187,8 @@
 		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; };
 		32269B791A4A861400EF6DE4 /* RoundComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoundComponent.cpp; sourceTree = "<group>"; };
 		32269B7A1A4A861400EF6DE4 /* RoundComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoundComponent.h; sourceTree = "<group>"; };
+		32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
+		32269B9A1A4CA55A00EF6DE4 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; };
 		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; };
 		325750E51A4792A500CC375A /* Round1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round1.cpp; sourceTree = "<group>"; };
@@ -892,6 +895,8 @@
 		5BB4E5A51A400F500047F957 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */,
+				32269B9A1A4CA55A00EF6DE4 /* PlayerController.h */,
 				5BB4E5A61A400F500047F957 /* BleepoutApp.cpp */,
 				5BB4E5A71A400F500047F957 /* BleepoutApp.h */,
 				5BB4E5A81A400F500047F957 /* Common.cpp */,
@@ -1256,6 +1261,7 @@
 				3257515A1A48F63C00CC375A /* ofxUI2DGraph.cpp in Sources */,
 				322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */,
 				325751641A48F63C00CC375A /* ofxUIEventArgs.cpp in Sources */,
+				32269B9B1A4CA55A00EF6DE4 /* PlayerController.cpp in Sources */,
 				3257516D1A48F63C00CC375A /* ofxUILabel.cpp in Sources */,
 				5BB4E5EF1A400F500047F957 /* GameState.cpp in Sources */,
 				32F95B4B1A2EB2CF008913CC /* tinyxmlerror.cpp in Sources */,

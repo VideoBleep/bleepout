@@ -53,6 +53,7 @@ public:
   virtual bool physical() const override { return false; }
   virtual bool visible() const override { return false; }
   
+  void send(std::string message) { _conn->send(message); }
   void output(std::ostream& os) const override;
   
   ofxLibwebsockets::Connection* connection() { return _conn; }

@@ -38,6 +38,9 @@ public:
   void update();
   
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;
+  ofEvent<RoundStateEventArgs> roundQueueEvent;
+  ofEvent<RoundStateEventArgs> roundPlayEvent;
+  ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
@@ -62,11 +65,15 @@ public:
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
-  void onModifierAppeared(ModifierEventArgs& e);
   
+  void onRoundQueue(RoundStateEventArgs& e);
+  void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
+  
   void onTryEndRound(EndRoundEventArgs& e);
   bool notifyTryEndRound(EndRoundEventArgs &e);
+  
+  void onModifierAppeared(ModifierEventArgs& e);
   
   bool _paused;
   float _startTime;

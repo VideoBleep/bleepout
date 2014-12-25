@@ -10,6 +10,7 @@
 #define __bleepout__BleepoutApp__
 
 #include <ofMain.h>
+#include <ofTypes.h>
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
@@ -31,6 +32,12 @@ public:
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<EmptyEventArgs> roundEndedEvent;
   
+  // Public properties
+  ofPtr<SetupController> Setup() { return _setupController; }
+  ofPtr<RoundController> Round() { return _roundController; }
+  const BleepoutConfig& config() const { return *_config; }
+
+  // oF interface methods
   void setup() override;
   void update() override;
   void draw() override;
@@ -40,7 +47,6 @@ public:
   void mouseMoved(int x, int y );
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
-  const BleepoutConfig& config() const { return *_config; }
   
   const char* eventSourceName() const override { return "BleepoutApp"; }
 
@@ -55,6 +61,7 @@ private:
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
 	ofPtr<PlayerManager> _playerManager;
+	ofPtr<PlayerController> _playerController;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;

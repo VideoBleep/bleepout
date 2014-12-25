@@ -6,17 +6,17 @@
 //  
 //
 
-
+#include "BleepoutApp.h"
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "Logging.h"
 
 std::string messageDelimiter = "|";
 
-PlayerManager::PlayerManager()
-{
-
-}
+PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController) 
+	: _bleepoutApp(bleepoutApp),
+	controller(playerController)
+	{ }
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
@@ -49,8 +49,6 @@ void PlayerManager::draw(){
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 	cout << "on connected" << endl;
-
-
 
 	// Engine.io handshake packet 
 	// sid;
@@ -94,29 +92,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 
 	ofPtr<Player> player = findPlayer(args.conn);
 
-	if (msgPrefix == MESSAGE_NEW) {
-		if (_inRoundMode) {
-			ofLogWarning() << "Ignoring create player message in setup mode";
-			return;
-		}
-		if (player) {
-			ofLogWarning() << "Got create player message for existing player: " << *player;
-			return;
-		}
-		int id___UNUSED = ofHexToInt(parts[1]);
-		ofColor color(ofHexToInt(parts[2]),
-									ofHexToInt(parts[3]),
-									ofHexToInt(parts[4]));
-		player.reset(new Player(&args.conn));
-		player->setColor(color);
-		_players.push_back(player);
-		
-		ofLogNotice() << "Player Created - id#" << id___UNUSED;
-		// Pong
-		args.conn.send("hello");
-		return;
-	}
-
+	// LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
 	if (msgPrefix == MESSAGE_YPR) {
 		if (!_inRoundMode) {
@@ -139,6 +115,50 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 		notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
 	}
 	// click messages? Other?
+
+
+
+	if (msgPrefix == MESSAGE_NEW) {
+		if (_inRoundMode) {
+			ofLogWarning() << "Ignoring create player message in setup mode";
+			return;
+		}
+		if (player) {
+			ofLogWarning() << "Got create player message for existing player: " << *player;
+			return;
+		}
+		int id___UNUSED = ofHexToInt(parts[1]);
+		ofColor color(ofHexToInt(parts[2]),
+									ofHexToInt(parts[3]),
+									ofHexToInt(parts[4]));
+		player.reset(new Player(&args.conn));
+		player->setColor(color);
+		//_players.push_back(player);
+		controller.connect(player);
+
+		ofLogNotice() << "Player Created - id#" << id___UNUSED;
+		// Pong
+		args.conn.send("hello");
+		return;
+	}
+
+	// Set color
+	if (msgPrefix == ACTION_CONFIGURE) {
+		controller.configure(player, parts);
+	}
+	
+	if (msgPrefix == ACTION_CALIBRATE) {
+		controller.calibrate(player);
+	}
+	
+	if (msgPrefix == ACTION_START) {
+		controller.start(player);
+	}
+
+	if (msgPrefix == ACTION_QUIT) {
+		controller.quit(player);
+	}
+
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){
@@ -157,20 +177,35 @@ ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 			return p;
 		}
 	}
+
 	return ofPtr<Player>();
 }
 
-void PlayerManager::notifyPlayerAdded(ofPtr<Player> player) {
-  PlayerEventArgs e(player);
-  ofNotifyEvent(playerAddedEvent, e);
-  logEvent("PlayerAdded", e);
+/*
+	SEND STATE MESSAGES TO PLAYER
+*/
+// Send 'Select Color' state message to player
+void PlayerManager::setPlayerColor(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_COLOR);
 }
-void PlayerManager::notifyPlayerRemoved(ofPtr<Player> player) {
-  PlayerEventArgs e(player);
-  ofNotifyEvent(playerRemovedEvent, e);
-  logEvent("PlayerRemoved", e);
+// Send 'Queued' state message to player
+void PlayerManager::setPlayerQueued(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_QUEUED);
+}
+// Send 'Calibrate' state message to player
+void PlayerManager::setPlayerCalibrate(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_CALIBRATION);
+}
+// Send 'Ready' state message to player 
+void PlayerManager::setPlayerReady(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_READY);
+}
+// Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+void PlayerManager::setPlayerPlay(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_PLAY);
 }
 
+// Consider renaming! 'notifyPlayer' sounds like we should notify the player
 void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
                                              float yaw,
                                              float pitch,

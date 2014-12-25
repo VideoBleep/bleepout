@@ -33,10 +33,18 @@ void BleepoutApp::setup() {
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
 
-  _playerManager.reset(new PlayerManager());
+  _playerController.reset(new PlayerController());
+
+  _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
+  // Temporary, I believe
   _playerManager->addPlayer();
-  
+
+
+  // Handle playerCreate event
+  ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected); 
+  //ofAddListener(_playerController->playerAddedEvent, _setupController.get(), &SetupController::handlePlayerAdded);
+
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonEnabled = false;
@@ -97,6 +105,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   _roundController->setup();
   ofAddListener(_roundController->tryEndRoundEvent, this,
                 &BleepoutApp::onTryEndRound);
+  ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
+	  &PlayerController::onRoundQueue);
   e.markHandled();
   notifyRoundStarted(_roundController->state());
 }

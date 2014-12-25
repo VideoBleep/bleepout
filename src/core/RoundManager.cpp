@@ -231,7 +231,6 @@ void RoundController::mouseReleased(int x, int y, int button) {
   }
 }
 
-
 void RoundController::dumpToLog(ofLogLevel level) const {
   ofLog(level) << "--BEGIN round state--";
   ofLog(level) << _state;
