@@ -31,11 +31,6 @@ public:
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<EmptyEventArgs> roundEndedEvent;
-  
-  // Public properties
-  ofPtr<SetupController> Setup() { return _setupController; }
-  ofPtr<RoundController> Round() { return _roundController; }
-  const BleepoutConfig& config() const { return *_config; }
 
   // oF interface methods
   void setup() override;

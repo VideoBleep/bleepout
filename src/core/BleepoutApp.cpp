@@ -35,7 +35,7 @@ void BleepoutApp::setup() {
 
   _playerController.reset(new PlayerController());
 
-  _playerManager.reset(new PlayerManager(*this, *_playerController));
+  _playerManager.reset(new PlayerManager(*_playerController));
   _playerManager->setup();
   // Temporary, I believe
   _playerManager->addPlayer();
