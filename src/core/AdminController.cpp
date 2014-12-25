@@ -97,7 +97,8 @@ AdminController::AdminController(BleepoutParameters& appParams,
 : _appParams(appParams)
 , _appConfig(appParams.appConfig())
 , _setupController(setupController)
-, _gui(NULL), _controls(NULL) { }
+, _gui(NULL), _controls(NULL)
+, EventSource() { }
 
 AdminController::~AdminController() {
   if (_controls) {

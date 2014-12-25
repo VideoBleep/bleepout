@@ -13,7 +13,8 @@ LogicController::LogicController(RoundState& state,
                                  RoundConfig& config,
                                  BleepoutParameters& appParams)
 :_state(state), _config(config), _appParams(appParams)
-, _endTime(-1), _lastSpecifiedTimeLimitOffset(-1) { }
+, _endTime(-1), _lastSpecifiedTimeLimitOffset(-1)
+, EventSource() { }
 
 void LogicController::setup() {
   
@@ -63,12 +64,9 @@ void LogicController::update() {
   for (auto& obj : _state.modifiers()) {
     if (obj && obj->alive()) {
       if (obj->getPosition().y <= 0) {
-        deadModifiers.push_back(obj);
+        obj->kill();
       }
     }
-  }
-  for (auto& obj : deadModifiers) {
-    notifyModifierDestroyed(_state, obj.get());
   }
 }
 
@@ -157,6 +155,7 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
+        notifyTryEndRound();
       }
     }
   }

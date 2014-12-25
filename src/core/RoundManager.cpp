@@ -13,6 +13,8 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
+static const char roundControllerEventSource[] = "RoundController";
+
 RoundController::RoundController(RoundConfig config,
                                  BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
@@ -21,14 +23,17 @@ RoundController::RoundController(RoundConfig config,
 , _appParams(appParams)
 , _state(_config, players)
 , _playerManager(playerManager)
-, _timedActions(true) {
+, _timedActions(true)
+, EventSource() {
+}
+
+const char* RoundController::eventSourceName() const {
+  return roundControllerEventSource;
 }
 
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofRemoveListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
-  ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
   ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
@@ -43,6 +48,8 @@ void RoundController::setup() {
   _startTime = ofGetElapsedTimef();
   _state.time = 0;
   
+  _cullDeadObjectsPulser = Pulser(5.0f);
+  
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   _spaceController.reset(new SpaceController(_state, _config, _appParams));
   _logicController.reset(new LogicController(_state, _config, _appParams));
@@ -51,8 +58,6 @@ void RoundController::setup() {
   _logicController->setup();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofAddListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
-  ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
   
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -75,6 +80,15 @@ void RoundController::setup() {
 
 void RoundController::draw() {
   _renderer->draw();
+}
+
+template<typename T>
+static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
+                                      SpaceController& spaceController) {
+  for (auto& obj : objects.extractDeadObjects()) {
+    spaceController.removeObject(*obj);
+    obj.reset();
+  }
 }
 
 void RoundController::update() {
@@ -109,6 +123,12 @@ void RoundController::update() {
   _timedActions.update(_state);
   if (_renderer)
     _renderer->update();
+  if (_cullDeadObjectsPulser.update(_state.time)) {
+    removeDeadPhysicalObjects(_state.balls(), *_spaceController);
+    removeDeadPhysicalObjects(_state.bricks(), *_spaceController);
+    removeDeadPhysicalObjects(_state.modifiers(), *_spaceController);
+    removeDeadPhysicalObjects(_state.paddles(), *_spaceController);
+  }
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {
@@ -117,16 +137,6 @@ void RoundController::onModifierAppeared(ModifierEventArgs& e) {
     return;
   }
   _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
-}
-
-void RoundController::onModifierDestroyed(ModifierEventArgs &e) {
-  _spaceController->removeModifier(*e.modifier());
-  _state.modifiers().eraseObjectById(e.modifier()->id());
-}
-
-void RoundController::onModifierApplied(ModifierEventArgs &e) {
-  _spaceController->removeModifier(*e.modifier());
-  _state.modifiers().eraseObjectById(e.modifier()->id());
 }
 
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {

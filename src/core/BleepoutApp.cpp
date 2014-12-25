@@ -9,11 +9,12 @@
 #include "BleepoutApp.h"
 
 BleepoutApp::BleepoutApp()
-: _config() { }
+: _config()
+, EventSource()
+, _endingRound(false) { }
 
 void BleepoutApp::setup() {
-  // load config....
-  
+  enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   _config.reset(BleepoutConfig::createConfig());
   _appParams.reset(new BleepoutParameters(*_config));
   ofSetFrameRate(_config->fps());
@@ -56,6 +57,9 @@ void BleepoutApp::update() {
     _roundController->update();
   } else if (_setupController) {
     _setupController->update();
+  }
+  if (_endingRound) {
+    endRound();
   }
 }
 
@@ -102,9 +106,14 @@ void BleepoutApp::onTryEndRound(EndRoundEventArgs &e) {
     ofLogError() << "Round was not active";
     return;
   }
+  _endingRound = true;
+  e.markHandled();
+}
+
+void BleepoutApp::endRound() {
   _playerManager->setIsInRound(false);
   _roundController.reset();
-  e.markHandled();
+  _endingRound = true;
   notifyRoundEnded();
 }
 

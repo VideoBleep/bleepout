@@ -58,13 +58,11 @@ public:
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
   
-  const char* eventSourceName() const override { return "RoundController"; }
+  const char* eventSourceName() const override;
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
   void onModifierAppeared(ModifierEventArgs& e);
-  void onModifierDestroyed(ModifierEventArgs& e);
-  void onModifierApplied(ModifierEventArgs& e);
   
   void onRoundEnded(RoundStateEventArgs& e);
   void onTryEndRound(EndRoundEventArgs& e);
@@ -81,6 +79,7 @@ private:
   ofPtr<LogicController> _logicController;
   TimedActionSet _timedActions;
   ofPtr<AnimationManager> _animationManager;
+  Pulser _cullDeadObjectsPulser;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

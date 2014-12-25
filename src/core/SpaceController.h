@@ -35,7 +35,7 @@ public:
   
   void setUpModifier(Modifier& modifier,
                      Brick& spawnerBrick);
-  void removeModifier(Modifier& modifier);
+  void removeObject(PhysicsObject& object);
   
   const char* eventSourceName() const override { return "SpaceController"; }
     

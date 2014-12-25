@@ -50,7 +50,8 @@ private:
   
   void notifyRoundStarted(RoundState& state);
   void notifyRoundEnded();
-  
+  void endRound();
+
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
 	ofPtr<PlayerManager> _playerManager;
@@ -61,6 +62,7 @@ private:
   ofxSyphonClient _syphonClient;
 #endif // ENABLE_SYPHON
   bool _syphonEnabled;
+  bool _endingRound;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

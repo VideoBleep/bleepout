@@ -22,7 +22,8 @@ namespace {
 SpaceController::SpaceController(RoundState& state,
                                  const RoundConfig& config,
                                  const BleepoutParameters& appParams)
-: RoundComponent(state, config, appParams) {
+: RoundComponent(state, config, appParams)
+, EventSource() {
 }
 
 void SpaceController::addInitialPaddles() {
@@ -81,8 +82,8 @@ void SpaceController::setUpModifier(Modifier &modifier,
   _world.addObject(&modifier);
 }
 
-void SpaceController::removeModifier(Modifier &modifier) {
-  _world.removeObject(&modifier);
+void SpaceController::removeObject(PhysicsObject &object) {
+  _world.removeObject(&object);
 }
 
 void SpaceController::update() {

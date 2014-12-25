@@ -11,7 +11,8 @@
 #include <ofMain.h>
 
 SetupController::SetupController(const BleepoutConfig& appConfig)
-: _appConfig(appConfig) { }
+: _appConfig(appConfig)
+, EventSource() { }
 
 void SetupController::setup() {
   _players.push_back(ofPtr<Player>(new Player()));
