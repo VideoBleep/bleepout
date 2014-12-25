@@ -12,12 +12,14 @@
 #include "GameState.h"
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config);
+  LogicController(RoundState& state, RoundConfig& config,
+                  BleepoutParameters& appParams);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
@@ -27,7 +29,7 @@ public:
   ofEvent<BallStateEventArgs> ballRespawnedEvent;
   ofEvent<PlayerStateEventArgs> playerLostEvent;
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
   ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
@@ -39,6 +41,8 @@ public:
   void attachTo(SpaceController& collisions);
   void detachFrom(SpaceController& collisions);
   
+  const char* eventSourceName() const override { return "LogicController"; }
+  
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
   void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);
@@ -48,7 +52,7 @@ private:
   void notifyBallRespawned(RoundState& state, Ball* ball);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  void notifyRoundEnded(RoundState& state);
+  bool notifyTryEndRound();
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
@@ -67,6 +71,8 @@ private:
 
   RoundState& _state;
   RoundConfig& _config;
+  BleepoutParameters& _appParams;
+  float _lastSpecifiedTimeLimitOffset;
 };
 
 #endif /* defined(__bleepout__LogicController__) */

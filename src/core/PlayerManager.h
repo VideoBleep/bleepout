@@ -103,6 +103,8 @@ public:
   // Raised when player control message arrives
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
+  const char* eventSourceName() const override { return "PlayerManager"; }
+  
 private:
 
   void notifyPlayerYawPitchRoll(Player* player, float yaw,

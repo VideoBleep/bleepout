@@ -15,6 +15,23 @@
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include "ObjectSpecs.h"
 #include "JsonUtil.h"
+#include "Common.h"
+
+class GameRules {
+public:
+  GameRules();
+  explicit GameRules(const GameRules& other);
+  
+  float timeLimit() const;
+  void setTimeLimit(float value) { _timeLimit.set(value); }
+  void unsetTimeLimit() { _timeLimit.unset(); }
+  bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
+  
+  void setBackup(const GameRules* backup) { _backup = backup; }
+private:
+  const GameRules* _backup;
+  Optional<float> _timeLimit;
+};
 
 class RoundConfig {
 public:
@@ -22,7 +39,7 @@ public:
   static RoundConfig* createRoundConfig2();
   static RoundConfig* createRoundConfig3();
   
-  RoundConfig(std::string name);
+  explicit RoundConfig(std::string name);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -125,6 +142,9 @@ public:
   
   std::vector<WallSpec> allWalls() const;
   
+  const GameRules& rules() const { return _rules; }
+  GameRules& rules() { return _rules; }
+  
   Json::Value toJsonVal() const;
 private:
   std::string _name;
@@ -136,6 +156,7 @@ private:
   float _modifierFadeTime;
   float _domeRadius;
   float _domeMargin;
+  GameRules _rules;
   
   std::vector<BallSpec> _balls;
   std::vector<BrickSpec> _bricks;
@@ -167,6 +188,8 @@ public:
   const std::vector<ofPtr<RoundConfig> >& roundConfigs() const {
     return _roundConfigs;
   }
+  
+  ofPtr<RoundConfig> getRound(const std::string& name);
   
   Json::Value toJsonVal() const;
 private:

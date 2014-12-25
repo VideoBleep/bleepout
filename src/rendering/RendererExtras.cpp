@@ -13,6 +13,7 @@
 #include "ObjectSpecs.h"
 #include <vector>
 #include "PhysicsUtil.h"
+#include "BleepoutParameters.h"
 
 // there's definitely a better way to do this...
 static void rotate3d(ofVec3f rotations) {
@@ -129,24 +130,23 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
-  void keyPressed(int key) { }
 };
 
-void RendererExtras::setup(const RoundConfig& config) {
-  _impl.reset(new RendererExtrasImpl(config));
+RendererExtras::RendererExtras(RoundState& state,
+                               const RoundConfig& config,
+                               const BleepoutParameters& appParams)
+: RoundComponent(state, config, _appParams) { }
+
+void RendererExtras::setup() {
+  _impl.reset(new RendererExtrasImpl(_config));
 }
 
-void RendererExtras::update(RoundState& state) {
+void RendererExtras::update() {
   if (_impl)
-    _impl->update(state);
+    _impl->update(_state);
 }
 
-void RendererExtras::draw(RoundState& state) {
+void RendererExtras::draw() {
   if (_impl)
-    _impl->draw(state);
-}
-
-void RendererExtras::keyPressed(int key) {
-  if (_impl)
-    _impl->keyPressed(key);
+    _impl->draw(_state);
 }

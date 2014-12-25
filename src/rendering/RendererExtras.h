@@ -10,17 +10,22 @@
 #define __bleepout__RendererExtras__
 
 #include "BleepoutConfig.h"
-#include "GameState.h"
+#include "RoundComponent.h"
 #include <ofTypes.h>
 
+class RoundConfig;
+class RoundState;
+class BleepoutParameters;
 class RendererExtrasImpl;
 
-class RendererExtras {
+class RendererExtras : public RoundComponent {
 public:
-  void setup(const RoundConfig& config);
-  void update(RoundState& state);
-  void draw(RoundState& state);
-  void keyPressed(int key);
+  RendererExtras(RoundState& state,
+                 const RoundConfig& config,
+                 const BleepoutParameters& appParams);
+  void setup() override;
+  void update() override;
+  void draw() override;
 private:
   ofPtr<RendererExtrasImpl> _impl;
 };

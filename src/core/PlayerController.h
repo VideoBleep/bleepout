@@ -58,6 +58,8 @@ public:
 	ofEvent<PlayerEventArgs> playerAddedEvent;
 	// ?
 	ofEvent<PlayerEventArgs> playerRemovedEvent;
+  
+  const char* eventSourceName() const { return "PlayerController"; }
 
 private:
 	//SetupController& _setup;

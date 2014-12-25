@@ -8,17 +8,22 @@
 
 #include "SpaceController.h"
 #include "PhysicsUtil.h"
+#include "BleepoutParameters.h"
 
 namespace {
     
-  static ofVec3f getBallStartPosition(int i, int numPlayers, RoundConfig& config) {
+  static ofVec3f getBallStartPosition(int i, int numPlayers,
+                                      const RoundConfig& config) {
     return ofVec3f(0, config.domeRadius() + config.domeMargin());
   }
   
 }
 
-SpaceController::SpaceController(RoundState& state, RoundConfig & config)
-: _state(state), _config(config) {
+SpaceController::SpaceController(RoundState& state,
+                                 const RoundConfig& config,
+                                 const BleepoutParameters& appParams)
+: RoundComponent(state, config, appParams)
+, EventSource() {
 }
 
 void SpaceController::addInitialPaddles() {
@@ -77,8 +82,8 @@ void SpaceController::setUpModifier(Modifier &modifier,
   _world.addObject(&modifier);
 }
 
-void SpaceController::removeModifier(Modifier &modifier) {
-  _world.removeObject(&modifier);
+void SpaceController::removeObject(PhysicsObject &object) {
+  _world.removeObject(&object);
 }
 
 void SpaceController::update() {
@@ -103,7 +108,7 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
         if (cdata.b->type() == GAME_OBJECT_PADDLE) {
             auto paddle = static_cast<Paddle&>(*cdata.b);
             ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
-        } else if (!ball.isLaser() || cdata.b->type() != GAME_OBJECT_BRICK) {
+        } else if ((!ball.isLaser() && !_appParams.allLasers) || cdata.b->type() != GAME_OBJECT_BRICK) {
             ball.bounce(cdata.normalOnA);
         }
     } else if (cdata.b->type() == GAME_OBJECT_BALL) {
@@ -111,7 +116,7 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
         if (cdata.a->type() == GAME_OBJECT_PADDLE) {
             auto paddle = static_cast<Paddle&>(*cdata.a);
             ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
-        } else if (!ball.isLaser() || cdata.a->type() != GAME_OBJECT_BRICK) {
+        } else if ((!ball.isLaser() && !_appParams.allLasers) || cdata.a->type() != GAME_OBJECT_BRICK) {
             ball.bounce(-cdata.normalOnA);
         }
     }

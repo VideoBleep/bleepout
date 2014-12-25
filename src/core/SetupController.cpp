@@ -11,7 +11,8 @@
 #include <ofMain.h>
 
 SetupController::SetupController(const BleepoutConfig& appConfig)
-: _appConfig(appConfig) { }
+: _appConfig(appConfig)
+, EventSource() { }
 
 void SetupController::setup() {
 	// TODO: Remove. This is temporary test code 
@@ -93,15 +94,15 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no round config selected";
     return false;
   }
-  notifyStartRound(_roundConfig, _lobby);
-  return true;
+  return notifyTryStartRound(_roundConfig, _lobby);
 }
 
-void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
-                                        std::list<ofPtr<Player> > players) {
+bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
+                                          std::list<ofPtr<Player> > players) {
   StartRoundEventArgs e(config, players);
-  ofNotifyEvent(startRoundEvent, e);
-  logEvent("StartRound", e);
+  ofNotifyEvent(tryStartRoundEvent, e);
+  logEvent("TryStartRound", e);
+  return e.handled();
 }
 
 void SetupController::handlePlayerConnected(PlayerEventArgs& e) {

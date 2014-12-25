@@ -9,8 +9,12 @@
 #include "LogicController.h"
 #include "SpaceController.h"
 
-LogicController::LogicController(RoundState& state, RoundConfig& config)
-:_state(state), _config(config) {}
+LogicController::LogicController(RoundState& state,
+                                 RoundConfig& config,
+                                 BleepoutParameters& appParams)
+:_state(state), _config(config), _appParams(appParams)
+, _lastSpecifiedTimeLimitOffset(-1)
+, EventSource() { }
 
 void LogicController::setup() {
   
@@ -27,6 +31,19 @@ void LogicController::detachFrom(SpaceController &collisions) {
 }
 
 void LogicController::update() {
+  float limit = _appParams.rules().timeLimit();
+  if (limit != _lastSpecifiedTimeLimitOffset) {
+    if (limit == -1) {
+      _state.endTime = -1;
+    } else {
+      _state.endTime = _state.time + limit;
+    }
+    _lastSpecifiedTimeLimitOffset = limit;
+  }
+  if (_state.endTime > 0 && _state.remainingTime() <= 0) {
+    notifyTryEndRound();
+    return;
+  }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
       const ModifierSpec* mod = obj->updateWidthModifier(_state);
@@ -47,12 +64,9 @@ void LogicController::update() {
   for (auto& obj : _state.modifiers()) {
     if (obj && obj->alive()) {
       if (obj->getPosition().y <= 0) {
-        deadModifiers.push_back(obj);
+        obj->kill();
       }
     }
-  }
-  for (auto& obj : deadModifiers) {
-    notifyModifierDestroyed(_state, obj.get());
   }
 }
 
@@ -141,13 +155,14 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
+        notifyTryEndRound();
       }
     }
   }
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
-  if (wall.isExit()) {
+  if (wall.isExit() && _appParams.exitsEnabled) {
     Player* player = ball.player();
     
     ball.kill();
@@ -215,10 +230,10 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-void LogicController::notifyRoundEnded(RoundState& state) {
-  RoundStateEventArgs e(state);
-  ofNotifyEvent(roundEndedEvent, e);
-  logEvent("RoundEnded", e);
+bool LogicController::notifyTryEndRound() {
+  EndRoundEventArgs e;
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);

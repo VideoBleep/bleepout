@@ -10,21 +10,23 @@
 #define __bleepout__RendererBase__
 
 #include "GameState.h"
+#include "RoundComponent.h"
 
-class RoundConfig;
 class LogicController;
-class RoundController;
 
-class RendererBase {
+class RendererBase : public RoundComponent {
 public:
+  RendererBase(RoundState& state,
+               const RoundConfig& config,
+               const BleepoutParameters& appParams);
   virtual ~RendererBase() {}
     
-  virtual void setup(RoundConfig& config) {}
+  virtual void setup() {}
   virtual void attachTo(LogicController& roundEvents) {}
   virtual void detachFrom(LogicController& roundEvents) {}
 
-  virtual void update(RoundState& state) {}
-  virtual void draw(RoundState& state);
+  virtual void update() {}
+  virtual void draw();
 
   virtual void keyPressed(int key) {}
   virtual void mousePressed(int x, int y, int button) {}
@@ -33,12 +35,12 @@ public:
   virtual void mouseMoved(int x, int y) {}
 
 protected:
-  virtual void drawBrick(RoundState& state, Brick& brick) = 0;
-  virtual void drawPaddle(RoundState& state, Paddle& paddle) = 0;
-  virtual void drawBall(RoundState& state, Ball& ball) = 0;
-  virtual void drawWall(RoundState& state, Wall& wall) = 0;
-  virtual void drawModifier(RoundState& state, Modifier& modifier) = 0;
-  virtual void drawAnimation(RoundState& state, AnimationObject& animation);
+  virtual void drawBrick(Brick& brick) = 0;
+  virtual void drawPaddle(Paddle& paddle) = 0;
+  virtual void drawBall(Ball& ball) = 0;
+  virtual void drawWall(Wall& wall) = 0;
+  virtual void drawModifier(Modifier& modifier) = 0;
+  virtual void drawAnimation(AnimationObject& animation);
 };
 
 #endif /* defined(__bleepout__RendererBase__) */
