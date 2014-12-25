@@ -24,13 +24,13 @@ public:
   void update();
   void draw();
   void keyPressed(int key);
+  bool canStartRound() const;
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   
   const char* eventSourceName() const override { return "SetupController"; }
   
-  // TODO: Please Review this; is this the appropriate way to return a reference to the private _lobby?
-  std::list<ofPtr<Player> >& Lobby() { return _lobby; }
+  std::list<ofPtr<Player> >& lobby() { return _lobby; }
 
   // Event Handlers
   void handlePlayerConnected(PlayerEventArgs& e);
@@ -39,7 +39,6 @@ private:
   bool notifyTryStartRound(ofPtr<RoundConfig> config,
                            std::list<ofPtr<Player> > players);
   bool tryStartRound();
-  bool canStartRound() const;
 
 	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game
@@ -49,9 +48,6 @@ private:
   
   const BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _roundConfig;
-  
-  // yes, this is ugly, but it's temporary
-  friend class AdminController;
 };
 
 #endif /* defined(__bleepout__SetupController__) */
