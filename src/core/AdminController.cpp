@@ -265,12 +265,10 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
     for (auto& slot : _controls->roundQueueSlots) {
       if (slot->handleEvent(e, _appConfig)) {
         slot->updateSlot(_appParams);
-        ofLogNotice() << "widget event from round slot (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ", selected:" << slot->getSelected() << ")";
         dumpRoundQueue(_appParams);
         return;
       }
     }
-    ofLogNotice() << "OMG widget event from other widget (id:" << e.widget->getID() << ", name: " << e.widget->getName() << ")";
   }
 }
 
