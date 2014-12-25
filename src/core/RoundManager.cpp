@@ -13,8 +13,6 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
-static const char roundControllerEventSource[] = "RoundController";
-
 RoundController::RoundController(RoundConfig config,
                                  BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
@@ -25,10 +23,6 @@ RoundController::RoundController(RoundConfig config,
 , _playerManager(playerManager)
 , _timedActions(true)
 , EventSource() {
-}
-
-const char* RoundController::eventSourceName() const {
-  return roundControllerEventSource;
 }
 
 RoundController::~RoundController() {

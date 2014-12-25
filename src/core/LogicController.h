@@ -73,7 +73,6 @@ private:
   RoundConfig& _config;
   BleepoutParameters& _appParams;
   float _lastSpecifiedTimeLimitOffset;
-  float _endTime;
 };
 
 #endif /* defined(__bleepout__LogicController__) */

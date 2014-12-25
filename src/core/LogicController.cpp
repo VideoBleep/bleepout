@@ -13,7 +13,7 @@ LogicController::LogicController(RoundState& state,
                                  RoundConfig& config,
                                  BleepoutParameters& appParams)
 :_state(state), _config(config), _appParams(appParams)
-, _endTime(-1), _lastSpecifiedTimeLimitOffset(-1)
+, _lastSpecifiedTimeLimitOffset(-1)
 , EventSource() { }
 
 void LogicController::setup() {
@@ -34,13 +34,13 @@ void LogicController::update() {
   float limit = _appParams.rules().timeLimit();
   if (limit != _lastSpecifiedTimeLimitOffset) {
     if (limit == -1) {
-      _endTime = -1;
+      _state.endTime = -1;
     } else {
-      _endTime = _state.time + limit;
+      _state.endTime = _state.time + limit;
     }
     _lastSpecifiedTimeLimitOffset = limit;
   }
-  if (_endTime > 0 && _state.time >= _endTime) {
+  if (_state.endTime > 0 && _state.remainingTime() <= 0) {
     notifyTryEndRound();
     return;
   }

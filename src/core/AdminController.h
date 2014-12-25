@@ -20,6 +20,7 @@
 struct AdminUIControls;
 class BleepoutApp;
 class SetupController;
+class RoundState;
 
 class AdminController : public EventSource {
 public:
@@ -53,6 +54,7 @@ private:
   BleepoutConfig& _appConfig;
   SetupController& _setupController;
   ofxUICanvas* _gui;
+  RoundState* _roundState;
   AdminUIControls* _controls;
 };
 

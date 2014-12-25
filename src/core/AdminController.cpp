@@ -13,6 +13,7 @@
 #include "GameEvents.h"
 #include "BleepoutApp.h"
 #include "SetupController.h"
+#include "GameState.h"
 
 static const int uiWidth = 300;
 
@@ -72,6 +73,7 @@ struct AdminUIControls {
   ofxUITextInput* syphonServerName;
   ofxUIButton* startRound;
   ofxUIButton* endRound;
+  ofxUILabel* remainingTime;
   
   ~AdminUIControls() {
     for (auto& slot : roundQueueSlots)
@@ -97,7 +99,7 @@ AdminController::AdminController(BleepoutParameters& appParams,
 : _appParams(appParams)
 , _appConfig(appParams.appConfig())
 , _setupController(setupController)
-, _gui(NULL), _controls(NULL)
+, _gui(NULL), _controls(NULL), _roundState(NULL)
 , EventSource() { }
 
 AdminController::~AdminController() {
@@ -122,6 +124,7 @@ void AdminController::setup() {
   _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
   _gui->addSpacer();
   _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
+  _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
   _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
   
   const auto& allRoundNames = _appParams.queuedRoundNames();
@@ -182,11 +185,13 @@ void AdminController::detachFrom(BleepoutApp &app) {
 void AdminController::onRoundStarted(RoundStateEventArgs &e) {
   _controls->inRound->setLabel("In round: " + e.state().config().name());
   _appParams.inRound = true;
+  _roundState = &e.state();
 }
 
 void AdminController::onRoundEnded(EmptyEventArgs &e) {
   _controls->inRound->setLabel("Not in round");
   _appParams.inRound = false;
+  _roundState = NULL;
 }
 
 void AdminController::keyPressed(int key) {
@@ -215,6 +220,10 @@ void AdminController::keyPressed(int key) {
 }
 
 void AdminController::update() {
+  std::string timeText = "Time: ";
+  if (_roundState && _roundState->endTime > 0)
+    timeText += ofToString(_roundState->remainingTime());
+  _controls->remainingTime->setLabel(timeText);
   _gui->update();
 }
 
