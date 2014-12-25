@@ -67,6 +67,6 @@ void CircularTrajectory::tick() {
 
 }
 
-void CircularTrajectory::reflect(const ofVec3f& planeNormal) {
+void CircularTrajectory::reflect(const ofVec3f& planeNormal, float trueHitFactor /* = 0.0 */) {
     _speed = -_speed;
 }
