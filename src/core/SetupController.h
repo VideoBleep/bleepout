@@ -28,7 +28,7 @@ public:
   ofEvent<StartRoundEventArgs> startRoundEvent;
   
   // TODO: Please Review this; is this the appropriate way to return a reference to the private _lobby?
-  std::list<ofPtr<Player>>& Lobby() { return _lobby; }
+  std::list<ofPtr<Player> >& Lobby() { return _lobby; }
 
   // Event Handlers
   void handlePlayerConnected(PlayerEventArgs& e);
