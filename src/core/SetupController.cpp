@@ -105,5 +105,5 @@ void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
 }
 
 void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
-//	_lobby.push_back(e.object());
+	_lobby.push_back(e.player());
 }

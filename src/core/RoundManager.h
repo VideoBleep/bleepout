@@ -35,6 +35,8 @@ public:
   void draw();
   void update();
   
+  ofEvent<RoundStateEventArgs> roundQueueEvent;
+  ofEvent<RoundStateEventArgs> roundPlayEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   RoundState& state() { return _state; }
@@ -58,7 +60,11 @@ public:
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
+  
+  void onRoundQueue(RoundStateEventArgs& e);
+  void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
+  
   void onModifierAppeared(ModifierEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   

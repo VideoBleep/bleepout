@@ -51,6 +51,7 @@ private:
   
   ofPtr<BleepoutConfig> _config;
 	ofPtr<PlayerManager> _playerManager;
+	ofPtr<PlayerController> _playerController;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
 

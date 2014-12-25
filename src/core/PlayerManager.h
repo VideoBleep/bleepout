@@ -44,6 +44,7 @@ const std::string ACTION_START = "start"; // player ready
 const std::string ACTION_QUIT = "quit"; // quit game
 
 // State message prefixes
+const std::string STATE_COLOR = "col"; // player should select color
 const std::string STATE_QUEUED = "que"; // player is queued, holding for game ready
 const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
 const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
@@ -54,7 +55,7 @@ class BleepoutApp;
 class PlayerManager : public EventSource {
 public:
 	//PlayerManager();
-	PlayerManager(BleepoutApp& bApp);
+	PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController);
 	
   std::list<ofPtr<Player> >& players() { return _players; }
 
@@ -82,17 +83,28 @@ public:
   void onMessage(ofxLibwebsockets::Event& args);
   void onBroadcast(ofxLibwebsockets::Event& args);
 
+  // Send messages
+  // Send 'Select Color' state message to player
+  void PlayerManager::setPlayerColor(Player& player);
+  // Send 'Queued' state message to player
+  void PlayerManager::setPlayerQueued(Player& player);
+  // Send 'Calibrate' state message to player
+  void PlayerManager::setPlayerCalibrate(Player& player);
+  // Send 'Ready' state message to player 
+  void PlayerManager::setPlayerReady(Player& player);
+  // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+  void PlayerManager::setPlayerPlay(Player& player);
+
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
-  ofEvent<PlayerEventArgs> playerConnectedEvent;
-  ofEvent<PlayerEventArgs> playerAddedEvent;
-  ofEvent<PlayerEventArgs> playerRemovedEvent;
-  
+  /*
+	Events
+  */
+  // Raised when player control message arrives
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
 private:
-  void notifyPlayerAdded(ofPtr<Player> player);
-  void notifyPlayerRemoved(ofPtr<Player> player);
+
   void notifyPlayerYawPitchRoll(Player* player, float yaw,
                                 float pitch, float roll);
   

@@ -17,17 +17,18 @@
 
 */
 #include "Player.h"
-#include "SetupController.h"
+#include "GameEvents.h"
+//#include "SetupController.h"
 
 #ifndef __bleepout__PlayerController__
 #define __bleepout__PlayerController__
 
-class SeutupController;
+//class SeutupController;
 
-class PlayerController
+class PlayerController : public EventSource
 {
 public:
-	PlayerController(SetupController& setup);
+	PlayerController();  // (SetupController& setup);
 
 	/*
 		Player Actions
@@ -47,8 +48,23 @@ public:
 	// Player's playtime is up. Evaluated at round end.
 	void expire(ofPtr<Player> player);
 
+	void onRoundQueue(RoundStateEventArgs& e); 
+	/*
+		Events
+	*/
+	// Raised when player connects initially
+	ofEvent<PlayerEventArgs> playerConnectedEvent;
+	// ?
+	ofEvent<PlayerEventArgs> playerAddedEvent;
+	// ?
+	ofEvent<PlayerEventArgs> playerRemovedEvent;
+
 private:
-	SetupController& _setup;
+	//SetupController& _setup;
+
+	void notifyPlayerConnected(ofPtr<Player> player);
+	void notifyPlayerAdded(ofPtr<Player> player);
+	void notifyPlayerRemoved(ofPtr<Player> player);
 };
 
 #endif /* defined(__bleepout__PlayerController__) */

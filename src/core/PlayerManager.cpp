@@ -13,9 +13,9 @@
 
 std::string messageDelimiter = "|";
 
-PlayerManager::PlayerManager(BleepoutApp& bApp) 
-	: _bleepoutApp(bApp),
-	controller(*(bApp.Setup()))
+PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController) 
+	: _bleepoutApp(bleepoutApp),
+	controller(playerController)
 	{ }
 
 ofPtr<Player> PlayerManager::addPlayer() {
@@ -177,20 +177,35 @@ ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 			return p;
 		}
 	}
+
 	return ofPtr<Player>();
 }
 
-void PlayerManager::notifyPlayerAdded(ofPtr<Player> player) {
-  PlayerEventArgs e(player);
-  ofNotifyEvent(playerAddedEvent, e);
-  logEvent("PlayerAdded", e);
+/*
+	SEND STATE MESSAGES TO PLAYER
+*/
+// Send 'Select Color' state message to player
+void PlayerManager::setPlayerColor(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_COLOR);
 }
-void PlayerManager::notifyPlayerRemoved(ofPtr<Player> player) {
-  PlayerEventArgs e(player);
-  ofNotifyEvent(playerRemovedEvent, e);
-  logEvent("PlayerRemoved", e);
+// Send 'Queued' state message to player
+void PlayerManager::setPlayerQueued(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_QUEUED);
+}
+// Send 'Calibrate' state message to player
+void PlayerManager::setPlayerCalibrate(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_CALIBRATION);
+}
+// Send 'Ready' state message to player 
+void PlayerManager::setPlayerReady(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_READY);
+}
+// Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+void PlayerManager::setPlayerPlay(Player& player) {
+	player.connection()->send(PACKET_MESSAGE + STATE_PLAY);
 }
 
+// Consider renaming! 'notifyPlayer' sounds like we should notify the player
 void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
                                              float yaw,
                                              float pitch,
