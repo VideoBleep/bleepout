@@ -6,16 +6,45 @@
 //  
 //
 
-#include "BleepoutApp.h"
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "Logging.h"
 
+// Engine.io client packet type prefixes
+const std::string PACKET_OPEN = "0";
+const std::string PACKET_CLOSE = "1";
+const std::string PACKET_PING = "2";
+const std::string PACKET_PONG = "3";
+const std::string PACKET_MESSAGE = "4";
+const std::string PACKET_UPGRADE = "5";
+const std::string PACKET_NOOP = "6";
+
+// New player
+const std::string MESSAGE_NEW = "new";
+// Player start
+const std::string MESSAGE_START = "sta";
+// Yaw / Pitch / Roll
+const std::string MESSAGE_YPR = "ypr";
+// Action
+const std::string MESSAGE_ACT = "act";
+
+// Action message prefixes
+const std::string ACTION_CONFIGURE = "cfg"; // set color
+const std::string ACTION_CALIBRATE = "cal"; // set position offsets
+const std::string ACTION_START = "start"; // player ready
+const std::string ACTION_QUIT = "quit"; // quit game
+
+// State message prefixes
+const std::string STATE_COLOR = "col"; // player should select color
+const std::string STATE_QUEUED = "que"; // player is queued, holding for game ready
+const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
+const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
+const std::string STATE_PLAY = "play"; // game is playing, free to send control
+
 std::string messageDelimiter = "|";
 
-PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController) 
-	: _bleepoutApp(bleepoutApp),
-	controller(playerController)
+PlayerManager::PlayerManager(PlayerController& playerController)
+	: controller(playerController)
 	{ }
 
 ofPtr<Player> PlayerManager::addPlayer() {
@@ -40,11 +69,6 @@ void PlayerManager::setup() {
 
 void PlayerManager::update(){
 	// [Jim] This is possibly not needed but not sure if something in oF will call it... ?
-	//messages.push_back("Reply would execute here");
-}
-
-void PlayerManager::draw(){
-	// [Jim] This is not needed but not sure if something in oF will call it... ?
 }
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
@@ -65,7 +89,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
 
-	args.conn.send(PACKET_MESSAGE + "socket opened");
+  args.conn.send(std::string(PACKET_MESSAGE) + "socket opened");
 }
 
 void PlayerManager::onClose(ofxLibwebsockets::Event& args){
@@ -186,23 +210,23 @@ ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 */
 // Send 'Select Color' state message to player
 void PlayerManager::setPlayerColor(Player& player) {
-	player.connection()->send(PACKET_MESSAGE + STATE_COLOR);
+  player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
 }
 // Send 'Queued' state message to player
 void PlayerManager::setPlayerQueued(Player& player) {
-	player.connection()->send(PACKET_MESSAGE + STATE_QUEUED);
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
 }
 // Send 'Calibrate' state message to player
 void PlayerManager::setPlayerCalibrate(Player& player) {
-	player.connection()->send(PACKET_MESSAGE + STATE_CALIBRATION);
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
 }
 // Send 'Ready' state message to player 
 void PlayerManager::setPlayerReady(Player& player) {
-	player.connection()->send(PACKET_MESSAGE + STATE_READY);
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_READY);
 }
 // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
 void PlayerManager::setPlayerPlay(Player& player) {
-	player.connection()->send(PACKET_MESSAGE + STATE_PLAY);
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_PLAY);
 }
 
 // Consider renaming! 'notifyPlayer' sounds like we should notify the player
