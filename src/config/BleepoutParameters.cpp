@@ -31,7 +31,7 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
   }
 }
 
-RoundConfig* BleepoutParameters::popNextRound() {
+ofPtr<RoundConfig> BleepoutParameters::popNextRound() {
   for (int i = 0; i < _queuedRoundNames.size(); i++) {
     std::string roundName = _queuedRoundNames.front();
     _queuedRoundNames.pop_front();
@@ -40,19 +40,24 @@ RoundConfig* BleepoutParameters::popNextRound() {
     if (round) {
       _currentRoundConfig = round;
       _rulesOverrides.setBackup(&round->rules());
-      return round.get();
+      return round;
     }
   }
   ofLogError() << "Could not find valid round name";
-  return NULL;
+  return ofPtr<RoundConfig>();
 }
 
-RoundConfig*
+ofPtr<RoundConfig> BleepoutParameters::getNextRound() {
+  const std::string& roundName = _queuedRoundNames.front();
+  return _appConfig.getRound(roundName);
+}
+
+ofPtr<RoundConfig>
 BleepoutParameters::setCurrentRound(const std::string &name) {
   ofPtr<RoundConfig> round = _appConfig.getRound(name);
   if (!round)
-    return NULL;
+    return ofPtr<RoundConfig>();
   _currentRoundConfig = round;
   _rulesOverrides.setBackup(&round->rules());
-  return round.get();
+  return round;
 }

@@ -245,9 +245,11 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
     } else {
       _appParams.rules().unsetTimeLimit();
     }
-  } else if (e.widget == _controls->startRound) {
+  } else if (e.widget == _controls->startRound &&
+             _controls->startRound->getValue()) {
     tryStartRound();
-  } else if (e.widget == _controls->endRound) {
+  } else if (e.widget == _controls->endRound &&
+             _controls->endRound->getValue()) {
     tryEndRound();
   } else {
     for (auto& slot : _controls->roundQueueSlots) {
@@ -263,7 +265,14 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
-  return _setupController.tryStartRound();
+  auto& players = _setupController._players;
+  ofPtr<RoundConfig> roundConfig = _appParams.getNextRound();
+  if (!roundConfig)
+    return false;
+  if (notifyTryStartRound(roundConfig, players)) {
+    _appParams.popNextRound();
+    _controls->updateQueueSlots(_appParams);
+  }
 }
 
 bool AdminController::canStartRound() {
@@ -273,11 +282,12 @@ bool AdminController::canStartRound() {
 void AdminController::tryEndRound() {
   notifyTryEndRound();
 }
-void AdminController::notifyStartRound(ofPtr<RoundConfig> config,
+bool AdminController::notifyTryStartRound(ofPtr<RoundConfig> config,
                       std::list<ofPtr<Player> > players) {
   StartRoundEventArgs e(config, players);
-  ofNotifyEvent(startRoundEvent, e);
-  logEvent("StartRound", e);
+  ofNotifyEvent(tryStartRoundEvent, e);
+  logEvent("TryStartRound", e);
+  return e.handled();
 }
 
 bool AdminController::notifyTryEndRound() {

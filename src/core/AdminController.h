@@ -27,7 +27,7 @@ public:
                   SetupController& setupController);
   ~AdminController();
   
-  ofEvent<StartRoundEventArgs> startRoundEvent;
+  ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   
   void setup();
@@ -45,8 +45,8 @@ private:
   bool tryStartRound();
   bool canStartRound();
   void tryEndRound();
-  void notifyStartRound(ofPtr<RoundConfig> config,
-                        std::list<ofPtr<Player> > players);
+  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+                           std::list<ofPtr<Player> > players);
   bool notifyTryEndRound();
   
   BleepoutParameters& _appParams;

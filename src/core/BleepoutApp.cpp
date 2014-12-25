@@ -29,6 +29,7 @@ void BleepoutApp::setup() {
   _adminController.reset(new AdminController(*_appParams, *_setupController));
   _adminController->setup();
   _adminController->attachTo(*this);
+  ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
 
   _playerManager.reset(new PlayerManager());
