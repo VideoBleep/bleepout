@@ -13,7 +13,7 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
-RoundController::RoundController(RoundConfig config,
+RoundController::RoundController(RoundConfig& config,
                                  BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
