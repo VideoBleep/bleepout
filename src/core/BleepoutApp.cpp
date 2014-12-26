@@ -35,6 +35,7 @@ void BleepoutApp::setup() {
   
   _audioManager.reset(new AudioManager(*_appParams));
   _audioManager->setup();
+  _audioManager->attachTo(*this);
 
   _playerController.reset(new PlayerController());
 

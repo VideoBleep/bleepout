@@ -193,6 +193,17 @@ public:
   
   ofPtr<RoundConfig> getRound(const std::string& name);
   
+  std::string roundStartedSound;
+  std::string roundEndedSound;
+  std::string brickDestroyedSound;
+  std::string collisionSound;
+  std::string modifierAppliedSound;
+  std::string modifierRemovedSound;
+  std::string ballDestroyedSound;
+  std::string playerLivesChangedSound;
+  std::string playerLostSound;
+  std::string countdownTimerTickSound;
+  
   Json::Value toJsonVal() const;
 private:
   int _fps;

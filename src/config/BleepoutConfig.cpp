@@ -27,6 +27,18 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
+  
+  config->roundStartedSound = "";
+  config->roundEndedSound = "";
+  config->brickDestroyedSound = "";
+  config->collisionSound = "";
+  config->modifierAppliedSound = "";
+  config->modifierRemovedSound = "";
+  config->ballDestroyedSound = "";
+  config->playerLivesChangedSound = "";
+  config->playerLostSound = "";
+  config->countdownTimerTickSound = "";
+  
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig3()));
