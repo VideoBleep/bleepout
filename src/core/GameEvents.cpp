@@ -99,6 +99,13 @@ void ModifierRemovedEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void TimerEventArgs::output(std::ostream& os) const {
+  os << "(";
+  os << "current:" << _currentTime << ", ";
+  os << "remaining:" << _remainingTime;
+  os << ")";
+}
+
 void EventSource::logEvent(const char *name,
                            const Outputable &event) const {
   if (loggingEnabled()) {

@@ -27,6 +27,18 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   BleepoutConfig* config = new BleepoutConfig();
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
+  
+  config->roundStartedSound = "";
+  config->roundEndedSound = "";
+  config->brickDestroyedSound = "";
+  config->collisionSound = "";
+  config->modifierAppliedSound = "";
+  config->modifierRemovedSound = "";
+  config->ballDestroyedSound = "";
+  config->playerLivesChangedSound = "";
+  config->playerLostSound = "";
+  config->countdownTimerTickSound = "";
+  
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig3()));
@@ -68,7 +80,8 @@ _modifierFadeTime(0.2f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
 _name(name),
-_startDelay(0) { }
+_startDelay(0),
+countdownTimerPeriod(10) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;

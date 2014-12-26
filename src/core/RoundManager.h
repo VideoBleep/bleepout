@@ -62,6 +62,9 @@ public:
   void addTimedAction(ofPtr<TimedAction> action);
   
   const char* eventSourceName() const override { return "RoundController"; }
+  
+  LogicController& logicController() { return *_logicController; }
+  SpaceController& spaceController() { return *_spaceController; }
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
@@ -74,6 +77,7 @@ private:
   bool notifyTryEndRound(EndRoundEventArgs &e);
   
   void onModifierAppeared(ModifierEventArgs& e);
+  void onCountdownTick(TimerEventArgs& e);
   
   bool _paused;
   float _startTime;

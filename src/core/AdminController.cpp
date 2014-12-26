@@ -74,6 +74,7 @@ struct AdminUIControls {
   ofxUIButton* startRound;
   ofxUIButton* endRound;
   ofxUILabel* remainingTime;
+  ofxUISlider* audioVolume;
   
   ~AdminUIControls() {
     for (auto& slot : roundQueueSlots)
@@ -163,6 +164,7 @@ void AdminController::setup() {
   _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
   _controls->syphonServerName = _gui->addTextInput("Syphon Server", _appParams.syphonServerName);
   _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
+  _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &_appParams.audioVolume);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
