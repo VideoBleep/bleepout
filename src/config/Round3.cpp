@@ -115,7 +115,8 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)

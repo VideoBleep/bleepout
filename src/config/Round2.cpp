@@ -66,7 +66,8 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   // bottom moving walls
   config->addWallRing()
