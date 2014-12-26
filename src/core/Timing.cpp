@@ -139,3 +139,7 @@ bool TimedActionSet::update(RoundState& state) {
   }
   return allDone;
 }
+
+void TimedActionSet::clear() {
+  _actions.clear();
+}

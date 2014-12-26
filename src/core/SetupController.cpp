@@ -11,17 +11,24 @@
 #include <ofMain.h>
 
 SetupController::SetupController(const BleepoutConfig& appConfig)
-: _appConfig(appConfig) { }
+: _appConfig(appConfig)
+, EventSource() { }
 
 void SetupController::setup() {
-  _players.push_back(ofPtr<Player>(new Player()));
-  //...
+	// TODO: Remove. This is temporary test code 
+	_lobby.push_back(ofPtr<Player>(new Player()));
+	_lobby.push_back(ofPtr<Player>(new Player()));
+	_lobby.push_back(ofPtr<Player>(new Player()));
+	_lobby.push_back(ofPtr<Player>(new Player()));
+	_lobby.push_back(ofPtr<Player>(new Player()));
+	//...
 }
 
 void SetupController::update() {
   //...
 }
 
+// TODO: Are we even calling this anymore? 
 void SetupController::draw() {
   ofBackground(ofColor::white);
   ofPushStyle();
@@ -31,7 +38,7 @@ void SetupController::draw() {
     ofTranslate(100, 250);
     ofDrawBitmapString("Waiting for players...", 0, 0);
     ofTranslate(0, 15);
-    ofDrawBitmapString("Players: " + ofToString(_players.size()), 0, 0);
+	ofDrawBitmapString("Players: " + ofToString(_lobby.size()), 0, 0);
     if (canStartRound()) {
       ofTranslate(0, 15);
       ofDrawBitmapString("Press ENTER to start round...", 0, 0);
@@ -75,11 +82,11 @@ void SetupController::keyPressed(int key) {
 }
 
 bool SetupController::canStartRound() const {
-  return !_players.empty() && _roundConfig;
+	return !_lobby.empty() && _roundConfig;
 }
 
 bool SetupController::tryStartRound() {
-  if (_players.empty()) {
+	if (_lobby.empty()) {
     ofLogError() << "Cannot start round: no players!";
     return false;
   }
@@ -87,13 +94,17 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no round config selected";
     return false;
   }
-  notifyStartRound(_roundConfig, _players);
-  return true;
+  return notifyTryStartRound(_roundConfig, _lobby);
 }
 
-void SetupController::notifyStartRound(ofPtr<RoundConfig> config,
-                                        std::list<ofPtr<Player> > players) {
+bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
+                                          std::list<ofPtr<Player> > players) {
   StartRoundEventArgs e(config, players);
-  ofNotifyEvent(startRoundEvent, e);
-  logEvent("StartRound", e);
+  ofNotifyEvent(tryStartRoundEvent, e);
+  logEvent("TryStartRound", e);
+  return e.handled();
+}
+
+void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
+	_lobby.push_back(e.player());
 }

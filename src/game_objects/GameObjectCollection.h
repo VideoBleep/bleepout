@@ -10,6 +10,7 @@
 #define bleepout_GameObjectCollection_h
 
 #include <list>
+#include <vector>
 #include <ofTypes.h>
 #include <iostream>
 #include <string>
@@ -42,22 +43,21 @@ public:
     return GameObjectTypeTraits<T>::typeId;
   }
   
-  int pruneDeadObjects() {
-    int count = 0;
+  std::vector<ofPtr<T> > extractDeadObjects() {
+    std::vector<ofPtr<T> > deadObjects;
     for (auto iter = ImplType::begin();
          iter != ImplType::end();) {
       ofPtr<T>& obj = *iter;
-      if (obj && !obj->alive()) {
-        obj.reset();
-      }
-      if (!obj) {
-        iter = ImplType::erase(iter);
-        count++;
-      } else {
+      if (obj && obj->alive()) {
         iter++;
+      } else {
+        if (obj) {
+          deadObjects.push_back(obj);
+        }
+        iter = ImplType::erase(iter);
       }
     }
-    return count;
+    return deadObjects;
   }
   
   bool eraseObjectById(GameObjectId id) {

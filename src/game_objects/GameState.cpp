@@ -12,7 +12,8 @@
 RoundState::RoundState(const RoundConfig& config,
                        std::list<ofPtr<Player> >& players)
 : _config(config)
-, _liveBricks(0) {
+, _liveBricks(0)
+, endTime(-1) {
   for (auto& player : players) {
     addPlayer(player);
   }
@@ -52,7 +53,7 @@ Wall& RoundState::addWall(const WallSpec& wallSpec) {
 }
 
 Ball& RoundState::addBall(const BallSpec& ballSpec) {
-  ofPtr<Ball> ball(new Ball(&_config, &ballSpec));
+  ofPtr<Ball> ball(new Ball(_config, ballSpec));
   _balls.push_back(ball);
   return *ball;
 }

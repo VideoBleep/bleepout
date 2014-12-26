@@ -9,6 +9,10 @@
 #include "GameEvents.h"
 #include "Logging.h"
 
+void EmptyEventArgs::output(std::ostream &os) const {
+  os << "()";
+}
+
 void CollisionEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, "a", _a);
@@ -61,6 +65,12 @@ void PlayerStateEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void PlayerEventArgs::output(std::ostream &os) const {
+  os << "(";
+  outputField(os, _player.get());
+  os << ")";
+}
+
 void BallStateEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, _ball);
@@ -70,7 +80,14 @@ void BallStateEventArgs::output(std::ostream &os) const {
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
   os << "config:" << config()->name() << ", ";
-  os << "players:" << players().size();
+  os << "players:" << players().size() << ", ";
+  os << "handled:" << std::boolalpha << handled();
+  os << ")";
+}
+
+void EndRoundEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "handled:" << std::boolalpha << handled();
   os << ")";
 }
 
@@ -82,9 +99,16 @@ void ModifierRemovedEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void TimerEventArgs::output(std::ostream& os) const {
+  os << "(";
+  os << "current:" << _currentTime << ", ";
+  os << "remaining:" << _remainingTime;
+  os << ")";
+}
+
 void EventSource::logEvent(const char *name,
                            const Outputable &event) const {
   if (loggingEnabled()) {
-    ofLog(_logLevel) << "EVENT{" << name << "}: " << event;
+    ofLog(_logLevel) << eventSourceName() << ":EVENT{" << name << "}: " << event;
   }
 }

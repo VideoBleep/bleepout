@@ -7,35 +7,41 @@
 //
 
 #include "RendererBase.h"
+#include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
+RendererBase::RendererBase(RoundState& state,
+                           const RoundConfig& config,
+                           const BleepoutParameters& appParams)
+: RoundComponent(state, config, appParams) { }
 
-void RendererBase::draw(RoundState &state) {
-  for (auto& obj : state.bricks()) {
+void RendererBase::draw() {
+  for (auto& obj : _state.bricks()) {
     if (obj && obj->visible())
-      drawBrick(state, *obj);
+      drawBrick(*obj);
   }
-  for (auto& obj : state.paddles()) {
+  for (auto& obj : _state.paddles()) {
     if (obj && obj->visible())
-      drawPaddle(state, *obj);
+      drawPaddle(*obj);
   }
-  for (auto& obj : state.balls()) {
+  for (auto& obj : _state.balls()) {
     if (obj && obj->visible())
-      drawBall(state, *obj);
+      drawBall(*obj);
   }
-  for (auto& obj : state.walls()) {
+  for (auto& obj : _state.walls()) {
     if (obj && obj->visible())
-      drawWall(state, *obj);
+      drawWall(*obj);
   }
-  for (auto& obj : state.modifiers()) {
+  for (auto& obj : _state.modifiers()) {
     if (obj && obj->visible())
-      drawModifier(state, *obj);
+      drawModifier(*obj);
   }
-  for (auto& obj : state.animations()) {
+  for (auto& obj : _state.animations()) {
     if (obj && obj->visible())
-      drawAnimation(state, *obj);
+      drawAnimation(*obj);
   }
 }
 
-void RendererBase::drawAnimation(RoundState &state, AnimationObject &animation) {
-  animation.draw(state.config());
+void RendererBase::drawAnimation(AnimationObject &animation) {
+  animation.draw(_state.config());
 }

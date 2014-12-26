@@ -13,6 +13,7 @@
 #include <list>
 #include "PlayerManager.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 #include "GameState.h"
 #include "SpaceController.h"
 #include "LogicController.h"
@@ -22,10 +23,11 @@
 
 class RendererBase;
 
-class RoundController
+class RoundController : public EventSource
 {
 public:
-  RoundController(RoundConfig config,
+  RoundController(RoundConfig& config,
+                  BleepoutParameters& appParams,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
@@ -35,6 +37,9 @@ public:
   void draw();
   void update();
   
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
+  ofEvent<RoundStateEventArgs> roundQueueEvent;
+  ofEvent<RoundStateEventArgs> roundPlayEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
   
   RoundState& state() { return _state; }
@@ -55,22 +60,37 @@ public:
   
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
+  
+  const char* eventSourceName() const override { return "RoundController"; }
+  
+  LogicController& logicController() { return *_logicController; }
+  SpaceController& spaceController() { return *_spaceController; }
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
-  void onRoundEnded(RoundStateEventArgs& e);
-  void onModifierAppeared(ModifierEventArgs& e);
-  void onModifierApplied(ModifierEventArgs& e);
   
+  void onRoundQueue(RoundStateEventArgs& e);
+  void onRoundPlay(RoundStateEventArgs& e);
+  void onRoundEnded(RoundStateEventArgs& e);
+  
+  void onTryEndRound(EndRoundEventArgs& e);
+  bool notifyTryEndRound(EndRoundEventArgs &e);
+  
+  void onModifierAppeared(ModifierEventArgs& e);
+  void onCountdownTick(TimerEventArgs& e);
+  
+  bool _paused;
   float _startTime;
+  BleepoutParameters& _appParams;
   PlayerManager& _playerManager;
-  RoundConfig _config;
+  RoundConfig& _config;
   RoundState _state;
   ofPtr<RendererBase> _renderer;
   ofPtr<SpaceController> _spaceController;
   ofPtr<LogicController> _logicController;
   TimedActionSet _timedActions;
   ofPtr<AnimationManager> _animationManager;
+  Pulser _cullDeadObjectsPulser;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

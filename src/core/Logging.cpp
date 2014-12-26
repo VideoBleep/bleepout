@@ -128,6 +128,7 @@ void RoundState::output(std::ostream &os) const {
   outputObjectCollection(os, _walls);
   outputObjectCollection(os, _modifiers);
   outputObjectCollection(os, _animations);
+  os << "liveBricks: " << _liveBricks << std::endl;
   os << "}";
 }
 

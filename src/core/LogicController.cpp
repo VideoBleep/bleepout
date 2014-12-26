@@ -9,8 +9,12 @@
 #include "LogicController.h"
 #include "SpaceController.h"
 
-LogicController::LogicController(RoundState& state, RoundConfig& config)
-:_state(state), _config(config) {}
+LogicController::LogicController(RoundState& state,
+                                 RoundConfig& config,
+                                 BleepoutParameters& appParams)
+:_state(state), _config(config), _appParams(appParams)
+, _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
+, EventSource() { }
 
 void LogicController::setup() {
   
@@ -27,6 +31,24 @@ void LogicController::detachFrom(SpaceController &collisions) {
 }
 
 void LogicController::update() {
+  float limit = _appParams.rules().timeLimit();
+  if (limit != _lastSpecifiedTimeLimitOffset) {
+    if (limit == -1) {
+      _state.endTime = -1;
+    } else {
+      _state.endTime = _state.time + limit;
+    }
+    _lastSpecifiedTimeLimitOffset = limit;
+  }
+  if (_state.endTime > 0) {
+    if (_state.remainingTime() <= _config.countdownTimerPeriod &&
+        _countdownTickPulser.update(_state.time))
+      notifyCountdownTick();
+    if (_state.remainingTime() <= 0) {
+      notifyTryEndRound();
+      return;
+    }
+  }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
       const ModifierSpec* mod = obj->updateWidthModifier(_state);
@@ -40,6 +62,14 @@ void LogicController::update() {
       const ModifierSpec* mod = obj->updateLaserModifier(_state);
       if (mod) {
         notifyModifierRemoved(_state, *mod, obj.get());
+      }
+    }
+  }
+  std::vector<ofPtr<Modifier> > deadModifiers;
+  for (auto& obj : _state.modifiers()) {
+    if (obj && obj->alive()) {
+      if (obj->getPosition().y <= 0) {
+        obj->kill();
       }
     }
   }
@@ -130,19 +160,20 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
+        notifyTryEndRound();
       }
     }
   }
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
-  if (wall.isExit()) {
+  if (wall.isExit() && _appParams.exitsEnabled) {
     Player* player = ball.player();
     
     ball.kill();
     notifyBallDestroyed(_state, &ball);
     
-    if (player) {
+    if (player && _appParams.rules().playersCanLoseLives()) {
       player->adjustLives(-1);
       notifyPlayerLivesChanged(_state, player);
       if (!player->alive()) {
@@ -159,7 +190,6 @@ void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
 void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
   if (modifier.applyToTarget(_state, paddle)) {
     notifyModifierApplied(_state, &modifier, &paddle);
-    _state.modifiers().eraseObjectById(modifier.id());
     //...?
   }
   //...
@@ -205,15 +235,21 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-void LogicController::notifyRoundEnded(RoundState& state) {
-  RoundStateEventArgs e(state);
-  ofNotifyEvent(roundEndedEvent, e);
-  logEvent("RoundEnded", e);
+bool LogicController::notifyTryEndRound() {
+  EndRoundEventArgs e;
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
+  return e.handled();
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
   ofNotifyEvent(modifierAppearedEvent, e);
   logEvent("ModifierAppeared", e);
+}
+void LogicController::notifyModifierDestroyed(RoundState &state, Modifier *modifier) {
+  ModifierEventArgs e(state, modifier, NULL);
+  ofNotifyEvent(modifierDestroyedEvent, e);
+  logEvent("ModifierDestroyed", e);
 }
 void LogicController::notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target) {
   ModifierEventArgs e(state, modifier, target);
@@ -224,4 +260,9 @@ void LogicController::notifyModifierRemoved(RoundState& state, const ModifierSpe
   ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
   logEvent("ModifierRemoved", e);
+}
+void LogicController::notifyCountdownTick() {
+  TimerEventArgs e(_state.time, _state.remainingTime());
+  ofNotifyEvent(countdownTickEvent, e);
+  logEvent("CountdownTick", e);
 }

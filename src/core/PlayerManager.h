@@ -9,7 +9,9 @@
 #ifndef __bleepout__PlayerManager__
 #define __bleepout__PlayerManager__
 
+//#include "BleepoutApp.h"
 #include "Player.h"
+#include "PlayerController.h"
 #include <ofMain.h>
 #include "GameObjectCollection.h"
 #include "GameState.h"
@@ -17,52 +19,19 @@
 #include "GameEvents.h"
 #include <list>
 
-// Engine.io client packet type prefixes
-//var packets = exports.packets = {
-//    open:     0    // non-ws
-//    , close:    1    // non-ws
-//    , ping:     2
-//    , pong:     3
-//    , message:  4
-//    , upgrade:  5
-//    , noop:     6
-//};
-
-const std::string PACKET_OPEN = "0";
-const std::string PACKET_CLOSE = "1";
-const std::string PACKET_PING = "2";
-const std::string PACKET_PONG = "3";
-const std::string PACKET_MESSAGE = "4";
-const std::string PACKET_UPGRADE = "5";
-const std::string PACKET_NOOP = "6";
-
-// New player
-const std::string MESSAGE_NEW = "new";
-// Player start
-const std::string MESSAGE_START = "sta";
-// Yaw / Pitch / Roll 
-const std::string MESSAGE_YPR = "ypr";
-// Action 
-const std::string MESSAGE_ACT = "act";
-
-
-
 class PlayerManager : public EventSource {
 public:
-	PlayerManager();
-	
-  std::list<ofPtr<Player> >& players() { return _players; }
-
-  ofPtr<Player> addPlayer();
+	PlayerManager(PlayerController& playerController);
 
   // Sockets Server
   ofxLibwebsockets::Server server;
+  PlayerController controller;
 
   void setup();
   void update();
-  void draw();
   void gotMessage(ofMessage msg);
   
+  ofPtr<Player> addPlayer();
   void setIsInRound(bool r) { _inRoundMode = r; }
 
   // Message queue (temporary?)
@@ -77,20 +46,35 @@ public:
   void onMessage(ofxLibwebsockets::Event& args);
   void onBroadcast(ofxLibwebsockets::Event& args);
 
+  // Send messages
+  // Send 'Select Color' state message to player
+  void setPlayerColor(Player& player);
+  // Send 'Queued' state message to player
+  void setPlayerQueued(Player& player);
+  // Send 'Calibrate' state message to player
+  void setPlayerCalibrate(Player& player);
+  // Send 'Ready' state message to player 
+  void setPlayerReady(Player& player);
+  // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+  void setPlayerPlay(Player& player);
+
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
-  ofEvent<PlayerStateEventArgs> playerAddedEvent;
-  ofEvent<PlayerStateEventArgs> playerRemovedEvent;
-  
+  /*
+	Events
+  */
+  // Raised when player control message arrives
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
+  const char* eventSourceName() const override { return "PlayerManager"; }
+  
 private:
-  void notifyPlayerAdded(RoundState& state, Player* player);
-  void notifyPlayerRemoved(RoundState& state, Player* player);
+
   void notifyPlayerYawPitchRoll(Player* player, float yaw,
                                 float pitch, float roll);
   
   bool _inRoundMode;
+
   std::list<ofPtr<Player> > _players;
 };
 

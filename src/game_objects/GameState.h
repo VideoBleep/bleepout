@@ -63,6 +63,15 @@ public:
   void output(std::ostream& os) const;
 
   float time;
+  float endTime;
+  
+  float remainingTime() const {
+    if (endTime < 0)
+      return -1;
+    if (time >= endTime)
+      return 0;
+    return endTime - time;
+  }
   
 private:
   void addPlayer(ofPtr<Player> player);

@@ -12,12 +12,15 @@
 #include "GameState.h"
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
+#include "Timing.h"
 
 class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config);
+  LogicController(RoundState& state, RoundConfig& config,
+                  BleepoutParameters& appParams);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
@@ -27,16 +30,20 @@ public:
   ofEvent<BallStateEventArgs> ballRespawnedEvent;
   ofEvent<PlayerStateEventArgs> playerLostEvent;
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   ofEvent<ModifierEventArgs> modifierAppearedEvent;
+  ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
   ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
+  ofEvent<TimerEventArgs> countdownTickEvent;
   
   void setup();
   void update();
   
   void attachTo(SpaceController& collisions);
   void detachFrom(SpaceController& collisions);
+  
+  const char* eventSourceName() const override { return "LogicController"; }
   
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
@@ -47,10 +54,12 @@ private:
   void notifyBallRespawned(RoundState& state, Ball* ball);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  void notifyRoundEnded(RoundState& state);
+  bool notifyTryEndRound();
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
+  void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
   void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
+  void notifyCountdownTick();
   
   void onCollision(CollisionEventArgs& e);
   
@@ -65,6 +74,9 @@ private:
 
   RoundState& _state;
   RoundConfig& _config;
+  BleepoutParameters& _appParams;
+  float _lastSpecifiedTimeLimitOffset;
+  Pulser _countdownTickPulser;
 };
 
 #endif /* defined(__bleepout__LogicController__) */

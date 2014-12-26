@@ -21,7 +21,7 @@ struct BallSpec;
 
 class Ball : public GameObject, public PhysicsObject {
 public:
-  Ball(const RoundConfig* config = NULL, const BallSpec* spec = NULL);
+  Ball(const RoundConfig& config, const BallSpec& spec);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }
@@ -32,7 +32,7 @@ public:
   virtual const ofColor& getColor() const override;
     
   void output(std::ostream& os) const override;
-  void bounce(ofVec3f normal);
+  void bounce(ofVec3f normal, float trueHitFactor = 0.0);
   
   void applyModifier(const RoundState& state,
                      const ModifierSpec& modifierSpec);
