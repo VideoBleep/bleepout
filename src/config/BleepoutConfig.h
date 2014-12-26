@@ -23,6 +23,7 @@ public:
   explicit GameRules(const GameRules& other);
   
   float timeLimit() const;
+  bool playersCanLoseLives() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
   void unsetTimeLimit() { _timeLimit.unset(); }
   bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
@@ -31,6 +32,7 @@ public:
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
+  Optional<bool> _playersCanLoseLives;
 };
 
 class RoundConfig {
