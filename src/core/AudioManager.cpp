@@ -37,7 +37,17 @@ void AudioManager::setup() {
 }
 
 void AudioManager::update() {
-  //...
+  _roundStartedSound.setVolume(_appParams.audioVolume);
+  _roundEndedSound.setVolume(_appParams.audioVolume);
+  _brickDestroyedSound.setVolume(_appParams.audioVolume);
+  _collisionSound.setVolume(_appParams.audioVolume);
+  _modifierAppliedSound.setVolume(_appParams.audioVolume);
+  _modifierRemovedSound.setVolume(_appParams.audioVolume);
+  _ballDestroyedSound.setVolume(_appParams.audioVolume);
+  _brickDestroyedSound.setVolume(_appParams.audioVolume);
+  _playerLivesChangedSound.setVolume(_appParams.audioVolume);
+  _playerLostSound.setVolume(_appParams.audioVolume);
+  _countdownTimerTickSound.setVolume(_appParams.audioVolume);
 }
 
 void AudioManager::attachTo(BleepoutApp &app) {

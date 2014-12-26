@@ -21,7 +21,8 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 , ballsToAdd(0)
 , enableSyphon(true)
 , syphonAppName(appConfig.syphonAppName())
-, syphonServerName(appConfig.syphonServerName()) {
+, syphonServerName(appConfig.syphonServerName())
+, audioVolume(.5) {
   for (const auto& round : _appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }
