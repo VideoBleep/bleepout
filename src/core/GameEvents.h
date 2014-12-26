@@ -237,6 +237,18 @@ private:
   float _roll;
 };
 
+class TimerEventArgs : public Outputable {
+public:
+  TimerEventArgs(float currentTime, float remainingTime)
+  : _currentTime(currentTime), _remainingTime(remainingTime) { }
+  float currentTime() const { return _currentTime; }
+  float remainingTime() const { return _remainingTime; }
+  void output(std::ostream& os) const override;
+private:
+  float _currentTime;
+  float _remainingTime;
+};
+
 class EventSource {
 public:
   EventSource() : _logLevel(OF_LOG_SILENT) {}

@@ -21,7 +21,7 @@ struct BallSpec;
 
 class Ball : public GameObject, public PhysicsObject {
 public:
-  Ball(const RoundConfig* config = NULL, const BallSpec* spec = NULL);
+  Ball(const RoundConfig& config, const BallSpec& spec);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }

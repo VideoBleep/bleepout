@@ -54,8 +54,8 @@ public:
   void addModifier(ofPtr<Modifier> modifier);
   void addAnimation(ofPtr<AnimationObject> animation);
   
-  int decrementLiveBricks() {
-    return ++_liveBricks;
+  void decrementLiveBricks() {
+    _liveBricks--;
   }
   
   int liveBricks() const { return _liveBricks; }

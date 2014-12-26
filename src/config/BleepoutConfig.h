@@ -23,6 +23,7 @@ public:
   explicit GameRules(const GameRules& other);
   
   float timeLimit() const;
+  bool playersCanLoseLives() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
   void unsetTimeLimit() { _timeLimit.unset(); }
   bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
@@ -31,6 +32,7 @@ public:
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
+  Optional<bool> _playersCanLoseLives;
 };
 
 class RoundConfig {
@@ -145,6 +147,8 @@ public:
   const GameRules& rules() const { return _rules; }
   GameRules& rules() { return _rules; }
   
+  float countdownTimerPeriod;
+  
   Json::Value toJsonVal() const;
 private:
   std::string _name;
@@ -190,6 +194,17 @@ public:
   }
   
   ofPtr<RoundConfig> getRound(const std::string& name);
+  
+  std::string roundStartedSound;
+  std::string roundEndedSound;
+  std::string brickDestroyedSound;
+  std::string collisionSound;
+  std::string modifierAppliedSound;
+  std::string modifierRemovedSound;
+  std::string ballDestroyedSound;
+  std::string playerLivesChangedSound;
+  std::string playerLostSound;
+  std::string countdownTimerTickSound;
   
   Json::Value toJsonVal() const;
 private:

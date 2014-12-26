@@ -33,6 +33,10 @@ void BleepoutApp::setup() {
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
   
+  _audioManager.reset(new AudioManager(*_appParams));
+  _audioManager->setup();
+  _audioManager->attachTo(*this);
+
   _playerController.reset(new PlayerController());
   
   _playerManager.reset(new PlayerManager(*_playerController));
@@ -61,6 +65,7 @@ void BleepoutApp::update() {
   _syphonEnabled = _appParams->enableSyphon;
 #endif
   _adminController->update();
+  _audioManager->update();
   if (_roundController) {
     _roundController->update();
   } else if (_setupController) {
@@ -91,8 +96,6 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   if (_roundController) {
-    ofRemoveListener(_roundController->tryEndRoundEvent, this,
-                     &BleepoutApp::onTryEndRound);
     ofLogError() << "Round has already been started";
     return;
   }
@@ -107,6 +110,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
                 &BleepoutApp::onTryEndRound);
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
                 &PlayerController::onRoundQueue);
+  _audioManager->attachTo(*_roundController);
   e.markHandled();
   notifyRoundStarted(_roundController->state());
 }
@@ -122,8 +126,9 @@ void BleepoutApp::onTryEndRound(EndRoundEventArgs &e) {
 
 void BleepoutApp::endRound() {
   _playerManager->setIsInRound(false);
+  _audioManager->detachFrom(*_roundController);
   _roundController.reset();
-  _endingRound = true;
+  _endingRound = false;
   notifyRoundEnded();
 }
 

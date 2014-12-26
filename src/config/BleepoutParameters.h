@@ -44,6 +44,7 @@ public:
   bool enableSyphon;
   std::string syphonAppName;
   std::string syphonServerName;
+  float audioVolume;
 private:
   ofParameterGroup _params;
   BleepoutConfig& _appConfig;

@@ -14,22 +14,20 @@
 
 const char GameObjectTypeTraits<Ball>::typeName[] = "ball";
 
-Ball::Ball(const RoundConfig* config /*= NULL*/, const BallSpec* spec /*= NULL*/)
+Ball::Ball(const RoundConfig& config, const BallSpec& spec)
 : GameObject(GAME_OBJECT_BALL)
 , _player(NULL)
 , PhysicsObject(CollisionSphere)
 {
   thisGameObject = this;
   _color = ofColor(220, 220, 220);
-  if (config && spec) {
-    this->setSize(ofVec3f(config->ballRadius()));
-    auto t = new OrbitalTrajectory();
-    t->setRadius(config->domeRadius() + config->domeMargin());
-    t->setSpeed(0.03);
-    t->initWithTwoPoints(spec->elevation, spec->heading, -14,
-                         spec->heading + ofRandom(-45, 45));
-    this->setTrajectory(t);
-  }
+  this->setSize(ofVec3f(config.ballRadius()));
+  auto t = new OrbitalTrajectory();
+  t->setRadius(config.domeRadius() + config.domeMargin());
+  t->setSpeed(0.03);
+  t->initWithTwoPoints(spec.elevation, spec.heading, -14,
+                       spec.heading + ofRandom(-45, 45));
+  this->setTrajectory(t);
 }
 
 void Ball::bounce(ofVec3f normal, float trueHitFactor /* = 0.0 */) {

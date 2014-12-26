@@ -13,7 +13,7 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 
-RoundController::RoundController(RoundConfig config,
+RoundController::RoundController(RoundConfig& config,
                                  BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
@@ -52,13 +52,6 @@ void RoundController::setup() {
   _logicController->setup();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  
-  // for ease of debugging, disable exits initially
-  for (auto& wall : _state.walls()) {
-    if (wall->isExit()) {
-      wall->kill();
-    }
-  }
   
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);

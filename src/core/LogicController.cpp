@@ -13,7 +13,7 @@ LogicController::LogicController(RoundState& state,
                                  RoundConfig& config,
                                  BleepoutParameters& appParams)
 :_state(state), _config(config), _appParams(appParams)
-, _lastSpecifiedTimeLimitOffset(-1)
+, _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }
 
 void LogicController::setup() {
@@ -40,9 +40,14 @@ void LogicController::update() {
     }
     _lastSpecifiedTimeLimitOffset = limit;
   }
-  if (_state.endTime > 0 && _state.remainingTime() <= 0) {
-    notifyTryEndRound();
-    return;
+  if (_state.endTime > 0) {
+    if (_state.remainingTime() <= _config.countdownTimerPeriod &&
+        _countdownTickPulser.update(_state.time))
+      notifyCountdownTick();
+    if (_state.remainingTime() <= 0) {
+      notifyTryEndRound();
+      return;
+    }
   }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
@@ -168,7 +173,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
     ball.kill();
     notifyBallDestroyed(_state, &ball);
     
-    if (player) {
+    if (player && _appParams.rules().playersCanLoseLives()) {
       player->adjustLives(-1);
       notifyPlayerLivesChanged(_state, player);
       if (!player->alive()) {
@@ -234,6 +239,7 @@ bool LogicController::notifyTryEndRound() {
   EndRoundEventArgs e;
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
+  return e.handled();
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
@@ -254,4 +260,9 @@ void LogicController::notifyModifierRemoved(RoundState& state, const ModifierSpe
   ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
   logEvent("ModifierRemoved", e);
+}
+void LogicController::notifyCountdownTick() {
+  TimerEventArgs e(_state.time, _state.remainingTime());
+  ofNotifyEvent(countdownTickEvent, e);
+  logEvent("CountdownTick", e);
 }
