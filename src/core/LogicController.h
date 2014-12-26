@@ -68,7 +68,7 @@ private:
   void onBallHitWall(Ball& ball, Wall& wall);
   void onBallHitBall(Ball& ball, Ball& otherBall);
   void onModifierHitPaddle(Modifier& modifier, Paddle& paddle);
-
+  
   RoundState& _state;
   RoundConfig& _config;
   BleepoutParameters& _appParams;

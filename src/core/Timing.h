@@ -28,7 +28,7 @@ class OnceAction : public TimedAction {
 public:
   static TimedAction* newOnceAction(float triggerTime,
                                     ofPtr<TimedFunc> fn);
-
+  
   OnceAction(float triggerTime)
   : _triggerTime(triggerTime), _called(false) { }
   
@@ -46,7 +46,7 @@ class DurationAction : public TimedAction {
 public:
   static DurationAction*
   newDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn);
-
+  
   DurationAction(float start, float end)
   : _startTime(start), _endTime(end), _started(false), _ended(false) { }
   
@@ -54,12 +54,12 @@ public:
   virtual bool done() const override { return _ended; }
   
   virtual bool update(RoundState& state) override;
-
+  
 protected:
   virtual void call(RoundState& state, float percentage) = 0;
   virtual void start();
   virtual void end();
-
+  
 private:
   float _startTime;
   float _endTime;

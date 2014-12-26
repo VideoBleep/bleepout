@@ -16,12 +16,12 @@ bool readJsonFile(std::string path, Json::Value* obj) {
   Json::Reader reader;
   if (!reader.parse(fis, *obj)) {
     ofLogError() << "error loading json from: " << path
-                 << ": " << reader.getFormattedErrorMessages();
+    << ": " << reader.getFormattedErrorMessages();
     return false;
   }
   if (!obj->isObject()) {
     ofLogError() << "invalid type for root (expected object): "
-                 << obj->toStyledString();
+    << obj->toStyledString();
     return false;
   }
 }

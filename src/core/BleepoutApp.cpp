@@ -32,19 +32,19 @@ void BleepoutApp::setup() {
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
-
+  
   _playerController.reset(new PlayerController());
-
+  
   _playerManager.reset(new PlayerManager(*_playerController));
   _playerManager->setup();
   // Temporary, I believe
   _playerManager->addPlayer();
-
-
+  
+  
   // Handle playerCreate event
-  ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected); 
+  ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected);
   //ofAddListener(_playerController->playerAddedEvent, _setupController.get(), &SetupController::handlePlayerAdded);
-
+  
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonEnabled = false;
@@ -78,7 +78,7 @@ void BleepoutApp::draw() {
     _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
 #endif // ENABLE_SYPHON
   if (_roundController) {
-   _roundController->draw();
+    _roundController->draw();
   } else if (_setupController) {
     _setupController->draw();
   }
@@ -106,7 +106,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   ofAddListener(_roundController->tryEndRoundEvent, this,
                 &BleepoutApp::onTryEndRound);
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
-	  &PlayerController::onRoundQueue);
+                &PlayerController::onRoundQueue);
   e.markHandled();
   notifyRoundStarted(_roundController->state());
 }
@@ -149,9 +149,9 @@ void BleepoutApp::keyPressed(int key) {
 }
 
 void BleepoutApp::mousePressed(int x, int y, int button) {
-    if (_roundController) {
-        _roundController->mousePressed(x, y, button);
-    }
+  if (_roundController) {
+    _roundController->mousePressed(x, y, button);
+  }
 }
 
 void BleepoutApp::mouseMoved(int x, int y) {
@@ -161,9 +161,9 @@ void BleepoutApp::mouseMoved(int x, int y) {
 }
 
 void BleepoutApp::mouseReleased(int x, int y, int button) {
-    if (_roundController) {
-        _roundController->mouseReleased(x, y, button);
-    }
+  if (_roundController) {
+    _roundController->mouseReleased(x, y, button);
+  }
 }
 
 void BleepoutApp::mouseDragged(int x, int y, int button) {

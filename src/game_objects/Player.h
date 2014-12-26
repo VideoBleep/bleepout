@@ -24,7 +24,7 @@ class Player : public GameObject {
 public:
   Player();
   Player(ofxLibwebsockets::Connection* conn);
-
+  
   void setPaddle(Paddle* paddle) { _paddle = paddle; }
   Paddle* paddle() { return _paddle; }
   const Paddle* paddle() const { return _paddle; }
@@ -61,11 +61,11 @@ public:
   
   void enqueueBallModifier(const ModifierSpec& modifierSpec);
   bool tryDequeueBallModifier(ModifierSpec* modifierSpec);
-
+  
 private:
   void init();
   
-  ofxLibwebsockets::Connection* _conn; 
+  ofxLibwebsockets::Connection* _conn;
   Paddle* _paddle;
   int _score;
   int _lives;

@@ -28,9 +28,9 @@ public:
   void setPlayer(Player* player) { _player = player; }
   
   bool isLaser() const;
-
+  
   virtual const ofColor& getColor() const override;
-    
+  
   void output(std::ostream& os) const override;
   void bounce(ofVec3f normal, float trueHitFactor = 0.0);
   
@@ -39,7 +39,7 @@ public:
   
   const ModifierSpec* updateLaserModifier(const RoundState& state);
   const ModifierSpec* removeLaserModifier();
-
+  
 private:
   Player* _player;
   ModifierSlot _laserModifier;

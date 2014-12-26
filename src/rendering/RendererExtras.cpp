@@ -93,7 +93,7 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
-//private:
+  //private:
   int _count;
   float _radiusScale;
   float _sphereRadius;
@@ -110,13 +110,13 @@ public:
       ofPtr<RingSet> ringSet(new RingSet(spec));
       _drawables.push_back(ringSet);
     }
-//    ofPtr<SphereRingSet> spheres(new SphereRingSet());
-//    spheres->_count = 30;
-//    spheres->_radiusScale = 1.5;
-//    spheres->_sphereRadius = 6.0f;
-//    spheres->_headingPulser.setup(0, 0.02f, 5.0f, 0);
-//    spheres->_color.set(0, 255, 0, 63);
-//    _drawables.push_back(spheres);
+    //    ofPtr<SphereRingSet> spheres(new SphereRingSet());
+    //    spheres->_count = 30;
+    //    spheres->_radiusScale = 1.5;
+    //    spheres->_sphereRadius = 6.0f;
+    //    spheres->_headingPulser.setup(0, 0.02f, 5.0f, 0);
+    //    spheres->_color.set(0, 255, 0, 63);
+    //    _drawables.push_back(spheres);
   }
   void update(RoundState& state) { }
   void draw(RoundState& state) {

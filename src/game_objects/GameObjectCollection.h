@@ -21,8 +21,8 @@ template<typename T>
 class GameObjectCollection : public std::list<ofPtr<T> > {
 private:
   typedef std::list<ofPtr<T> >  ImplType;
-
-public:  
+  
+public:
   ofPtr<T> getById(GameObjectId id) {
     for (auto& obj : *this) {
       if (obj && obj->id() == id)
@@ -30,7 +30,7 @@ public:
     }
     return ofPtr<T>();
   }
-
+  
   void dumpToLog(const std::string& label, ofLogLevel level) {
     ofLog(level) << label << "(size:" << ImplType::size() << ")";
     for (auto& obj : *this) {

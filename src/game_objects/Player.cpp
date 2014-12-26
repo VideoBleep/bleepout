@@ -16,7 +16,7 @@ Player::Player() : GameObject(GAME_OBJECT_PLAYER), _conn(NULL) {
   init();
 }
 
-Player::Player(ofxLibwebsockets::Connection* conn) 
+Player::Player(ofxLibwebsockets::Connection* conn)
 : GameObject(GAME_OBJECT_PLAYER), _conn(conn) {
   init();
 }

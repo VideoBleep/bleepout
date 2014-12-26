@@ -80,17 +80,17 @@ public:
         return ofRandom(_minVal, _maxVal);
       case CONSTANT:
       default:
-      return _minVal;
+        return _minVal;
     }
   }
   
   float minValue() const { return _minVal; }
   float maxValue() const { return _maxVal; }
-
+  
   bool isConstant() const { return _mode == CONSTANT; }
   bool isRandom() const { return _mode == RANDOM; }
   bool isRange() const { return _mode == RANGE; }
-
+  
 private:
   
   Mode _mode;

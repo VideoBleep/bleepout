@@ -21,7 +21,7 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   ofVec3f dims = object.getSize();
   ofTranslate(object.getPosition());
   ofRotateY(object.getRotation());
-
+  
   // Edge lines
   ofNoFill();
   ofDisableLighting();
@@ -41,7 +41,7 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   if (pMat) {
     pMat->end();
   }
-    
+  
   ofPopStyle();
   ofPopMatrix();
 }

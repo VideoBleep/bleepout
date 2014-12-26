@@ -19,31 +19,31 @@ Ball::Ball(const RoundConfig* config /*= NULL*/, const BallSpec* spec /*= NULL*/
 , _player(NULL)
 , PhysicsObject(CollisionSphere)
 {
-    thisGameObject = this;
-    _color = ofColor(220, 220, 220);
-    if (config && spec) {
-        this->setSize(ofVec3f(config->ballRadius()));
-        auto t = new OrbitalTrajectory();
-        t->setRadius(config->domeRadius() + config->domeMargin());
-        t->setSpeed(0.03);
-        t->initWithTwoPoints(spec->elevation, spec->heading, -14,
-                             spec->heading + ofRandom(-45, 45));
-        this->setTrajectory(t);
-    }
+  thisGameObject = this;
+  _color = ofColor(220, 220, 220);
+  if (config && spec) {
+    this->setSize(ofVec3f(config->ballRadius()));
+    auto t = new OrbitalTrajectory();
+    t->setRadius(config->domeRadius() + config->domeMargin());
+    t->setSpeed(0.03);
+    t->initWithTwoPoints(spec->elevation, spec->heading, -14,
+                         spec->heading + ofRandom(-45, 45));
+    this->setTrajectory(t);
+  }
 }
 
 void Ball::bounce(ofVec3f normal, float trueHitFactor /* = 0.0 */) {
-    if (trajectory) {
-        trajectory->reflect(normal, trueHitFactor);
-    }
+  if (trajectory) {
+    trajectory->reflect(normal, trueHitFactor);
+  }
 }
 
 const ofColor& Ball::getColor() const {
-    if (_player) {
-        return _player->getColor();
-    } else {
-        return _color;
-    }
+  if (_player) {
+    return _player->getColor();
+  } else {
+    return _color;
+  }
 }
 
 bool Ball::isLaser() const {
