@@ -28,7 +28,7 @@ public:
 private:
   void onRoundStarted(RoundStateEventArgs& e);
   void onRoundEnded(EmptyEventArgs& e);
-  void onBrickDestroyed(BrickDestroyedEventArgs& e);
+  void onBrickHit(BrickHitEventArgs& e);
   void onCollision(CollisionEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
@@ -41,6 +41,7 @@ private:
   ofSoundPlayer _roundStartedSound;
   ofSoundPlayer _roundEndedSound;
   ofSoundPlayer _brickDestroyedSound;
+  ofSoundPlayer _brickHitSound;
   ofSoundPlayer _collisionSound;
   ofSoundPlayer _modifierAppliedSound;
   ofSoundPlayer _modifierRemovedSound;

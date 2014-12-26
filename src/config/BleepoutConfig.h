@@ -198,6 +198,7 @@ public:
   
   std::string roundStartedSound;
   std::string roundEndedSound;
+  std::string brickHitSound;
   std::string brickDestroyedSound;
   std::string collisionSound;
   std::string modifierAppliedSound;

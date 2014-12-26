@@ -43,7 +43,7 @@ void BallOwnerChangedEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
-void BrickDestroyedEventArgs::output(std::ostream &os) const {
+void BrickHitEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, brick());
   os << " ";
