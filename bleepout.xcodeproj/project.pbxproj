@@ -14,6 +14,7 @@
 		32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B791A4A861400EF6DE4 /* RoundComponent.cpp */; };
 		32269B9B1A4CA55A00EF6DE4 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */; };
 		32269BA11A4DD18200EF6DE4 /* AudioManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B9F1A4DD18200EF6DE4 /* AudioManager.cpp */; };
+		32269BB41A4DFFBA00EF6DE4 /* Round4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269BB31A4DFFBA00EF6DE4 /* Round4.cpp */; };
 		322D59D91A454BCF00150050 /* RendererUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 322D59D71A454BCF00150050 /* RendererUtil.cpp */; };
 		325750E61A4792A500CC375A /* Round1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E51A4792A500CC375A /* Round1.cpp */; };
 		325750E91A4792E200CC375A /* Round2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 325750E81A4792E200CC375A /* Round2.cpp */; };
@@ -193,6 +194,7 @@
 		32269B9F1A4DD18200EF6DE4 /* AudioManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManager.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		32269BA01A4DD18200EF6DE4 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; tabWidth = 2; };
 		32269BAC1A4DF14E00EF6DE4 /* MessageQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = MessageQueue.h; sourceTree = "<group>"; tabWidth = 2; };
+		32269BB31A4DFFBA00EF6DE4 /* Round4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = Round4.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; tabWidth = 2; };
 		325750E51A4792A500CC375A /* Round1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = Round1.cpp; sourceTree = "<group>"; tabWidth = 2; };
@@ -890,6 +892,7 @@
 				325750E51A4792A500CC375A /* Round1.cpp */,
 				325750E81A4792E200CC375A /* Round2.cpp */,
 				325750F01A47BA9A00CC375A /* Round3.cpp */,
+				32269BB31A4DFFBA00EF6DE4 /* Round4.cpp */,
 				3257520C1A4903EF00CC375A /* BleepoutParameters.cpp */,
 				3257520D1A4903EF00CC375A /* BleepoutParameters.h */,
 			);
@@ -1276,6 +1279,7 @@
 				5B0DD90D1A3C497600E8BBD1 /* SyphonNameboundClient.m in Sources */,
 				5B0E83421A369EC30091AB99 /* ofxBulletWorldRigid.cpp in Sources */,
 				325751841A48F63C00CC375A /* ofxUIValuePlotter.cpp in Sources */,
+				32269BB41A4DFFBA00EF6DE4 /* Round4.cpp in Sources */,
 				32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */,
 				5BB4E5E61A400F500047F957 /* main.cpp in Sources */,
 				5BB4E5E91A400F500047F957 /* SpaceController.cpp in Sources */,

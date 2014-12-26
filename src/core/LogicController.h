@@ -23,7 +23,7 @@ public:
                   BleepoutParameters& appParams);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
-  ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<BrickHitEventArgs> brickHitEvent;
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
   ofEvent<BallStateEventArgs> ballDestroyedEvent;
@@ -47,7 +47,7 @@ public:
   
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
-  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);
+  void notifyBrickHit(RoundState& state, Brick* brick, Ball* ball);
   void notifyAllBricksDestroyed(RoundState& state);
   void notifyPlayerScoreChanged(RoundState& state, Player* player);
   void notifyBallDestroyed(RoundState& state, Ball* ball);

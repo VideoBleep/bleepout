@@ -96,9 +96,9 @@ private:
   Player* _previousPlayer;
 };
 
-class BrickDestroyedEventArgs : public RoundStateEventArgs {
+class BrickHitEventArgs : public RoundStateEventArgs {
 public:
-  BrickDestroyedEventArgs(RoundState& state, Brick* brick, Ball* ball)
+  BrickHitEventArgs(RoundState& state, Brick* brick, Ball* ball)
   : RoundStateEventArgs(state)
   , _brick(brick), _ball(ball) { }
   

@@ -29,7 +29,7 @@ public:
   
 private:
   void addAnimation(AnimationObject* animation);
-  void onBrickDestroyed(BrickDestroyedEventArgs& e);
+  void onBrickHit(BrickHitEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);

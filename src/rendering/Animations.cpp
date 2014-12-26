@@ -172,9 +172,11 @@ void AnimationManager::addMessage(const MessageSpec &message) {
   addAnimation(new MessageAnimation(message, _messageFont));
 }
 
-void AnimationManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
-  auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
-  addAnimation(anim);
+void AnimationManager::onBrickHit(BrickHitEventArgs &e) {
+  if (!e.brick()->alive()) {
+    auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
+    addAnimation(anim);
+  }
 }
 
 void AnimationManager::onModifierApplied(ModifierEventArgs &e) {
@@ -199,8 +201,8 @@ void AnimationManager::onCountdownTick(TimerEventArgs &e) {
 }
 
 void AnimationManager::attachTo(LogicController &roundEvents) {
-  ofAddListener(roundEvents.brickDestroyedEvent, this,
-                &AnimationManager::onBrickDestroyed);
+  ofAddListener(roundEvents.brickHitEvent, this,
+                &AnimationManager::onBrickHit);
   ofAddListener(roundEvents.modifierAppliedEvent, this,
                 &AnimationManager::onModifierApplied);
   ofAddListener(roundEvents.modifierRemovedEvent, this,
@@ -210,8 +212,8 @@ void AnimationManager::attachTo(LogicController &roundEvents) {
 }
 
 void AnimationManager::detachFrom(LogicController &roundEvents) {
-  ofRemoveListener(roundEvents.brickDestroyedEvent, this,
-                   &AnimationManager::onBrickDestroyed);
+  ofRemoveListener(roundEvents.brickHitEvent, this,
+                   &AnimationManager::onBrickHit);
   ofRemoveListener(roundEvents.modifierAppliedEvent, this,
                    &AnimationManager::onModifierApplied);
   ofRemoveListener(roundEvents.modifierRemovedEvent, this,

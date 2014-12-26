@@ -142,7 +142,6 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
     if (!brick.alive()) {
       brick.kill();
       _state.decrementLiveBricks();
-      notifyBrickDestroyed(_state, &brick, &ball);
       
       const std::string& modifierName = brick.modifierName();
       if (!modifierName.empty()) {
@@ -164,6 +163,7 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       }
     }
   }
+  notifyBrickHit(_state, &brick, &ball);
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
@@ -200,10 +200,10 @@ void LogicController::notifyBallOwnerChanged(RoundState& state, Ball* ball, Play
   ofNotifyEvent(ballOwnerChangedEvent, e);
   logEvent("BallOwnerChanged", e);
 }
-void LogicController::notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball) {
-  BrickDestroyedEventArgs e(state, brick, ball);
-  ofNotifyEvent(brickDestroyedEvent, e);
-  logEvent("BrickDestroyed", e);
+void LogicController::notifyBrickHit(RoundState& state, Brick* brick, Ball* ball) {
+  BrickHitEventArgs e(state, brick, ball);
+  ofNotifyEvent(brickHitEvent, e);
+  logEvent("BrickHit", e);
 }
 void LogicController::notifyAllBricksDestroyed(RoundState& state) {
   RoundStateEventArgs e(state);
