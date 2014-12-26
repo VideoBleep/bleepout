@@ -20,6 +20,7 @@
 #include "SetupController.h"
 #include "GameEvents.h"
 #include "AdminController.h"
+#include "AudioManager.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -60,6 +61,7 @@ private:
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;
+  ofPtr<AudioManager> _audioManager;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
 #endif // ENABLE_SYPHON

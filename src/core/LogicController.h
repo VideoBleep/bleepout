@@ -13,6 +13,7 @@
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
+#include "Timing.h"
 
 class SpaceController;
 
@@ -34,6 +35,7 @@ public:
   ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
   ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
+  ofEvent<TimerEventArgs> countdownTickEvent;
   
   void setup();
   void update();
@@ -57,6 +59,7 @@ private:
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
   void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
+  void notifyCountdownTick();
   
   void onCollision(CollisionEventArgs& e);
   
@@ -73,6 +76,7 @@ private:
   RoundConfig& _config;
   BleepoutParameters& _appParams;
   float _lastSpecifiedTimeLimitOffset;
+  Pulser _countdownTickPulser;
 };
 
 #endif /* defined(__bleepout__LogicController__) */
