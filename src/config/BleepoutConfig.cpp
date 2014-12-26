@@ -80,7 +80,8 @@ _modifierFadeTime(0.2f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
 _name(name),
-_startDelay(0) { }
+_startDelay(0),
+countdownTimerPeriod(10) { }
 
 void RoundConfig::loadJsonFile(std::string path) {
   Json::Value obj;

@@ -77,6 +77,7 @@ private:
   bool notifyTryEndRound(EndRoundEventArgs &e);
   
   void onModifierAppeared(ModifierEventArgs& e);
+  void onCountdownTick(TimerEventArgs& e);
   
   bool _paused;
   float _startTime;

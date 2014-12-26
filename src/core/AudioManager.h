@@ -35,7 +35,7 @@ private:
   void onBallDestroyed(BallStateEventArgs& e);
   void onPlayerLivesChanged(PlayerStateEventArgs& e);
   void onPlayerLost(PlayerStateEventArgs& e);
-//  void onCountdownTimerT
+  void onCountdownTick(TimerEventArgs& e);
   
   const BleepoutParameters& _appParams;
   ofSoundPlayer _roundStartedSound;

@@ -79,6 +79,8 @@ void AudioManager::attachTo(RoundController &roundController) {
                 this, &AudioManager::onPlayerLivesChanged);
   ofAddListener(roundController.logicController().playerLostEvent,
                 this, &AudioManager::onPlayerLost);
+  ofAddListener(roundController.logicController().countdownTickEvent,
+                this, &AudioManager::onCountdownTick);
 }
 
 void AudioManager::detachFrom(RoundController &roundController) {
@@ -96,6 +98,8 @@ void AudioManager::detachFrom(RoundController &roundController) {
                    this, &AudioManager::onPlayerLivesChanged);
   ofRemoveListener(roundController.logicController().playerLostEvent,
                    this, &AudioManager::onPlayerLost);
+  ofRemoveListener(roundController.logicController().countdownTickEvent,
+                   this, &AudioManager::onCountdownTick);
 }
 
 void AudioManager::onRoundStarted(RoundStateEventArgs &e) {
@@ -132,4 +136,8 @@ void AudioManager::onPlayerLivesChanged(PlayerStateEventArgs &e) {
 
 void AudioManager::onPlayerLost(PlayerStateEventArgs &e) {
   _playerLostSound.play();
+}
+
+void AudioManager::onCountdownTick(TimerEventArgs &e) {
+  _countdownTimerTickSound.play();
 }

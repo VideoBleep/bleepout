@@ -32,6 +32,7 @@ private:
   void onBrickDestroyed(BrickDestroyedEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
+  void onCountdownTick(TimerEventArgs& e);
 private:
   RoundController& _roundController;
   ofTrueTypeFont _messageFont;

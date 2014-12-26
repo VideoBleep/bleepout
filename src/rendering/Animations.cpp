@@ -74,7 +74,7 @@ public:
   virtual void draw(const RoundConfig& config) override;
   virtual void output(std::ostream& os) const override;
 private:
-  const MessageSpec& _message;
+  MessageSpec _message;
   ofTrueTypeFont& _font;
 };
 
@@ -191,6 +191,13 @@ void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
   addAnimation(anim);
 }
 
+void AnimationManager::onCountdownTick(TimerEventArgs &e) {
+  int time = static_cast<int>(e.remainingTime());
+  addMessage(MessageSpec("Time: " + ofToString(time), ofColor(255, 0, 0))
+             .setSize(10)
+             .setTiming(0, 0.9));
+}
+
 void AnimationManager::attachTo(LogicController &roundEvents) {
   ofAddListener(roundEvents.brickDestroyedEvent, this,
                 &AnimationManager::onBrickDestroyed);
@@ -198,6 +205,8 @@ void AnimationManager::attachTo(LogicController &roundEvents) {
                 &AnimationManager::onModifierApplied);
   ofAddListener(roundEvents.modifierRemovedEvent, this,
                 &AnimationManager::onModifierRemoved);
+  ofAddListener(roundEvents.countdownTickEvent, this,
+                &AnimationManager::onCountdownTick);
 }
 
 void AnimationManager::detachFrom(LogicController &roundEvents) {
@@ -207,4 +216,6 @@ void AnimationManager::detachFrom(LogicController &roundEvents) {
                    &AnimationManager::onModifierApplied);
   ofRemoveListener(roundEvents.modifierRemovedEvent, this,
                    &AnimationManager::onModifierRemoved);
+  ofRemoveListener(roundEvents.countdownTickEvent, this,
+                   &AnimationManager::onCountdownTick);
 }

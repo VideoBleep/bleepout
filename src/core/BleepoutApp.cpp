@@ -128,7 +128,7 @@ void BleepoutApp::endRound() {
   _playerManager->setIsInRound(false);
   _audioManager->detachFrom(*_roundController);
   _roundController.reset();
-  _endingRound = true;
+  _endingRound = false;
   notifyRoundEnded();
 }
 

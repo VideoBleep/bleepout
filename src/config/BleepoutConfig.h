@@ -147,6 +147,8 @@ public:
   const GameRules& rules() const { return _rules; }
   GameRules& rules() { return _rules; }
   
+  float countdownTimerPeriod;
+  
   Json::Value toJsonVal() const;
 private:
   std::string _name;
