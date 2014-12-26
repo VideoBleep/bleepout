@@ -197,3 +197,7 @@ GameRules::GameRules(const GameRules& other)
 float GameRules::timeLimit() const {
   return _timeLimit.get(_backup ? &_backup->_timeLimit : NULL, -1);
 }
+
+bool GameRules::playersCanLoseLives() const {
+  return _playersCanLoseLives.get(_backup ? &_backup->_playersCanLoseLives : NULL, false);
+}
