@@ -24,28 +24,27 @@ public:
   void update();
   void draw();
   void keyPressed(int key);
+  bool canStartRound() const;
   
-  ofEvent<StartRoundEventArgs> startRoundEvent;
+  ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   
-  // TODO: Please Review this; is this the appropriate way to return a reference to the private _lobby?
-  std::list<ofPtr<Player>>& Lobby() { return _lobby; }
+  const char* eventSourceName() const override { return "SetupController"; }
+  
+  std::list<ofPtr<Player> >& lobby() { return _lobby; }
 
   // Event Handlers
   void handlePlayerConnected(PlayerEventArgs& e);
 
 private:
+  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+                           std::list<ofPtr<Player> > players);
+  bool tryStartRound();
+
 	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game
 	std::list<ofPtr<Player> > _lobby;
 	// ConnectedPlayers is all current players
 	std::list<ofPtr<Player> > _connectedPlayers;
-
-	
-	void notifyStartRound(ofPtr<RoundConfig> config,
-                        std::list<ofPtr<Player> > players);
-  
-  bool tryStartRound();
-  bool canStartRound() const;
   
   const BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _roundConfig;

@@ -21,6 +21,11 @@
 #include "Wall.h"
 #include "GameState.h"
 
+class EmptyEventArgs : public Outputable {
+public:
+  void output(std::ostream& os) const override;
+};
+
 class CollisionEventArgs : public Outputable {
 public:
   CollisionEventArgs(GameObject* a, GameObject *b)
@@ -177,23 +182,43 @@ private:
   ofPtr<Player> _player;
 };
 
-class StartRoundEventArgs : public Outputable {
+class RequestEventArgs {
+public:
+  RequestEventArgs() : _handled(false) { }
+  
+  void markHandled() { _handled = true; }
+  bool handled() const { return _handled; }
+private:
+  bool _handled;
+};
+
+class StartRoundEventArgs
+: public RequestEventArgs
+, public Outputable {
 public:
   StartRoundEventArgs(ofPtr<RoundConfig> config,
                       std::list<ofPtr<Player> > players)
-  : _config(config) , _players(players) { }
+  : RequestEventArgs(), _config(config) , _players(players) { }
   
   ofPtr<RoundConfig>& config() { return _config; }
   const ofPtr<RoundConfig>& config() const { return _config; }
   std::list<ofPtr<Player> >& players() { return _players; }
   const std::list<ofPtr<Player> >& players() const { return _players; }
   
-  virtual void output(std::ostream& os) const override;
+  void output(std::ostream& os) const override;
 private:
   ofPtr<RoundConfig> _config;
   std::list<ofPtr<Player> > _players;
 };
-  
+
+class EndRoundEventArgs
+: public RequestEventArgs
+, public Outputable {
+public:
+  EndRoundEventArgs() : RequestEventArgs() { }
+  void output(std::ostream& os) const override;
+};
+
 class PlayerYawPitchRollEventArgs {
 public:
   PlayerYawPitchRollEventArgs(Player* player, float yaw,
@@ -211,13 +236,17 @@ private:
   float _pitch;
   float _roll;
 };
-  
+
 class EventSource {
 public:
   EventSource() : _logLevel(OF_LOG_SILENT) {}
   void enableLogging(ofLogLevel level) { _logLevel = level; }
   void disableLogging() { _logLevel = OF_LOG_SILENT; }
   bool loggingEnabled() const { return _logLevel != OF_LOG_SILENT; }
+  void toggleLogging(ofLogLevel level) {
+    _logLevel = loggingEnabled() ? OF_LOG_SILENT : level;
+  }
+  virtual const char* eventSourceName() const = 0;
 protected:
   void logEvent(const char* name, const Outputable& event) const;
 private:

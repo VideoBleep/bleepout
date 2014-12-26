@@ -14,20 +14,21 @@
 #include "Logging.h"
 
 RoundController::RoundController(RoundConfig config,
+                                 BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
 : _config(config)
+, _appParams(appParams)
 , _state(_config, players)
 , _playerManager(playerManager)
-, _timedActions(true) {
-  ofAddListener(playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+, _timedActions(true)
+, EventSource() {
 }
 
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofRemoveListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
-  ofRemoveListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
+  ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
@@ -41,15 +42,16 @@ void RoundController::setup() {
   _startTime = ofGetElapsedTimef();
   _state.time = 0;
   
-  _spaceController.reset(new SpaceController(_state, _config));
-  _logicController.reset(new LogicController(_state, _config));
+  _cullDeadObjectsPulser = Pulser(5.0f);
+  
+  ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+  _spaceController.reset(new SpaceController(_state, _config, _appParams));
+  _logicController.reset(new LogicController(_state, _config, _appParams));
   _animationManager.reset(new AnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
-  ofAddListener(_logicController->roundEndedEvent, this, &RoundController::onRoundEnded);
+  ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
-  ofAddListener(_logicController->modifierDestroyedEvent, this, &RoundController::onModifierDestroyed);
-  ofAddListener(_logicController->modifierAppliedEvent, this, &RoundController::onModifierApplied);
   
   // for ease of debugging, disable exits initially
   for (auto& wall : _state.walls()) {
@@ -61,8 +63,8 @@ void RoundController::setup() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer());
-  _renderer->setup(_config);
+  _renderer.reset(new DomeRenderer(_state, _config, _appParams));
+  _renderer->setup();
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config.startMessages()) {
@@ -71,10 +73,29 @@ void RoundController::setup() {
 }
 
 void RoundController::draw() {
-  _renderer->draw(_state);
+  _renderer->draw();
+}
+
+template<typename T>
+static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
+                                      SpaceController& spaceController) {
+  for (auto& obj : objects.extractDeadObjects()) {
+    spaceController.removeObject(*obj);
+    obj.reset();
+  }
 }
 
 void RoundController::update() {
+  if (_paused && !_appParams.paused) {
+//    float footime = ofGetElapsedTimef() - _startTime;
+//    float diff = footime - _state.time;
+//    _startTime += diff;
+    _startTime = ofGetElapsedTimef() - _state.time;
+    _paused = false;
+  }
+  _paused = _appParams.paused;
+  if (_paused)
+    return;
   _state.time = ofGetElapsedTimef() - _startTime;
   
   if (_state.time >= _config.startDelay()) {
@@ -84,10 +105,24 @@ void RoundController::update() {
     }
   }
   
-  _spaceController->update();
-  _logicController->update();
+  while (_appParams.ballsToAdd) {
+    _appParams.ballsToAdd--;
+    // add a new ball
+    _spaceController->addBall(BallSpec(30, ofRandom(360)));
+  }
+  if (_spaceController)
+    _spaceController->update();
+  if (_logicController)
+    _logicController->update();
   _timedActions.update(_state);
-  _renderer->update(_state);
+  if (_renderer)
+    _renderer->update();
+  if (_cullDeadObjectsPulser.update(_state.time)) {
+    removeDeadPhysicalObjects(_state.balls(), *_spaceController);
+    removeDeadPhysicalObjects(_state.bricks(), *_spaceController);
+    removeDeadPhysicalObjects(_state.modifiers(), *_spaceController);
+    removeDeadPhysicalObjects(_state.paddles(), *_spaceController);
+  }
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {
@@ -98,18 +133,18 @@ void RoundController::onModifierAppeared(ModifierEventArgs& e) {
   _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
 }
 
-void RoundController::onModifierDestroyed(ModifierEventArgs &e) {
-  _spaceController->removeModifier(*e.modifier());
-  _state.modifiers().eraseObjectById(e.modifier()->id());
-}
-
-void RoundController::onModifierApplied(ModifierEventArgs &e) {
-  _spaceController->removeModifier(*e.modifier());
-  _state.modifiers().eraseObjectById(e.modifier()->id());
-}
-
 void RoundController::onRoundEnded(RoundStateEventArgs &e) {
-  ofNotifyEvent(roundEndedEvent, e);
+  _timedActions.clear();
+}
+
+void RoundController::onTryEndRound(EndRoundEventArgs &e) {
+  notifyTryEndRound(e);
+}
+
+bool RoundController::notifyTryEndRound(EndRoundEventArgs &e) {
+  ofNotifyEvent(tryEndRoundEvent, e);
+  logEvent("TryEndRound", e);
+  return e.handled();
 }
 
 void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
@@ -123,41 +158,16 @@ void RoundController::addTimedAction(ofPtr<TimedAction> action) {
 }
 
 void RoundController::keyPressed(int key) {
-  if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
-    _renderer->keyPressed(key);
-  } else {
+  if (!ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     if (key == 'q') {
-      RoundStateEventArgs e(_state);
-      ofNotifyEvent(roundEndedEvent, e);
-      //....
+      EndRoundEventArgs e;
+      notifyTryEndRound(e);
     } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {
       dumpConfig(OF_LOG_NOTICE);
-    } else if (key == 'p') {
-      if (_spaceController->loggingEnabled())
-        _spaceController->disableLogging();
-      else
-        _spaceController->enableLogging(OF_LOG_NOTICE);
     } else if (key == 'o') {
-      if (_logicController->loggingEnabled())
-        _logicController->disableLogging();
-      else
-        _logicController->enableLogging(OF_LOG_NOTICE);
-    } else if (key == 'e') {
-      // toggle exits on and off
-      for (auto& wall : _state.walls()) {
-        if (wall->isExit()) {
-          if (wall->alive()) {
-            wall->kill();
-          } else {
-            wall->revive();
-          }
-        }
-      }
-    } else if (key == 'b') {
-      // add a new ball
-      _spaceController->addBall(BallSpec(30, ofRandom(360)));
+      _logicController->toggleLogging(OF_LOG_NOTICE);
     }
   }
 }

@@ -6,17 +6,14 @@
 //  
 //
 
-#include "BleepoutApp.h"
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "Logging.h"
 
-std::string messageDelimiter = "|";
-
-PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController) 
-	: _bleepoutApp(bleepoutApp),
+PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController)
+	: _bleepoutApp(bleepoutApp), 
 	controller(playerController)
-	{ }
+{ }
 
 ofPtr<Player> PlayerManager::addPlayer() {
   ofPtr<Player> player(new Player());
@@ -40,11 +37,6 @@ void PlayerManager::setup() {
 
 void PlayerManager::update(){
 	// [Jim] This is possibly not needed but not sure if something in oF will call it... ?
-	//messages.push_back("Reply would execute here");
-}
-
-void PlayerManager::draw(){
-	// [Jim] This is not needed but not sure if something in oF will call it... ?
 }
 
 void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
@@ -65,7 +57,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
 
-	args.conn.send(PACKET_MESSAGE + "socket opened");
+  args.conn.send(std::string(PACKET_MESSAGE) + "socket opened");
 }
 
 void PlayerManager::onClose(ofxLibwebsockets::Event& args){

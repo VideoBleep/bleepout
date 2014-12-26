@@ -50,81 +50,83 @@ const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
 const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
 const std::string STATE_PLAY = "play"; // game is playing, free to send control
 
+std::string messageDelimiter = "|";
+
 class BleepoutApp; 
 
 class PlayerManager : public EventSource {
 public:
 	//PlayerManager();
 	PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController);
-	
-  std::list<ofPtr<Player> >& players() { return _players; }
 
-  // Sockets Server
-  ofxLibwebsockets::Server server;
-  PlayerController controller;
+	std::list<ofPtr<Player> >& players() { return _players; }
 
-  void setup();
-  void update();
-  void draw();
-  void gotMessage(ofMessage msg);
-  
-  ofPtr<Player> addPlayer();
-  void setIsInRound(bool r) { _inRoundMode = r; }
+	// Sockets Server
+	ofxLibwebsockets::Server server;
+	PlayerController controller;
 
-  // Message queue (temporary?)
-  ofTrueTypeFont font;
-  vector<string> messages;
+	void setup();
+	void update();
+	void gotMessage(ofMessage msg);
 
-  // Websocket event handlers
-  void onConnect(ofxLibwebsockets::Event& args);
-  void onOpen(ofxLibwebsockets::Event& args);
-  void onClose(ofxLibwebsockets::Event& args);
-  void onIdle(ofxLibwebsockets::Event& args);
-  void onMessage(ofxLibwebsockets::Event& args);
-  void onBroadcast(ofxLibwebsockets::Event& args);
+	ofPtr<Player> addPlayer();
+	void setIsInRound(bool r) { _inRoundMode = r; }
 
-  /*
-  SEND STATE MESSAGES TO PLAYER
-  */
-  // Send 'Select Color' state message to player
-  static void PlayerManager::setPlayerColor(Player& player) {
-	  player.connection()->send(PACKET_MESSAGE + STATE_COLOR);
-  }
-  // Send 'Queued' state message to player
-  static void PlayerManager::setPlayerQueued(Player& player) {
-	  player.connection()->send(PACKET_MESSAGE + STATE_QUEUED);
-  }
-  // Send 'Calibrate' state message to player
-  static void PlayerManager::setPlayerCalibrate(Player& player) {
-	  player.connection()->send(PACKET_MESSAGE + STATE_CALIBRATION);
-  }
-  // Send 'Ready' state message to player 
-  static void PlayerManager::setPlayerReady(Player& player) {
-	  player.connection()->send(PACKET_MESSAGE + STATE_READY);
-  }
-  // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
-  static void PlayerManager::setPlayerPlay(Player& player) {
-	  player.connection()->send(PACKET_MESSAGE + STATE_PLAY);
-  }
+	// Message queue (temporary?)
+	ofTrueTypeFont font;
+	vector<string> messages;
 
+	// Websocket event handlers
+	void onConnect(ofxLibwebsockets::Event& args);
+	void onOpen(ofxLibwebsockets::Event& args);
+	void onClose(ofxLibwebsockets::Event& args);
+	void onIdle(ofxLibwebsockets::Event& args);
+	void onMessage(ofxLibwebsockets::Event& args);
+	void onBroadcast(ofxLibwebsockets::Event& args);
 
-  ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+	/*
+	SEND STATE MESSAGES TO PLAYER
+	*/
+	// Send 'Select Color' state message to player
+	static void PlayerManager::setPlayerColor(Player& player) {
+		player.connection()->send(PACKET_MESSAGE + STATE_COLOR);
+	}
+	// Send 'Queued' state message to player
+	static void PlayerManager::setPlayerQueued(Player& player) {
+		player.connection()->send(PACKET_MESSAGE + STATE_QUEUED);
+	}
+	// Send 'Calibrate' state message to player
+	static void PlayerManager::setPlayerCalibrate(Player& player) {
+		player.connection()->send(PACKET_MESSAGE + STATE_CALIBRATION);
+	}
+	// Send 'Ready' state message to player 
+	static void PlayerManager::setPlayerReady(Player& player) {
+		player.connection()->send(PACKET_MESSAGE + STATE_READY);
+	}
+	// Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+	static void PlayerManager::setPlayerPlay(Player& player) {
+		player.connection()->send(PACKET_MESSAGE + STATE_PLAY);
+	}
 
-  /*
-	Events
-  */
-  // Raised when player control message arrives
-  ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
-  
+	ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
+
+	/*
+	  Events
+	*/
+	// Raised when player control message arrives
+	ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
+
+	const char* eventSourceName() const override { return "PlayerManager"; }
+
 private:
 
-  void notifyPlayerYawPitchRoll(Player* player, float yaw,
-                                float pitch, float roll);
-  
-  bool _inRoundMode;
+	void notifyPlayerYawPitchRoll(Player* player, float yaw,
+		float pitch, float roll);
 
-  BleepoutApp& _bleepoutApp;
-  std::list<ofPtr<Player> > _players;
+	bool _inRoundMode;
+
+	BleepoutApp& _bleepoutApp;
+	std::list<ofPtr<Player> > _players;
 };
 
 #endif /* defined(__bleepout__PlayerManager__) */

@@ -14,23 +14,23 @@
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 #include "RendererBase.h"
 #include "Common.h"
 #include "SetupController.h"
 #include "GameEvents.h"
+#include "AdminController.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
 #endif // ENABLE_SYPHON
 
-class BleepoutApp : public ofBaseApp {
+class BleepoutApp : public ofBaseApp, public EventSource {
 public:
   BleepoutApp();
   
-  // Public properties
-  ofPtr<SetupController> Setup() { return _setupController; }
-  ofPtr<RoundController> Round() { return _roundController; }
-  const BleepoutConfig& config() const { return *_config; }
+  ofEvent<RoundStateEventArgs> roundStartedEvent;
+  ofEvent<EmptyEventArgs> roundEndedEvent;
 
   // oF interface methods
   void setup() override;
@@ -42,23 +42,29 @@ public:
   void mouseMoved(int x, int y );
   void mouseReleased(int x, int y, int button);
   void mouseDragged(int x, int y, int button) override;
-
-
+  
+  const char* eventSourceName() const override { return "BleepoutApp"; }
 
 private:
-  void onStartRound(StartRoundEventArgs& e);
-  void onRoundEnded(RoundStateEventArgs& e);
+  void onTryStartRound(StartRoundEventArgs& e);
+  void onTryEndRound(EndRoundEventArgs& e);
   
+  void notifyRoundStarted(RoundState& state);
+  void notifyRoundEnded();
+  void endRound();
+
   ofPtr<BleepoutConfig> _config;
+  ofPtr<BleepoutParameters> _appParams;
 	ofPtr<PlayerManager> _playerManager;
 	ofPtr<PlayerController> _playerController;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
-
+  ofPtr<AdminController> _adminController;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
-  bool _syphonEnabled;
 #endif // ENABLE_SYPHON
+  bool _syphonEnabled;
+  bool _endingRound;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

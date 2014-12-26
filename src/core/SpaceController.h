@@ -13,11 +13,14 @@
 #include "BleepoutConfig.h"
 #include "GameEvents.h"
 #include "PhysicsWorld.h"
+#include "RoundComponent.h"
 #include <ofMain.h>
 
-class SpaceController : public EventSource {
+class SpaceController : public EventSource, public RoundComponent {
 public:
-  SpaceController(RoundState& state, RoundConfig& config);
+  SpaceController(RoundState& state,
+                  const RoundConfig& config,
+                  const BleepoutParameters& appParams);
   
   ofEvent<CollisionEventArgs> collisionEvent;
   
@@ -32,7 +35,9 @@ public:
   
   void setUpModifier(Modifier& modifier,
                      Brick& spawnerBrick);
-  void removeModifier(Modifier& modifier);
+  void removeObject(PhysicsObject& object);
+  
+  const char* eventSourceName() const override { return "SpaceController"; }
     
 private:
   void addBrick(const BrickSpec& brickSpec);
@@ -44,8 +49,6 @@ private:
 
 private:
   PhysicsWorld _world;
-  RoundState& _state;
-  RoundConfig& _config;
 };
 
 #endif /* defined(__bleepout__SpaceController__) */

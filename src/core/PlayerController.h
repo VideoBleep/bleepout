@@ -16,19 +16,16 @@
 	
 
 */
-#include "Player.h"
-#include "GameEvents.h"
-//#include "SetupController.h"
-
 #ifndef __bleepout__PlayerController__
 #define __bleepout__PlayerController__
 
-//class SeutupController;
+#include "Player.h"
+#include "GameEvents.h"
 
 class PlayerController : public EventSource
 {
 public:
-	PlayerController();  // (SetupController& setup);
+	PlayerController();
 
 	/*
 		Player Actions
@@ -54,17 +51,11 @@ public:
 	*/
 	// Raised when player connects initially
 	ofEvent<PlayerEventArgs> playerConnectedEvent;
-	// ?
-	ofEvent<PlayerEventArgs> playerAddedEvent;
-	// ?
-	ofEvent<PlayerEventArgs> playerRemovedEvent;
+  
+  const char* eventSourceName() const { return "PlayerController"; }
 
 private:
-	//SetupController& _setup;
-
 	void notifyPlayerConnected(ofPtr<Player> player);
-	void notifyPlayerAdded(ofPtr<Player> player);
-	void notifyPlayerRemoved(ofPtr<Player> player);
 };
 
 #endif /* defined(__bleepout__PlayerController__) */

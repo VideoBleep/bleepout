@@ -13,6 +13,7 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
+  config->rules().setTimeLimit(30);
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));

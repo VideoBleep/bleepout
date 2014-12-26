@@ -19,30 +19,28 @@ class RoundConfig;
 
 class DomeRenderer : public RendererBase {
 public:
+    DomeRenderer(RoundState& state,
+                 const RoundConfig& config,
+                 const BleepoutParameters& appParams);
     virtual ~DomeRenderer() {}
-    virtual void setup(RoundConfig& config) override;
-    virtual void update(RoundState& state) override;
-    virtual void draw(RoundState& state) override;
+    virtual void setup() override;
+    virtual void update() override;
+    virtual void draw() override;
     
-    virtual void keyPressed(int key);
     virtual void mousePressed(int x, int y, int button);
     virtual void mouseReleased(int x, int y, int button);
     virtual void mouseDragged(int x, int y, int button);
 
 protected:
-    virtual void drawBrick(RoundState& round, Brick& brick) override;
-    virtual void drawPaddle(RoundState& round, Paddle& paddle) override;
-    virtual void drawWall(RoundState& round, Wall& wall) override;
-    virtual void drawBall(RoundState& round, Ball& ball) override;
-    virtual void drawModifier(RoundState& round, Modifier& modifier) override;
+    virtual void drawBrick(Brick& brick) override;
+    virtual void drawPaddle(Paddle& paddle) override;
+    virtual void drawWall(Wall& wall) override;
+    virtual void drawBall(Ball& ball) override;
+    virtual void drawModifier(Modifier& modifier) override;
     
     void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
     
     ofxTurntableCam _cam;
-    bool _debugGraphics;
-    bool _drawTrajectories;
-    bool _drawLasers;
-    bool _drawCometTails;
   
     RendererExtras _extras;
     

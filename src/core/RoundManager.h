@@ -13,6 +13,7 @@
 #include <list>
 #include "PlayerManager.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 #include "GameState.h"
 #include "SpaceController.h"
 #include "LogicController.h"
@@ -22,10 +23,11 @@
 
 class RendererBase;
 
-class RoundController
+class RoundController : public EventSource
 {
 public:
   RoundController(RoundConfig config,
+                  BleepoutParameters& appParams,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
@@ -35,6 +37,7 @@ public:
   void draw();
   void update();
   
+  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   ofEvent<RoundStateEventArgs> roundQueueEvent;
   ofEvent<RoundStateEventArgs> roundPlayEvent;
   ofEvent<RoundStateEventArgs> roundEndedEvent;
@@ -57,6 +60,8 @@ public:
   
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
+  
+  const char* eventSourceName() const override { return "RoundController"; }
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
@@ -65,11 +70,14 @@ private:
   void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
   
-  void onModifierAppeared(ModifierEventArgs& e);
-  void onModifierDestroyed(ModifierEventArgs& e);
-  void onModifierApplied(ModifierEventArgs& e);
+  void onTryEndRound(EndRoundEventArgs& e);
+  bool notifyTryEndRound(EndRoundEventArgs &e);
   
+  void onModifierAppeared(ModifierEventArgs& e);
+  
+  bool _paused;
   float _startTime;
+  BleepoutParameters& _appParams;
   PlayerManager& _playerManager;
   RoundConfig _config;
   RoundState _state;
@@ -78,6 +86,7 @@ private:
   ofPtr<LogicController> _logicController;
   TimedActionSet _timedActions;
   ofPtr<AnimationManager> _animationManager;
+  Pulser _cullDeadObjectsPulser;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

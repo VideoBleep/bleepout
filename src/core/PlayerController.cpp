@@ -104,16 +104,3 @@ void PlayerController::notifyPlayerConnected(ofPtr<Player> player) {
 	ofNotifyEvent(playerConnectedEvent, e);
 	logEvent("PlayerConnected", e);
 }
-
-
-void PlayerController::notifyPlayerAdded(ofPtr<Player> player) {
-	PlayerEventArgs e(player);
-	ofNotifyEvent(playerAddedEvent, e);
-	logEvent("PlayerAdded", e);
-}
-
-void PlayerController::notifyPlayerRemoved(ofPtr<Player> player) {
-	PlayerEventArgs e(player);
-	ofNotifyEvent(playerRemovedEvent, e);
-	logEvent("PlayerRemoved", e);
-}
