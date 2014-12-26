@@ -80,9 +80,9 @@ static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
 
 void RoundController::update() {
   if (_paused && !_appParams.paused) {
-//    float footime = ofGetElapsedTimef() - _startTime;
-//    float diff = footime - _state.time;
-//    _startTime += diff;
+    //    float footime = ofGetElapsedTimef() - _startTime;
+    //    float diff = footime - _state.time;
+    //    _startTime += diff;
     _startTime = ofGetElapsedTimef() - _state.time;
     _paused = false;
   }

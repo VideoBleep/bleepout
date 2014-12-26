@@ -12,11 +12,11 @@
 
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   os << "position:(" << obj.getPosition() << ")"
-  << ", size:(" << obj.getSize() << ")"
-  << ", boundingBox:" << obj.getBoundingBox()
-  << ", velocity:" << obj.getVelocity()
-  << ", collisionShape:" << obj.collisionShape
-  << ", trajectory:";
+    << ", size:(" << obj.getSize() << ")"
+    << ", boundingBox:" << obj.getBoundingBox()
+    << ", velocity:" << obj.getVelocity()
+    << ", collisionShape:" << obj.collisionShape
+    << ", trajectory:";
   if (obj.trajectory)
     os << (obj.trajectory.get());
   else
@@ -24,8 +24,8 @@ void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
 }
 
 std::ostream& operator<<(std::ostream& os, const PhysicsObject& obj) {
-    obj.output(os);
-    return os;
+  obj.output(os);
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const GameObject& obj) {
@@ -51,7 +51,7 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
 }
 
 void PhysicsObject::output(std::ostream& os) const {
-    outputPhysicsObjectFields(os, *this);
+  outputPhysicsObjectFields(os, *this);
 }
 
 void Brick::output(std::ostream &os) const {
@@ -87,9 +87,9 @@ void Ball::output(std::ostream &os) const {
 
 void Player::output(std::ostream &os) const {
   os << "Player{id:" << id()
-     << ", score:" << score()
-     << ", lives:" << lives()
-     << ", paddle:";
+  << ", score:" << score()
+  << ", lives:" << lives()
+  << ", paddle:";
   outputObjectId(os, paddle());
   os << "}";
 }
@@ -139,16 +139,16 @@ std::ostream& operator<<(std::ostream& os, const RoundState& state) {
 
 void OrbitalTrajectory::output(std::ostream &os) const {
   os << "OrbitalTrajectory{radius:" << getRadius()
-     << ", speed:" << getSpeed()
-     << ", pos:" << getPosition()
-     << ", u:" << _u
-     << ", w:" << _w
-     << ", t:" << _t
-     << "}";
+    << ", speed:" << getSpeed()
+    << ", pos:" << getPosition()
+    << ", u:" << _u
+    << ", w:" << _w
+    << ", t:" << _t
+    << "}";
 }
 
 void CircularTrajectory::output(std::ostream &os) const {
-    os << "OrbitalTrajectory{radius:" << getRadius()
+  os << "OrbitalTrajectory{radius:" << getRadius()
     << ", speed:" << getSpeed()
     << ", pos:" << getPosition()
     << ", t:" << _t
@@ -162,7 +162,7 @@ std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory) {
 
 std::ostream& operator<<(std::ostream& os, const BoundingBox& box) {
   return os << "BoundingBox{center:" << box.center
-            << ", hw:" << box.halfwidths << "}";
+  << ", hw:" << box.halfwidths << "}";
 }
 
 std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
@@ -232,9 +232,9 @@ std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
 
 std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec) {
   os << "(type:" << spec.type
-     << ", duration:" << spec.duration
-     << ", amount:" << spec.amount
-     << ")";
+    << ", duration:" << spec.duration
+    << ", amount:" << spec.amount
+    << ")";
   return os;
 }
 

@@ -51,7 +51,7 @@ public:
   const Modifier* modifier() const { return _modifier; }
   Paddle* paddle() { return _paddle; }
   const Paddle* paddle() const { return _paddle; }
-
+  
   virtual void output(std::ostream& os) const override;
 private:
   Modifier* _modifier;

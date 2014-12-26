@@ -60,7 +60,7 @@ private:
 
 TimedAction*
 OnceAction::newOnceAction(float triggerTime,
-                           ofPtr<TimedFunc> fn) {
+                          ofPtr<TimedFunc> fn) {
   return new FunctorOnceAction(triggerTime, fn);
 }
 

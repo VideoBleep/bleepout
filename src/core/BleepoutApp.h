@@ -32,12 +32,12 @@ public:
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<EmptyEventArgs> roundEndedEvent;
-
+  
   // oF interface methods
   void setup() override;
   void update() override;
   void draw() override;
-
+  
   void keyPressed(int key) override;
   void mousePressed(int x, int y, int button);
   void mouseMoved(int x, int y );
@@ -49,15 +49,15 @@ public:
 private:
   void onTryStartRound(StartRoundEventArgs& e);
   void onTryEndRound(EndRoundEventArgs& e);
-  
+
   void notifyRoundStarted(RoundState& state);
   void notifyRoundEnded();
   void endRound();
 
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
-	ofPtr<PlayerManager> _playerManager;
-	ofPtr<PlayerController> _playerController;
+  ofPtr<PlayerManager> _playerManager;
+  ofPtr<PlayerController> _playerController;
   ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;

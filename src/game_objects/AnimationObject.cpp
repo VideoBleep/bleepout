@@ -38,13 +38,13 @@ void AnimationUpdater::call(RoundState& state, float percentage) {
 }
 
 void AnimationUpdater::start() {
-//  ofLogNotice() << "Starting animation update action: " << _animation;
+  //  ofLogNotice() << "Starting animation update action: " << _animation;
   DurationAction::start();
   _animation.show();
 }
 
 void AnimationUpdater::end() {
-//  ofLogNotice() << "Ending animation update action: " << _animation;
+  //  ofLogNotice() << "Ending animation update action: " << _animation;
   DurationAction::end();
   _animation.hide();
   _animationList.eraseObjectById(_animation.id());
@@ -58,7 +58,7 @@ DurationAction*
 AnimationObject::createUpdaterAction(RoundState& state) {
   float now = state.time;
   float start = now + _delay;
-//  ofLogNotice() << "Creating updater action to start at " << start << " and end at " << (start + _duration) << ". Current time: " << now;
+  //  ofLogNotice() << "Creating updater action to start at " << start << " and end at " << (start + _duration) << ". Current time: " << now;
   return new AnimationUpdater(start, start + _duration,
                               *this, state.animations());
 }

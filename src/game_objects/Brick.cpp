@@ -25,16 +25,16 @@ Brick::Brick(const RoundConfig& config, const BrickSpec& spec)
   _maxLives = spec.lives;
   _modifierName = spec.modifierName;
   if (spec.speed == 0) {
-      this->setPositionSpherical(config.domeRadius() +
-                                 config.domeMargin(),
-                                 spec.elevation,
-                                 spec.heading);
+    this->setPositionSpherical(config.domeRadius() +
+                               config.domeMargin(),
+                               spec.elevation,
+                               spec.heading);
   } else {
-      this->setTrajectory(new CircularTrajectory(config.domeRadius() +
-                                                 config.domeMargin(),
-                                                 spec.speed,
-                                                 spec.elevation,
-                                                 spec.heading,
-                                                 spec.stopHeading));
+    this->setTrajectory(new CircularTrajectory(config.domeRadius() +
+                                               config.domeMargin(),
+                                               spec.speed,
+                                               spec.elevation,
+                                               spec.heading,
+                                               spec.stopHeading));
   }
 }

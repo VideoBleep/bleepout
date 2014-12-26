@@ -46,7 +46,7 @@ public:
   GameObjectCollection<AnimationObject>& animations() { return _animations; }
   
   const RoundConfig& config() const { return _config; }
-
+  
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
   Wall& addWall(const WallSpec& wallSpec);
@@ -61,7 +61,7 @@ public:
   int liveBricks() const { return _liveBricks; }
   
   void output(std::ostream& os) const;
-
+  
   float time;
   float endTime;
   

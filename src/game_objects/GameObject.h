@@ -32,7 +32,7 @@ public:
   
   void kill() { _alive = false; }
   void revive() { _alive = true; }
-    
+  
   virtual const ofColor& getColor() const { return _color; }
   virtual void setColor(const ofColor& color) { _color = color; }
   

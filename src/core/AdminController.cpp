@@ -251,7 +251,7 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
     _appParams.ballsToAdd++;
   } else if (e.widget == _controls->timeLimitToggle ||
-      e.widget == _controls->timeLimit) {
+             e.widget == _controls->timeLimit) {
     if (_controls->timeLimitToggle->getValue()) {
       _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
@@ -293,7 +293,7 @@ void AdminController::tryEndRound() {
   notifyTryEndRound();
 }
 bool AdminController::notifyTryStartRound(ofPtr<RoundConfig> config,
-                      std::list<ofPtr<Player> > players) {
+                                          std::list<ofPtr<Player> > players) {
   StartRoundEventArgs e(config, players);
   ofNotifyEvent(tryStartRoundEvent, e);
   logEvent("TryStartRound", e);

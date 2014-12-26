@@ -27,9 +27,9 @@ public:
   void setup();
   void update();
   void drawDebug();
-    
+  
   void addInitialPaddles();
-    
+  
   void addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
   
@@ -38,11 +38,11 @@ public:
   void removeObject(PhysicsObject& object);
   
   const char* eventSourceName() const override { return "SpaceController"; }
-    
+
 private:
   void addBrick(const BrickSpec& brickSpec);
   void addWall(const WallSpec& wallSpec);
-  
+
   void onCollision(CollisionArgs &cdata);
 
   void notifyCollision(GameObject* a, GameObject* b);
