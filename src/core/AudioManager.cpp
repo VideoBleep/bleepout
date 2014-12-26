@@ -26,6 +26,7 @@ void AudioManager::setup() {
   const BleepoutConfig& config = _appParams.appConfig();
   loadSoundSafe(_roundStartedSound, config.roundStartedSound);
   loadSoundSafe(_roundEndedSound, config.roundEndedSound);
+  loadSoundSafe(_brickHitSound, config.brickHitSound);
   loadSoundSafe(_brickDestroyedSound, config.brickDestroyedSound);
   loadSoundSafe(_collisionSound, config.collisionSound);
   loadSoundSafe(_modifierAppliedSound, config.modifierAppliedSound);
@@ -65,8 +66,8 @@ void AudioManager::detachFrom(BleepoutApp &app) {
 }
 
 void AudioManager::attachTo(RoundController &roundController) {
-  ofAddListener(roundController.logicController().brickDestroyedEvent,
-                this, &AudioManager::onBrickDestroyed);
+  ofAddListener(roundController.logicController().brickHitEvent,
+                this, &AudioManager::onBrickHit);
   ofAddListener(roundController.spaceController().collisionEvent,
                 this, &AudioManager::onCollision);
   ofAddListener(roundController.logicController().modifierAppliedEvent,
@@ -84,8 +85,8 @@ void AudioManager::attachTo(RoundController &roundController) {
 }
 
 void AudioManager::detachFrom(RoundController &roundController) {
-  ofRemoveListener(roundController.logicController().brickDestroyedEvent,
-                   this, &AudioManager::onBrickDestroyed);
+  ofRemoveListener(roundController.logicController().brickHitEvent,
+                   this, &AudioManager::onBrickHit);
   ofRemoveListener(roundController.spaceController().collisionEvent,
                    this, &AudioManager::onCollision);
   ofRemoveListener(roundController.logicController().modifierAppliedEvent,
@@ -110,8 +111,11 @@ void AudioManager::onRoundEnded(EmptyEventArgs &e) {
   _roundEndedSound.play();
 }
 
-void AudioManager::onBrickDestroyed(BrickDestroyedEventArgs &e) {
-  _brickDestroyedSound.play();
+void AudioManager::onBrickHit(BrickHitEventArgs &e) {
+  if (!e.brick()->alive())
+    _brickDestroyedSound.play();
+  else
+    _brickHitSound.play();
 }
 
 void AudioManager::onCollision(CollisionEventArgs &e) {
