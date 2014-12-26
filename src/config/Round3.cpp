@@ -44,7 +44,7 @@ static void createBrickGroups(RoundConfig* config,
 }
 
 RoundConfig* RoundConfig::createRoundConfig3() {
-  RoundConfig* config = new RoundConfig("Round3");
+  RoundConfig* config = new RoundConfig("Round 3");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;

@@ -40,6 +40,7 @@ public:
   static RoundConfig* createRoundConfig1();
   static RoundConfig* createRoundConfig2();
   static RoundConfig* createRoundConfig3();
+  static RoundConfig* createRoundConfig4();
   
   explicit RoundConfig(std::string name);
   

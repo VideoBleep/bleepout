@@ -42,6 +42,7 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig1()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig2()));
   config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig3()));
+  config->_roundConfigs.push_back(ofPtr<RoundConfig>(RoundConfig::createRoundConfig4()));
   return config;
 }
 
@@ -133,10 +134,16 @@ static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& 
     .setSpeed(ring.speed);
   for (int i = 0; i < ring.count; i++) {
     float heading = i * 360 / (ring.count * 1.0) + ring.phase;
-    bricks.push_back(BrickSpec()
-                     .copyFrom(prototype)
-                     .setHeading(heading)
-                     .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
+    BrickSpec brick = BrickSpec()
+      .copyFrom(prototype)
+      .setHeading(heading)
+      .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading));
+    if (!ring.modifierName.empty()) {
+      if (ring.modifierChance >= 1 || ofRandomuf() >= ring.modifierChance) {
+        brick.setModifier(ring.modifierName);
+      }
+    }
+    bricks.push_back(brick);
   }
 }
 

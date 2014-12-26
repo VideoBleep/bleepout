@@ -61,6 +61,8 @@ struct BrickRingSpec {
   float phase;
   float speed;
   float stopHeading;
+  std::string modifierName;
+  float modifierChance;
   
   BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1), size(7.0f, 5.0f, 17.0f) { }
   BrickRingSpec& copyFrom(const BrickRingSpec& other) {
@@ -73,6 +75,8 @@ struct BrickRingSpec {
     phase = other.phase;
     speed = other.speed;
     stopHeading = other.stopHeading;
+    modifierName = other.modifierName;
+    modifierChance = other.modifierChance;
     return *this;
   }
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
@@ -84,6 +88,11 @@ struct BrickRingSpec {
   BrickRingSpec& setSpeed(float s) { speed = s; return *this; }
   BrickRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
   BrickRingSpec& setPhase(float p) { phase = p; return *this; }
+  BrickRingSpec& setModifier(std::string mod, float chance) {
+    modifierName = mod;
+    modifierChance = chance;
+    return *this;
+  }
 };
 
 struct WallSpec {
