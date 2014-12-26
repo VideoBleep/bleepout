@@ -62,6 +62,8 @@ public:
   void addTimedAction(ofPtr<TimedAction> action);
   
   const char* eventSourceName() const override { return "RoundController"; }
+  
+  LogicController& logicController() { return *_logicController; }
 
 private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
