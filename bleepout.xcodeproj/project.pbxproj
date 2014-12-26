@@ -192,6 +192,7 @@
 		32269B9A1A4CA55A00EF6DE4 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		32269B9F1A4DD18200EF6DE4 /* AudioManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManager.cpp; sourceTree = "<group>"; };
 		32269BA01A4DD18200EF6DE4 /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
+		32269BAC1A4DF14E00EF6DE4 /* MessageQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageQueue.h; sourceTree = "<group>"; };
 		322D59D71A454BCF00150050 /* RendererUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RendererUtil.cpp; sourceTree = "<group>"; };
 		322D59D81A454BCF00150050 /* RendererUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RendererUtil.h; sourceTree = "<group>"; };
 		325750E51A4792A500CC375A /* Round1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Round1.cpp; sourceTree = "<group>"; };
@@ -927,6 +928,7 @@
 				32269B7A1A4A861400EF6DE4 /* RoundComponent.h */,
 				32269B9F1A4DD18200EF6DE4 /* AudioManager.cpp */,
 				32269BA01A4DD18200EF6DE4 /* AudioManager.h */,
+				32269BAC1A4DF14E00EF6DE4 /* MessageQueue.h */,
 			);
 			path = core;
 			sourceTree = "<group>";
