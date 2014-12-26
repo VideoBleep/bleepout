@@ -9,7 +9,7 @@
 #include "BleepoutConfig.h"
 
 RoundConfig* RoundConfig::createRoundConfig1() {
-  RoundConfig* config = new RoundConfig("Round1");
+  RoundConfig* config = new RoundConfig("Round 1");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
@@ -110,7 +110,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)
