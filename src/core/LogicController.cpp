@@ -234,6 +234,7 @@ bool LogicController::notifyTryEndRound() {
   EndRoundEventArgs e;
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
+  return e.handled();
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
