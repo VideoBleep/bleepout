@@ -13,9 +13,34 @@
 	* Configure
 	* Queue
 	* Calibrate
+
+
+	Message Exchange Sequence 
+
+	Constant:
+
+	- New Player > PlayerController::connect
+	PlayerManager::setPlayerColor < Select Color - 
+	- Set Color > PlayerController::configure
+	PlayerManager::setPlayerQueued < Queued -
+
+	Round Queue:
+
+	PlayerManager::setPlayerCalibrate < Calibrate -
+	- Calibration Complete > PlayerController::calibrate
+	< Game Ready -
+	- Player Start > PlayerController::start
+
+
+	Round Play:
+
+	< Play -
+	- Player Control > PlayerController::control  (?)
+	- Quit > PlayerController::quit
 */
 
 #include "PlayerController.h"
+#include "PlayerManager.h"
 #include "GameEvents.h"
 #include "Logging.h"
 
@@ -30,6 +55,9 @@ void PlayerController::connect(ofPtr<Player> player) {
 	//_setup.Lobby().push_back(player);
 	// TODO: Set player state to 'select color'
 	// TODO: send message to player that they are in that state
+
+	// For now: Set player to Queued
+	//PlayerManager::setPlayerQueued(player);
 };
 
 // Player has entered the 'lobby'. Called by PlayerController::configure()
@@ -46,11 +74,10 @@ void PlayerController::calibrate(ofPtr<Player> player) {
 		4. Once user clicks the action button (calibrate), allow them to control the object and move it to the location they want to play in
 		5. Player clicks 'start' once ready
 	*/
-
-
-
 };
 
+
+// Handle configure message from player (set color)
 void PlayerController::configure(ofPtr<Player> player, vector<string> parts) {
 
 };
