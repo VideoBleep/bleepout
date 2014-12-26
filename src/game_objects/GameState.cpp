@@ -53,7 +53,7 @@ Wall& RoundState::addWall(const WallSpec& wallSpec) {
 }
 
 Ball& RoundState::addBall(const BallSpec& ballSpec) {
-  ofPtr<Ball> ball(new Ball(&_config, &ballSpec));
+  ofPtr<Ball> ball(new Ball(_config, ballSpec));
   _balls.push_back(ball);
   return *ball;
 }
