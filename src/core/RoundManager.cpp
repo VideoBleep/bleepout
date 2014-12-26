@@ -53,13 +53,6 @@ void RoundController::setup() {
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   
-  // for ease of debugging, disable exits initially
-  for (auto& wall : _state.walls()) {
-    if (wall->isExit()) {
-      wall->kill();
-    }
-  }
-  
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
