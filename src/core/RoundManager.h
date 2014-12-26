@@ -26,7 +26,7 @@ class RendererBase;
 class RoundController : public EventSource
 {
 public:
-  RoundController(RoundConfig config,
+  RoundController(RoundConfig& config,
                   BleepoutParameters& appParams,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
@@ -81,7 +81,7 @@ private:
   float _startTime;
   BleepoutParameters& _appParams;
   PlayerManager& _playerManager;
-  RoundConfig _config;
+  RoundConfig& _config;
   RoundState _state;
   ofPtr<RendererBase> _renderer;
   ofPtr<SpaceController> _spaceController;
