@@ -20,6 +20,7 @@ RoundResults::RoundResults(RoundEndReason r, const RoundState& state)
     PlayerRoundResult presult;
     presult.playerId = player->id();
     presult.score = player->score();
+    presult.modifierCounts = player->modifierCounts();
     _playerResults.push_back(presult);
   }
 }

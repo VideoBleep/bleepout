@@ -168,6 +168,15 @@ template<typename T>
 class Counters {
 public:
   Counters() : _counters() { }
+  Counters(const Counters<T>& other)
+  : _counters(other._counters) { }
+  Counters& operator=(const Counters& other) {
+    _counters.clear();
+    for (const auto& entry : other._counters) {
+      _counters.insert(entry);
+    }
+    return *this;
+  }
   
   int operator[](const T& key) const {
     const auto iter = _counters.find(key);
@@ -181,6 +190,13 @@ public:
     } else {
       _counters[key] = iter->second + amount;
     }
+  }
+  
+  inline typename std::map<T, int>::const_iterator begin() const {
+    return _counters.begin();
+  }
+  inline typename std::map<T, int>::const_iterator end() const {
+    return _counters.end();
   }
 private:
   std::map<T, int> _counters;

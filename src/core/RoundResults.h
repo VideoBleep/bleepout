@@ -10,6 +10,7 @@
 #define __bleepout__RoundResults__
 
 #include "GameState.h"
+#include "Common.h"
 #include <vector>
 #include <iostream>
 
@@ -24,6 +25,9 @@ enum RoundEndReason {
 struct PlayerRoundResult {
   GameObjectId playerId;
   int score;
+  Counters<ModifierType> modifierCounts;
+  
+  void output(std::ostream& os) const;
 };
 
 class RoundResults {

@@ -30,7 +30,7 @@ void Player::init() {
 
 void Player::enqueueBallModifier(const ModifierSpec &modifierSpec) {
   _ballModifierQueue.push_back(modifierSpec);
-  _modifierCounters.add(modifierSpec.type);
+  _modifierCounts.add(modifierSpec.type);
 }
 
 bool Player::tryDequeueBallModifier(ModifierSpec *modifierSpec) {
@@ -42,7 +42,7 @@ bool Player::tryDequeueBallModifier(ModifierSpec *modifierSpec) {
 }
 
 void Player::incrementModifierCount(ModifierType type) {
-  _modifierCounters.add(type, 1);
+  _modifierCounts.add(type, 1);
 }
 
 bool ExtraLifeModifier::applyToTarget(RoundState& state, GameObject &target) {

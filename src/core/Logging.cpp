@@ -288,6 +288,27 @@ std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason) {
   return os;
 }
 
+void PlayerRoundResult::output(std::ostream &os) const {
+  os << "PlayerResult{";
+  os << "id: " << playerId << ", ";
+  os << "score: " << score << ", ";
+  os << "modifiers: (";
+  bool first = true;
+  for (const auto& entry : modifierCounts) {
+    if (!first)
+      os << ", ";
+    else
+      first = false;
+    os << entry.first << ": " << entry.second;
+  }
+  os << ")}";
+}
+
+std::ostream& operator<<(std::ostream& os, const PlayerRoundResult& result) {
+  result.output(os);
+  return os;
+}
+
 void RoundResults::output(std::ostream &os) const {
   os << "RoundResults{";
   os << "reason: " << reason << ", ";
@@ -298,11 +319,11 @@ void RoundResults::output(std::ostream &os) const {
   os << "players: (";
   bool first = true;
   for (const auto& player : _playerResults) {
-    if (!first) {
+    if (!first)
       os << ", ";
+    else
       first = false;
-    }
-    os << "Player{id: " << player.playerId << ", score: " << player.score << "}";
+    os << player;
   }
   os << ")";
   os << "}";

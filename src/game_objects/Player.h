@@ -54,7 +54,7 @@ public:
   virtual bool physical() const override { return false; }
   virtual bool visible() const override { return false; }
   
-  const Counters<ModifierType>& modifierCounters() const { return _modifierCounters; }
+  const Counters<ModifierType>& modifierCounts() const { return _modifierCounts; }
   
   void send(std::string message) { _conn->send(message); }
   void output(std::ostream& os) const override;
@@ -76,7 +76,7 @@ private:
   int _lives;
   
   std::list<ModifierSpec> _ballModifierQueue;
-  Counters<ModifierType> _modifierCounters;
+  Counters<ModifierType> _modifierCounts;
 };
 
 template<>
