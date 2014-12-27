@@ -290,8 +290,19 @@ std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason) {
 
 void RoundResults::output(std::ostream &os) const {
   os << "RoundResults{";
-  os << "bricksDestroyed: " << bricksDestroyed << "/" << totalBricks;
-  //...
+  os << "reason: " << reason << ", ";
+  os << "remainingBricks: " << liveBricks << "/" << totalBricks << ", ";
+  os << "remainingBalls: " << liveBalls << "/" << totalBalls << "< ";
+  os << "players: (";
+  bool first = true;
+  for (const auto& player : _playerResults) {
+    if (!first) {
+      os << ", ";
+      first = false;
+    }
+    os << "Player{id: " << player.playerId << ", score: " << player.score << "}";
+  }
+  os << ")";
   os << "}";
 }
 

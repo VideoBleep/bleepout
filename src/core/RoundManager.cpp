@@ -151,9 +151,7 @@ void RoundController::notifyRoundEnded(RoundResults &results) {
 }
 
 RoundResults RoundController::buildRoundResults(RoundEndReason reason) {
-  RoundResults results;
-  results.reason = reason;
-  //...
+  RoundResults results(reason, _state);
   return results;
 }
 

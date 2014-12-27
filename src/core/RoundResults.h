@@ -28,9 +28,14 @@ struct PlayerRoundResult {
 
 class RoundResults {
 public:
+  RoundResults(RoundEndReason r, const RoundState& state);
+
   RoundEndReason reason;
+  
   int totalBricks;
-  int bricksDestroyed;
+  int liveBricks;
+  int totalBalls;
+  int liveBalls;
   
   void output(std::ostream& os) const;
 private:

@@ -59,6 +59,10 @@ public:
   }
   
   int liveBricks() const { return _liveBricks; }
+  int totalBricks() const { return _totalBricks; }
+  
+  int liveBalls() const;
+  int totalBalls() const { return _totalBalls; }
   
   void output(std::ostream& os) const;
   
@@ -88,6 +92,8 @@ private:
   GameObjectCollection<Modifier> _modifiers;
   GameObjectCollection<AnimationObject> _animations;
   int _liveBricks;
+  int _totalBricks;
+  int _totalBalls;
 };
 
 #endif /* defined(__bleepout__GameState__) */
