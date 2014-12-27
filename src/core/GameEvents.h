@@ -173,13 +173,13 @@ private:
 
 class PlayerEventArgs : public Outputable {
 public:
-  PlayerEventArgs(ofPtr<Player> player)
+  PlayerEventArgs(Player* player)
   : _player(player) { }
-  ofPtr<Player>& player() { return _player; }
-  const ofPtr<Player>& player() const { return _player; }
+  Player* player() { return _player; }
+  const Player* player() const { return _player; }
   virtual void output(std::ostream& os) const override;
 private:
-  ofPtr<Player> _player;
+  Player* _player;
 };
 
 class RequestEventArgs {

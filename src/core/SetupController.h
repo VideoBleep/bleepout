@@ -42,9 +42,12 @@ private:
 
 	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game
-	std::list<ofPtr<Player> > _lobby;
-	// ConnectedPlayers is all current players
+	std::list<ofPtr<Player>> _lobby;
+  std::list<ofPtr<Player>> _roundPlayers;
+
+  // ConnectedPlayers is all current players
 	std::list<ofPtr<Player> > _connectedPlayers;
+
   
   const BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _roundConfig;

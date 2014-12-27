@@ -14,48 +14,77 @@
 	* Calibrate
 	* 
 	
+  Message Exchange Sequence
 
+  Constant:
+
+  1. [CONNECT] Client - New Player > PlayerController::connect
+  2. [SETCOLOR] PlayerManager::setPlayerColor < Select Color -
+  3. [CONFIGURED] Client - Set Color > PlayerController::configure
+  4. [QUEUED] PlayerManager::setPlayerQueued < Queued -
+
+  Round Queue:
+
+  5. [SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
+  6. [CALIBRATED] Client - Calibration Complete > PlayerController::calibrate
+  7. [GAME READY] PlayerManager::setPlayer???? < Game Ready -
+  8. [PLAYER START] Client - Player Start > PlayerController::start
+
+
+  Round Play:
+
+  9. [PLAYER PLAY] < Play -
+  10. [CONTROL] Client - Player Control > PlayerController::control  (?)
+  11. [QUIT] Client - Quit > PlayerController::quit
 */
 #ifndef __bleepout__PlayerController__
 #define __bleepout__PlayerController__
 
+#include "SetupController.h"
 #include "Player.h"
 #include "GameEvents.h"
 
 class PlayerController : public EventSource
 {
 public:
-	PlayerController();
+  PlayerController(SetupController& setup);
 
 	/*
 		Player Actions
 	*/
 	// Player connected - called by message from player
-	void connect(ofPtr<Player> player);
+  void connect(Player& player);
 	// Player configuring - called by message from player
-	void configure(ofPtr<Player> player, vector<string> parts); // , std::string[] & messageParts);
+  void configure(Player& player, ofColor color); // , std::string[] & messageParts);
 	// Player has entered the 'lobby' - called by player controller itself
-	void queue(ofPtr<Player> player);
+	void queue(Player& player);
 	// Calibrate Player Position - called by player, but this likely is a complicated step
-	void calibrate(ofPtr<Player> player);
+	void calibrate(Player& player);
 	// Player has started their game - called by player
-	void start(ofPtr<Player> player);
+	void start(Player& player);
 	// Player has quit. Called by player.
-	void quit(ofPtr<Player> player);
+	void quit(Player& player);
 	// Player's playtime is up. Evaluated at round end.
-	void expire(ofPtr<Player> player);
+	void expire(Player& player);
 
-	void onRoundQueue(RoundStateEventArgs& e); 
-	/*
+  /*
 		Events
 	*/
 	// Raised when player connects initially
 	ofEvent<PlayerEventArgs> playerConnectedEvent;
-  
+	ofEvent<PlayerEventArgs> playerReadyEvent;
+	ofEvent<PlayerEventArgs> playerStartEvent;
+	ofEvent<PlayerEventArgs> playerQuitEvent;
+
   const char* eventSourceName() const { return "PlayerController"; }
 
 private:
-	void notifyPlayerConnected(ofPtr<Player> player);
+  SetupController& _setup;
+
+	void notifyPlayerConnected(Player& player);
+	void notifyPlayerReady(Player& player);
+	void notifyPlayerStart(Player& player);
+	void notifyPlayerQuit(Player& player);
 };
 
 #endif /* defined(__bleepout__PlayerController__) */

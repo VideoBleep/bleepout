@@ -156,6 +156,7 @@
     <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Reactor.cpp" />
     <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Server.cpp" />
     <ClCompile Include="src\config\BleepoutConfig.cpp" />
+    <ClCompile Include="src\config\BleepoutParameters.cpp" />
     <ClCompile Include="src\config\JsonUtil.cpp" />
     <ClCompile Include="src\config\ObjectSpecs.cpp" />
     <ClCompile Include="src\config\Round1.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\core\PlayerController.cpp" />
     <ClCompile Include="src\core\PlayerManager.cpp" />
+    <ClCompile Include="src\core\RoundComponent.cpp" />
     <ClCompile Include="src\core\RoundManager.cpp" />
     <ClCompile Include="src\core\SetupController.cpp" />
     <ClCompile Include="src\core\SpaceController.cpp" />
@@ -275,6 +277,7 @@
     <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Server.h" />
     <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Util.h" />
     <ClInclude Include="src\config\BleepoutConfig.h" />
+    <ClInclude Include="src\config\BleepoutParameters.h" />
     <ClInclude Include="src\config\JsonUtil.h" />
     <ClInclude Include="src\config\ObjectSpecs.h" />
     <ClInclude Include="src\core\BleepoutApp.h" />
@@ -284,6 +287,7 @@
     <ClInclude Include="src\core\LogicController.h" />
     <ClInclude Include="src\core\PlayerController.h" />
     <ClInclude Include="src\core\PlayerManager.h" />
+    <ClInclude Include="src\core\RoundComponent.h" />
     <ClInclude Include="src\core\RoundManager.h" />
     <ClInclude Include="src\core\SetupController.h" />
     <ClInclude Include="src\core\SpaceController.h" />

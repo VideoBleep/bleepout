@@ -7,8 +7,37 @@
 //
 
 #include "PlayerManager.h"
-#include "RoundManager.h"
 #include "Logging.h"
+
+// Engine.io client packet type prefixes
+const std::string PACKET_OPEN = "0";
+const std::string PACKET_CLOSE = "1";
+const std::string PACKET_PING = "2";
+const std::string PACKET_PONG = "3";
+const std::string PACKET_MESSAGE = "4";
+const std::string PACKET_UPGRADE = "5";
+const std::string PACKET_NOOP = "6";
+
+// Client-to-Server websocket message prefixes
+const std::string MESSAGE_NEW = "new"; // New player
+const std::string MESSAGE_START = "sta"; // Player start
+const std::string MESSAGE_YPR = "ypr"; // Yaw / Pitch / Roll 
+const std::string MESSAGE_ACT = "act"; // Action 
+
+// Action message prefixes
+const std::string ACTION_CONFIGURE = "cfg"; // set color
+const std::string ACTION_CALIBRATE = "cal"; // set position offsets
+const std::string ACTION_START = "start"; // player ready
+const std::string ACTION_QUIT = "quit"; // quit game
+
+// State message prefixes
+const std::string STATE_COLOR = "col"; // player should select color
+const std::string STATE_QUEUED = "que"; // player is queued, holding for game ready
+const std::string STATE_CALIBRATION = "cal"; // player needs to calibrate
+const std::string STATE_READY = "rdy"; // game is ready, awaiting player ready
+const std::string STATE_PLAY = "play"; // game is playing, free to send control
+
+std::string messageDelimiter = "|";
 
 PlayerManager::PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController)
 	: _bleepoutApp(bleepoutApp), 
@@ -48,6 +77,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 	// pingInterval;
 	// pingTimeout;
 
+	// TODO - Create a proper SID
 	// TODO - Build with a JSON builder
 	std::string handshake = "{ \"sid\": 1, \"upgrades\": [\"websockets\"], \"pingInterval\": 100, \"pingTimeout\": 1000 }";
 
@@ -57,7 +87,7 @@ void PlayerManager::onConnect(ofxLibwebsockets::Event& args){
 void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 	cout << "new connection open from " << args.conn.getClientIP() << endl;
 
-  args.conn.send(std::string(PACKET_MESSAGE) + "socket opened");
+	args.conn.send(std::string(PACKET_MESSAGE) + "socket opened");
 }
 
 void PlayerManager::onClose(ofxLibwebsockets::Event& args){
@@ -120,35 +150,41 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args){
 			return;
 		}
 		int id___UNUSED = ofHexToInt(parts[1]);
-		ofColor color(ofHexToInt(parts[2]),
-									ofHexToInt(parts[3]),
-									ofHexToInt(parts[4]));
-		player.reset(new Player(&args.conn));
-		player->setColor(color);
+    // TODO - this should be handled in controller 'configure'
+		//ofColor color(ofHexToInt(parts[2]),
+		//							ofHexToInt(parts[3]),
+		//							ofHexToInt(parts[4]));
+		//player.reset(new Player(&args.conn));
+
 		//_players.push_back(player);
-		controller.connect(player);
+
+		controller.connect(*player);
 
 		ofLogNotice() << "Player Created - id#" << id___UNUSED;
-		// Pong
+		// TODO: correct this Pong reply
 		args.conn.send("hello");
 		return;
 	}
 
 	// Set color
 	if (msgPrefix == ACTION_CONFIGURE) {
-		controller.configure(player, parts);
+    ofColor color(
+      ofHexToInt(parts[2]),
+      ofHexToInt(parts[3]),
+      ofHexToInt(parts[4]));
+    controller.configure(*player, color);
 	}
-	
+	// Indicates that player has calibrated
 	if (msgPrefix == ACTION_CALIBRATE) {
-		controller.calibrate(player);
+		controller.calibrate(*player);
 	}
-	
+	// Player has started their game, we are free to drop their ball
 	if (msgPrefix == ACTION_START) {
-		controller.start(player);
+		controller.start(*player);
 	}
 
 	if (msgPrefix == ACTION_QUIT) {
-		controller.quit(player);
+		controller.quit(*player);
 	}
 
 }
@@ -180,4 +216,28 @@ void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
                                              float roll) {
   PlayerYawPitchRollEventArgs e(player, yaw, pitch, roll);
   ofNotifyEvent(playerYawPitchRollEvent, e);
+}
+
+/*
+SEND STATE MESSAGES TO PLAYER
+*/
+// Send 'Select Color' state message to player
+void PlayerManager::setPlayerColor(Player& player) {
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
+}
+// Send 'Queued' state message to player
+void PlayerManager::setPlayerQueued(Player& player) {
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
+}
+// Send 'Calibrate' state message to player
+void PlayerManager::setPlayerCalibrate(Player& player) {
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
+}
+// Send 'Ready' state message to player 
+void PlayerManager::setPlayerReady(Player& player) {
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_READY);
+}
+// Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
+void PlayerManager::setPlayerPlay(Player& player) {
+	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_PLAY);
 }

@@ -19,24 +19,24 @@
 
 	Constant:
 
-	- New Player > PlayerController::connect
-	PlayerManager::setPlayerColor < Select Color - 
-	- Set Color > PlayerController::configure
-	PlayerManager::setPlayerQueued < Queued -
+	1. [CONNECT] Client - New Player > PlayerController::connect
+	2. [SETCOLOR] PlayerManager::setPlayerColor < Select Color - 
+	3. [CONFIGURED] Client - Set Color > PlayerController::configure
+	4. [QUEUED] PlayerManager::setPlayerQueued < Queued -
 
 	Round Queue:
 
-	PlayerManager::setPlayerCalibrate < Calibrate -
-	- Calibration Complete > PlayerController::calibrate
-	< Game Ready -
-	- Player Start > PlayerController::start
+	5. [SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
+	6. [CALIBRATED] Client - Calibration Complete > PlayerController::calibrate
+	7. [GAME READY] PlayerManager::setPlayer???? < Game Ready -
+	8. [PLAYER START] Client - Player Start > PlayerController::start
 
 
 	Round Play:
 
-	< Play -
-	- Player Control > PlayerController::control  (?)
-	- Quit > PlayerController::quit
+	9. [PLAYER PLAY] < Play -
+	10. [CONTROL] Client - Player Control > PlayerController::control  (?)
+	11. [QUIT] Client - Quit > PlayerController::quit
 */
 
 #include "PlayerController.h"
@@ -44,63 +44,95 @@
 #include "GameEvents.h"
 #include "Logging.h"
 
-PlayerController::PlayerController() //(SetupController& setup)
-	//: _setup(setup) 
+PlayerController::PlayerController(SetupController& setup)
+	: _setup(setup) 
 {
 
 }
 
 // Player connected
-void PlayerController::connect(ofPtr<Player> player) {
+// 1.[CONNECT] Client - New Player > PlayerController::connect
+void PlayerController::connect(Player& player) {
 	//_setup.Lobby().push_back(player);
 	// TODO: Set player state to 'select color'
-	// TODO: send message to player that they are in that state
+  
+  // Send message to player that they are in that state
+  // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
+  //PlayerManager::setPlayerColor(*player);
+  
 
-	// For now: Set player to Queued
-	//PlayerManager::setPlayerQueued(player);
+	// TODO: Remove this... For now: Set player to Queued. 
+  this->queue(player);
 };
 
 // Player has entered the 'lobby'. Called by PlayerController::configure()
-void PlayerController::queue(ofPtr<Player>  player) {
-
+void PlayerController::queue(Player& player) {
+  // 4.[QUEUED] PlayerManager::setPlayerQueued < Queued -
+  PlayerManager::setPlayerQueued(player);
 };
 
+
+
 // Calibrate Player Position
-void PlayerController::calibrate(ofPtr<Player> player) {
+//5.[SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
+void PlayerController::calibrate(Player& player) {
 	/*
 		1. Show player a stationary object in the position we believe them to be pointing
-		2. Player should now point to the target object with their phone, and click the action button on their screen
+    2. Player should now point to the target object with their phone, and click the action button on their screen
 		3. TODO: Client should now record compass settings / offset
+
+    //5.[SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
 		4. Once user clicks the action button (calibrate), allow them to control the object and move it to the location they want to play in
 		5. Player clicks 'start' once ready
 	*/
+  PlayerManager::setPlayerCalibrate(player);
 };
 
-
 // Handle configure message from player (set color)
-void PlayerController::configure(ofPtr<Player> player, vector<string> parts) {
+// 3. [CONFIGURED] Client - Set Color > PlayerController::configure
+void PlayerController::configure(Player& player, ofColor color) {
+  player.setColor(color);
 
+  // set player queued
+  this->queue(player);
 };
 
 // Player has started their game.
-void PlayerController::start(ofPtr<Player> player) {
+void PlayerController::start(Player& player) {
 	// TODO: implement
 };
 
 // Player has quit. Called by player.
-void PlayerController::quit(ofPtr<Player> player) {};
+void PlayerController::quit(Player& player) {
+	// TODO: What happens here? Delete the paddle? Set player state to quit?
+};
 
 // Player's playtime is up. Evaluated at round end.
-void PlayerController::expire(ofPtr<Player> player) {};
-
-void PlayerController::onRoundQueue(RoundStateEventArgs& e) {
-	// iterate each of the players in the game queue (not lobby) and notify them to begin calibrate
-	
-}
+void PlayerController::expire(Player& player) {
+	// Should be similar to quit
+};
 
 // Events
-void PlayerController::notifyPlayerConnected(ofPtr<Player> player) {
-	PlayerEventArgs e(player);
+void PlayerController::notifyPlayerConnected(Player& player) {
+	PlayerEventArgs e(&player);
 	ofNotifyEvent(playerConnectedEvent, e);
 	logEvent("PlayerConnected", e);
+}
+
+void PlayerController::notifyPlayerReady(Player& player) {
+	PlayerEventArgs e(&player);
+	ofNotifyEvent(playerReadyEvent, e);
+	logEvent("PlayerReady", e);
+}
+
+void PlayerController::notifyPlayerStart(Player& player) {
+	PlayerEventArgs e(&player);
+	ofNotifyEvent(playerStartEvent, e);
+	logEvent("PlayerStart", e);
+}
+
+void PlayerController::notifyPlayerQuit(Player& player) {
+	PlayerEventArgs e(&player);
+	ofNotifyEvent(playerQuitEvent, e);
+	logEvent("PlayerQuit", e);
 }

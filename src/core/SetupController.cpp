@@ -15,13 +15,7 @@ SetupController::SetupController(const BleepoutConfig& appConfig)
 , EventSource() { }
 
 void SetupController::setup() {
-	// TODO: Remove. This is temporary test code 
-	_lobby.push_back(ofPtr<Player>(new Player()));
-	_lobby.push_back(ofPtr<Player>(new Player()));
-	_lobby.push_back(ofPtr<Player>(new Player()));
-	_lobby.push_back(ofPtr<Player>(new Player()));
-	_lobby.push_back(ofPtr<Player>(new Player()));
-	//...
+
 }
 
 void SetupController::update() {
@@ -94,7 +88,15 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no round config selected";
     return false;
   }
-  return notifyTryStartRound(_roundConfig, _lobby);
+
+  // Copy lobby (in this case, e.players()) to players.
+  _roundPlayers.clear();
+  for (std::list<ofPtr<Player>>::iterator iterator = _lobby.begin(), end = _lobby.end(); iterator != end; ++iterator) {
+    _roundPlayers.push_back(*iterator);
+    PlayerManager::setPlayerReady(**iterator);
+  }
+
+  return notifyTryStartRound(_roundConfig, _roundPlayers);
 }
 
 bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
@@ -106,5 +108,5 @@ bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
 }
 
 void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
-	_lobby.push_back(e.player());
+	_lobby.push_back(ofPtr<Player>(e.player()));
 }
