@@ -77,17 +77,25 @@ void BleepoutApp::update() {
 }
 
 void BleepoutApp::draw() {
+#ifndef RADOME
   ofBackground(0, 0, 0);
+#endif
+  
 #ifdef ENABLE_SYPHON
   if (_syphonEnabled)
     _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
 #endif // ENABLE_SYPHON
+  
   if (_roundController) {
     _roundController->draw();
   } else if (_setupController) {
     _setupController->draw();
   }
+  
+#ifndef RADOME
   _adminController->draw();
+#endif
+  
 }
 
 void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
@@ -176,3 +184,23 @@ void BleepoutApp::mouseDragged(int x, int y, int button) {
     _roundController->mouseDragged(x, y, button);
   }
 }
+
+
+#ifdef RADOME
+
+void BleepoutApp::initialize() {
+  setup();
+}
+
+void BleepoutApp::renderScene(DomeInfo& dome) {
+  draw();
+}
+
+void BleepoutApp::update(DomeInfo& dome) {
+  update();
+  _adminController->draw();
+}
+
+BleepoutApp app;
+
+#endif

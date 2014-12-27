@@ -1517,9 +1517,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 					../of_v0.8.4_osx_release/libs/openFrameworksCompiled/lib/osx,
-					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/fat,
 					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386,
-					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/x86_64,
 				);
 				LIB_BULLET_ALL_RELEASE = "$(LIB_BULLET_COLLISION_RELEASE) $(LIB_BULLET_DYNAMICS_RELEASE) $(LIB_BULLET_MATH_RELEASE) $(LIB_BULLET_MINI_CL_RELEASE) $(LIB_BULLET_SOFT_BODY_RELEASE)";
 				LIB_BULLET_COLLISION_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletCollision.a\"";
@@ -1622,9 +1620,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					../of_v0.8.4_osx_release/libs/openFrameworksCompiled/lib/osx,
-					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/fat,
 					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386,
-					../of_v0.8.4_osx_release/addons/ofxBullet/libs/bullet2.8.1/lib/osx/x86_64,
 				);
 				LIB_BULLET_ALL_RELEASE = "$(LIB_BULLET_COLLISION_RELEASE) $(LIB_BULLET_DYNAMICS_RELEASE) $(LIB_BULLET_MATH_RELEASE) $(LIB_BULLET_MINI_CL_RELEASE) $(LIB_BULLET_SOFT_BODY_RELEASE)";
 				LIB_BULLET_COLLISION_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletCollision.a\"";

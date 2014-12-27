@@ -79,10 +79,13 @@ DomeRenderer::DomeRenderer(RoundState& state,
 void DomeRenderer::setup() {
   ofEnableDepthTest();
   ofSetCircleResolution(64);
+    
+#ifndef RADOME
   _cam.setTarget(ofVec3f(0.0, 25.0, 0.0));
   _cam.setRotation(0.0, 0.66);
   _cam.setupPerspective(false);
-  
+#endif
+    
   _extras.setup();
   
   ofLight light;
@@ -111,9 +114,12 @@ void DomeRenderer::update() {
 }
 
 void DomeRenderer::draw() {
+    
+#ifndef RADOME
   _cam.setDistance(_config.domeRadius() * 2.1);
   _cam.begin();
-  
+#endif
+    
   float t = ofGetElapsedTimef() * 0.3;
   for (int i = 0; i < lights.size(); i++) {
     lights[i].setPosition(sphericalToCartesian(_config.domeRadius() * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
@@ -173,10 +179,12 @@ void DomeRenderer::draw() {
   
   if (_appParams.drawExtras)
     _extras.draw();
-  
+
+#ifndef RADOME
   _cam.end();
   
   ofDrawBitmapString("command + mouse to rotate camera\ncommand + T to show trajectories\ncommand + D to show physics debugging info\ncommand + L for laser mode\ncommand + C for comet mode\nE to toggle exits\nB to spawn new ball", 10, ofGetHeight() - 90);
+#endif
   
 }
 
@@ -188,9 +196,16 @@ void DomeRenderer::drawGenMesh(const GenMesh& gm, ofMaterial& mat, const ofColor
   
   ofSetColor(edgeColor);
   ofSetLineWidth(lineWidth);
+    
+#ifndef RADOME
   ofTranslate(_cam.getLookAtDir().normalized() * -0.2);
+#else
+  ofTranslate(gm.mesh->getVertex(0).normalized() * -0.2);
+#endif
   gm.outline->draw();
 }
+
+#ifndef RADOME
 
 void DomeRenderer::mousePressed(int x, int y, int button) {
   _cam.mousePressed(x, y, button);
@@ -203,6 +218,8 @@ void DomeRenderer::mouseReleased(int x, int y, int button) {
 void DomeRenderer::mouseDragged(int x, int y, int button) {
   _cam.mouseDragged(x, y, button);
 }
+
+#endif
 
 void DomeRenderer::drawBrick(Brick &brick) {
   ofColor edgeColor = ofColor::white;

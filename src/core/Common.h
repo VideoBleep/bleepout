@@ -15,7 +15,9 @@
 #include <iostream>
 
 #ifdef TARGET_OSX
+#ifndef RADOME
 #define ENABLE_SYPHON
+#endif
 #define BLEEPOUT_CONTROL_KEY OF_KEY_COMMAND
 #else
 #define BLEEPOUT_CONTROL_KEY OF_KEY_CONTROL

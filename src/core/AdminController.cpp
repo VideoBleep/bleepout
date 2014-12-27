@@ -68,9 +68,11 @@ struct AdminUIControls {
   ofxUIToggle* drawExtras;
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
+#ifdef ENABLE_SYPHON
   ofxUIToggle* enableSyphon;
   ofxUITextInput* syphonAppName;
   ofxUITextInput* syphonServerName;
+#endif
   ofxUIButton* startRound;
   ofxUIButton* endRound;
   ofxUILabel* remainingTime;
@@ -159,11 +161,13 @@ void AdminController::setup() {
   _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &_appParams.drawExtras);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
   _controls->addBall = _gui->addButton("Add Ball", false);
+#ifdef ENABLE_SYPHON
   _controls->enableSyphon = _gui->addLabelToggle("Syphon", &_appParams.enableSyphon);
   _controls->syphonAppName = _gui->addTextInput("Syphon App", _appParams.syphonAppName);
   _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
   _controls->syphonServerName = _gui->addTextInput("Syphon Server", _appParams.syphonServerName);
   _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
+#endif
   _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &_appParams.audioVolume);
   
   ofAddListener(_gui->newGUIEvent, this,
@@ -227,6 +231,7 @@ void AdminController::update() {
     timeText += ofToString(_roundState->remainingTime());
   _controls->remainingTime->setLabel(timeText);
   _gui->update();
+  _gui->setPosition(ofGetWidth() - uiWidth - 10, 10);
 }
 
 void AdminController::draw() {
@@ -242,13 +247,16 @@ static void dumpRoundQueue(BleepoutParameters& params) {
 }
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
+#ifdef ENABLE_SYPHON
   if (e.widget == _controls->syphonAppName) {
     _appParams.syphonAppName = _controls->syphonAppName->getTextString();
   } else if (e.widget == _controls->syphonServerName) {
     _appParams.syphonServerName = _controls->syphonServerName->getTextString();
   } else if (e.widget == _controls->enableSyphon) {
     _appParams.enableSyphon = _controls->enableSyphon->getValue();
-  } else if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
+  }
+#endif
+  if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
     _appParams.ballsToAdd++;
   } else if (e.widget == _controls->timeLimitToggle ||
              e.widget == _controls->timeLimit) {

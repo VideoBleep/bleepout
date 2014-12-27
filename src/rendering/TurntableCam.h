@@ -6,6 +6,8 @@
 #include "ofCamera.h"
 #include "ofEvents.h"
 
+#ifndef RADOME
+
 class ofxTurntableCam : public ofCamera {
 public:
   ofxTurntableCam();
@@ -36,3 +38,5 @@ protected:
   ofQuaternion _rotation;
   ofRectangle _viewport;
 };
+
+#endif
