@@ -113,7 +113,8 @@ void RoundController::update() {
   while (_appParams.ballsToAdd) {
     _appParams.ballsToAdd--;
     // add a new ball
-    _spaceController->addBall(BallSpec(30, ofRandom(360)));
+    Ball& ball = _spaceController->addBall(BallSpec(30, ofRandom(360)));
+    notifyBallSpawned(_state, &ball);
   }
   if (_spaceController)
     _spaceController->update();
