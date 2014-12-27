@@ -45,7 +45,7 @@ void LogicController::update() {
         _countdownTickPulser.update(_state.time))
       notifyCountdownTick();
     if (_state.remainingTime() <= 0) {
-      notifyTryEndRound();
+      notifyTryEndRound(END_TIME_LIMIT);
       return;
     }
   }
@@ -159,7 +159,7 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
-        notifyTryEndRound();
+        notifyTryEndRound(END_NO_BRICKS);
       }
     }
   }
@@ -171,6 +171,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
     Player* player = ball.player();
     
     ball.kill();
+    _state.decrementLiveBalls();
     notifyBallDestroyed(_state, &ball);
     
     if (player && _appParams.rules().playersCanLoseLives()) {
@@ -180,7 +181,27 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
         notifyPlayerLost(_state, player);
       }
     }
+    if (_appParams.rules().ballsRespawn()) {
+      respawnBall(player);
+    }
+    
+    if (_state.liveBalls() <= 0) {
+      notifyTryEndRound(END_NO_BALLS);
+    }
   }
+}
+
+void LogicController::respawnBall(Player *player) {
+  Paddle* paddle = player ? player->paddle() : NULL;
+  BallSpec spec;
+  spec.elevation = 30;
+  spec.heading = ofRandom(360);
+  if (paddle) {
+//    spec.heading = paddle->
+  } else {
+    
+  }
+  notifyTrySpawnBall(spec);
 }
 
 void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
@@ -220,10 +241,11 @@ void LogicController::notifyBallDestroyed(RoundState& state, Ball* ball) {
   ofNotifyEvent(ballDestroyedEvent, e);
   logEvent("BallDestroyed", e);
 }
-void LogicController::notifyBallRespawned(RoundState& state, Ball* ball) {
-  BallStateEventArgs e(state, ball);
-  ofNotifyEvent(ballRespawnedEvent, e);
-  logEvent("BallRespawned", e);
+bool LogicController::notifyTrySpawnBall(BallSpec ballSpec) {
+  SpawnBallEventArgs e(ballSpec);
+  logEvent("TrySpawnBall", e);
+  ofNotifyEvent(trySpawnBallEvent, e);
+  return e.handled();
 }
 void LogicController::notifyPlayerLost(RoundState& state, Player* player) {
   PlayerStateEventArgs e(state, player);
@@ -235,8 +257,8 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-bool LogicController::notifyTryEndRound() {
-  EndRoundEventArgs e;
+bool LogicController::notifyTryEndRound(RoundEndReason reason) {
+  EndRoundEventArgs e(reason);
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
   return e.handled();

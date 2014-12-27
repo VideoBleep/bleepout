@@ -22,6 +22,7 @@
 #include "Animations.h"
 
 class RendererBase;
+class AdminController;
 
 class RoundController : public EventSource
 {
@@ -37,10 +38,10 @@ public:
   void draw();
   void update();
   
-  ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   ofEvent<RoundStateEventArgs> roundQueueEvent;
   ofEvent<RoundStateEventArgs> roundPlayEvent;
-  ofEvent<RoundStateEventArgs> roundEndedEvent;
+  ofEvent<RoundEndedEventArgs> roundEndedEvent;
+  ofEvent<BallStateEventArgs> ballSpawnedEvent;
   
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
@@ -61,6 +62,9 @@ public:
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
   
+  void attachTo(AdminController& adminController);
+  void detachFrom(AdminController& adminController);
+  
   const char* eventSourceName() const override { return "RoundController"; }
   
   LogicController& logicController() { return *_logicController; }
@@ -71,13 +75,17 @@ private:
   
   void onRoundQueue(RoundStateEventArgs& e);
   void onRoundPlay(RoundStateEventArgs& e);
-  void onRoundEnded(RoundStateEventArgs& e);
   
   void onTryEndRound(EndRoundEventArgs& e);
-  bool notifyTryEndRound(EndRoundEventArgs &e);
   
   void onModifierAppeared(ModifierEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);
+  void onTrySpawnBall(SpawnBallEventArgs& e);
+  void notifyBallSpawned(RoundState& state, Ball* ball);
+  
+  void endRound();
+  void notifyRoundEnded(RoundResults& results);
+  RoundResults buildRoundResults(RoundEndReason reason);
   
   bool _paused;
   float _startTime;
@@ -91,6 +99,8 @@ private:
   TimedActionSet _timedActions;
   ofPtr<AnimationManager> _animationManager;
   Pulser _cullDeadObjectsPulser;
+  bool _ending;
+  RoundEndReason _endReason;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

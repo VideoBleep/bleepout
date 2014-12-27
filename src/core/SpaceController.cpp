@@ -58,9 +58,10 @@ void SpaceController::addBrick(const BrickSpec &brickSpec) {
   _world.addObject(&brick);
 }
 
-void SpaceController::addBall(const BallSpec &ballSpec) {
+Ball& SpaceController::addBall(const BallSpec &ballSpec) {
   Ball& ball = _state.addBall(ballSpec);
   _world.addObject(&ball);
+  return ball;
 }
 
 void SpaceController::addPaddle(float heading, Player* player) {

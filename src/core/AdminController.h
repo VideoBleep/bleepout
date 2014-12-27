@@ -20,6 +20,7 @@
 struct AdminUIControls;
 class BleepoutApp;
 class SetupController;
+class RoundController;
 class RoundState;
 
 class AdminController : public EventSource {
@@ -42,7 +43,7 @@ public:
 private:
   void onUIEvent(ofxUIEventArgs& e);
   void onRoundStarted(RoundStateEventArgs& e);
-  void onRoundEnded(EmptyEventArgs& e);
+  void onRoundEnded(RoundEndedEventArgs& e);
   bool tryStartRound();
   bool canStartRound();
   void tryEndRound();

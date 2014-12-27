@@ -12,6 +12,7 @@
 #include <ofMain.h>
 #include <functional>
 #include <list>
+#include <map>
 #include <iostream>
 
 #ifdef TARGET_OSX
@@ -161,6 +162,44 @@ public:
 private:
   T _value;
   bool _hasValue;
+};
+
+template<typename T>
+class Counters {
+public:
+  Counters() : _counters() { }
+  Counters(const Counters<T>& other)
+  : _counters(other._counters) { }
+  Counters& operator=(const Counters& other) {
+    _counters.clear();
+    for (const auto& entry : other._counters) {
+      _counters.insert(entry);
+    }
+    return *this;
+  }
+  
+  int operator[](const T& key) const {
+    const auto iter = _counters.find(key);
+    return iter == _counters.end() ? 0 : iter->second;
+  }
+  
+  void add(T key, int amount = 1) {
+    auto iter = _counters.find(key);
+    if (iter == _counters.end()) {
+      _counters[key] = amount;
+    } else {
+      _counters[key] = iter->second + amount;
+    }
+  }
+  
+  inline typename std::map<T, int>::const_iterator begin() const {
+    return _counters.begin();
+  }
+  inline typename std::map<T, int>::const_iterator end() const {
+    return _counters.end();
+  }
+private:
+  std::map<T, int> _counters;
 };
 
 #endif

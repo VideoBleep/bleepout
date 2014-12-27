@@ -10,6 +10,14 @@
 #include "GameEvents.h"
 #include <ofMain.h>
 
+std::ostream& operator<<(std::ostream& os, const BallSpec& spec) {
+  os << "BallSpec{";
+  os << "elevation: " << spec.elevation;
+  os << ", heading: " << spec.heading;
+  os << "}";
+  return os;
+}
+
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   os << "position:(" << obj.getPosition() << ")"
     << ", size:(" << obj.getSize() << ")"
@@ -262,4 +270,74 @@ void BallModifier::output(std::ostream &os) const {
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason) {
+  switch (reason) {
+    case END_TIME_LIMIT:
+      os << "TimeLimit";
+      break;
+    case END_NO_BALLS:
+      os << "NoBalls";
+      break;
+    case END_NO_BRICKS:
+      os << "NoBricks";
+      break;
+    case END_NO_PLAYERS:
+      os << "NoPlayers";
+      break;
+    case END_ADMIN_OVERRIDE:
+      os << "AdminOverride";
+      break;
+    default:
+      os << "Unknown{" << (int)reason << "}";
+      break;
+  }
+  return os;
+}
+
+void PlayerRoundResult::output(std::ostream &os) const {
+  os << "PlayerResult{";
+  os << "id: " << playerId << ", ";
+  os << "score: " << score << ", ";
+  os << "modifiers: (";
+  bool first = true;
+  for (const auto& entry : modifierCounts) {
+    if (!first)
+      os << ", ";
+    else
+      first = false;
+    os << entry.first << ": " << entry.second;
+  }
+  os << ")}";
+}
+
+std::ostream& operator<<(std::ostream& os, const PlayerRoundResult& result) {
+  result.output(os);
+  return os;
+}
+
+void RoundResults::output(std::ostream &os) const {
+  os << "RoundResults{";
+  os << "reason: " << reason << ", ";
+  os << "duration: " << std::setprecision(4) << std::fixed
+                     << duration << "sec, ";
+  os << "remainingBricks: " << liveBricks << "/" << totalBricks << ", ";
+  os << "remainingBalls: " << liveBalls << "/" << totalBalls << ", ";
+  os << "players: (";
+  bool first = true;
+  for (const auto& player : _playerResults) {
+    if (!first)
+      os << ", ";
+    else
+      first = false;
+    os << player;
+  }
+  os << ")";
+  os << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const RoundResults& results) {
+  results.output(os);
+  return os;
 }

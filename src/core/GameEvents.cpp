@@ -77,6 +77,13 @@ void BallStateEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void SpawnBallEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "ballSpec: " << _ballSpec << ", ";
+  os << "handled: " << handled();
+  os << ")";
+}
+
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
   os << "config:" << config()->name() << ", ";
@@ -87,7 +94,14 @@ void StartRoundEventArgs::output(std::ostream &os) const {
 
 void EndRoundEventArgs::output(std::ostream &os) const {
   os << "(";
+  os << "reason:" << _reason << " ";
   os << "handled:" << std::boolalpha << handled();
+  os << ")";
+}
+
+void RoundEndedEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "results:" << _results;
   os << ")";
 }
 
