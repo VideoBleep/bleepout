@@ -62,6 +62,8 @@ struct AdminUIControls {
   ofxUIToggle* pause;
   ofxUILabel* inRound;
   ofxUIToggle* exitsEnabled;
+  ofxUIToggle* overrideBallsRespawn;
+  ofxUIToggle* ballsRespawn;
   ofxUIToggle* debugGraphics;
   ofxUIToggle* drawTrajectories;
   ofxUIToggle* drawComets;
@@ -155,6 +157,12 @@ void AdminController::setup() {
   
   _controls->pause = _gui->addLabelToggle("Pause", &_appParams.paused);
   _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &_appParams.exitsEnabled);
+  
+  _controls->overrideBallsRespawn = _gui->addToggle("Override Respawn", false);
+  _controls->overrideBallsRespawn->setLabelVisible(true);
+  _controls->overrideBallsRespawn->setValue(false);
+  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", _appParams.rules().ballsRespawn());
+  
   _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &_appParams.debugGraphics);
   _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
   _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
@@ -265,6 +273,13 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
       _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
       _appParams.rules().unsetTimeLimit();
+    }
+  } else if (e.widget == _controls->overrideBallsRespawn ||
+             e.widget == _controls->ballsRespawn) {
+    if (_controls->overrideBallsRespawn->getValue()) {
+      _appParams.rules().setBallsRespawn(_controls->ballsRespawn->getValue());
+    } else {
+      _appParams.rules().unsetBallsRespawn();
     }
   } else if (e.widget == _controls->startRound &&
              _controls->startRound->getValue()) {
