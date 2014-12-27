@@ -15,6 +15,7 @@ RoundState::RoundState(const RoundConfig& config,
 , _totalBricks(0)
 , _liveBricks(0)
 , _totalBalls(0)
+, _liveBalls(0)
 , endTime(-1) {
   for (auto& player : players) {
     addPlayer(player);
@@ -58,6 +59,8 @@ Wall& RoundState::addWall(const WallSpec& wallSpec) {
 Ball& RoundState::addBall(const BallSpec& ballSpec) {
   ofPtr<Ball> ball(new Ball(_config, ballSpec));
   _balls.push_back(ball);
+  if (ball->alive())
+    _liveBalls++;
   _totalBalls++;
   return *ball;
 }
@@ -68,13 +71,4 @@ void RoundState::addModifier(ofPtr<Modifier> modifier) {
 
 void RoundState::addAnimation(ofPtr<AnimationObject> animation) {
   _animations.push_back(animation);
-}
-
-int RoundState::liveBalls() const {
-  int count = 0;
-  for (const auto& ball : _balls) {
-    if (ball && ball->alive())
-      count++;
-  }
-  return count;
 }

@@ -171,6 +171,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
     Player* player = ball.player();
     
     ball.kill();
+    _state.decrementLiveBalls();
     notifyBallDestroyed(_state, &ball);
     
     if (player && _appParams.rules().playersCanLoseLives()) {
@@ -179,6 +180,10 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
       if (!player->alive()) {
         notifyPlayerLost(_state, player);
       }
+    }
+    
+    if (_state.liveBalls() <= 0) {
+      notifyTryEndRound(END_NO_BALLS);
     }
   }
 }
