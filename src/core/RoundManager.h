@@ -41,6 +41,7 @@ public:
   ofEvent<RoundStateEventArgs> roundQueueEvent;
   ofEvent<RoundStateEventArgs> roundPlayEvent;
   ofEvent<RoundEndedEventArgs> roundEndedEvent;
+  ofEvent<BallStateEventArgs> ballSpawnedEvent;
   
   RoundState& state() { return _state; }
   const RoundState& state() const { return _state; }
@@ -80,6 +81,7 @@ private:
   void onModifierAppeared(ModifierEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);
   void onTrySpawnBall(SpawnBallEventArgs& e);
+  void notifyBallSpawned(RoundState& state, Ball* ball);
   
   void endRound();
   void notifyRoundEnded(RoundResults& results);

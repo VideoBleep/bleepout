@@ -65,6 +65,7 @@ public:
   float brickFadeTime() const { return _brickFadeTime; }
   float modifierRadius() const { return _modifierRadius; }
   float modifierFadeTime() const { return _modifierFadeTime; }
+  float ballSpawnedFadeTime() const { return _ballSpawnedFadeTime; }
   
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
@@ -169,6 +170,7 @@ private:
   float _brickFadeTime;
   float _modifierRadius;
   float _modifierFadeTime;
+  float _ballSpawnedFadeTime;
   float _domeRadius;
   float _domeMargin;
   GameRules _rules;

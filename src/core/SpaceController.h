@@ -30,7 +30,7 @@ public:
   
   void addInitialPaddles();
   
-  void addBall(const BallSpec& ballSpec);
+  Ball& addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
   
   void setUpModifier(Modifier& modifier,

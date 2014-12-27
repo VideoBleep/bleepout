@@ -158,7 +158,14 @@ RoundResults RoundController::buildRoundResults(RoundEndReason reason) {
 }
 
 void RoundController::onTrySpawnBall(SpawnBallEventArgs &e) {
-  _spaceController->addBall(e.ballSpec());
+  Ball& ball = _spaceController->addBall(e.ballSpec());
+  notifyBallSpawned(_state, &ball);
+}
+
+void RoundController::notifyBallSpawned(RoundState &state, Ball *ball) {
+  BallStateEventArgs e(state, ball);
+  logEvent("BallSpawned", e);
+  ofNotifyEvent(ballSpawnedEvent, e);
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {

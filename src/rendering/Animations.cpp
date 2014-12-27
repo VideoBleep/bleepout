@@ -158,10 +158,50 @@ void ModifierAnimation::output(std::ostream &os) const {
   << "}";
 }
 
+class BallSpawnedAnimation : public AnimationObject {
+public:
+  BallSpawnedAnimation(const Ball& ball, const RoundConfig& config)
+  : AnimationObject(0, config.ballSpawnedFadeTime())
+  , _ball(ball)
+  , _ballRadius(config.ballRadius()) { }
+  
+  void draw(const RoundConfig& config) override;
+  void output(std::ostream& os) const override;
+private:
+  const Ball& _ball;
+  float _ballRadius;
+};
+
+void BallSpawnedAnimation::draw(const RoundConfig &config) {
+  ofPushMatrix();
+  ofPushStyle();
+  ofEnableAlphaBlending();
+  ofFill();
+  float radius = _ballRadius;
+  radius *= ofMap(percentage(), 0, 1, 1.5, 1);
+  ofColor color(192, 192, 192);
+  color.a = (unsigned char)std::floor(ofMap(percentage(), 0, 1, 127, 0));
+  ofSetColor(color);
+  ofDrawSphere(_ball.getPosition(), radius);
+  ofPopStyle();
+  ofPopMatrix();
+}
+
+void BallSpawnedAnimation::output(std::ostream &os) const {
+  os << "BallSpawnedAnimation{id:" << id()
+     << ", ball: " << _ball.id()
+     << "}";
+}
+
 AnimationManager::AnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
   _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+  ofAddListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
+}
+
+AnimationManager::~AnimationManager() {
+  ofRemoveListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
 }
 
 void AnimationManager::addAnimation(AnimationObject *animation) {
@@ -190,6 +230,11 @@ void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
   auto anim = new ModifierAnimation(e.modifierSpec(),
                                     *e.target(),
                                     _roundController.config(), true);
+  addAnimation(anim);
+}
+
+void AnimationManager::onBallSpawned(BallStateEventArgs &e) {
+  auto anim = new BallSpawnedAnimation(*e.ball(), _roundController.config());
   addAnimation(anim);
 }
 
