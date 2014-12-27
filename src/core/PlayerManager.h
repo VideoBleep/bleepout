@@ -55,15 +55,15 @@ public:
 	SEND STATE MESSAGES TO PLAYER
 	*/
 	// Send 'Select Color' state message to player
-	static void PlayerManager::setPlayerColor(Player& player);
+	static void setPlayerColor(Player& player);
 	// Send 'Queued' state message to player
-	static void PlayerManager::setPlayerQueued(Player& player);
+	static void setPlayerQueued(Player& player);
 	// Send 'Calibrate' state message to player
-	static void PlayerManager::setPlayerCalibrate(Player& player);
+	static void setPlayerCalibrate(Player& player);
 	// Send 'Ready' state message to player 
-	static void PlayerManager::setPlayerReady(Player& player);
+	static void setPlayerReady(Player& player);
 	// Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
-	static void PlayerManager::setPlayerPlay(Player& player);
+	static void setPlayerPlay(Player& player);
 
 	ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
 
