@@ -150,7 +150,7 @@ void AdminController::setup() {
   _controls->timeLimitToggle->setLabelVisible(true);
   _controls->timeLimitToggle->setValue(_appParams.rules().specifiesTimeLimit());
   
-  _controls->timeLimit = _gui->addNumberDialer("Time Limit", 10, 6000, 30, 0);
+  _controls->timeLimit = _gui->addNumberDialer("Time Limit", 1, 6000, 30, 0);
   _controls->timeLimit->setDisplayLabel(true);
   
   _controls->pause = _gui->addLabelToggle("Pause", &_appParams.paused);
