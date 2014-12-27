@@ -23,7 +23,7 @@ public:
   : GameObject(GAME_OBJECT_ANIMATION)
   , _delay(delay), _duration(duration), _visible(false) { }
   
-  virtual void draw(const RoundConfig& config) = 0;
+  virtual void draw() = 0;
   virtual void output(std::ostream& os) const override;
   
   void show() { _visible = true; }

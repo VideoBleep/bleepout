@@ -139,6 +139,17 @@ void BleepoutApp::notifyRoundEnded(RoundEndedEventArgs& e) {
   logEvent("RoundEnded", e);
 }
 
+void BleepoutApp::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
+//  auto updater = animation->createUpdaterAction(RoundState &state)
+//  FOOOO();
+  throw "FOOOO";
+}
+
+void BleepoutApp::addTimedAction(ofPtr<TimedAction> action) {
+  _timedActions.add(action);
+}
+
 void BleepoutApp::keyPressed(int key) {
   _adminController->keyPressed(key);
   if (_roundController) {

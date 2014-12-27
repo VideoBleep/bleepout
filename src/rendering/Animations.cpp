@@ -28,8 +28,8 @@ public:
   , _brickPosition(brick.getPosition())
   , _brickRotation(brick.getRotation()) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
   GameObjectId _brickId;
   ofColor _brickColor;
@@ -38,7 +38,7 @@ private:
   float _brickRotation;
 };
 
-void BrickDestructionAnimation::draw(const RoundConfig &config) {
+void BrickDestructionAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -67,18 +67,20 @@ void BrickDestructionAnimation::output(std::ostream &os) const {
 
 class MessageAnimation : public AnimationObject {
 public:
-  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font,
+                   const RoundConfig& config)
   : AnimationObject(message.delay, message.duration)
-  , _message(message), _font(font) { }
+  , _message(message), _font(font), _config(config) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
+  const RoundConfig& _config;
   MessageSpec _message;
   ofTrueTypeFont& _font;
 };
 
-void MessageAnimation::draw(const RoundConfig &config) {
+void MessageAnimation::draw() {
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < _message.trails + 1; j++) {
       ofColor color = _message.color;
@@ -89,7 +91,7 @@ void MessageAnimation::draw(const RoundConfig &config) {
                color,
                _font,
                _message.size - (j * 1.5),
-               config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
+               _config.domeRadius() + _config.domeMargin() * (1.25 + j * 0.1),
                15 - (j * 1.1),
                30 + i * 120);
     }
@@ -109,15 +111,15 @@ public:
   , _modifierSpec(modifierSpec), _target(target)
   , _isRemove(isRemove) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
   const ModifierSpec& _modifierSpec;
   const GameObject& _target;
   const bool _isRemove;
 };
 
-void ModifierAnimation::draw(const RoundConfig &config) {
+void ModifierAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -165,14 +167,14 @@ public:
   , _ball(ball)
   , _ballRadius(config.ballRadius()) { }
   
-  void draw(const RoundConfig& config) override;
+  void draw() override;
   void output(std::ostream& os) const override;
 private:
   const Ball& _ball;
   float _ballRadius;
 };
 
-void BallSpawnedAnimation::draw(const RoundConfig &config) {
+void BallSpawnedAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -209,7 +211,7 @@ void AnimationManager::addAnimation(AnimationObject *animation) {
 }
 
 void AnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont));
+  addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
 }
 
 void AnimationManager::onBrickHit(BrickHitEventArgs &e) {
