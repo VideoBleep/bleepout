@@ -31,6 +31,7 @@ RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
+  ofRemoveListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
@@ -55,6 +56,7 @@ void RoundController::setup() {
   _logicController->setup();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
+  ofAddListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
   
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
@@ -153,6 +155,10 @@ void RoundController::notifyRoundEnded(RoundResults &results) {
 RoundResults RoundController::buildRoundResults(RoundEndReason reason) {
   RoundResults results(reason, _state);
   return results;
+}
+
+void RoundController::onTrySpawnBall(SpawnBallEventArgs &e) {
+  _spaceController->addBall(e.ballSpec());
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {

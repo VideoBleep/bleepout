@@ -35,6 +35,7 @@ std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec);
 std::ostream& operator<<(std::ostream& os, const PlayerRoundResult& result);
 std::ostream& operator<<(std::ostream& os, const RoundResults& results);
 std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason);
+std::ostream& operator<<(std::ostream& os, const BallSpec& spec);
 
 template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {

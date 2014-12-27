@@ -77,6 +77,13 @@ void BallStateEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void SpawnBallEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "ballSpec: " << _ballSpec << ", ";
+  os << "handled: " << handled();
+  os << ")";
+}
+
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
   os << "config:" << config()->name() << ", ";

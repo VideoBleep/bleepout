@@ -193,6 +193,18 @@ private:
   bool _handled;
 };
 
+class SpawnBallEventArgs
+: public RequestEventArgs
+, public Outputable {
+public:
+  SpawnBallEventArgs(BallSpec ballSpec)
+  : RequestEventArgs(), _ballSpec(ballSpec) { }
+  void output(std::ostream& os) const override;
+  BallSpec& ballSpec() { return _ballSpec; }
+private:
+  BallSpec _ballSpec;
+};
+
 class StartRoundEventArgs
 : public RequestEventArgs
 , public Outputable {

@@ -181,11 +181,27 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
         notifyPlayerLost(_state, player);
       }
     }
+    if (_appParams.rules().ballsRespawn()) {
+      respawnBall(player);
+    }
     
     if (_state.liveBalls() <= 0) {
       notifyTryEndRound(END_NO_BALLS);
     }
   }
+}
+
+void LogicController::respawnBall(Player *player) {
+  Paddle* paddle = player ? player->paddle() : NULL;
+  BallSpec spec;
+  spec.elevation = 30;
+  spec.heading = ofRandom(360);
+  if (paddle) {
+//    spec.heading = paddle->
+  } else {
+    
+  }
+  notifyTrySpawnBall(spec);
 }
 
 void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
@@ -225,10 +241,11 @@ void LogicController::notifyBallDestroyed(RoundState& state, Ball* ball) {
   ofNotifyEvent(ballDestroyedEvent, e);
   logEvent("BallDestroyed", e);
 }
-void LogicController::notifyBallRespawned(RoundState& state, Ball* ball) {
-  BallStateEventArgs e(state, ball);
-  ofNotifyEvent(ballRespawnedEvent, e);
-  logEvent("BallRespawned", e);
+bool LogicController::notifyTrySpawnBall(BallSpec ballSpec) {
+  SpawnBallEventArgs e(ballSpec);
+  logEvent("TrySpawnBall", e);
+  ofNotifyEvent(trySpawnBallEvent, e);
+  return e.handled();
 }
 void LogicController::notifyPlayerLost(RoundState& state, Player* player) {
   PlayerStateEventArgs e(state, player);

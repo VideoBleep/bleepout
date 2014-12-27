@@ -10,6 +10,14 @@
 #include "GameEvents.h"
 #include <ofMain.h>
 
+std::ostream& operator<<(std::ostream& os, const BallSpec& spec) {
+  os << "BallSpec{";
+  os << "elevation: " << spec.elevation;
+  os << ", heading: " << spec.heading;
+  os << "}";
+  return os;
+}
+
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   os << "position:(" << obj.getPosition() << ")"
     << ", size:(" << obj.getSize() << ")"

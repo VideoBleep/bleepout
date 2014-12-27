@@ -79,6 +79,7 @@ private:
   
   void onModifierAppeared(ModifierEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);
+  void onTrySpawnBall(SpawnBallEventArgs& e);
   
   void endRound();
   void notifyRoundEnded(RoundResults& results);
