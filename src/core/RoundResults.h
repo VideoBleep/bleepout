@@ -36,6 +36,7 @@ public:
   int liveBricks;
   int totalBalls;
   int liveBalls;
+  float duration;
   
   void output(std::ostream& os) const;
 private:

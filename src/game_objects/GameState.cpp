@@ -12,7 +12,9 @@
 RoundState::RoundState(const RoundConfig& config,
                        std::list<ofPtr<Player> >& players)
 : _config(config)
+, _totalBricks(0)
 , _liveBricks(0)
+, _totalBalls(0)
 , endTime(-1) {
   for (auto& player : players) {
     addPlayer(player);

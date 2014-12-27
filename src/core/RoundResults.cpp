@@ -14,6 +14,7 @@ RoundResults::RoundResults(RoundEndReason r, const RoundState& state)
   liveBricks = state.liveBricks();
   totalBalls = state.totalBalls();
   liveBalls = state.liveBalls();
+  duration = state.time;
   
   for (const auto& player : state.players()) {
     PlayerRoundResult presult;
