@@ -21,6 +21,7 @@
 #include "GameEvents.h"
 #include "AdminController.h"
 #include "AudioManager.h"
+#include "RoundResults.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -31,7 +32,7 @@ public:
   BleepoutApp();
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
-  ofEvent<EmptyEventArgs> roundEndedEvent;
+  ofEvent<RoundEndedEventArgs> roundEndedEvent;
   
   // oF interface methods
   void setup() override;
@@ -48,10 +49,10 @@ public:
 
 private:
   void onTryStartRound(StartRoundEventArgs& e);
-  void onTryEndRound(EndRoundEventArgs& e);
+  void onRoundEnded(RoundEndedEventArgs& e);
 
   void notifyRoundStarted(RoundState& state);
-  void notifyRoundEnded();
+  void notifyRoundEnded(RoundEndedEventArgs& e);
   void endRound();
 
   ofPtr<BleepoutConfig> _config;
@@ -66,7 +67,6 @@ private:
   ofxSyphonClient _syphonClient;
 #endif // ENABLE_SYPHON
   bool _syphonEnabled;
-  bool _endingRound;
 };
 
 #endif /* defined(__bleepout__BleepoutApp__) */

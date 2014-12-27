@@ -20,6 +20,7 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "GameState.h"
+#include "RoundResults.h"
 
 class EmptyEventArgs : public Outputable {
 public:
@@ -215,8 +216,25 @@ class EndRoundEventArgs
 : public RequestEventArgs
 , public Outputable {
 public:
-  EndRoundEventArgs() : RequestEventArgs() { }
+  EndRoundEventArgs(RoundEndReason reason)
+  : RequestEventArgs(), _reason(reason) { }
   void output(std::ostream& os) const override;
+  RoundEndReason reason() const { return _reason; }
+private:
+  RoundEndReason _reason;
+};
+
+class RoundEndedEventArgs
+: public Outputable {
+public:
+  RoundEndedEventArgs(const RoundResults& results)
+  : _results(results) { }
+  
+  const RoundResults& results() const { return _results; }
+  
+  void output(std::ostream& os) const override;
+private:
+  const RoundResults& _results;
 };
 
 class PlayerYawPitchRollEventArgs {

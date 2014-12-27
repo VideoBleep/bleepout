@@ -12,6 +12,7 @@
 #include "RendererBase.h"
 #include "DomeRenderer.h"
 #include "Logging.h"
+#include "AdminController.h"
 
 RoundController::RoundController(RoundConfig& config,
                                  BleepoutParameters& appParams,
@@ -22,6 +23,7 @@ RoundController::RoundController(RoundConfig& config,
 , _state(_config, players)
 , _playerManager(playerManager)
 , _timedActions(true)
+, _ending(false)
 , EventSource() {
 }
 
@@ -32,6 +34,7 @@ RoundController::~RoundController() {
   _logicController->detachFrom(*_spaceController);
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
+  _timedActions.clear();
   _logicController.reset();
   _renderer.reset();
   _spaceController.reset();
@@ -65,6 +68,16 @@ void RoundController::setup() {
   }
 }
 
+void RoundController::attachTo(AdminController &adminController) {
+  ofAddListener(adminController.tryEndRoundEvent,
+                this, &RoundController::onTryEndRound);
+}
+
+void RoundController::detachFrom(AdminController &adminController) {
+  ofRemoveListener(adminController.tryEndRoundEvent,
+                   this, &RoundController::onTryEndRound);
+}
+
 void RoundController::draw() {
   _renderer->draw();
 }
@@ -80,9 +93,6 @@ static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
 
 void RoundController::update() {
   if (_paused && !_appParams.paused) {
-    //    float footime = ofGetElapsedTimef() - _startTime;
-    //    float diff = footime - _state.time;
-    //    _startTime += diff;
     _startTime = ofGetElapsedTimef() - _state.time;
     _paused = false;
   }
@@ -116,6 +126,35 @@ void RoundController::update() {
     removeDeadPhysicalObjects(_state.modifiers(), *_spaceController);
     removeDeadPhysicalObjects(_state.paddles(), *_spaceController);
   }
+  
+  if (_ending) {
+    endRound();
+  }
+}
+
+void RoundController::endRound() {
+  auto results = buildRoundResults(_endReason);
+  _ending = false;
+  notifyRoundEnded(results);
+}
+
+void RoundController::onTryEndRound(EndRoundEventArgs &e) {
+  _ending = true;
+  _endReason = e.reason();
+}
+
+void RoundController::notifyRoundEnded(RoundResults &results) {
+  RoundEndedEventArgs e(results);
+  logEvent("RoundEnded", e);
+  // after this notification is sent off, the roundcontroller ceases to exist!
+  ofNotifyEvent(roundEndedEvent, e);
+}
+
+RoundResults RoundController::buildRoundResults(RoundEndReason reason) {
+  RoundResults results;
+  results.reason = reason;
+  //...
+  return results;
 }
 
 void RoundController::onModifierAppeared(ModifierEventArgs& e) {
@@ -124,20 +163,6 @@ void RoundController::onModifierAppeared(ModifierEventArgs& e) {
     return;
   }
   _spaceController->setUpModifier(*e.modifier(), static_cast<Brick&>(*e.target()));
-}
-
-void RoundController::onRoundEnded(RoundStateEventArgs &e) {
-  _timedActions.clear();
-}
-
-void RoundController::onTryEndRound(EndRoundEventArgs &e) {
-  notifyTryEndRound(e);
-}
-
-bool RoundController::notifyTryEndRound(EndRoundEventArgs &e) {
-  ofNotifyEvent(tryEndRoundEvent, e);
-  logEvent("TryEndRound", e);
-  return e.handled();
 }
 
 void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
@@ -153,8 +178,8 @@ void RoundController::addTimedAction(ofPtr<TimedAction> action) {
 void RoundController::keyPressed(int key) {
   if (!ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     if (key == 'q') {
-      EndRoundEventArgs e;
-      notifyTryEndRound(e);
+      EndRoundEventArgs e(END_ADMIN_OVERRIDE);
+      onTryEndRound(e);
     } else if (key == 'l') {
       dumpToLog(OF_LOG_NOTICE);
     } else if (key == 'r') {

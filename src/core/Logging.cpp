@@ -263,3 +263,39 @@ void BallModifier::output(std::ostream &os) const {
   outputPhysicsObjectFields(os, *this);
   os << "}";
 }
+
+std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason) {
+  switch (reason) {
+    case END_TIME_LIMIT:
+      os << "TimeLimit";
+      break;
+    case END_NO_BALLS:
+      os << "NoBalls";
+      break;
+    case END_NO_BRICKS:
+      os << "NoBricks";
+      break;
+    case END_NO_PLAYERS:
+      os << "NoPlayers";
+      break;
+    case END_ADMIN_OVERRIDE:
+      os << "AdminOverride";
+      break;
+    default:
+      os << "Unknown{" << (int)reason << "}";
+      break;
+  }
+  return os;
+}
+
+void RoundResults::output(std::ostream &os) const {
+  os << "RoundResults{";
+  os << "bricksDestroyed: " << bricksDestroyed << "/" << totalBricks;
+  //...
+  os << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const RoundResults& results) {
+  results.output(os);
+  return os;
+}

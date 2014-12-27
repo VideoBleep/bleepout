@@ -190,7 +190,7 @@ void AdminController::onRoundStarted(RoundStateEventArgs &e) {
   _roundState = &e.state();
 }
 
-void AdminController::onRoundEnded(EmptyEventArgs &e) {
+void AdminController::onRoundEnded(RoundEndedEventArgs &e) {
   _controls->inRound->setLabel("Not in round");
   _appParams.inRound = false;
   _roundState = NULL;
@@ -301,7 +301,7 @@ bool AdminController::notifyTryStartRound(ofPtr<RoundConfig> config,
 }
 
 bool AdminController::notifyTryEndRound() {
-  EndRoundEventArgs e;
+  EndRoundEventArgs e(END_ADMIN_OVERRIDE);
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
   return e.handled();

@@ -87,7 +87,14 @@ void StartRoundEventArgs::output(std::ostream &os) const {
 
 void EndRoundEventArgs::output(std::ostream &os) const {
   os << "(";
+  os << "reason:" << _reason << " ";
   os << "handled:" << std::boolalpha << handled();
+  os << ")";
+}
+
+void RoundEndedEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "results:" << _results;
   os << ")";
 }
 

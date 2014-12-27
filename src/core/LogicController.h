@@ -54,7 +54,7 @@ private:
   void notifyBallRespawned(RoundState& state, Ball* ball);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  bool notifyTryEndRound();
+  bool notifyTryEndRound(RoundEndReason reason);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);

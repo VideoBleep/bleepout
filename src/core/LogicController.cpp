@@ -45,7 +45,7 @@ void LogicController::update() {
         _countdownTickPulser.update(_state.time))
       notifyCountdownTick();
     if (_state.remainingTime() <= 0) {
-      notifyTryEndRound();
+      notifyTryEndRound(END_TIME_LIMIT);
       return;
     }
   }
@@ -159,7 +159,7 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
-        notifyTryEndRound();
+        notifyTryEndRound(END_NO_BRICKS);
       }
     }
   }
@@ -235,8 +235,8 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-bool LogicController::notifyTryEndRound() {
-  EndRoundEventArgs e;
+bool LogicController::notifyTryEndRound(RoundEndReason reason) {
+  EndRoundEventArgs e(reason);
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
   return e.handled();

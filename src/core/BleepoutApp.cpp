@@ -10,8 +10,7 @@
 
 BleepoutApp::BleepoutApp()
 : _config()
-, EventSource()
-, _endingRound(false) { }
+, EventSource() { }
 
 void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
@@ -31,7 +30,6 @@ void BleepoutApp::setup() {
   _adminController->setup();
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
-  ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
   
   _audioManager.reset(new AudioManager(*_appParams));
   _audioManager->setup();
@@ -71,9 +69,6 @@ void BleepoutApp::update() {
   } else if (_setupController) {
     _setupController->update();
   }
-  if (_endingRound) {
-    endRound();
-  }
 }
 
 void BleepoutApp::draw() {
@@ -106,8 +101,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
-  ofAddListener(_roundController->tryEndRoundEvent, this,
-                &BleepoutApp::onTryEndRound);
+  ofAddListener(_roundController->roundEndedEvent, this,
+                &BleepoutApp::onRoundEnded);
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
                 &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
@@ -115,21 +110,14 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   notifyRoundStarted(_roundController->state());
 }
 
-void BleepoutApp::onTryEndRound(EndRoundEventArgs &e) {
-  if (!_roundController) {
-    ofLogError() << "Round was not active";
-    return;
-  }
-  _endingRound = true;
-  e.markHandled();
-}
-
-void BleepoutApp::endRound() {
+void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
   _playerManager->setIsInRound(false);
+  ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
+  ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
   _audioManager->detachFrom(*_roundController);
+  _roundController->detachFrom(*_adminController);
   _roundController.reset();
-  _endingRound = false;
-  notifyRoundEnded();
+  notifyRoundEnded(e);
 }
 
 void BleepoutApp::notifyRoundStarted(RoundState &state) {
@@ -138,8 +126,7 @@ void BleepoutApp::notifyRoundStarted(RoundState &state) {
   logEvent("RoundStarted", e);
 }
 
-void BleepoutApp::notifyRoundEnded() {
-  EmptyEventArgs e;
+void BleepoutApp::notifyRoundEnded(RoundEndedEventArgs& e) {
   ofNotifyEvent(roundEndedEvent, e);
   logEvent("RoundEnded", e);
 }
