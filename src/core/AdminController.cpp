@@ -15,7 +15,7 @@
 #include "SetupController.h"
 #include "GameState.h"
 
-static const int uiWidth = 300;
+static const int uiWidth = 200;
 
 class RoundQueueSlot {
 public:
@@ -120,8 +120,8 @@ void AdminController::setup() {
   const int totalWidth = ofGetWidth();
   const int totalHeight = ofGetHeight();
   _controls = new AdminUIControls();
-  _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 10,
-                         uiWidth, totalHeight - 20);
+  _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 0,
+                         uiWidth, totalHeight);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
   
   _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
@@ -231,7 +231,8 @@ void AdminController::update() {
     timeText += ofToString(_roundState->remainingTime());
   _controls->remainingTime->setLabel(timeText);
   _gui->update();
-  _gui->setPosition(ofGetWidth() - uiWidth - 10, 10);
+  _gui->setPosition(ofGetWidth() - uiWidth - 10, 0);
+  _gui->setHeight(ofGetHeight());
 }
 
 void AdminController::draw() {
