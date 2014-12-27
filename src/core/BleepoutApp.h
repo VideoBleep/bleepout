@@ -27,23 +27,40 @@
 #include <ofxSyphonClient.h>
 #endif // ENABLE_SYPHON
 
-class BleepoutApp : public ofBaseApp, public EventSource {
+#ifdef RADOME
+#include "radomePlugin.h"
+typedef radomePlugin AppBase;
+#else
+typedef ofBaseApp AppBase;
+#endif
+
+class BleepoutApp : public AppBase, public EventSource {
 public:
   BleepoutApp();
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<RoundEndedEventArgs> roundEndedEvent;
   
+#ifndef RADOME
   // oF interface methods
   void setup() override;
   void update() override;
   void draw() override;
-  
-  void keyPressed(int key) override;
+#else
+  void setup();
+  void update();
+  void draw();
+    
+  virtual void initialize() override;
+  virtual void renderScene(DomeInfo& dome);
+  virtual void update(DomeInfo& dome) override;
+#endif
+    
+  void keyPressed(int key);
   void mousePressed(int x, int y, int button);
   void mouseMoved(int x, int y );
   void mouseReleased(int x, int y, int button);
-  void mouseDragged(int x, int y, int button) override;
+  void mouseDragged(int x, int y, int button);
   
   const char* eventSourceName() const override { return "BleepoutApp"; }
 

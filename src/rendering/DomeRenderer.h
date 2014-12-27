@@ -26,11 +26,13 @@ public:
   virtual void setup() override;
   virtual void update() override;
   virtual void draw() override;
-  
+
+#ifndef RADOME
   virtual void mousePressed(int x, int y, int button);
   virtual void mouseReleased(int x, int y, int button);
   virtual void mouseDragged(int x, int y, int button);
-  
+#endif
+    
 protected:
   virtual void drawBrick(Brick& brick) override;
   virtual void drawPaddle(Paddle& paddle) override;
@@ -40,8 +42,10 @@ protected:
   
   void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
   
+#ifndef RADOME
   ofxTurntableCam _cam;
-  
+#endif
+    
   RendererExtras _extras;
   
   vector<ofLight> lights;
