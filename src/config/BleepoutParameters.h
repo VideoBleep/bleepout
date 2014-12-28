@@ -18,21 +18,20 @@
 // parameters are things that can change, whereas config is fixed
 class BleepoutParameters {
 private:
-  static BleepoutParameters* _instance;
-  BleepoutParameters(BleepoutConfig& appConfig);
+  static BleepoutParameters *_instance;
+  BleepoutParameters(void);
+  void initConfig(BleepoutConfig& appConfig);
 public:
-  static void initialize(BleepoutConfig& appConfig);
+  static void initialize();
+  static void initializeConfig(BleepoutConfig& appConfig);
   static void cleanup();
   static inline BleepoutParameters& get() {
-    if (!_instance) {
-      ofLogError() << "BleepoutParameters has not been initialized, which is really bad!";
-    }
     return *_instance;
   }
   
   ofParameterGroup& params() { return _params; }
-  const BleepoutConfig& appConfig() const { return _appConfig; }
-  BleepoutConfig& appConfig() { return _appConfig; }
+  const BleepoutConfig& appConfig() const { return *_appConfig; }
+  BleepoutConfig& appConfig() { return *_appConfig; }
   const RoundConfig* currentRoundConfig() const { return _currentRoundConfig.get(); }
   std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
   ofPtr<RoundConfig> setCurrentRound(const std::string& name);
@@ -55,9 +54,11 @@ public:
   std::string syphonAppName;
   std::string syphonServerName;
   float audioVolume;
+  float domeRadius;
+  float domeMargin;
 private:
   ofParameterGroup _params;
-  BleepoutConfig& _appConfig;
+  BleepoutConfig* _appConfig;
   ofPtr<RoundConfig> _currentRoundConfig;
   std::string _currentRoundName;
   std::deque<std::string> _queuedRoundNames;

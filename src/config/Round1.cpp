@@ -7,8 +7,10 @@
 //
 
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 RoundConfig* RoundConfig::createRoundConfig1() {
+  const auto& appParams = BleepoutParameters::get();
   RoundConfig* config = new RoundConfig("Round 1");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
@@ -106,7 +108,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   // Create the floor exit wall
-  float d = (config->domeMargin() + config->domeRadius()) * 5;
+  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
     .setHeading(0)

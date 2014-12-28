@@ -10,12 +10,15 @@
 
 BleepoutParameters* BleepoutParameters::_instance = NULL;
 
-void BleepoutParameters::initialize(BleepoutConfig &appConfig) {
+void BleepoutParameters::initialize() {
   if (_instance) {
     ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
   }
-  _instance = new BleepoutParameters(appConfig);
-  return _instance;
+  _instance = new BleepoutParameters();
+}
+
+void BleepoutParameters::initializeConfig(BleepoutConfig &appConfig) {
+  _instance->initConfig(appConfig);
 }
 
 void BleepoutParameters::cleanup() {
@@ -25,9 +28,25 @@ void BleepoutParameters::cleanup() {
   }
 }
 
-BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
-: _appConfig(appConfig)
-, paused(false)
+void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
+  if (_appConfig) {
+    ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
+  }
+  _appConfig = &appConfig;
+  _queuedRoundNames.clear();
+  for (const auto& round : appConfig.roundConfigs()) {
+    _queuedRoundNames.push_back(round->name());
+  }
+  // yes this is intentional
+  for (const auto& round : appConfig.roundConfigs()) {
+    _queuedRoundNames.push_back(round->name());
+  }
+  syphonAppName = appConfig.syphonAppName();
+  syphonServerName = appConfig.syphonServerName();
+}
+
+BleepoutParameters::BleepoutParameters(void)
+: paused(false)
 , inRound(false)
 , exitsEnabled(false)
 , debugGraphics(false)
@@ -37,24 +56,16 @@ BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 , allLasers(false)
 , ballsToAdd(0)
 , enableSyphon(true)
-, syphonAppName(appConfig.syphonAppName())
-, syphonServerName(appConfig.syphonServerName())
-, audioVolume(.5) {
-  for (const auto& round : _appConfig.roundConfigs()) {
-    _queuedRoundNames.push_back(round->name());
-  }
-  // yes this is intentional
-  for (const auto& round : _appConfig.roundConfigs()) {
-    _queuedRoundNames.push_back(round->name());
-  }
-}
+, audioVolume(.5)
+, domeRadius(150)
+, domeMargin(20) { }
 
 ofPtr<RoundConfig> BleepoutParameters::popNextRound() {
   for (int i = 0; i < _queuedRoundNames.size(); i++) {
     std::string roundName = _queuedRoundNames.front();
     _queuedRoundNames.pop_front();
     _queuedRoundNames.push_back(roundName);
-    ofPtr<RoundConfig> round = _appConfig.getRound(roundName);
+    ofPtr<RoundConfig> round = _appConfig->getRound(roundName);
     if (round) {
       _currentRoundConfig = round;
       _rulesOverrides.setBackup(&round->rules());
@@ -67,12 +78,12 @@ ofPtr<RoundConfig> BleepoutParameters::popNextRound() {
 
 ofPtr<RoundConfig> BleepoutParameters::getNextRound() {
   const std::string& roundName = _queuedRoundNames.front();
-  return _appConfig.getRound(roundName);
+  return _appConfig->getRound(roundName);
 }
 
 ofPtr<RoundConfig>
 BleepoutParameters::setCurrentRound(const std::string &name) {
-  ofPtr<RoundConfig> round = _appConfig.getRound(name);
+  ofPtr<RoundConfig> round = _appConfig->getRound(name);
   if (!round)
     return ofPtr<RoundConfig>();
   _currentRoundConfig = round;

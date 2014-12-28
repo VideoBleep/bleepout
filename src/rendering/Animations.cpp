@@ -17,6 +17,7 @@
 #include <ofTrueTypeFont.h>
 #include "Logging.h"
 #include "BleepoutApp.h"
+#include "BleepoutParameters.h"
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
@@ -68,20 +69,19 @@ void BrickDestructionAnimation::output(std::ostream &os) const {
 
 class MessageAnimation : public AnimationObject {
 public:
-  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font,
-                   const RoundConfig& config)
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
   : AnimationObject(message.delay, message.duration)
-  , _message(message), _font(font), _config(config) { }
+  , _message(message), _font(font) { }
   
   void draw() override;
   void output(std::ostream& os) const override;
 private:
-  const RoundConfig& _config;
   MessageSpec _message;
   ofTrueTypeFont& _font;
 };
 
 void MessageAnimation::draw() {
+  const auto& appParams = BleepoutParameters::get();
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < _message.trails + 1; j++) {
       ofColor color = _message.color;
@@ -92,7 +92,7 @@ void MessageAnimation::draw() {
                color,
                _font,
                _message.size - (j * 1.5),
-               _config.domeRadius() + _config.domeMargin() * (1.25 + j * 0.1),
+               appParams.domeRadius + appParams.domeMargin * (1.25 + j * 0.1),
                15 - (j * 1.1),
                30 + i * 120);
     }
@@ -228,14 +228,7 @@ MessageSpec AppAnimationManager::buildRoundEndMessage(const RoundResults &result
 }
 
 void AppAnimationManager::addMessage(const MessageSpec &message) {
-  const RoundConfig* config = _app.currentRoundConfig();
-  //....
-  if (!config) {
-    ofLogWarning() << "Trying to add message when roundconfig isn't available!";
-    //...????
-  } else {
-    addAnimation(new MessageAnimation(message, _messageFont, *config));
-  }
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void AppAnimationManager::addAnimation(AnimationObject *animation) {
@@ -258,7 +251,7 @@ RoundAnimationManager::~RoundAnimationManager() {
 }
 
 void RoundAnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {
