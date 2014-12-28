@@ -195,76 +195,76 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
-AnimationManager::AnimationManager(RoundController& roundController)
+RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
   _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-  ofAddListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
+  ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-AnimationManager::~AnimationManager() {
-  ofRemoveListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
+RoundAnimationManager::~RoundAnimationManager() {
+  ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-void AnimationManager::addAnimation(AnimationObject *animation) {
+void RoundAnimationManager::addAnimation(AnimationObject *animation) {
   _roundController.addAnimation(ofPtr<AnimationObject>(animation));
 }
 
-void AnimationManager::addMessage(const MessageSpec &message) {
+void RoundAnimationManager::addMessage(const MessageSpec &message) {
   addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
 }
 
-void AnimationManager::onBrickHit(BrickHitEventArgs &e) {
+void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {
   if (!e.brick()->alive()) {
     auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
     addAnimation(anim);
   }
 }
 
-void AnimationManager::onModifierApplied(ModifierEventArgs &e) {
+void RoundAnimationManager::onModifierApplied(ModifierEventArgs &e) {
   auto anim = new ModifierAnimation(e.modifier()->spec(),
                                     *e.target(),
                                     _roundController.config(), false);
   addAnimation(anim);
 }
 
-void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
+void RoundAnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
   auto anim = new ModifierAnimation(e.modifierSpec(),
                                     *e.target(),
                                     _roundController.config(), true);
   addAnimation(anim);
 }
 
-void AnimationManager::onBallSpawned(BallStateEventArgs &e) {
+void RoundAnimationManager::onBallSpawned(BallStateEventArgs &e) {
   auto anim = new BallSpawnedAnimation(*e.ball(), _roundController.config());
   addAnimation(anim);
 }
 
-void AnimationManager::onCountdownTick(TimerEventArgs &e) {
+void RoundAnimationManager::onCountdownTick(TimerEventArgs &e) {
   int time = static_cast<int>(e.remainingTime());
   addMessage(MessageSpec("Time: " + ofToString(time), ofColor(255, 0, 0))
              .setSize(10)
              .setTiming(0, 0.9));
 }
 
-void AnimationManager::attachTo(LogicController &roundEvents) {
+void RoundAnimationManager::attachTo(LogicController &roundEvents) {
   ofAddListener(roundEvents.brickHitEvent, this,
-                &AnimationManager::onBrickHit);
+                &RoundAnimationManager::onBrickHit);
   ofAddListener(roundEvents.modifierAppliedEvent, this,
-                &AnimationManager::onModifierApplied);
+                &RoundAnimationManager::onModifierApplied);
   ofAddListener(roundEvents.modifierRemovedEvent, this,
-                &AnimationManager::onModifierRemoved);
+                &RoundAnimationManager::onModifierRemoved);
   ofAddListener(roundEvents.countdownTickEvent, this,
-                &AnimationManager::onCountdownTick);
+                &RoundAnimationManager::onCountdownTick);
 }
 
-void AnimationManager::detachFrom(LogicController &roundEvents) {
+void RoundAnimationManager::detachFrom(LogicController &roundEvents) {
   ofRemoveListener(roundEvents.brickHitEvent, this,
-                   &AnimationManager::onBrickHit);
+                   &RoundAnimationManager::onBrickHit);
   ofRemoveListener(roundEvents.modifierAppliedEvent, this,
-                   &AnimationManager::onModifierApplied);
+                   &RoundAnimationManager::onModifierApplied);
   ofRemoveListener(roundEvents.modifierRemovedEvent, this,
-                   &AnimationManager::onModifierRemoved);
+                   &RoundAnimationManager::onModifierRemoved);
   ofRemoveListener(roundEvents.countdownTickEvent, this,
-                   &AnimationManager::onCountdownTick);
+                   &RoundAnimationManager::onCountdownTick);
 }

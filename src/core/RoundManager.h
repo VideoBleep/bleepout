@@ -97,7 +97,7 @@ private:
   ofPtr<SpaceController> _spaceController;
   ofPtr<LogicController> _logicController;
   TimedActionSet _timedActions;
-  ofPtr<AnimationManager> _animationManager;
+  ofPtr<RoundAnimationManager> _animationManager;
   Pulser _cullDeadObjectsPulser;
   bool _ending;
   RoundEndReason _endReason;

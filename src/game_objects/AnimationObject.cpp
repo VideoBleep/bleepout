@@ -53,9 +53,9 @@ void AnimationObject::output(std::ostream &os) const {
 }
 
 DurationAction*
-AnimationObject::createUpdaterAction(RoundState& state) {
-  float now = state.time;
+AnimationObject::createUpdaterAction(float time, GameObjectCollection<AnimationObject>& animations) {
+  float now = time;
   float start = now + _delay;
   return new AnimationUpdater(start, start + _duration,
-                              *this, state.animations());
+                              *this, animations);
 }

@@ -34,7 +34,7 @@ public:
   }
   
   DurationAction*
-  createUpdaterAction(RoundState& state);
+  createUpdaterAction(float time, GameObjectCollection<AnimationObject>& animations);
 protected:
   inline float percentage() const { return _percentage; }
 private:

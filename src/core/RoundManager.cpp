@@ -51,7 +51,7 @@ void RoundController::setup() {
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   _spaceController.reset(new SpaceController(_state, _config, _appParams));
   _logicController.reset(new LogicController(_state, _config, _appParams));
-  _animationManager.reset(new AnimationManager(*this));
+  _animationManager.reset(new RoundAnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
@@ -179,7 +179,7 @@ void RoundController::onModifierAppeared(ModifierEventArgs& e) {
 
 void RoundController::addAnimation(ofPtr<AnimationObject> animation) {
   _state.addAnimation(animation);
-  auto updater = animation->createUpdaterAction(_state);
+  auto updater = animation->createUpdaterAction(_state.time, _state.animations());
   addTimedAction(ofPtr<TimedAction>(updater));
 }
 
