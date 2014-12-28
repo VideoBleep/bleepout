@@ -125,51 +125,11 @@ void RoundConfig::saveJsonFile(std::string path) const {
   writeJsonFile(path, obj);
 }
 
-static void createRingBricks(const BrickRingSpec& ring, std::vector<BrickSpec>& bricks) {
-  BrickSpec prototype = BrickSpec()
-    .setElevation(ring.elevation)
-    .setSize(ring.size)
-    .setColor(ring.color)
-    .setValue(ring.value)
-    .setLives(ring.lives)
-    .setSpeed(ring.speed);
-  for (int i = 0; i < ring.count; i++) {
-    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
-    BrickSpec brick = BrickSpec()
-      .copyFrom(prototype)
-      .setHeading(heading)
-      .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading));
-    if (!ring.modifierName.empty()) {
-      if (ring.modifierChance >= 1 || ofRandomuf() >= ring.modifierChance) {
-        brick.setModifier(ring.modifierName);
-      }
-    }
-    bricks.push_back(brick);
-  }
-}
-
 std::vector<BrickSpec> RoundConfig::allBricks() const {
   std::vector<BrickSpec> allBricks(_bricks);
-  for (const BrickRingSpec& ring : _brickRings) {
-    createRingBricks(ring, allBricks);
-  }
+  buildAllSpecs(*this, _brickRings, &allBricks);
+  buildAllSpecs(*this, _brickQuads, &allBricks);
   return allBricks;
-}
-
-static void createRingWalls(const WallRingSpec& ring, std::vector<WallSpec>& walls) {
-  WallSpec prototype = WallSpec()
-    .setElevation(ring.elevation)
-    .setSize(ring.size)
-    .setIsExit(ring.isExit)
-    .setSpeed(ring.speed)
-    .setVisible(ring.visible);
-  for (int i = 0; i < ring.count; i++) {
-    float heading = i * 360 / (ring.count * 1.0) + ring.phase;
-    walls.push_back(WallSpec()
-                    .copyFrom(prototype)
-                    .setHeading(heading)
-                    .setStopHeading(ring.stopHeading < 0 ? -1 : (heading + ring.stopHeading)));
-  }
 }
 
 static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<WallSpec>& walls) {
@@ -202,9 +162,7 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
   for (const CurvedWallSpec& curve : _curvedWallSets) {
     createCurveWalls(curve, r, walls);
   }
-  for (const WallRingSpec& ring : _wallRings) {
-    createRingWalls(ring, walls);
-  }
+  buildAllSpecs(*this, _wallRings, &walls);
   return walls;
 }
 

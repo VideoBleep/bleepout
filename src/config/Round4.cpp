@@ -23,29 +23,34 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setColor(ofColor::green)
     .setDuration(20);
   
-  
-  BrickQuadClusterRingsSpec rings;
-  rings
-    .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
-    .setSize(ofVec3f(7, 5, 14))
-    .setModifier(laserModName, .7);
-  
-  rings.setElevation(45, 1.5)
-    .setCount(12)
-    .setHeadingSpacing(4)
-    .addBricksTo(config);
-  rings.setElevation(55, 1.5)
-    .setCount(12)
-    .setHeadingSpacing(4)
-    .addBricksTo(config);
-  rings.setElevation(65, 1.5)
-    .setCount(3)
-    .setHeadingSpacing(8)
-    .addBricksTo(config);
-  rings.setElevation(75, 1.5)
-    .setCount(3)
-    .setHeadingSpacing(12)
-    .addBricksTo(config);
+  {
+    BrickQuadsSpec prototype;
+    prototype
+      .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
+      .setSize(ofVec3f(7, 5, 14))
+      .setModifier(laserModName, .7);
+    
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(45, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(55, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(65, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(8);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(75, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(12);
+  }
   
   config->addBrickRing()
     .setElevation(85)

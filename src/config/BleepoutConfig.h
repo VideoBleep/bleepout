@@ -143,6 +143,11 @@ public:
     return _ringSets.back();
   }
   
+  BrickQuadsSpec& addBrickQuads() {
+    _brickQuads.push_back(BrickQuadsSpec());
+    return _brickQuads.back();
+  }
+  
   ModifierSpec& addModifierDef(std::string name, ModifierType type) {
     _modifierDefs[name] = ModifierSpec(name, type);
     return _modifierDefs.at(name);
@@ -178,6 +183,7 @@ private:
   std::vector<BallSpec> _balls;
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
+  std::vector<BrickQuadsSpec> _brickQuads;
   std::vector<WallSpec> _walls;
   std::vector<WallRingSpec> _wallRings;
   std::vector<CurvedWallSpec> _curvedWallSets;
