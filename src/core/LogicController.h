@@ -12,15 +12,13 @@
 #include "GameState.h"
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
-#include "BleepoutParameters.h"
 #include "Timing.h"
 
 class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config,
-                  BleepoutParameters& appParams);
+  LogicController(RoundState& state, RoundConfig& config);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickHitEventArgs> brickHitEvent;
@@ -76,7 +74,6 @@ private:
   
   RoundState& _state;
   RoundConfig& _config;
-  BleepoutParameters& _appParams;
   float _lastSpecifiedTimeLimitOffset;
   Pulser _countdownTickPulser;
 };

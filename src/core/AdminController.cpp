@@ -14,6 +14,7 @@
 #include "BleepoutApp.h"
 #include "SetupController.h"
 #include "GameState.h"
+#include "BleepoutParameters.h"
 
 static const int uiWidth = 200;
 
@@ -99,10 +100,8 @@ struct AdminUIControls {
   }
 };
 
-AdminController::AdminController(BleepoutParameters& appParams,
-                                 SetupController& setupController)
-: _appParams(appParams)
-, _appConfig(appParams.appConfig())
+AdminController::AdminController(SetupController& setupController)
+: _appConfig(BleepoutParameters::get().appConfig())
 , _setupController(setupController)
 , _gui(NULL), _controls(NULL), _roundState(NULL)
 , EventSource() { }
@@ -119,6 +118,7 @@ AdminController::~AdminController() {
 }
 
 void AdminController::setup() {
+  auto& appParams = BleepoutParameters::get();
   const int totalWidth = ofGetWidth();
   const int totalHeight = ofGetHeight();
   _controls = new AdminUIControls();
@@ -132,8 +132,8 @@ void AdminController::setup() {
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
   _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
   
-  const auto& allRoundNames = _appParams.queuedRoundNames();
-  for (int i = 0; i < _appParams.queuedRoundNames().size(); i++) {
+  const auto& allRoundNames = appParams.queuedRoundNames();
+  for (int i = 0; i < appParams.queuedRoundNames().size(); i++) {
     ofxUILabelButton* button = _gui->addLabelButton("RoundQueueSlot" + ofToString(i), true);
     button->setColorBack(ofColor(0, 255, 0));
     button->setColorFill(ofColor(0, 0, 0));
@@ -150,33 +150,33 @@ void AdminController::setup() {
   
   _controls->timeLimitToggle = _gui->addToggle("Time Limit Enabled", false);
   _controls->timeLimitToggle->setLabelVisible(true);
-  _controls->timeLimitToggle->setValue(_appParams.rules().specifiesTimeLimit());
+  _controls->timeLimitToggle->setValue(appParams.rules().specifiesTimeLimit());
   
   _controls->timeLimit = _gui->addNumberDialer("Time Limit", 1, 6000, 30, 0);
   _controls->timeLimit->setDisplayLabel(true);
   
-  _controls->pause = _gui->addLabelToggle("Pause", &_appParams.paused);
-  _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &_appParams.exitsEnabled);
+  _controls->pause = _gui->addLabelToggle("Pause", &appParams.paused);
+  _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &appParams.exitsEnabled);
   
   _controls->overrideBallsRespawn = _gui->addToggle("Override Respawn", false);
   _controls->overrideBallsRespawn->setLabelVisible(true);
   _controls->overrideBallsRespawn->setValue(false);
-  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", _appParams.rules().ballsRespawn());
+  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", appParams.rules().ballsRespawn());
   
-  _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &_appParams.debugGraphics);
-  _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
-  _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
-  _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &_appParams.drawExtras);
-  _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
+  _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &appParams.debugGraphics);
+  _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &appParams.drawTrajectories);
+  _controls->drawComets = _gui->addLabelToggle("Comets", &appParams.drawComets);
+  _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &appParams.drawExtras);
+  _controls->allLasers = _gui->addLabelToggle("All Lasers", &appParams.allLasers);
   _controls->addBall = _gui->addButton("Add Ball", false);
 #ifdef ENABLE_SYPHON
-  _controls->enableSyphon = _gui->addLabelToggle("Syphon", &_appParams.enableSyphon);
-  _controls->syphonAppName = _gui->addTextInput("Syphon App", _appParams.syphonAppName);
+  _controls->enableSyphon = _gui->addLabelToggle("Syphon", &appParams.enableSyphon);
+  _controls->syphonAppName = _gui->addTextInput("Syphon App", appParams.syphonAppName);
   _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
-  _controls->syphonServerName = _gui->addTextInput("Syphon Server", _appParams.syphonServerName);
+  _controls->syphonServerName = _gui->addTextInput("Syphon Server", appParams.syphonServerName);
   _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
 #endif
-  _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &_appParams.audioVolume);
+  _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &appParams.audioVolume);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -198,36 +198,37 @@ void AdminController::detachFrom(BleepoutApp &app) {
 
 void AdminController::onRoundStarted(RoundStateEventArgs &e) {
   _controls->inRound->setLabel("In round: " + e.state().config().name());
-  _appParams.inRound = true;
+  BleepoutParameters::get().inRound = true;
   _roundState = &e.state();
 }
 
 void AdminController::onRoundEnded(RoundEndedEventArgs &e) {
   _controls->inRound->setLabel("Not in round");
-  _appParams.inRound = false;
+  BleepoutParameters::get().inRound = false;
   _roundState = NULL;
 }
 
 void AdminController::keyPressed(int key) {
+  auto& appParams = BleepoutParameters::get();
   if (ofGetKeyPressed(BLEEPOUT_CONTROL_KEY)) {
     if (key == 'e') {
       // toggle exits on and off
-      _appParams.exitsEnabled = !_appParams.exitsEnabled;
+      appParams.exitsEnabled = !appParams.exitsEnabled;
     } else if (key == 't') {
-      _appParams.drawTrajectories = !_appParams.drawTrajectories;
+      appParams.drawTrajectories = !appParams.drawTrajectories;
     } else if (key == 'd') {
-      _appParams.debugGraphics = !_appParams.debugGraphics;
+      appParams.debugGraphics = !appParams.debugGraphics;
     } else if (key == 'l') {
-      _appParams.allLasers = !_appParams.allLasers;
+      appParams.allLasers = !appParams.allLasers;
     } else if (key == 'c') {
-      _appParams.drawComets= !_appParams.drawComets;
+      appParams.drawComets= !appParams.drawComets;
     } else if (key == 'b') {
       // add a new ball
-      _appParams.ballsToAdd++;
+      appParams.ballsToAdd++;
     }
 #ifdef ENABLE_SYPHON
     else if (key == 'y') {
-      _appParams.enableSyphon = !_appParams.enableSyphon;
+      appParams.enableSyphon = !appParams.enableSyphon;
     }
 #endif
   }
@@ -256,30 +257,31 @@ static void dumpRoundQueue(BleepoutParameters& params) {
 }
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
+  auto& appParams = BleepoutParameters::get();
 #ifdef ENABLE_SYPHON
   if (e.widget == _controls->syphonAppName) {
-    _appParams.syphonAppName = _controls->syphonAppName->getTextString();
+    appParams.syphonAppName = _controls->syphonAppName->getTextString();
   } else if (e.widget == _controls->syphonServerName) {
-    _appParams.syphonServerName = _controls->syphonServerName->getTextString();
+    appParams.syphonServerName = _controls->syphonServerName->getTextString();
   } else if (e.widget == _controls->enableSyphon) {
-    _appParams.enableSyphon = _controls->enableSyphon->getValue();
+    appParams.enableSyphon = _controls->enableSyphon->getValue();
   }
 #endif
   if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
-    _appParams.ballsToAdd++;
+    appParams.ballsToAdd++;
   } else if (e.widget == _controls->timeLimitToggle ||
              e.widget == _controls->timeLimit) {
     if (_controls->timeLimitToggle->getValue()) {
-      _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
+      appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
-      _appParams.rules().unsetTimeLimit();
+      appParams.rules().unsetTimeLimit();
     }
   } else if (e.widget == _controls->overrideBallsRespawn ||
              e.widget == _controls->ballsRespawn) {
     if (_controls->overrideBallsRespawn->getValue()) {
-      _appParams.rules().setBallsRespawn(_controls->ballsRespawn->getValue());
+      appParams.rules().setBallsRespawn(_controls->ballsRespawn->getValue());
     } else {
-      _appParams.rules().unsetBallsRespawn();
+      appParams.rules().unsetBallsRespawn();
     }
   } else if (e.widget == _controls->startRound &&
              _controls->startRound->getValue()) {
@@ -290,8 +292,8 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else {
     for (auto& slot : _controls->roundQueueSlots) {
       if (slot->handleEvent(e, _appConfig)) {
-        slot->updateSlot(_appParams);
-        dumpRoundQueue(_appParams);
+        slot->updateSlot(appParams);
+        dumpRoundQueue(appParams);
         return;
       }
     }
@@ -299,13 +301,14 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
+  auto& appParams = BleepoutParameters::get();
   auto& players = _setupController.lobby();
-  ofPtr<RoundConfig> roundConfig = _appParams.getNextRound();
+  ofPtr<RoundConfig> roundConfig = appParams.getNextRound();
   if (!roundConfig)
     return false;
   if (notifyTryStartRound(roundConfig, players)) {
-    _appParams.popNextRound();
-    _controls->updateQueueSlots(_appParams);
+    appParams.popNextRound();
+    _controls->updateQueueSlots(appParams);
   }
 }
 

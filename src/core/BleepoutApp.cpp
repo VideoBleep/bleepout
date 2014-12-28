@@ -16,7 +16,7 @@ BleepoutApp::BleepoutApp()
 void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   _config.reset(BleepoutConfig::createConfig());
-  _appParams.reset(new BleepoutParameters(*_config));
+  _appParams = BleepoutParameters::initialize(*_config);
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
@@ -27,7 +27,7 @@ void BleepoutApp::setup() {
   ofAddListener(_setupController->tryStartRoundEvent, this,
                 &BleepoutApp::onTryStartRound);
   
-  _adminController.reset(new AdminController(*_appParams, *_setupController));
+  _adminController.reset(new AdminController(*_setupController));
   _adminController->setup();
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
@@ -115,7 +115,6 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   _playerManager->setIsInRound(true);
   _appParams->setCurrentRound(e.config()->name());
   _roundController.reset(new RoundController(*e.config(),
-                                             *_appParams,
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();

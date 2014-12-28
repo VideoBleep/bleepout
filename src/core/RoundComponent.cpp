@@ -12,6 +12,5 @@
 #include "GameState.h"
 
 RoundComponent::RoundComponent(RoundState& state,
-                               const RoundConfig& config,
-                               const BleepoutParameters& appParams)
-: _state(state) , _config(config) , _appParams(appParams) { }
+                               const RoundConfig& config)
+: _state(state) , _config(config) { }

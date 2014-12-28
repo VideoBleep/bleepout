@@ -17,8 +17,11 @@
 
 // parameters are things that can change, whereas config is fixed
 class BleepoutParameters {
-public:
+private:
   BleepoutParameters(BleepoutConfig& appConfig);
+public:
+  static ofPtr<BleepoutParameters> initialize(BleepoutConfig& appConfig);
+  static BleepoutParameters& get();
   
   ofParameterGroup& params() { return _params; }
   const BleepoutConfig& appConfig() const { return _appConfig; }

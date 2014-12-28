@@ -13,16 +13,12 @@
 #include "RoundComponent.h"
 #include <ofTypes.h>
 
-class RoundConfig;
-class RoundState;
-class BleepoutParameters;
 class RendererExtrasImpl;
 
 class RendererExtras : public RoundComponent {
 public:
   RendererExtras(RoundState& state,
-                 const RoundConfig& config,
-                 const BleepoutParameters& appParams);
+                 const RoundConfig& config);
   void setup() override;
   void update() override;
   void draw() override;

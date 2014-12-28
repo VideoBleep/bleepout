@@ -133,9 +133,8 @@ public:
 };
 
 RendererExtras::RendererExtras(RoundState& state,
-                               const RoundConfig& config,
-                               const BleepoutParameters& appParams)
-: RoundComponent(state, config, _appParams) { }
+                               const RoundConfig& config)
+: RoundComponent(state, config) { }
 
 void RendererExtras::setup() {
   _impl.reset(new RendererExtrasImpl(_config));
