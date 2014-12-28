@@ -145,6 +145,11 @@ public:
     return _brickQuads.back();
   }
   
+  CurvedBrickColumnSpec& addCurvedBrickColumn() {
+    _curvedBrickColumns.push_back(CurvedBrickColumnSpec());
+    return _curvedBrickColumns.back();
+  }
+  
   ModifierSpec& addModifierDef(std::string name, ModifierType type) {
     _modifierDefs[name] = ModifierSpec(name, type);
     return _modifierDefs.at(name);
@@ -178,6 +183,7 @@ private:
   std::vector<BallSpec> _balls;
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
+  std::vector<CurvedBrickColumnSpec> _curvedBrickColumns;
   std::vector<BrickQuadsSpec> _brickQuads;
   std::vector<WallSpec> _walls;
   std::vector<WallRingSpec> _wallRings;

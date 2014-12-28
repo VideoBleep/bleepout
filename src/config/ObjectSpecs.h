@@ -17,7 +17,7 @@
 class RoundConfig;
 
 template<typename T>
-struct SpecGroupBuilder {
+struct SpecGenerator {
   virtual void buildSpecs(const RoundConfig& config,
                           std::vector<T>* specs) const = 0;
 };
@@ -67,7 +67,7 @@ struct BrickSpec {
   BrickSpec& setModifier(std::string m) { modifierName = m; return *this; }
 };
 
-struct BrickRingSpec : public SpecGroupBuilder<BrickSpec> {
+struct BrickRingSpec : public SpecGenerator<BrickSpec> {
   float elevation;
   ofVec3f size;
   ofColor color;
@@ -113,7 +113,7 @@ struct BrickRingSpec : public SpecGroupBuilder<BrickSpec> {
                   std::vector<BrickSpec>* specs) const override;
 };
 
-struct BrickQuadsSpec : public SpecGroupBuilder<BrickSpec> {
+struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
   ofColor color1;
   ofColor color2;
   float elevation;
@@ -206,7 +206,7 @@ struct WallSpec {
   WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
 
-struct WallRingSpec : public SpecGroupBuilder<WallSpec> {
+struct WallRingSpec : public SpecGenerator<WallSpec> {
   float elevation;
   ofVec3f size;
   bool isExit;
@@ -239,7 +239,59 @@ struct WallRingSpec : public SpecGroupBuilder<WallSpec> {
                   std::vector<WallSpec>* specs) const override;
 };
 
-struct CurvedWallSpec {
+struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
+  struct StripeSpec {
+    int value;
+    int lives;
+    std::string modifierName;
+    float modifierChance;
+    StripeSpec()
+    : value(1), lives(1), modifierName(""), modifierChance(0) { }
+    StripeSpec(int v, int l, std::string mname, float mchance)
+    : value(v), lives(l), modifierName(mname), modifierChance(mchance) { }
+  };
+  float elevation1;
+  float heading1;
+  float elevation2;
+  float heading2;
+  ofColor color1;
+  ofColor color2;
+  ofVec3f size;
+  StripeSpec stripe1;
+  StripeSpec stripe2;
+  StripeSpec stripe3;
+  int count;
+  float phase;
+  float speed;
+  float stopHeading;
+  CurvedBrickColumnSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
+  CurvedBrickColumnSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
+  CurvedBrickColumnSpec& setCount(int c) { count = c; return *this; }
+  CurvedBrickColumnSpec& setSize(ofVec3f s) { size = s; return *this; }
+  CurvedBrickColumnSpec& setSpeed(float s) { speed = s; return *this; }
+  CurvedBrickColumnSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  CurvedBrickColumnSpec& setColor(ofColor c1, ofColor c2) {
+    color1 = c1;
+    color2 = c2;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe1(StripeSpec stripe) {
+    stripe1 = stripe;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe2(StripeSpec stripe) {
+    stripe2 = stripe;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe3(StripeSpec stripe) {
+    stripe3 = stripe;
+    return *this;
+  }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
+};
+
+struct CurvedWallSpec : public SpecGenerator<WallSpec> {
   float elevation1;
   float heading1;
   float elevation2;
@@ -256,6 +308,8 @@ struct CurvedWallSpec {
   CurvedWallSpec& setIsExit(float e) { isExit = e; return *this; }
   CurvedWallSpec& setSpeed(float s) { speed = s; return *this; }
   CurvedWallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<WallSpec>* specs) const override;
 };
 
 struct BallSpec {

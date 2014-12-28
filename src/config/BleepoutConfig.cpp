@@ -124,40 +124,14 @@ std::vector<BrickSpec> RoundConfig::allBricks() const {
   std::vector<BrickSpec> allBricks(_bricks);
   buildAllSpecs(*this, _brickRings, &allBricks);
   buildAllSpecs(*this, _brickQuads, &allBricks);
+  buildAllSpecs(*this, _curvedBrickColumns, &allBricks);
   return allBricks;
-}
-
-static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<WallSpec>& walls) {
-  float theta = curve.elevation1;
-  float phi = curve.heading1;
-  float dtheta = curve.elevation2 - curve.elevation1;
-  float dphi = curve.heading2 - curve.heading1;
-  int steps = floor(max((r * dtheta * PI/180.0) / curve.width, (r * dphi * PI/180.0) / curve.width));
-  dtheta /= steps * 1.0;
-  dphi /= steps * 1.0;
-  WallSpec prototype = WallSpec()
-    .setSize(ofVec3f(curve.width))
-    .setIsExit(curve.isExit)
-    .setSpeed(curve.speed)
-    .setVisible(false);
-  for (int i = 0; i < steps; i++) {
-    walls.push_back(WallSpec()
-                    .copyFrom(prototype)
-                    .setElevation(theta)
-                    .setHeading(phi)
-                    .setStopHeading(curve.stopHeading < 0 ? -1 : (phi + curve.stopHeading)));
-    theta += dtheta;
-    phi += dphi;
-  }
 }
 
 std::vector<WallSpec> RoundConfig::allWalls() const {
   const auto& appParams = BleepoutParameters::get();
   std::vector<WallSpec> walls(_walls);
-  float r = appParams.domeRadius + appParams.domeMargin;
-  for (const CurvedWallSpec& curve : _curvedWallSets) {
-    createCurveWalls(curve, r, walls);
-  }
+  buildAllSpecs(*this, _curvedWallSets, &walls);
   buildAllSpecs(*this, _wallRings, &walls);
   return walls;
 }
