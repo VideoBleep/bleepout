@@ -23,6 +23,30 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setColor(ofColor::green)
     .setDuration(20);
   
+  
+  BrickQuadClusterRingsSpec rings;
+  rings
+    .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
+    .setSize(ofVec3f(7, 5, 14))
+    .setModifier(laserModName, .7);
+  
+  rings.setElevation(45, 1.5)
+    .setCount(12)
+    .setHeadingSpacing(4)
+    .addBricksTo(config);
+  rings.setElevation(55, 1.5)
+    .setCount(12)
+    .setHeadingSpacing(4)
+    .addBricksTo(config);
+  rings.setElevation(65, 1.5)
+    .setCount(3)
+    .setHeadingSpacing(8)
+    .addBricksTo(config);
+  rings.setElevation(75, 1.5)
+    .setCount(3)
+    .setHeadingSpacing(12)
+    .addBricksTo(config);
+  
   config->addBrickRing()
     .setElevation(60)
     .setCount(24)
@@ -140,6 +164,31 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setSize(25)
     .setTiming(7.5, 2.5);
   config->_startDelay = 10;
+  
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.1f, 10.0f, ofVec3f(20)),
+               ofVec3f(20))
+    .setCount(60)
+    .setRadiusScale(1.95)
+    .setLineWidth(2.2)
+    .setColor(ofColor(0, 0, 255, 127));
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.4, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0, 0.5, 40.0f, ofVec3f(0)),
+               ofVec3f(60))
+    .setCount(90)
+    .setRadiusScale(2.3)
+    .setLineWidth(2.1)
+    .setColor(ofColor(0, 63, 192, 63));
+  config->addRingSet()
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0)),
+               ofVec3f(60))
+    .setCount(50)
+    .setRadiusScale(2)
+    .setLineWidth(2.9)
+    .setColor(ofColor(0, 127, 255, 127));
   
   return config;
 }
