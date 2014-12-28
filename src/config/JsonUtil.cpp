@@ -361,3 +361,97 @@ bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
     result->amount = 0;
   return true;
 }
+
+
+
+bool JsonLoader::assertType(const Json::Value &val, Json::ValueType type) const {
+  if (!val.isConvertibleTo(type) || val.isNull()) {
+    ofLog(_logLevel) << "cannot convert value to " << type
+    << ": " << val;
+    return false;
+  }
+  return true;
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val, float *result,
+                         const float& defaultVal) const {
+  if (!assertType(val, Json::realValue))
+    *result = defaultVal;
+  else
+    *result = val.asFloat();
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val, int *result,
+                         const int& defaultVal) const {
+  if (!assertType(val, Json::intValue))
+    *result = defaultVal;
+  else
+    *result = val.asInt();
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         unsigned char *result,
+                         const unsigned char& defaultVal) const {
+  if (!assertType(val, Json::uintValue))
+    *result = defaultVal;
+  else
+    *result = (unsigned char)val.asUInt();
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val, bool *result,
+                         const bool& defaultVal) const {
+  if (!assertType(val, Json::booleanValue))
+    *result = defaultVal;
+  else
+    *result = val.asBool();
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         std::string *result,
+                         const std::string& defaultVal) const {
+  if (!assertType(val, Json::stringValue))
+    *result = defaultVal;
+  else
+    *result = val.asString();
+}
+
+#define R_JPROP(property) readVal(val[#property], &result->property, defaultVal.property)
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ofVec3f *result,
+                         const ofVec3f& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    //    readVal(val["x"], &result->x, defaultVal.x);
+    //    readVal(val["y"], &result->y, defaultVal.y);
+    //    readVal(val["z"], &result->z, defaultVal.z);
+    R_JPROP(x);
+    R_JPROP(y);
+    R_JPROP(z);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ofColor *result,
+                         const ofColor& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    //    readVal(val["r"], &result->r, defaultVal.r);
+    //    readVal(val["g"], &result->g, defaultVal.g);
+    //    readVal(val["b"], &result->b, defaultVal.b);
+    //    readVal(val["a"], &result->a, defaultVal.a);
+    R_JPROP(r);
+    R_JPROP(g);
+    R_JPROP(b);
+    R_JPROP(a);
+  }
+}

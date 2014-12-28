@@ -88,4 +88,35 @@ Json::Value toJsonVal(const std::map<std::string, T> map) {
 bool readJsonFile(std::string path, Json::Value* obj);
 void writeJsonFile(std::string path, const Json::Value& obj);
 
+class JsonLoader {
+public:
+  JsonLoader() : _logLevel(OF_LOG_WARNING) { }
+  
+  template<typename T>
+  void readVal(const Json::Value& val, T* result,
+               const T& defaultVal) const;
+  
+  template<typename T>
+  void readObj(const Json::Value& obj, T* result) const {
+    readVal(obj, result, *result);
+  }
+  
+  template<typename T>
+  void readArr(const Json::Value& arr, std::vector<T>* result) const {
+    result->clear();
+    if (!assertType(arr, Json::arrayValue))
+      return;
+    for (int i = 0; i < arr.size(); i++) {
+      T temp;
+      if (!readVal(arr[i], &temp, temp))
+        result->push_back(temp);
+    }
+  }
+  
+  bool assertType(const Json::Value& val,
+                  Json::ValueType type) const;
+private:
+  ofLogLevel _logLevel;
+};
+
 #endif /* defined(__bleepout__JsonUtil__) */

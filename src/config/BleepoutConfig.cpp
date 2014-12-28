@@ -9,6 +9,7 @@
 #include "BleepoutConfig.h"
 #include "BleepoutApp.h"
 #include "BleepoutParameters.h"
+#include "JsonUtil.h"
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
@@ -147,6 +148,13 @@ GameRules::GameRules(const GameRules& other)
 , _timeLimit(other._timeLimit)
 , _playersCanLoseLives(other._playersCanLoseLives)
 , _ballsRespawn(other._ballsRespawn) { }
+
+GameRules& GameRules::copyFrom(const GameRules &other) {
+  _timeLimit = other._timeLimit;
+  _playersCanLoseLives = other._playersCanLoseLives;
+  _ballsRespawn = other._ballsRespawn;
+  return *this;
+}
 
 float GameRules::timeLimit() const {
   return _timeLimit.get(_backup ? &_backup->_timeLimit : NULL, -1);

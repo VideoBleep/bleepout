@@ -9,6 +9,7 @@
 #include "ObjectSpecs.h"
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
+#include "JsonUtil.h"
 
 void BrickRingSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec> *specs) const {
   BrickSpec prototype = BrickSpec()
@@ -151,3 +152,246 @@ void CurvedBrickColumnSpec::buildSpecs(const RoundConfig &config, std::vector<Br
     phi += dphi;
   }
 }
+
+#define R_JPROP(property) readVal(val[#property], &result->property, defaultVal.property)
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         BrickSpec *result,
+                         const BrickSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(heading);
+    R_JPROP(size);
+    R_JPROP(value);
+    R_JPROP(lives);
+    R_JPROP(color);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+    R_JPROP(modifierName);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         BrickRingSpec *result,
+                         const BrickRingSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(size);
+    R_JPROP(color);
+    R_JPROP(value);
+    R_JPROP(lives);
+    R_JPROP(count);
+    R_JPROP(phase);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+    R_JPROP(modifierName);
+    R_JPROP(modifierChance);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         BrickQuadsSpec *result,
+                         const BrickQuadsSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(color1);
+    R_JPROP(color2);
+    R_JPROP(count);
+    R_JPROP(elevationSpacing);
+    R_JPROP(headingSpacing);
+    R_JPROP(size);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+    R_JPROP(modifierName);
+    R_JPROP(modifierChance);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         WallSpec *result,
+                         const WallSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(heading);
+    R_JPROP(size);
+    R_JPROP(isExit);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+    R_JPROP(visible);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         WallRingSpec *result,
+                         const WallRingSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(size);
+    R_JPROP(isExit);
+    R_JPROP(count);
+    R_JPROP(phase);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+    R_JPROP(visible);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         CurvedBrickColumnSpec::StripeSpec *result,
+                         const CurvedBrickColumnSpec::StripeSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(value);
+    R_JPROP(lives);
+    R_JPROP(modifierName);
+    R_JPROP(modifierChance);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         CurvedBrickColumnSpec *result,
+                         const CurvedBrickColumnSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    result->copyFrom(defaultVal);
+  } else {
+    R_JPROP(elevation1);
+    R_JPROP(heading1);
+    R_JPROP(elevation2);
+    R_JPROP(heading2);
+    R_JPROP(color1);
+    R_JPROP(color2);
+    R_JPROP(size);
+    R_JPROP(stripe1);
+    R_JPROP(stripe2);
+    R_JPROP(stripe3);
+    R_JPROP(count);
+    R_JPROP(phase);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         CurvedWallSpec *result,
+                         const CurvedWallSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(elevation1);
+    R_JPROP(heading1);
+    R_JPROP(elevation2);
+    R_JPROP(heading2);
+    R_JPROP(width);
+    R_JPROP(isExit);
+    R_JPROP(speed);
+    R_JPROP(stopHeading);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         BallSpec *result,
+                         const BallSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(elevation);
+    R_JPROP(heading);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ModifierSpec *result,
+                         const ModifierSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(type);
+    R_JPROP(name);
+    R_JPROP(amount);
+    R_JPROP(duration);
+    R_JPROP(color);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         MessageSpec *result,
+                         const MessageSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(text);
+    R_JPROP(color);
+    R_JPROP(size);
+    R_JPROP(trails);
+    R_JPROP(delay);
+    R_JPROP(duration);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ValuePulserSpec<float> *result,
+                         const ValuePulserSpec<float>& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(minRate);
+    R_JPROP(maxRate);
+    R_JPROP(changeInterval);
+    R_JPROP(startValue);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ValuePulserSpec<ofVec3f> *result,
+                         const ValuePulserSpec<ofVec3f>& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(minRate);
+    R_JPROP(maxRate);
+    R_JPROP(changeInterval);
+    R_JPROP(startValue);
+  }
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         RingSetSpec *result,
+                         const RingSetSpec& defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = defaultVal;
+  } else {
+    R_JPROP(spin);
+    R_JPROP(spread);
+    R_JPROP(spreadOffset);
+    R_JPROP(count);
+    R_JPROP(radiusScale);
+    R_JPROP(lineWidth);
+    R_JPROP(color);
+  }
+}
+

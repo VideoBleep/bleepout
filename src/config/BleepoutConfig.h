@@ -14,13 +14,14 @@
 #include <vector>
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include "ObjectSpecs.h"
-#include "JsonUtil.h"
 #include "Common.h"
 
 class GameRules {
 public:
   GameRules();
   explicit GameRules(const GameRules& other);
+  
+  GameRules& copyFrom(const GameRules& other);
   
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }

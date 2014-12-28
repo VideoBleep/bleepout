@@ -41,8 +41,14 @@ struct BrickSpec {
   float speed;
   float stopHeading;
   std::string modifierName;
+  float modifierChance;
   
-  BrickSpec() : speed(0), stopHeading(-1), modifierName(), size(7.0f, 5.0f, 17.0f) { }
+  BrickSpec()
+  : elevation(30), heading(0)
+  , speed(0), stopHeading(-1)
+  , size(7.0f, 5.0f, 17.0f), modifierName()
+  //, modifierChance(0)
+  { }
   BrickSpec& copyFrom(const BrickSpec& other) {
     elevation = other.elevation;
     heading = other.heading;
@@ -64,6 +70,11 @@ struct BrickSpec {
   BrickSpec& setLives(int l) { lives = l; return *this; }
   BrickSpec& setSpeed(float s) { speed = s; return *this; }
   BrickSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+//  BrickSpec& setModifier(std::string m, float chance = 1.0) {
+//    modifierName = m;
+//    modifierChance = chance;
+//    return *this;
+//  }
   BrickSpec& setModifier(std::string m) { modifierName = m; return *this; }
 };
 
@@ -114,9 +125,9 @@ struct BrickRingSpec : public SpecGenerator<BrickSpec> {
 };
 
 struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
+  float elevation;
   ofColor color1;
   ofColor color2;
-  float elevation;
   int count;
   float elevationSpacing;
   float headingSpacing;
@@ -155,19 +166,10 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
     headingSpacing = spacing;
     return *this;
   }
-  BrickQuadsSpec& setSize(ofVec3f s) {
-    size = s;
-    return *this;
-  }
-  BrickQuadsSpec& setSpeed(float s) {
-    speed = s;
-    return *this;
-  }
+  BrickQuadsSpec& setSize(ofVec3f s) { size = s; return *this; }
+  BrickQuadsSpec& setSpeed(float s) { speed = s; return *this; }
   BrickQuadsSpec& setStopHeading(float s) { stopHeading = s; return *this; }
-  BrickQuadsSpec& setCount(int c) {
-    count = c;
-    return *this;
-  }
+  BrickQuadsSpec& setCount(int c) { count = c; return *this; }
   BrickQuadsSpec& setModifier(std::string mod, float chance) {
     modifierName = mod;
     modifierChance = chance;
@@ -264,6 +266,23 @@ struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
   float phase;
   float speed;
   float stopHeading;
+  CurvedBrickColumnSpec& copyFrom(const CurvedBrickColumnSpec& other) {
+    elevation1 = other.elevation1;
+    heading1 = other.heading1;
+    elevation2 = other.elevation2;
+    heading2 = other.heading2;
+    color1 = other.color1;
+    color2 = other.color2;
+    size = other.size;
+    stripe1 = other.stripe1;
+    stripe2 = other.stripe2;
+    stripe3 = other.stripe3;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
   CurvedBrickColumnSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
   CurvedBrickColumnSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
   CurvedBrickColumnSpec& setCount(int c) { count = c; return *this; }
