@@ -7,15 +7,22 @@
 //
 
 #include "BleepoutApp.h"
+#include "Animations.h"
+#include "BleepoutParameters.h"
 
 BleepoutApp::BleepoutApp()
 : _config()
 , EventSource() { }
 
+BleepoutApp::~BleepoutApp() {
+  BleepoutParameters::cleanup();
+}
+
 void BleepoutApp::setup() {
+  BleepoutParameters::initialize();
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   _config.reset(BleepoutConfig::createConfig());
-  _appParams.reset(new BleepoutParameters(*_config));
+  BleepoutParameters::initializeConfig(*_config);
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
@@ -26,12 +33,12 @@ void BleepoutApp::setup() {
   ofAddListener(_setupController->tryStartRoundEvent, this,
                 &BleepoutApp::onTryStartRound);
   
-  _adminController.reset(new AdminController(*_appParams, *_setupController));
+  _adminController.reset(new AdminController(*_setupController));
   _adminController->setup();
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   
-  _audioManager.reset(new AudioManager(*_appParams));
+  _audioManager.reset(new AudioManager());
   _audioManager->setup();
   _audioManager->attachTo(*this);
 
@@ -47,6 +54,8 @@ void BleepoutApp::setup() {
   ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected);
   //ofAddListener(_playerController->playerAddedEvent, _setupController.get(), &SetupController::handlePlayerAdded);
   
+  _animationManager.reset(new AppAnimationManager(*this));
+  
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
   _syphonEnabled = false;
@@ -54,13 +63,14 @@ void BleepoutApp::setup() {
 }
 
 void BleepoutApp::update() {
+  auto& appParams = BleepoutParameters::get();
 #ifdef ENABLE_SYPHON
-  if (!_syphonEnabled && _appParams->enableSyphon) {
+  if (!_syphonEnabled && appParams.enableSyphon) {
     _syphonEnabled = true;
-    _syphonClient.set(_appParams->syphonServerName,
-                      _appParams->syphonAppName);
+    _syphonClient.set(appParams.syphonServerName,
+                      appParams.syphonAppName);
   }
-  _syphonEnabled = _appParams->enableSyphon;
+  _syphonEnabled = appParams.enableSyphon;
 #endif
   _adminController->update();
   _audioManager->update();
@@ -101,6 +111,7 @@ void BleepoutApp::draw() {
 }
 
 void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
+  auto& appParams = BleepoutParameters::get();
   if (!e.config() || e.players().empty()) {
     ofLogWarning() << "Cannot start round: " << e;
     return;
@@ -110,9 +121,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
-  _appParams->setCurrentRound(e.config()->name());
+  appParams.setCurrentRound(e.config()->name());
   _roundController.reset(new RoundController(*e.config(),
-                                             *_appParams,
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
@@ -121,8 +131,15 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
                 &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
+  _roundController->attachTo(*_adminController);
   e.markHandled();
   notifyRoundStarted(_roundController->state());
+}
+
+const RoundConfig* BleepoutApp::currentRoundConfig() const {
+  if (_roundController)
+    return &_roundController->config();
+  return NULL;
 }
 
 void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {

@@ -40,7 +40,8 @@ public:
   }
   
   virtual void draw(RoundState& state) override {
-    float radius = state.config().domeRadius() * _radiusScale;
+    const auto& appParams = BleepoutParameters::get();
+    float radius = appParams.domeRadius * _radiusScale;
     ofPushMatrix();
     ofPushStyle();
     
@@ -75,7 +76,8 @@ private:
 class SphereRingSet : public Drawable {
 public:
   virtual void draw(RoundState& state) override {
-    float radius = state.config().domeRadius() * _radiusScale;
+    const auto& appParams = BleepoutParameters::get();
+    float radius = appParams.domeRadius * _radiusScale;
     ofPushMatrix();
     ofPushStyle();
     ofEnableAlphaBlending();
@@ -133,9 +135,8 @@ public:
 };
 
 RendererExtras::RendererExtras(RoundState& state,
-                               const RoundConfig& config,
-                               const BleepoutParameters& appParams)
-: RoundComponent(state, config, _appParams) { }
+                               const RoundConfig& config)
+: RoundComponent(state, config) { }
 
 void RendererExtras::setup() {
   _impl.reset(new RendererExtrasImpl(_config));

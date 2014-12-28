@@ -15,8 +15,26 @@
 #include "GameState.h"
 #include <ofTrueTypeFont.h>
 
+class BleepoutApp;
 class RoundController;
 class LogicController;
+class RoundResults;
+
+class AppAnimationManager {
+public:
+  AppAnimationManager(BleepoutApp& app);
+  ~AppAnimationManager();
+  
+  void addMessage(const MessageSpec& message);
+private:
+  void addAnimation(AnimationObject* animation);
+  void onRoundEnded(RoundEndedEventArgs& e);
+  
+  MessageSpec buildRoundEndMessage(const RoundResults& results) const;
+  
+  BleepoutApp& _app;
+  ofTrueTypeFont _messageFont;
+};
 
 class RoundAnimationManager {
 public:

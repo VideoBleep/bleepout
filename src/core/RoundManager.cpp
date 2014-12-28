@@ -13,13 +13,12 @@
 #include "DomeRenderer.h"
 #include "Logging.h"
 #include "AdminController.h"
+#include "BleepoutParameters.h"
 
 RoundController::RoundController(RoundConfig& config,
-                                 BleepoutParameters& appParams,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
 : _config(config)
-, _appParams(appParams)
 , _state(_config, players)
 , _playerManager(playerManager)
 , _timedActions(true)
@@ -49,8 +48,8 @@ void RoundController::setup() {
   _cullDeadObjectsPulser = Pulser(5.0f);
   
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
-  _spaceController.reset(new SpaceController(_state, _config, _appParams));
-  _logicController.reset(new LogicController(_state, _config, _appParams));
+  _spaceController.reset(new SpaceController(_state, _config));
+  _logicController.reset(new LogicController(_state, _config));
   _animationManager.reset(new RoundAnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
@@ -61,7 +60,7 @@ void RoundController::setup() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer(_state, _config, _appParams));
+  _renderer.reset(new DomeRenderer(_state, _config));
   _renderer->setup();
   _renderer->attachTo(*_logicController);
   
@@ -94,11 +93,12 @@ static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
 }
 
 void RoundController::update() {
-  if (_paused && !_appParams.paused) {
+  auto& appParams = BleepoutParameters::get();
+  if (_paused && !appParams.paused) {
     _startTime = ofGetElapsedTimef() - _state.time;
     _paused = false;
   }
-  _paused = _appParams.paused;
+  _paused = appParams.paused;
   if (_paused)
     return;
   _state.time = ofGetElapsedTimef() - _startTime;
@@ -110,8 +110,8 @@ void RoundController::update() {
     }
   }
   
-  while (_appParams.ballsToAdd) {
-    _appParams.ballsToAdd--;
+  while (appParams.ballsToAdd) {
+    appParams.ballsToAdd--;
     // add a new ball
     Ball& ball = _spaceController->addBall(BallSpec(30, ofRandom(360)));
     notifyBallSpawned(_state, &ball);
@@ -208,8 +208,9 @@ void RoundController::onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs &e) {
     ofLogError() << "Unable to set paddle position for player: " << e.player()->id();
     return;
   }
+  const auto& appParams = BleepoutParameters::get();
   
-  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * e.yaw(), _config.domeMargin());
+  paddle->setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, 360 * e.yaw(), appParams.domeMargin);
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
@@ -224,8 +225,9 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     ofLogError() << "Unable to set paddle position for player: " << playerId;
     return;
   }
+  const auto& appParams = BleepoutParameters::get();
   
-  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * xPercent, _config.domeMargin());
+  paddle->setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, 360 * xPercent, appParams.domeMargin);
 }
 
 void RoundController::mousePressed(int x, int y, int button) {

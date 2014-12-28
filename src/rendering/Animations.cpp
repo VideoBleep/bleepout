@@ -16,6 +16,8 @@
 #include <ofMain.h>
 #include <ofTrueTypeFont.h>
 #include "Logging.h"
+#include "BleepoutApp.h"
+#include "BleepoutParameters.h"
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
@@ -67,20 +69,19 @@ void BrickDestructionAnimation::output(std::ostream &os) const {
 
 class MessageAnimation : public AnimationObject {
 public:
-  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font,
-                   const RoundConfig& config)
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
   : AnimationObject(message.delay, message.duration)
-  , _message(message), _font(font), _config(config) { }
+  , _message(message), _font(font) { }
   
   void draw() override;
   void output(std::ostream& os) const override;
 private:
-  const RoundConfig& _config;
   MessageSpec _message;
   ofTrueTypeFont& _font;
 };
 
 void MessageAnimation::draw() {
+  const auto& appParams = BleepoutParameters::get();
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < _message.trails + 1; j++) {
       ofColor color = _message.color;
@@ -91,7 +92,7 @@ void MessageAnimation::draw() {
                color,
                _font,
                _message.size - (j * 1.5),
-               _config.domeRadius() + _config.domeMargin() * (1.25 + j * 0.1),
+               appParams.domeRadius + appParams.domeMargin * (1.25 + j * 0.1),
                15 - (j * 1.1),
                30 + i * 120);
     }
@@ -195,10 +196,53 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
+#ifdef RADOME
+static const char messageFontName[] = "GUI/PixelSplitter-Bold.ttf";
+#else
+static const char messageFontName[] = "PixelSplitter-Bold.ttf";
+#endif
+
+AppAnimationManager::AppAnimationManager(BleepoutApp& app)
+: _app(app), _messageFont() {
+  _messageFont.loadFont(messageFontName, 50, false, false, true);
+  ofAddListener(app.roundEndedEvent, this,
+                &AppAnimationManager::onRoundEnded);
+}
+
+AppAnimationManager::~AppAnimationManager() {
+  ofRemoveListener(_app.roundEndedEvent, this,
+                   &AppAnimationManager::onRoundEnded);
+}
+
+void AppAnimationManager::onRoundEnded(RoundEndedEventArgs &e) {
+  MessageSpec message = buildRoundEndMessage(e.results());
+  addMessage(message);
+}
+
+MessageSpec AppAnimationManager::buildRoundEndMessage(const RoundResults &results) const {
+  MessageSpec message("Round Ended!!!", ofColor(255, 0, 127));
+  message.setSize(20)
+    .setTiming(0, 2)
+    .setTrails(2);
+  return message;
+}
+
+void AppAnimationManager::addMessage(const MessageSpec &message) {
+  addAnimation(new MessageAnimation(message, _messageFont));
+}
+
+void AppAnimationManager::addAnimation(AnimationObject *animation) {
+  _app.addAnimation(ofPtr<AnimationObject>(animation));
+}
+
+void RoundAnimationManager::addAnimation(AnimationObject *animation) {
+  _roundController.addAnimation(ofPtr<AnimationObject>(animation));
+}
+
 RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
-  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+  _messageFont.loadFont(messageFontName, 50, false, false, true);
   ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
@@ -206,12 +250,8 @@ RoundAnimationManager::~RoundAnimationManager() {
   ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-void RoundAnimationManager::addAnimation(AnimationObject *animation) {
-  _roundController.addAnimation(ofPtr<AnimationObject>(animation));
-}
-
 void RoundAnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {

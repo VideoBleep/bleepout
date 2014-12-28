@@ -17,8 +17,7 @@ class LogicController;
 class RendererBase : public RoundComponent {
 public:
   RendererBase(RoundState& state,
-               const RoundConfig& config,
-               const BleepoutParameters& appParams);
+               const RoundConfig& config);
   virtual ~RendererBase() {}
   
   virtual void setup() {}

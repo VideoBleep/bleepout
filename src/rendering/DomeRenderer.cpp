@@ -71,10 +71,9 @@ namespace {
 }
 
 DomeRenderer::DomeRenderer(RoundState& state,
-                           const RoundConfig& config,
-                           const BleepoutParameters& appParams)
-: RendererBase(state, config, appParams)
-, _extras(state, config, appParams) { }
+                           const RoundConfig& config)
+: RendererBase(state, config)
+, _extras(state, config) { }
 
 void DomeRenderer::setup() {
   ofEnableDepthTest();
@@ -114,15 +113,16 @@ void DomeRenderer::update() {
 }
 
 void DomeRenderer::draw() {
+  auto& appParams = BleepoutParameters::get();
     
 #ifndef RADOME
-  _cam.setDistance(_config.domeRadius() * 2.1);
+  _cam.setDistance(appParams.domeRadius * 2.1);
   _cam.begin();
 #endif
     
   float t = ofGetElapsedTimef() * 0.3;
   for (int i = 0; i < lights.size(); i++) {
-    lights[i].setPosition(sphericalToCartesian(_config.domeRadius() * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
+    lights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
     lights[i].setAttenuation(0.25, 0.007, 0.0);
     lights[i].enable();
   }
@@ -134,25 +134,25 @@ void DomeRenderer::draw() {
   ofNoFill();
   ofRotateX(90);
   ofSetLineWidth(1.5);
-  ofCircle(0, 0, 0, _config.domeRadius());
+  ofCircle(0, 0, 0, appParams.domeRadius);
   
   ofPopStyle();
   ofPopMatrix();
   
   RendererBase::draw();
   
-  if (_appParams.debugGraphics) {
+  if (appParams.debugGraphics) {
     drawBoundingBoxes(_state.balls());
     drawBoundingBoxes(_state.paddles());
     drawBoundingBoxes(_state.bricks());
     drawBoundingBoxes(_state.walls());
     drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
-  } else if (_appParams.drawTrajectories) {
+  } else if (appParams.drawTrajectories) {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
   }
   
   for (auto& cw : _config.curvedWallSets()) {
-    float r = _config.domeRadius() + _config.domeMargin();
+    float r = appParams.domeRadius + appParams.domeMargin;
     float d = cw.width / 4.0;
     int steps = 20;
     
@@ -177,7 +177,7 @@ void DomeRenderer::draw() {
     lights[i].setAttenuation(0,0,0);
   }
   
-  if (_appParams.drawExtras)
+  if (appParams.drawExtras)
     _extras.draw();
 
 #ifndef RADOME
@@ -279,8 +279,9 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 }
 
 void DomeRenderer::drawBall(Ball &ball) {
+  auto& appParams = BleepoutParameters::get();
   
-  if (!_appParams.allLasers && !ball.isLaser()) {
+  if (!appParams.allLasers && !ball.isLaser()) {
     
     ofPushStyle();
     ofPushMatrix();
@@ -301,7 +302,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     
     ofPopMatrix();
     
-    if (_appParams.drawComets) {
+    if (appParams.drawComets) {
       drawCometTail(ball, 6.8, 50,  0, ofColor(255, 120, 30, 200));
       drawCometTail(ball, 5.0, 30, -1, ofColor(255, 200, 50, 200));
       drawCometTail(ball, 5.0, 30,  1, ofColor(255, 200, 50, 200));

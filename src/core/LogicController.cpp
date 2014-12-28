@@ -8,11 +8,11 @@
 
 #include "LogicController.h"
 #include "SpaceController.h"
+#include "BleepoutParameters.h"
 
 LogicController::LogicController(RoundState& state,
-                                 RoundConfig& config,
-                                 BleepoutParameters& appParams)
-:_state(state), _config(config), _appParams(appParams)
+                                 RoundConfig& config)
+:_state(state), _config(config)
 , _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }
 
@@ -31,7 +31,7 @@ void LogicController::detachFrom(SpaceController &collisions) {
 }
 
 void LogicController::update() {
-  float limit = _appParams.rules().timeLimit();
+  float limit = BleepoutParameters::get().rules().timeLimit();
   if (limit != _lastSpecifiedTimeLimitOffset) {
     if (limit == -1) {
       _state.endTime = -1;
@@ -167,21 +167,21 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
-  if (wall.isExit() && _appParams.exitsEnabled) {
+  if (wall.isExit() && BleepoutParameters::get().exitsEnabled) {
     Player* player = ball.player();
     
     ball.kill();
     _state.decrementLiveBalls();
     notifyBallDestroyed(_state, &ball);
     
-    if (player && _appParams.rules().playersCanLoseLives()) {
+    if (player && BleepoutParameters::get().rules().playersCanLoseLives()) {
       player->adjustLives(-1);
       notifyPlayerLivesChanged(_state, player);
       if (!player->alive()) {
         notifyPlayerLost(_state, player);
       }
     }
-    if (_appParams.rules().ballsRespawn()) {
+    if (BleepoutParameters::get().rules().ballsRespawn()) {
       respawnBall(player);
     }
     

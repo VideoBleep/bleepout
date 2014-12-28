@@ -15,13 +15,10 @@
 #include "RendererExtras.h"
 #include "Geometry.h"
 
-class RoundConfig;
-
 class DomeRenderer : public RendererBase {
 public:
   DomeRenderer(RoundState& state,
-               const RoundConfig& config,
-               const BleepoutParameters& appParams);
+               const RoundConfig& config);
   virtual ~DomeRenderer() {}
   virtual void setup() override;
   virtual void update() override;
