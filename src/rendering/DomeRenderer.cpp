@@ -71,10 +71,9 @@ namespace {
 }
 
 DomeRenderer::DomeRenderer(RoundState& state,
-                           const RoundConfig& config,
-                           const BleepoutParameters& appParams)
-: RendererBase(state, config, appParams)
-, _extras(state, config, appParams) { }
+                           const RoundConfig& config)
+: RendererBase(state, config)
+, _extras(state, config) { }
 
 void DomeRenderer::setup() {
   ofEnableDepthTest();
@@ -114,6 +113,7 @@ void DomeRenderer::update() {
 }
 
 void DomeRenderer::draw() {
+  auto& appParams = BleepoutParameters::get();
     
 #ifndef RADOME
   _cam.setDistance(_config.domeRadius() * 2.1);
@@ -141,13 +141,13 @@ void DomeRenderer::draw() {
   
   RendererBase::draw();
   
-  if (_appParams.debugGraphics) {
+  if (appParams.debugGraphics) {
     drawBoundingBoxes(_state.balls());
     drawBoundingBoxes(_state.paddles());
     drawBoundingBoxes(_state.bricks());
     drawBoundingBoxes(_state.walls());
     drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
-  } else if (_appParams.drawTrajectories) {
+  } else if (appParams.drawTrajectories) {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
   }
   
@@ -177,7 +177,7 @@ void DomeRenderer::draw() {
     lights[i].setAttenuation(0,0,0);
   }
   
-  if (_appParams.drawExtras)
+  if (appParams.drawExtras)
     _extras.draw();
 
 #ifndef RADOME
@@ -279,8 +279,9 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 }
 
 void DomeRenderer::drawBall(Ball &ball) {
+  auto& appParams = BleepoutParameters::get();
   
-  if (!_appParams.allLasers && !ball.isLaser()) {
+  if (!appParams.allLasers && !ball.isLaser()) {
     
     ofPushStyle();
     ofPushMatrix();
@@ -301,7 +302,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     
     ofPopMatrix();
     
-    if (_appParams.drawComets) {
+    if (appParams.drawComets) {
       drawCometTail(ball, 6.8, 50,  0, ofColor(255, 120, 30, 200));
       drawCometTail(ball, 5.0, 30, -1, ofColor(255, 200, 50, 200));
       drawCometTail(ball, 5.0, 30,  1, ofColor(255, 200, 50, 200));

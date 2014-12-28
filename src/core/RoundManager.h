@@ -13,7 +13,6 @@
 #include <list>
 #include "PlayerManager.h"
 #include "BleepoutConfig.h"
-#include "BleepoutParameters.h"
 #include "GameState.h"
 #include "SpaceController.h"
 #include "LogicController.h"
@@ -28,7 +27,6 @@ class RoundController : public EventSource
 {
 public:
   RoundController(RoundConfig& config,
-                  BleepoutParameters& appParams,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
@@ -89,7 +87,6 @@ private:
   
   bool _paused;
   float _startTime;
-  BleepoutParameters& _appParams;
   PlayerManager& _playerManager;
   RoundConfig& _config;
   RoundState _state;

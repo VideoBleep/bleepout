@@ -11,7 +11,6 @@
 
 #include <ofxUI.h>
 #include "BleepoutConfig.h"
-#include "BleepoutParameters.h"
 #include "GameEvents.h"
 #include <ofEvents.h>
 #include <ofTypes.h>
@@ -25,8 +24,7 @@ class RoundState;
 
 class AdminController : public EventSource {
 public:
-  AdminController(BleepoutParameters& appParams,
-                  SetupController& setupController);
+  AdminController(SetupController& setupController);
   ~AdminController();
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
@@ -51,7 +49,6 @@ private:
                            std::list<ofPtr<Player> > players);
   bool notifyTryEndRound();
   
-  BleepoutParameters& _appParams;
   BleepoutConfig& _appConfig;
   SetupController& _setupController;
   ofxUICanvas* _gui;

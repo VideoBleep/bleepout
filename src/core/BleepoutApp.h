@@ -14,7 +14,6 @@
 #include "PlayerManager.h"
 #include "RoundManager.h"
 #include "BleepoutConfig.h"
-#include "BleepoutParameters.h"
 #include "RendererBase.h"
 #include "Common.h"
 #include "SetupController.h"
@@ -42,6 +41,7 @@ class AppAnimationManager;
 class BleepoutApp : public AppBase, public EventSource {
 public:
   BleepoutApp();
+  ~BleepoutApp();
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<RoundEndedEventArgs> roundEndedEvent;
@@ -82,10 +82,7 @@ private:
   void notifyRoundEnded(RoundEndedEventArgs& e);
   void endRound();
 
-  MessageSpec buildRoundEndMessage(const RoundResults& results) const;
-
   ofPtr<BleepoutConfig> _config;
-  ofPtr<BleepoutParameters> _appParams;
   ofPtr<PlayerManager> _playerManager;
   ofPtr<PlayerController> _playerController;
   ofPtr<SetupController> _setupController;

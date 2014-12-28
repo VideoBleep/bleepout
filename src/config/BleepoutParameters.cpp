@@ -8,6 +8,23 @@
 
 #include "BleepoutParameters.h"
 
+BleepoutParameters* BleepoutParameters::_instance = NULL;
+
+void BleepoutParameters::initialize(BleepoutConfig &appConfig) {
+  if (_instance) {
+    ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
+  }
+  _instance = new BleepoutParameters(appConfig);
+  return _instance;
+}
+
+void BleepoutParameters::cleanup() {
+  if (_instance) {
+    delete _instance;
+    _instance = NULL;
+  }
+}
+
 BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)
 : _appConfig(appConfig)
 , paused(false)

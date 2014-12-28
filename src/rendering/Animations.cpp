@@ -205,21 +205,26 @@ static const char messageFontName[] = "PixelSplitter-Bold.ttf";
 AppAnimationManager::AppAnimationManager(BleepoutApp& app)
 : _app(app), _messageFont() {
   _messageFont.loadFont(messageFontName, 50, false, false, true);
+  ofAddListener(app.roundEndedEvent, this,
+                &AppAnimationManager::onRoundEnded);
 }
 
 AppAnimationManager::~AppAnimationManager() {
-  //...
+  ofRemoveListener(_app.roundEndedEvent, this,
+                   &AppAnimationManager::onRoundEnded);
 }
 
-RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
-: _roundController(roundController)
-, _messageFont(){
-  _messageFont.loadFont(messageFontName, 50, false, false, true);
-  ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
+void AppAnimationManager::onRoundEnded(RoundEndedEventArgs &e) {
+  MessageSpec message = buildRoundEndMessage(e.results());
+  addMessage(message);
 }
 
-RoundAnimationManager::~RoundAnimationManager() {
-  ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
+MessageSpec AppAnimationManager::buildRoundEndMessage(const RoundResults &results) const {
+  MessageSpec message("Round Ended!!!", ofColor(255, 0, 127));
+  message.setSize(20)
+    .setTiming(0, 2)
+    .setTrails(2);
+  return message;
 }
 
 void AppAnimationManager::addMessage(const MessageSpec &message) {
@@ -239,6 +244,17 @@ void AppAnimationManager::addAnimation(AnimationObject *animation) {
 
 void RoundAnimationManager::addAnimation(AnimationObject *animation) {
   _roundController.addAnimation(ofPtr<AnimationObject>(animation));
+}
+
+RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
+: _roundController(roundController)
+, _messageFont(){
+  _messageFont.loadFont(messageFontName, 50, false, false, true);
+  ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
+}
+
+RoundAnimationManager::~RoundAnimationManager() {
+  ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
 void RoundAnimationManager::addMessage(const MessageSpec &message) {

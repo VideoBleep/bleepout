@@ -19,8 +19,7 @@
 class SpaceController : public EventSource, public RoundComponent {
 public:
   SpaceController(RoundState& state,
-                  const RoundConfig& config,
-                  const BleepoutParameters& appParams);
+                  const RoundConfig& config);
   
   ofEvent<CollisionEventArgs> collisionEvent;
   
