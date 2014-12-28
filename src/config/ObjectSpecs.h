@@ -11,9 +11,25 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "Common.h"
 
 class RoundConfig;
+
+template<typename T>
+struct SpecGroupBuilder {
+  virtual void buildSpecs(const RoundConfig& config,
+                          std::vector<T>* specs) const = 0;
+};
+
+template<typename Group, typename T>
+void buildAllSpecs(const RoundConfig& config,
+                   const std::vector<Group>& groups,
+                   std::vector<T>* specs) {
+  for (const auto& group : groups) {
+    group.buildSpecs(config, specs);
+  }
+}
 
 struct BrickSpec {
   float elevation;
@@ -51,7 +67,7 @@ struct BrickSpec {
   BrickSpec& setModifier(std::string m) { modifierName = m; return *this; }
 };
 
-struct BrickRingSpec {
+struct BrickRingSpec : public SpecGroupBuilder<BrickSpec> {
   float elevation;
   ofVec3f size;
   ofColor color;
@@ -93,9 +109,11 @@ struct BrickRingSpec {
     modifierChance = chance;
     return *this;
   }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
 };
 
-struct BrickQuadClusterRingsSpec {
+struct BrickQuadsSpec : public SpecGroupBuilder<BrickSpec> {
   ofColor color1;
   ofColor color2;
   float elevation;
@@ -108,40 +126,55 @@ struct BrickQuadClusterRingsSpec {
   std::string modifierName;
   float modifierChance;
   
-  BrickQuadClusterRingsSpec() : speed(0), size(7, 5, 17) { }
-  BrickQuadClusterRingsSpec& setColor(ofColor c1, ofColor c2) {
+  BrickQuadsSpec() : speed(0), size(7, 5, 17) { }
+  BrickQuadsSpec& copyFrom(const BrickQuadsSpec& other) {
+    color1 = other.color1;
+    color2 = other.color2;
+    elevation = other.elevation;
+    count = other.count;
+    elevationSpacing = other.elevationSpacing;
+    headingSpacing = other.headingSpacing;
+    size = other.size;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    modifierName = other.modifierName;
+    modifierChance = other.modifierChance;
+    return *this;
+  }
+  BrickQuadsSpec& setColor(ofColor c1, ofColor c2) {
     color1 = c1;
     color2 = c2;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setElevation(float e, float spacing) {
+  BrickQuadsSpec& setElevation(float e, float spacing) {
     elevation = e;
     elevationSpacing = spacing;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setHeadingSpacing(float spacing) {
+  BrickQuadsSpec& setHeadingSpacing(float spacing) {
     headingSpacing = spacing;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setSize(ofVec3f s) {
+  BrickQuadsSpec& setSize(ofVec3f s) {
     size = s;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setSpeed(float s) {
+  BrickQuadsSpec& setSpeed(float s) {
     speed = s;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setStopHeading(float s) { stopHeading = s; return *this; }
-  BrickQuadClusterRingsSpec& setCount(int c) {
+  BrickQuadsSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  BrickQuadsSpec& setCount(int c) {
     count = c;
     return *this;
   }
-  BrickQuadClusterRingsSpec& setModifier(std::string mod, float chance) {
+  BrickQuadsSpec& setModifier(std::string mod, float chance) {
     modifierName = mod;
     modifierChance = chance;
     return *this;
   }
-  void addBricksTo(RoundConfig* config) const;
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
 };
 
 struct WallSpec {
@@ -173,7 +206,7 @@ struct WallSpec {
   WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
 
-struct WallRingSpec {
+struct WallRingSpec : public SpecGroupBuilder<WallSpec> {
   float elevation;
   ofVec3f size;
   bool isExit;
@@ -202,6 +235,8 @@ struct WallRingSpec {
   WallRingSpec& setSpeed(float s) { speed = s; return *this; }
   WallRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
   WallRingSpec& setPhase(float p) { phase = p; return *this; }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<WallSpec>* specs) const override;
 };
 
 struct CurvedWallSpec {

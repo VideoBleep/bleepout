@@ -18,27 +18,32 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   
-  BrickQuadClusterRingsSpec rings;
-  rings
-    .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
-    .setSize(ofVec3f(7, 5, 14));
-  
-  rings.setElevation(45, 1.5)
-    .setCount(12)
-    .setHeadingSpacing(4)
-    .addBricksTo(config);
-  rings.setElevation(55, 1.5)
-    .setCount(12)
-    .setHeadingSpacing(4)
-    .addBricksTo(config);
-  rings.setElevation(65, 1.5)
-    .setCount(3)
-    .setHeadingSpacing(8)
-    .addBricksTo(config);
-  rings.setElevation(75, 1.5)
-    .setCount(3)
-    .setHeadingSpacing(12)
-    .addBricksTo(config);
+  {
+    BrickQuadsSpec prototype = BrickQuadsSpec()
+      .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
+      .setSize(ofVec3f(7, 5, 14));
+    
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(45, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(55, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(65, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(8);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(75, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(12);
+  }
   
   config->addBrickRing()
     .setElevation(30)
