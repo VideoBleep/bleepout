@@ -12,8 +12,7 @@
 #include "BleepoutApp.h"
 #include "BleepoutParameters.h"
 
-AudioManager::AudioManager(const BleepoutParameters& appParams)
-: _appParams(appParams) { }
+AudioManager::AudioManager() { }
 
 
 static inline void loadSoundSafe(ofSoundPlayer& sound,
@@ -23,7 +22,8 @@ static inline void loadSoundSafe(ofSoundPlayer& sound,
 }
 
 void AudioManager::setup() {
-  const BleepoutConfig& config = _appParams.appConfig();
+  auto& appParams = BleepoutParameters::get();
+  const BleepoutConfig& config = appParams.appConfig();
   loadSoundSafe(_roundStartedSound, config.roundStartedSound);
   loadSoundSafe(_roundEndedSound, config.roundEndedSound);
   loadSoundSafe(_brickHitSound, config.brickHitSound);
@@ -38,17 +38,18 @@ void AudioManager::setup() {
 }
 
 void AudioManager::update() {
-  _roundStartedSound.setVolume(_appParams.audioVolume);
-  _roundEndedSound.setVolume(_appParams.audioVolume);
-  _brickDestroyedSound.setVolume(_appParams.audioVolume);
-  _collisionSound.setVolume(_appParams.audioVolume);
-  _modifierAppliedSound.setVolume(_appParams.audioVolume);
-  _modifierRemovedSound.setVolume(_appParams.audioVolume);
-  _ballDestroyedSound.setVolume(_appParams.audioVolume);
-  _brickDestroyedSound.setVolume(_appParams.audioVolume);
-  _playerLivesChangedSound.setVolume(_appParams.audioVolume);
-  _playerLostSound.setVolume(_appParams.audioVolume);
-  _countdownTimerTickSound.setVolume(_appParams.audioVolume);
+  auto& appParams = BleepoutParameters::get();
+  _roundStartedSound.setVolume(appParams.audioVolume);
+  _roundEndedSound.setVolume(appParams.audioVolume);
+  _brickDestroyedSound.setVolume(appParams.audioVolume);
+  _collisionSound.setVolume(appParams.audioVolume);
+  _modifierAppliedSound.setVolume(appParams.audioVolume);
+  _modifierRemovedSound.setVolume(appParams.audioVolume);
+  _ballDestroyedSound.setVolume(appParams.audioVolume);
+  _brickDestroyedSound.setVolume(appParams.audioVolume);
+  _playerLivesChangedSound.setVolume(appParams.audioVolume);
+  _playerLostSound.setVolume(appParams.audioVolume);
+  _countdownTimerTickSound.setVolume(appParams.audioVolume);
 }
 
 void AudioManager::attachTo(BleepoutApp &app) {

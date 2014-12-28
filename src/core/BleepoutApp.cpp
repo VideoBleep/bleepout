@@ -8,15 +8,20 @@
 
 #include "BleepoutApp.h"
 #include "Animations.h"
+#include "BleepoutParameters.h"
 
 BleepoutApp::BleepoutApp()
 : _config()
 , EventSource() { }
 
+BleepoutApp::~BleepoutApp() {
+  BleepoutParameters::cleanup();
+}
+
 void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   _config.reset(BleepoutConfig::createConfig());
-  _appParams = BleepoutParameters::initialize(*_config);
+  BleepoutParameters::initialize(*_config);
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
@@ -32,7 +37,7 @@ void BleepoutApp::setup() {
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
   
-  _audioManager.reset(new AudioManager(*_appParams));
+  _audioManager.reset(new AudioManager());
   _audioManager->setup();
   _audioManager->attachTo(*this);
 
@@ -57,13 +62,14 @@ void BleepoutApp::setup() {
 }
 
 void BleepoutApp::update() {
+  auto& appParams = BleepoutParameters::get();
 #ifdef ENABLE_SYPHON
-  if (!_syphonEnabled && _appParams->enableSyphon) {
+  if (!_syphonEnabled && appParams.enableSyphon) {
     _syphonEnabled = true;
-    _syphonClient.set(_appParams->syphonServerName,
-                      _appParams->syphonAppName);
+    _syphonClient.set(appParams.syphonServerName,
+                      appParams.syphonAppName);
   }
-  _syphonEnabled = _appParams->enableSyphon;
+  _syphonEnabled = appParams.enableSyphon;
 #endif
   _adminController->update();
   _audioManager->update();
@@ -104,6 +110,7 @@ void BleepoutApp::draw() {
 }
 
 void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
+  auto& appParams = BleepoutParameters::get();
   if (!e.config() || e.players().empty()) {
     ofLogWarning() << "Cannot start round: " << e;
     return;
@@ -113,7 +120,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
-  _appParams->setCurrentRound(e.config()->name());
+  appParams.setCurrentRound(e.config()->name());
   _roundController.reset(new RoundController(*e.config(),
                                              e.players(),
                                              *_playerManager));

@@ -8,21 +8,21 @@
 
 #include "BleepoutParameters.h"
 
-static ofPtr<BleepoutParameters> instance;
+BleepoutParameters* BleepoutParameters::_instance = NULL;
 
-ofPtr<BleepoutParameters> BleepoutParameters::initialize(BleepoutConfig &appConfig) {
-  if (instance) {
+void BleepoutParameters::initialize(BleepoutConfig &appConfig) {
+  if (_instance) {
     ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
   }
-  instance.reset(new BleepoutParameters(appConfig));
-  return instance;
+  _instance = new BleepoutParameters(appConfig);
+  return _instance;
 }
 
-BleepoutParameters& BleepoutParameters::get() {
-  if (!instance) {
-    ofLogError() << "BleepoutParameters has not been initialized, which is really bad!";
+void BleepoutParameters::cleanup() {
+  if (_instance) {
+    delete _instance;
+    _instance = NULL;
   }
-  return *instance;
 }
 
 BleepoutParameters::BleepoutParameters(BleepoutConfig& appConfig)

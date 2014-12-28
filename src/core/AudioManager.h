@@ -12,13 +12,12 @@
 #include <ofSoundPlayer.h>
 #include "GameEvents.h"
 
-class BleepoutParameters;
 class BleepoutApp;
 class RoundController;
 
 class AudioManager {
 public:
-  AudioManager(const BleepoutParameters& appParams);
+  AudioManager();
   void setup();
   void update();
   void attachTo(BleepoutApp& app);
@@ -37,7 +36,6 @@ private:
   void onPlayerLost(PlayerStateEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);
   
-  const BleepoutParameters& _appParams;
   ofSoundPlayer _roundStartedSound;
   ofSoundPlayer _roundEndedSound;
   ofSoundPlayer _brickDestroyedSound;
