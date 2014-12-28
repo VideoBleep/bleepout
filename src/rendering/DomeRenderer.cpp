@@ -326,7 +326,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       glEnd();
       
       ofColor c = ball.getColor();
-      c.a = 128;
+      c.a = 172;
       ofSetColor(c);
       ofSetLineWidth(5.0);
       glBegin(GL_LINE_STRIP);
@@ -335,9 +335,9 @@ void DomeRenderer::drawBall(Ball &ball) {
       
       ofEnableBlendMode(OF_BLENDMODE_ALPHA);
       
-      c.a = 64;
+      c.a = 127;
       ofSetColor(c);
-      ofSetLineWidth(8.0);
+      ofSetLineWidth(20.0);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();

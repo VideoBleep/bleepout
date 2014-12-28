@@ -13,7 +13,7 @@
 #include <map>
 #include "Common.h"
 
-typedef std::map<std::string, std::string> StringMap;
+class RoundConfig;
 
 struct BrickSpec {
   float elevation;
@@ -95,6 +95,55 @@ struct BrickRingSpec {
   }
 };
 
+struct BrickQuadClusterRingsSpec {
+  ofColor color1;
+  ofColor color2;
+  float elevation;
+  int count;
+  float elevationSpacing;
+  float headingSpacing;
+  ofVec3f size;
+  float speed;
+  float stopHeading;
+  std::string modifierName;
+  float modifierChance;
+  
+  BrickQuadClusterRingsSpec() : speed(0), size(7, 5, 17) { }
+  BrickQuadClusterRingsSpec& setColor(ofColor c1, ofColor c2) {
+    color1 = c1;
+    color2 = c2;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setElevation(float e, float spacing) {
+    elevation = e;
+    elevationSpacing = spacing;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setHeadingSpacing(float spacing) {
+    headingSpacing = spacing;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setSize(ofVec3f s) {
+    size = s;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setSpeed(float s) {
+    speed = s;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  BrickQuadClusterRingsSpec& setCount(int c) {
+    count = c;
+    return *this;
+  }
+  BrickQuadClusterRingsSpec& setModifier(std::string mod, float chance) {
+    modifierName = mod;
+    modifierChance = chance;
+    return *this;
+  }
+  void addBricksTo(RoundConfig* config) const;
+};
+
 struct WallSpec {
   float elevation;
   float heading;
@@ -134,6 +183,17 @@ struct WallRingSpec {
   float speed;
   float stopHeading;
   WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1), visible(true) { }
+  WallRingSpec& copyFrom(const WallRingSpec& other) {
+    elevation = other.elevation;
+    size = other.size;
+    isExit = other.isExit;
+    visible = other.visible;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
