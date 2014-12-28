@@ -48,6 +48,22 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .addBricksTo(config);
   
   config->addBrickRing()
+    .setElevation(85)
+    .setCount(24)
+    .setSize(ofVec3f(7, 5, 4))
+    .setColor(ofColor(0, 63, 255));
+  config->addBrickRing()
+    .setElevation(90)
+    .setCount(24)
+    .setSize(ofVec3f(7, 5, 4))
+    .setColor(ofColor(0, 63, 255));
+  config->addBrickRing()
+    .setElevation(80)
+    .setCount(24)
+    .setSize(ofVec3f(7, 5, 4))
+    .setColor(ofColor(0, 63, 255));
+  
+  config->addBrickRing()
     .setElevation(60)
     .setCount(24)
     .setColor(ofColor(0, 0, 192))
@@ -122,27 +138,37 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setSpeed(0.05)
     .setSize(ofVec3f(7, 5, 8));
   
-  config->addWallRing()
-    .setElevation(36)
-    .setCount(12)
-    .setVisible(true)
-    .setIsExit(false)
-    .setSpeed(0)
-    .setSize(ofVec3f(7, 5, 12));
-  config->addWallRing()
-    .setElevation(34)
-    .setCount(12)
-    .setVisible(true)
-    .setIsExit(false)
-    .setSpeed(0)
-    .setSize(ofVec3f(7, 5, 10));
-  config->addWallRing()
-    .setElevation(32)
-    .setCount(12)
-    .setVisible(true)
-    .setIsExit(false)
-    .setSpeed(0)
-    .setSize(ofVec3f(7, 5, 8));
+  {
+    WallRingSpec prototype;
+    prototype.setVisible(true)
+      .setIsExit(false)
+      .setSpeed(0)
+      .setCount(12);
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(36)
+      .setSize(ofVec3f(7, 5, 12));
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(34)
+      .setSize(ofVec3f(7, 5, 10));
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(32)
+      .setSize(ofVec3f(7, 5, 8));
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(28)
+      .setSize(ofVec3f(7, 5, 8));
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(26)
+      .setSize(ofVec3f(7, 5, 8));
+    config->addWallRing()
+      .copyFrom(prototype)
+      .setElevation(22)
+      .setSize(ofVec3f(7, 5, 8));
+  }
   
   // Create the floor exit wall
   float d = (config->domeMargin() + config->domeRadius()) * 5;
