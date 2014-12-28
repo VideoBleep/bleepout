@@ -134,17 +134,7 @@ const RoundConfig* BleepoutApp::currentRoundConfig() const {
   return NULL;
 }
 
-MessageSpec BleepoutApp::buildRoundEndMessage(const RoundResults &results) const {
-  MessageSpec message("Round Ended...", ofColor(255, 0, 127));
-  message.setSize(16)
-    .setTiming(0, 2)
-    .setTrails(2);
-  return message;
-}
-
 void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
-  auto message = buildRoundEndMessage(e.results());
-  _animationManager->addMessage(message);
   _playerManager->setIsInRound(false);
   ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
   ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);

@@ -82,8 +82,6 @@ private:
   void notifyRoundEnded(RoundEndedEventArgs& e);
   void endRound();
 
-  MessageSpec buildRoundEndMessage(const RoundResults& results) const;
-
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
   ofPtr<PlayerManager> _playerManager;
