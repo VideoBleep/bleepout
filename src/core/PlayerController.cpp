@@ -20,6 +20,8 @@
 	Constant:
 
 	1. [CONNECT] Client - New Player > PlayerController::connect
+  - New player connects by sending socket message to Bleepout.
+  - Bleepout responds with handshake (PlayerManager
 	2. [SETCOLOR] PlayerManager::setPlayerColor < Select Color - 
 	3. [CONFIGURED] Client - Set Color > PlayerController::configure
 	4. [QUEUED] PlayerManager::setPlayerQueued < Queued -
@@ -53,13 +55,13 @@ PlayerController::PlayerController(SetupController& setup)
 // Player connected
 // 1.[CONNECT] Client - New Player > PlayerController::connect
 void PlayerController::connect(Player& player) {
-	//_setup.Lobby().push_back(player);
-	// TODO: Set player state to 'select color'
-  
-  // Send message to player that they are in that state
+  ofPtr<Player> p(&player);
+	_setup.lobby().push_back(p);
+	
+  // TODO: Set player state to 'select color'  
+  // Send message to player that they are in the select color state
   // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
-  //PlayerManager::setPlayerColor(*player);
-  
+  PlayerManager::setPlayerColor(player);
 
 	// TODO: Remove this... For now: Set player to Queued. 
   this->queue(player);
