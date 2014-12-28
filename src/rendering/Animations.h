@@ -18,10 +18,10 @@
 class RoundController;
 class LogicController;
 
-class AnimationManager {
+class RoundAnimationManager {
 public:
-  AnimationManager(RoundController& roundController);
-  ~AnimationManager();
+  RoundAnimationManager(RoundController& roundController);
+  ~RoundAnimationManager();
   
   void attachTo(LogicController& roundEvents);
   void detachFrom(LogicController& roundEvents);

@@ -43,5 +43,5 @@ void RendererBase::draw() {
 }
 
 void RendererBase::drawAnimation(AnimationObject &animation) {
-  animation.draw(_state.config());
+  animation.draw();
 }

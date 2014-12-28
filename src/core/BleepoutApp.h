@@ -22,6 +22,9 @@
 #include "AdminController.h"
 #include "AudioManager.h"
 #include "RoundResults.h"
+#include "Timing.h"
+#include "AnimationObject.h"
+#include "GameObjectCollection.h"
 
 #ifdef ENABLE_SYPHON
 #include <ofxSyphonClient.h>
@@ -55,6 +58,9 @@ public:
   virtual void renderScene(DomeInfo& dome);
   virtual void update(DomeInfo& dome) override;
 #endif
+  
+  void addAnimation(ofPtr<AnimationObject> animation);
+  void addTimedAction(ofPtr<TimedAction> action);
     
   void keyPressed(int key);
   void mousePressed(int x, int y, int button);
@@ -80,6 +86,8 @@ private:
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;
   ofPtr<AudioManager> _audioManager;
+  TimedActionSet _timedActions;
+  GameObjectCollection<AnimationObject> _animations;
 #ifdef ENABLE_SYPHON
   ofxSyphonClient _syphonClient;
 #endif // ENABLE_SYPHON

@@ -69,6 +69,7 @@ void BleepoutApp::update() {
   } else if (_setupController) {
     _setupController->update();
   }
+  _timedActions.update(ofGetElapsedTimef());
 }
 
 void BleepoutApp::draw() {
@@ -90,6 +91,12 @@ void BleepoutApp::draw() {
 #ifndef RADOME
   _adminController->draw();
 #endif
+  
+  for (auto& animation : _animations) {
+    if (animation && animation->alive() && animation->visible()) {
+      animation->draw();
+    }
+  }
   
 }
 
@@ -137,6 +144,16 @@ void BleepoutApp::notifyRoundStarted(RoundState &state) {
 void BleepoutApp::notifyRoundEnded(RoundEndedEventArgs& e) {
   ofNotifyEvent(roundEndedEvent, e);
   logEvent("RoundEnded", e);
+}
+
+void BleepoutApp::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
+  auto updater = animation->createUpdaterAction(ofGetElapsedTimef(), _animations);
+  addTimedAction(ofPtr<TimedAction>(updater));
+}
+
+void BleepoutApp::addTimedAction(ofPtr<TimedAction> action) {
+  _timedActions.add(action);
 }
 
 void BleepoutApp::keyPressed(int key) {

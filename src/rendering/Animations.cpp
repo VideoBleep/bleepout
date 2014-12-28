@@ -28,8 +28,8 @@ public:
   , _brickPosition(brick.getPosition())
   , _brickRotation(brick.getRotation()) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
   GameObjectId _brickId;
   ofColor _brickColor;
@@ -38,7 +38,7 @@ private:
   float _brickRotation;
 };
 
-void BrickDestructionAnimation::draw(const RoundConfig &config) {
+void BrickDestructionAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -67,18 +67,20 @@ void BrickDestructionAnimation::output(std::ostream &os) const {
 
 class MessageAnimation : public AnimationObject {
 public:
-  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font,
+                   const RoundConfig& config)
   : AnimationObject(message.delay, message.duration)
-  , _message(message), _font(font) { }
+  , _message(message), _font(font), _config(config) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
+  const RoundConfig& _config;
   MessageSpec _message;
   ofTrueTypeFont& _font;
 };
 
-void MessageAnimation::draw(const RoundConfig &config) {
+void MessageAnimation::draw() {
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < _message.trails + 1; j++) {
       ofColor color = _message.color;
@@ -89,7 +91,7 @@ void MessageAnimation::draw(const RoundConfig &config) {
                color,
                _font,
                _message.size - (j * 1.5),
-               config.domeRadius() + config.domeMargin() * (1.25 + j * 0.1),
+               _config.domeRadius() + _config.domeMargin() * (1.25 + j * 0.1),
                15 - (j * 1.1),
                30 + i * 120);
     }
@@ -109,15 +111,15 @@ public:
   , _modifierSpec(modifierSpec), _target(target)
   , _isRemove(isRemove) { }
   
-  virtual void draw(const RoundConfig& config) override;
-  virtual void output(std::ostream& os) const override;
+  void draw() override;
+  void output(std::ostream& os) const override;
 private:
   const ModifierSpec& _modifierSpec;
   const GameObject& _target;
   const bool _isRemove;
 };
 
-void ModifierAnimation::draw(const RoundConfig &config) {
+void ModifierAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -165,14 +167,14 @@ public:
   , _ball(ball)
   , _ballRadius(config.ballRadius()) { }
   
-  void draw(const RoundConfig& config) override;
+  void draw() override;
   void output(std::ostream& os) const override;
 private:
   const Ball& _ball;
   float _ballRadius;
 };
 
-void BallSpawnedAnimation::draw(const RoundConfig &config) {
+void BallSpawnedAnimation::draw() {
   ofPushMatrix();
   ofPushStyle();
   ofEnableAlphaBlending();
@@ -193,76 +195,76 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
-AnimationManager::AnimationManager(RoundController& roundController)
+RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
   _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
-  ofAddListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
+  ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-AnimationManager::~AnimationManager() {
-  ofRemoveListener(_roundController.ballSpawnedEvent, this, &AnimationManager::onBallSpawned);
+RoundAnimationManager::~RoundAnimationManager() {
+  ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-void AnimationManager::addAnimation(AnimationObject *animation) {
+void RoundAnimationManager::addAnimation(AnimationObject *animation) {
   _roundController.addAnimation(ofPtr<AnimationObject>(animation));
 }
 
-void AnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont));
+void RoundAnimationManager::addMessage(const MessageSpec &message) {
+  addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
 }
 
-void AnimationManager::onBrickHit(BrickHitEventArgs &e) {
+void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {
   if (!e.brick()->alive()) {
     auto anim = new BrickDestructionAnimation(*e.brick(), _roundController.config());
     addAnimation(anim);
   }
 }
 
-void AnimationManager::onModifierApplied(ModifierEventArgs &e) {
+void RoundAnimationManager::onModifierApplied(ModifierEventArgs &e) {
   auto anim = new ModifierAnimation(e.modifier()->spec(),
                                     *e.target(),
                                     _roundController.config(), false);
   addAnimation(anim);
 }
 
-void AnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
+void RoundAnimationManager::onModifierRemoved(ModifierRemovedEventArgs &e) {
   auto anim = new ModifierAnimation(e.modifierSpec(),
                                     *e.target(),
                                     _roundController.config(), true);
   addAnimation(anim);
 }
 
-void AnimationManager::onBallSpawned(BallStateEventArgs &e) {
+void RoundAnimationManager::onBallSpawned(BallStateEventArgs &e) {
   auto anim = new BallSpawnedAnimation(*e.ball(), _roundController.config());
   addAnimation(anim);
 }
 
-void AnimationManager::onCountdownTick(TimerEventArgs &e) {
+void RoundAnimationManager::onCountdownTick(TimerEventArgs &e) {
   int time = static_cast<int>(e.remainingTime());
   addMessage(MessageSpec("Time: " + ofToString(time), ofColor(255, 0, 0))
              .setSize(10)
              .setTiming(0, 0.9));
 }
 
-void AnimationManager::attachTo(LogicController &roundEvents) {
+void RoundAnimationManager::attachTo(LogicController &roundEvents) {
   ofAddListener(roundEvents.brickHitEvent, this,
-                &AnimationManager::onBrickHit);
+                &RoundAnimationManager::onBrickHit);
   ofAddListener(roundEvents.modifierAppliedEvent, this,
-                &AnimationManager::onModifierApplied);
+                &RoundAnimationManager::onModifierApplied);
   ofAddListener(roundEvents.modifierRemovedEvent, this,
-                &AnimationManager::onModifierRemoved);
+                &RoundAnimationManager::onModifierRemoved);
   ofAddListener(roundEvents.countdownTickEvent, this,
-                &AnimationManager::onCountdownTick);
+                &RoundAnimationManager::onCountdownTick);
 }
 
-void AnimationManager::detachFrom(LogicController &roundEvents) {
+void RoundAnimationManager::detachFrom(LogicController &roundEvents) {
   ofRemoveListener(roundEvents.brickHitEvent, this,
-                   &AnimationManager::onBrickHit);
+                   &RoundAnimationManager::onBrickHit);
   ofRemoveListener(roundEvents.modifierAppliedEvent, this,
-                   &AnimationManager::onModifierApplied);
+                   &RoundAnimationManager::onModifierApplied);
   ofRemoveListener(roundEvents.modifierRemovedEvent, this,
-                   &AnimationManager::onModifierRemoved);
+                   &RoundAnimationManager::onModifierRemoved);
   ofRemoveListener(roundEvents.countdownTickEvent, this,
-                   &AnimationManager::onCountdownTick);
+                   &RoundAnimationManager::onCountdownTick);
 }
