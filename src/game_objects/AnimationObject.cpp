@@ -23,7 +23,7 @@ public:
   , _animation(animation)
   , _animationList(animationList) { }
   
-  virtual void call(RoundState& state, float percentage) override;
+  virtual void call(float time, float percentage) override;
   
 protected:
   virtual void start() override;
@@ -33,18 +33,16 @@ private:
   GameObjectCollection<AnimationObject>& _animationList;
 };
 
-void AnimationUpdater::call(RoundState& state, float percentage) {
+void AnimationUpdater::call(float time, float percentage) {
   _animation._percentage = percentage;
 }
 
 void AnimationUpdater::start() {
-  //  ofLogNotice() << "Starting animation update action: " << _animation;
   DurationAction::start();
   _animation.show();
 }
 
 void AnimationUpdater::end() {
-  //  ofLogNotice() << "Ending animation update action: " << _animation;
   DurationAction::end();
   _animation.hide();
   _animationList.eraseObjectById(_animation.id());
@@ -58,7 +56,6 @@ DurationAction*
 AnimationObject::createUpdaterAction(RoundState& state) {
   float now = state.time;
   float start = now + _delay;
-  //  ofLogNotice() << "Creating updater action to start at " << start << " and end at " << (start + _duration) << ". Current time: " << now;
   return new AnimationUpdater(start, start + _duration,
                               *this, state.animations());
 }

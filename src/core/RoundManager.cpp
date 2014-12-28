@@ -120,7 +120,7 @@ void RoundController::update() {
     _spaceController->update();
   if (_logicController)
     _logicController->update();
-  _timedActions.update(_state);
+  _timedActions.update(_state.time);
   if (_renderer)
     _renderer->update();
   if (_cullDeadObjectsPulser.update(_state.time)) {

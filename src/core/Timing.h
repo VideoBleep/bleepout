@@ -15,13 +15,13 @@
 
 class RoundState;
 
-typedef UnaryAction<RoundState&> TimedFunc;
-typedef BinaryAction<RoundState&, float> TimedPercentageFunc;
+typedef UnaryAction<float> TimedFunc;
+typedef BinaryAction<float, float> TimedPercentageFunc;
 
 class TimedAction {
 public:
   virtual bool done() const = 0;
-  virtual bool update(RoundState& args) = 0;
+  virtual bool update(float args) = 0;
 };
 
 class OnceAction : public TimedAction {
@@ -34,9 +34,9 @@ public:
   
   virtual bool done() const override { return _called; }
   
-  virtual void call(RoundState& state) = 0;
+  virtual void call(float time) = 0;
   
-  virtual bool update(RoundState& state) override;
+  virtual bool update(float time) override;
 protected:
   bool _called;
   float _triggerTime;
@@ -53,10 +53,10 @@ public:
   bool started() const { return _started; }
   virtual bool done() const override { return _ended; }
   
-  virtual bool update(RoundState& state) override;
+  virtual bool update(float time) override;
   
 protected:
-  virtual void call(RoundState& state, float percentage) = 0;
+  virtual void call(float time, float percentage) = 0;
   virtual void start();
   virtual void end();
   
@@ -75,7 +75,7 @@ public:
   : DurationAction(start, end)
   , _startVal(startVal), _endVal(endVal) { }
   
-  virtual void call(RoundState& state, float percentage) override {
+  virtual void call(float time, float percentage) override {
     T value = getInterpolated(_startVal, _endVal, percentage);
     this->applyValue(value);
   }
@@ -97,7 +97,7 @@ public:
   
   virtual bool done() const override;
   
-  virtual bool update(RoundState& state) override;
+  virtual bool update(float time) override;
   
   int size() const { return _actions.size(); }
   
