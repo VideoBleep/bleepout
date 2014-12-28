@@ -196,9 +196,15 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
+#ifdef RADOME
+static const char messageFontName[] = "GUI/PixelSplitter-Bold.ttf";
+#else
+static const char messageFontName[] = "PixelSplitter-Bold.ttf";
+#endif
+
 AppAnimationManager::AppAnimationManager(BleepoutApp& app)
 : _app(app), _messageFont() {
-  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+  _messageFont.loadFont(messageFontName, 50, false, false, true);
 }
 
 AppAnimationManager::~AppAnimationManager() {
@@ -208,7 +214,7 @@ AppAnimationManager::~AppAnimationManager() {
 RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
-  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+  _messageFont.loadFont(messageFontName, 50, false, false, true);
   ofAddListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
