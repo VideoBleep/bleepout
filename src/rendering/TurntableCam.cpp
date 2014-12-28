@@ -6,6 +6,8 @@
 #include "ofMath.h"
 #include "ofUtils.h"
 
+#ifndef RADOME
+
 ofxTurntableCam::ofxTurntableCam() {
   reset();
   _cameraDragging = false;
@@ -93,3 +95,4 @@ float ofxTurntableCam::getDistance() const {
   return _target.getPosition().distance(getPosition());
 }
 
+#endif

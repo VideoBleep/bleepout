@@ -107,7 +107,7 @@ void AudioManager::onRoundStarted(RoundStateEventArgs &e) {
   _roundStartedSound.play();
 }
 
-void AudioManager::onRoundEnded(EmptyEventArgs &e) {
+void AudioManager::onRoundEnded(RoundEndedEventArgs &e) {
   _roundEndedSound.play();
 }
 

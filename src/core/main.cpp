@@ -1,6 +1,8 @@
 #include "ofMain.h"
 #include "BleepoutApp.h"
 
+#ifndef RADOME
+
 //========================================================================
 int main( ){
   ofLogToConsole();
@@ -12,3 +14,5 @@ int main( ){
   ofRunApp(new BleepoutApp());
   
 }
+
+#endif

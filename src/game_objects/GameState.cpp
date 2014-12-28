@@ -12,7 +12,10 @@
 RoundState::RoundState(const RoundConfig& config,
                        std::list<ofPtr<Player> >& players)
 : _config(config)
+, _totalBricks(0)
 , _liveBricks(0)
+, _totalBalls(0)
+, _liveBalls(0)
 , endTime(-1) {
   for (auto& player : players) {
     addPlayer(player);
@@ -43,6 +46,7 @@ Brick& RoundState::addBrick(const BrickSpec& brickSpec) {
   _bricks.push_back(brick);
   if (brick->alive())
     _liveBricks++;
+  _totalBricks++;
   return *brick;
 }
 
@@ -55,6 +59,9 @@ Wall& RoundState::addWall(const WallSpec& wallSpec) {
 Ball& RoundState::addBall(const BallSpec& ballSpec) {
   ofPtr<Ball> ball(new Ball(_config, ballSpec));
   _balls.push_back(ball);
+  if (ball->alive())
+    _liveBalls++;
+  _totalBalls++;
   return *ball;
 }
 

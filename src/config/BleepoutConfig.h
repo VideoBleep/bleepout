@@ -23,16 +23,26 @@ public:
   explicit GameRules(const GameRules& other);
   
   float timeLimit() const;
-  bool playersCanLoseLives() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
   void unsetTimeLimit() { _timeLimit.unset(); }
   bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
+  
+  bool playersCanLoseLives() const;
+  void setPlayersCanLoseLives(bool value) { _playersCanLoseLives.set(value); }
+  void unsetPlayersCanLoseLives() { _playersCanLoseLives.unset(); }
+  bool specifiesPlayersCanLoseLives() const { return _playersCanLoseLives.hasValue(); }
+  
+  bool ballsRespawn() const;
+  void setBallsRespawn(bool value) { _ballsRespawn.set(value); }
+  void unsetBallsRespawn() { _ballsRespawn.unset(); }
+  bool specifiesBallsRespawn() const { return _ballsRespawn.hasValue(); }
   
   void setBackup(const GameRules* backup) { _backup = backup; }
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
   Optional<bool> _playersCanLoseLives;
+  Optional<bool> _ballsRespawn;
 };
 
 class RoundConfig {
@@ -55,6 +65,7 @@ public:
   float brickFadeTime() const { return _brickFadeTime; }
   float modifierRadius() const { return _modifierRadius; }
   float modifierFadeTime() const { return _modifierFadeTime; }
+  float ballSpawnedFadeTime() const { return _ballSpawnedFadeTime; }
   
   float domeRadius() const { return _domeRadius; }
   float domeMargin() const { return _domeMargin; }
@@ -159,6 +170,7 @@ private:
   float _brickFadeTime;
   float _modifierRadius;
   float _modifierFadeTime;
+  float _ballSpawnedFadeTime;
   float _domeRadius;
   float _domeMargin;
   GameRules _rules;

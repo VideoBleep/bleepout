@@ -15,7 +15,7 @@
 #include "SetupController.h"
 #include "GameState.h"
 
-static const int uiWidth = 300;
+static const int uiWidth = 200;
 
 class RoundQueueSlot {
 public:
@@ -62,15 +62,19 @@ struct AdminUIControls {
   ofxUIToggle* pause;
   ofxUILabel* inRound;
   ofxUIToggle* exitsEnabled;
+  ofxUIToggle* overrideBallsRespawn;
+  ofxUIToggle* ballsRespawn;
   ofxUIToggle* debugGraphics;
   ofxUIToggle* drawTrajectories;
   ofxUIToggle* drawComets;
   ofxUIToggle* drawExtras;
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
+#ifdef ENABLE_SYPHON
   ofxUIToggle* enableSyphon;
   ofxUITextInput* syphonAppName;
   ofxUITextInput* syphonServerName;
+#endif
   ofxUIButton* startRound;
   ofxUIButton* endRound;
   ofxUILabel* remainingTime;
@@ -118,8 +122,8 @@ void AdminController::setup() {
   const int totalWidth = ofGetWidth();
   const int totalHeight = ofGetHeight();
   _controls = new AdminUIControls();
-  _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 10,
-                         uiWidth, totalHeight - 20);
+  _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 0,
+                         uiWidth, totalHeight);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
   
   _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
@@ -148,22 +152,30 @@ void AdminController::setup() {
   _controls->timeLimitToggle->setLabelVisible(true);
   _controls->timeLimitToggle->setValue(_appParams.rules().specifiesTimeLimit());
   
-  _controls->timeLimit = _gui->addNumberDialer("Time Limit", 10, 6000, 30, 0);
+  _controls->timeLimit = _gui->addNumberDialer("Time Limit", 1, 6000, 30, 0);
   _controls->timeLimit->setDisplayLabel(true);
   
   _controls->pause = _gui->addLabelToggle("Pause", &_appParams.paused);
   _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &_appParams.exitsEnabled);
+  
+  _controls->overrideBallsRespawn = _gui->addToggle("Override Respawn", false);
+  _controls->overrideBallsRespawn->setLabelVisible(true);
+  _controls->overrideBallsRespawn->setValue(false);
+  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", _appParams.rules().ballsRespawn());
+  
   _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &_appParams.debugGraphics);
   _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &_appParams.drawTrajectories);
   _controls->drawComets = _gui->addLabelToggle("Comets", &_appParams.drawComets);
   _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &_appParams.drawExtras);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &_appParams.allLasers);
   _controls->addBall = _gui->addButton("Add Ball", false);
+#ifdef ENABLE_SYPHON
   _controls->enableSyphon = _gui->addLabelToggle("Syphon", &_appParams.enableSyphon);
   _controls->syphonAppName = _gui->addTextInput("Syphon App", _appParams.syphonAppName);
   _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
   _controls->syphonServerName = _gui->addTextInput("Syphon Server", _appParams.syphonServerName);
   _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
+#endif
   _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &_appParams.audioVolume);
   
   ofAddListener(_gui->newGUIEvent, this,
@@ -190,7 +202,7 @@ void AdminController::onRoundStarted(RoundStateEventArgs &e) {
   _roundState = &e.state();
 }
 
-void AdminController::onRoundEnded(EmptyEventArgs &e) {
+void AdminController::onRoundEnded(RoundEndedEventArgs &e) {
   _controls->inRound->setLabel("Not in round");
   _appParams.inRound = false;
   _roundState = NULL;
@@ -227,6 +239,8 @@ void AdminController::update() {
     timeText += ofToString(_roundState->remainingTime());
   _controls->remainingTime->setLabel(timeText);
   _gui->update();
+  _gui->setPosition(ofGetWidth() - uiWidth - 10, 0);
+  _gui->setHeight(ofGetHeight());
 }
 
 void AdminController::draw() {
@@ -242,13 +256,16 @@ static void dumpRoundQueue(BleepoutParameters& params) {
 }
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
+#ifdef ENABLE_SYPHON
   if (e.widget == _controls->syphonAppName) {
     _appParams.syphonAppName = _controls->syphonAppName->getTextString();
   } else if (e.widget == _controls->syphonServerName) {
     _appParams.syphonServerName = _controls->syphonServerName->getTextString();
   } else if (e.widget == _controls->enableSyphon) {
     _appParams.enableSyphon = _controls->enableSyphon->getValue();
-  } else if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
+  }
+#endif
+  if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
     _appParams.ballsToAdd++;
   } else if (e.widget == _controls->timeLimitToggle ||
              e.widget == _controls->timeLimit) {
@@ -256,6 +273,13 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
       _appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
       _appParams.rules().unsetTimeLimit();
+    }
+  } else if (e.widget == _controls->overrideBallsRespawn ||
+             e.widget == _controls->ballsRespawn) {
+    if (_controls->overrideBallsRespawn->getValue()) {
+      _appParams.rules().setBallsRespawn(_controls->ballsRespawn->getValue());
+    } else {
+      _appParams.rules().unsetBallsRespawn();
     }
   } else if (e.widget == _controls->startRound &&
              _controls->startRound->getValue()) {
@@ -301,7 +325,7 @@ bool AdminController::notifyTryStartRound(ofPtr<RoundConfig> config,
 }
 
 bool AdminController::notifyTryEndRound() {
-  EndRoundEventArgs e;
+  EndRoundEventArgs e(END_ADMIN_OVERRIDE);
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
   return e.handled();

@@ -10,8 +10,7 @@
 
 BleepoutApp::BleepoutApp()
 : _config()
-, EventSource()
-, _endingRound(false) { }
+, EventSource() { }
 
 void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
@@ -31,7 +30,6 @@ void BleepoutApp::setup() {
   _adminController->setup();
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
-  ofAddListener(_adminController->tryEndRoundEvent, this, &BleepoutApp::onTryEndRound);
   
   _audioManager.reset(new AudioManager(*_appParams));
   _audioManager->setup();
@@ -71,23 +69,35 @@ void BleepoutApp::update() {
   } else if (_setupController) {
     _setupController->update();
   }
-  if (_endingRound) {
-    endRound();
-  }
+  _timedActions.update(ofGetElapsedTimef());
 }
 
 void BleepoutApp::draw() {
+#ifndef RADOME
   ofBackground(0, 0, 0);
+#endif
+  
 #ifdef ENABLE_SYPHON
   if (_syphonEnabled)
     _syphonClient.draw(0, 0, ofGetWidth(), ofGetHeight());
 #endif // ENABLE_SYPHON
+  
   if (_roundController) {
     _roundController->draw();
   } else if (_setupController) {
     _setupController->draw();
   }
+  
+#ifndef RADOME
   _adminController->draw();
+#endif
+  
+  for (auto& animation : _animations) {
+    if (animation && animation->alive() && animation->visible()) {
+      animation->draw();
+    }
+  }
+  
 }
 
 void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
@@ -106,8 +116,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
-  ofAddListener(_roundController->tryEndRoundEvent, this,
-                &BleepoutApp::onTryEndRound);
+  ofAddListener(_roundController->roundEndedEvent, this,
+                &BleepoutApp::onRoundEnded);
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
                 &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
@@ -115,21 +125,14 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   notifyRoundStarted(_roundController->state());
 }
 
-void BleepoutApp::onTryEndRound(EndRoundEventArgs &e) {
-  if (!_roundController) {
-    ofLogError() << "Round was not active";
-    return;
-  }
-  _endingRound = true;
-  e.markHandled();
-}
-
-void BleepoutApp::endRound() {
+void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
   _playerManager->setIsInRound(false);
+  ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
+  ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
   _audioManager->detachFrom(*_roundController);
+  _roundController->detachFrom(*_adminController);
   _roundController.reset();
-  _endingRound = false;
-  notifyRoundEnded();
+  notifyRoundEnded(e);
 }
 
 void BleepoutApp::notifyRoundStarted(RoundState &state) {
@@ -138,10 +141,19 @@ void BleepoutApp::notifyRoundStarted(RoundState &state) {
   logEvent("RoundStarted", e);
 }
 
-void BleepoutApp::notifyRoundEnded() {
-  EmptyEventArgs e;
+void BleepoutApp::notifyRoundEnded(RoundEndedEventArgs& e) {
   ofNotifyEvent(roundEndedEvent, e);
   logEvent("RoundEnded", e);
+}
+
+void BleepoutApp::addAnimation(ofPtr<AnimationObject> animation) {
+  _animations.push_back(animation);
+  auto updater = animation->createUpdaterAction(ofGetElapsedTimef(), _animations);
+  addTimedAction(ofPtr<TimedAction>(updater));
+}
+
+void BleepoutApp::addTimedAction(ofPtr<TimedAction> action) {
+  _timedActions.add(action);
 }
 
 void BleepoutApp::keyPressed(int key) {
@@ -176,3 +188,23 @@ void BleepoutApp::mouseDragged(int x, int y, int button) {
     _roundController->mouseDragged(x, y, button);
   }
 }
+
+
+#ifdef RADOME
+
+void BleepoutApp::initialize() {
+  setup();
+}
+
+void BleepoutApp::renderScene(DomeInfo& dome) {
+  draw();
+}
+
+void BleepoutApp::update(DomeInfo& dome) {
+  update();
+  _adminController->draw();
+}
+
+BleepoutApp app;
+
+#endif

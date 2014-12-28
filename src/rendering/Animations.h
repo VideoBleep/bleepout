@@ -18,9 +18,10 @@
 class RoundController;
 class LogicController;
 
-class AnimationManager {
+class RoundAnimationManager {
 public:
-  AnimationManager(RoundController& roundController);
+  RoundAnimationManager(RoundController& roundController);
+  ~RoundAnimationManager();
   
   void attachTo(LogicController& roundEvents);
   void detachFrom(LogicController& roundEvents);
@@ -33,6 +34,7 @@ private:
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);
+  void onBallSpawned(BallStateEventArgs& e);
 private:
   RoundController& _roundController;
   ofTrueTypeFont _messageFont;

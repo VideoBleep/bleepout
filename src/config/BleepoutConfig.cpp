@@ -78,6 +78,7 @@ _ballRadius(8.0f),
 _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _modifierFadeTime(0.2f),
+_ballSpawnedFadeTime(0.2f),
 _domeRadius(150.0f),
 _domeMargin(20.0f),
 _name(name),
@@ -208,11 +209,16 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
 }
 
 GameRules::GameRules()
-: _backup(NULL), _timeLimit() {}
+: _backup(NULL)
+, _timeLimit()
+, _playersCanLoseLives()
+, _ballsRespawn() { }
 
 GameRules::GameRules(const GameRules& other)
 : _backup(other._backup)
-, _timeLimit(other._timeLimit) { }
+, _timeLimit(other._timeLimit)
+, _playersCanLoseLives(other._playersCanLoseLives)
+, _ballsRespawn(other._ballsRespawn) { }
 
 float GameRules::timeLimit() const {
   return _timeLimit.get(_backup ? &_backup->_timeLimit : NULL, -1);
@@ -220,4 +226,8 @@ float GameRules::timeLimit() const {
 
 bool GameRules::playersCanLoseLives() const {
   return _playersCanLoseLives.get(_backup ? &_backup->_playersCanLoseLives : NULL, false);
+}
+
+bool GameRules::ballsRespawn() const {
+  return _ballsRespawn.get(_backup ? &_backup->_ballsRespawn : NULL, false);
 }

@@ -27,7 +27,7 @@ public:
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
   ofEvent<BallStateEventArgs> ballDestroyedEvent;
-  ofEvent<BallStateEventArgs> ballRespawnedEvent;
+  ofEvent<SpawnBallEventArgs> trySpawnBallEvent;
   ofEvent<PlayerStateEventArgs> playerLostEvent;
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;
@@ -51,10 +51,10 @@ private:
   void notifyAllBricksDestroyed(RoundState& state);
   void notifyPlayerScoreChanged(RoundState& state, Player* player);
   void notifyBallDestroyed(RoundState& state, Ball* ball);
-  void notifyBallRespawned(RoundState& state, Ball* ball);
+  bool notifyTrySpawnBall(BallSpec ballSpec);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  bool notifyTryEndRound();
+  bool notifyTryEndRound(RoundEndReason reason);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
@@ -71,6 +71,8 @@ private:
   void onBallHitWall(Ball& ball, Wall& wall);
   void onBallHitBall(Ball& ball, Ball& otherBall);
   void onModifierHitPaddle(Modifier& modifier, Paddle& paddle);
+  
+  void respawnBall(Player* player);
   
   RoundState& _state;
   RoundConfig& _config;

@@ -14,6 +14,7 @@
 #include <ofTypes.h>
 #include <Connection.h>
 #include "Modifier.h"
+#include "Common.h"
 #include <list>
 
 class Paddle;
@@ -53,6 +54,8 @@ public:
   virtual bool physical() const override { return false; }
   virtual bool visible() const override { return false; }
   
+  const Counters<ModifierType>& modifierCounts() const { return _modifierCounts; }
+  
   void send(std::string message) { _conn->send(message); }
   void output(std::ostream& os) const override;
   
@@ -61,6 +64,8 @@ public:
   
   void enqueueBallModifier(const ModifierSpec& modifierSpec);
   bool tryDequeueBallModifier(ModifierSpec* modifierSpec);
+  
+  void incrementModifierCount(ModifierType type);
   
 private:
   void init();
@@ -71,6 +76,7 @@ private:
   int _lives;
   
   std::list<ModifierSpec> _ballModifierQueue;
+  Counters<ModifierType> _modifierCounts;
 };
 
 template<>

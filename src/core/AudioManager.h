@@ -27,7 +27,7 @@ public:
   void detachFrom(RoundController& roundController);
 private:
   void onRoundStarted(RoundStateEventArgs& e);
-  void onRoundEnded(EmptyEventArgs& e);
+  void onRoundEnded(RoundEndedEventArgs& e);
   void onBrickHit(BrickHitEventArgs& e);
   void onCollision(CollisionEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
