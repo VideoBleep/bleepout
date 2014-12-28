@@ -183,6 +183,17 @@ struct WallRingSpec {
   float speed;
   float stopHeading;
   WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1), visible(true) { }
+  WallRingSpec& copyFrom(const WallRingSpec& other) {
+    elevation = other.elevation;
+    size = other.size;
+    isExit = other.isExit;
+    visible = other.visible;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
