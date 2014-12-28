@@ -16,6 +16,7 @@
 #include <ofMain.h>
 #include <ofTrueTypeFont.h>
 #include "Logging.h"
+#include "BleepoutApp.h"
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
@@ -195,6 +196,15 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
+AppAnimationManager::AppAnimationManager(BleepoutApp& app)
+: _app(app), _messageFont() {
+  _messageFont.loadFont("PixelSplitter-Bold.ttf", 50, false, false, true);
+}
+
+AppAnimationManager::~AppAnimationManager() {
+  //...
+}
+
 RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 : _roundController(roundController)
 , _messageFont(){
@@ -204,6 +214,21 @@ RoundAnimationManager::RoundAnimationManager(RoundController& roundController)
 
 RoundAnimationManager::~RoundAnimationManager() {
   ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
+}
+
+void AppAnimationManager::addMessage(const MessageSpec &message) {
+  const RoundConfig* config = _app.currentRoundConfig();
+  //....
+  if (!config) {
+    ofLogWarning() << "Trying to add message when roundconfig isn't available!";
+    //...????
+  } else {
+    addAnimation(new MessageAnimation(message, _messageFont, *config));
+  }
+}
+
+void AppAnimationManager::addAnimation(AnimationObject *animation) {
+  _app.addAnimation(ofPtr<AnimationObject>(animation));
 }
 
 void RoundAnimationManager::addAnimation(AnimationObject *animation) {

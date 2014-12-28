@@ -37,12 +37,16 @@ typedef radomePlugin AppBase;
 typedef ofBaseApp AppBase;
 #endif
 
+class AppAnimationManager;
+
 class BleepoutApp : public AppBase, public EventSource {
 public:
   BleepoutApp();
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
   ofEvent<RoundEndedEventArgs> roundEndedEvent;
+  
+  const RoundConfig* currentRoundConfig() const;
   
 #ifndef RADOME
   // oF interface methods
@@ -78,6 +82,8 @@ private:
   void notifyRoundEnded(RoundEndedEventArgs& e);
   void endRound();
 
+  MessageSpec buildRoundEndMessage(const RoundResults& results) const;
+
   ofPtr<BleepoutConfig> _config;
   ofPtr<BleepoutParameters> _appParams;
   ofPtr<PlayerManager> _playerManager;
@@ -86,6 +92,7 @@ private:
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;
   ofPtr<AudioManager> _audioManager;
+  ofPtr<AppAnimationManager> _animationManager;
   TimedActionSet _timedActions;
   GameObjectCollection<AnimationObject> _animations;
 #ifdef ENABLE_SYPHON
