@@ -8,6 +8,7 @@
 
 #include "BleepoutConfig.h"
 #include "BleepoutApp.h"
+#include "BleepoutParameters.h"
 
 BleepoutConfig::BleepoutConfig()
 : _fps(30),
@@ -79,8 +80,6 @@ _modifierRadius(9.0f),
 _brickFadeTime(0.4f),
 _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
-_domeRadius(150.0f),
-_domeMargin(20.0f),
 _name(name),
 _startDelay(0),
 countdownTimerPeriod(10) { }
@@ -93,8 +92,6 @@ void RoundConfig::loadJsonFile(std::string path) {
   readJsonVal(obj["ballRadius"], &_ballRadius);
   readJsonVal(obj["modifierRadius"], &_modifierRadius);
   readJsonVal(obj["brickFadeTime"], &_brickFadeTime);
-  readJsonVal(obj["domeRadius"], &_domeRadius);
-  readJsonVal(obj["domeMargin"], &_domeMargin);
   readJsonArr(obj["balls"], &_balls);
   readJsonArr(obj["bricks"], &_bricks);
   readJsonArr(obj["brickRings"], &_brickRings);
@@ -109,8 +106,6 @@ Json::Value RoundConfig::toJsonVal() const {
   obj["ballRadius"] = _ballRadius;
   obj["modifierRadius"] = _modifierRadius;
   obj["brickFadeTime"] = _brickFadeTime;
-  obj["domeRadius"] = _domeRadius;
-  obj["domeMargin"] = _domeMargin;
   obj["balls"] = toJsonArr(_balls);
   obj["bricks"] = toJsonArr(_bricks);
   obj["brickRings"] = toJsonArr(_brickRings);
@@ -197,8 +192,9 @@ static void createCurveWalls(const CurvedWallSpec& curve, float r, std::vector<W
 }
 
 std::vector<WallSpec> RoundConfig::allWalls() const {
+  const auto& appParams = BleepoutParameters::get();
   std::vector<WallSpec> walls(_walls);
-  float r = domeRadius() + domeMargin();
+  float r = appParams.domeRadius + appParams.domeMargin;
   for (const CurvedWallSpec& curve : _curvedWallSets) {
     createCurveWalls(curve, r, walls);
   }

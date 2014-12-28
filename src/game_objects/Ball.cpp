@@ -11,6 +11,7 @@
 #include "OrbitalTrajectory.h"
 #include "BleepoutConfig.h"
 #include "GameState.h"
+#include "BleepoutParameters.h"
 
 const char GameObjectTypeTraits<Ball>::typeName[] = "ball";
 
@@ -19,11 +20,12 @@ Ball::Ball(const RoundConfig& config, const BallSpec& spec)
 , _player(NULL)
 , PhysicsObject(CollisionSphere)
 {
+  const auto& appParams = BleepoutParameters::get();
   thisGameObject = this;
   _color = ofColor(220, 220, 220);
   this->setSize(ofVec3f(config.ballRadius()));
   auto t = new OrbitalTrajectory();
-  t->setRadius(config.domeRadius() + config.domeMargin());
+  t->setRadius(appParams.domeRadius + appParams.domeMargin);
   t->setSpeed(0.03);
   t->initWithTwoPoints(spec.elevation, spec.heading, -14,
                        spec.heading + ofRandom(-45, 45));

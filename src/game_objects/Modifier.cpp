@@ -14,6 +14,7 @@
 #include "BleepoutConfig.h"
 #include "OrbitalTrajectory.h"
 #include "PhysicsUtil.h"
+#include "BleepoutParameters.h"
 
 const char GameObjectTypeTraits<Modifier>::typeName[] = "modifier";
 
@@ -42,9 +43,10 @@ Modifier::Modifier(const ModifierSpec& spec)
 
 void Modifier::setup(const RoundConfig &config,
                      const Brick &spawner) {
+  const auto& appParams = BleepoutParameters::get();
   this->setSize(ofVec3f(config.modifierRadius()));
   auto t = new OrbitalTrajectory();
-  t->setRadius(config.domeRadius() + config.domeMargin());
+  t->setRadius(appParams.domeRadius + appParams.domeMargin);
   t->setSpeed(0.02);
   float heading;
   float elevation1;

@@ -116,13 +116,13 @@ void DomeRenderer::draw() {
   auto& appParams = BleepoutParameters::get();
     
 #ifndef RADOME
-  _cam.setDistance(_config.domeRadius() * 2.1);
+  _cam.setDistance(appParams.domeRadius * 2.1);
   _cam.begin();
 #endif
     
   float t = ofGetElapsedTimef() * 0.3;
   for (int i = 0; i < lights.size(); i++) {
-    lights[i].setPosition(sphericalToCartesian(_config.domeRadius() * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
+    lights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
     lights[i].setAttenuation(0.25, 0.007, 0.0);
     lights[i].enable();
   }
@@ -134,7 +134,7 @@ void DomeRenderer::draw() {
   ofNoFill();
   ofRotateX(90);
   ofSetLineWidth(1.5);
-  ofCircle(0, 0, 0, _config.domeRadius());
+  ofCircle(0, 0, 0, appParams.domeRadius);
   
   ofPopStyle();
   ofPopMatrix();
@@ -152,7 +152,7 @@ void DomeRenderer::draw() {
   }
   
   for (auto& cw : _config.curvedWallSets()) {
-    float r = _config.domeRadius() + _config.domeMargin();
+    float r = appParams.domeRadius + appParams.domeMargin;
     float d = cw.width / 4.0;
     int steps = 20;
     

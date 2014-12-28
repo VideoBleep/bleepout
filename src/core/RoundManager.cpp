@@ -208,8 +208,9 @@ void RoundController::onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs &e) {
     ofLogError() << "Unable to set paddle position for player: " << e.player()->id();
     return;
   }
+  const auto& appParams = BleepoutParameters::get();
   
-  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * e.yaw(), _config.domeMargin());
+  paddle->setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, 360 * e.yaw(), appParams.domeMargin);
 }
 
 void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
@@ -224,8 +225,9 @@ void RoundController::setPaddlePosition(GameObjectId playerId, float xPercent) {
     ofLogError() << "Unable to set paddle position for player: " << playerId;
     return;
   }
+  const auto& appParams = BleepoutParameters::get();
   
-  paddle->setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), 360 * xPercent, _config.domeMargin());
+  paddle->setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, 360 * xPercent, appParams.domeMargin);
 }
 
 void RoundController::mousePressed(int x, int y, int button) {

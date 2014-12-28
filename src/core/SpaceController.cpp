@@ -14,7 +14,8 @@ namespace {
   
   static ofVec3f getBallStartPosition(int i, int numPlayers,
                                       const RoundConfig& config) {
-    return ofVec3f(0, config.domeRadius() + config.domeMargin());
+    const auto& appParams = BleepoutParameters::get();
+    return ofVec3f(0, appParams.domeRadius + appParams.domeMargin);
   }
   
 }
@@ -64,9 +65,10 @@ Ball& SpaceController::addBall(const BallSpec &ballSpec) {
 }
 
 void SpaceController::addPaddle(float heading, Player* player) {
+  const auto& appParams = BleepoutParameters::get();
   Paddle& paddle = _state.addPaddle(player);
   player->setPaddle(&paddle);
-  paddle.setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
+  paddle.setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, heading, appParams.domeMargin);
   
   _world.addObject(&paddle);
 }

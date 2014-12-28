@@ -17,6 +17,7 @@
 #include <ofTrueTypeFont.h>
 #include "Logging.h"
 #include "BleepoutApp.h"
+#include "BleepoutParameters.h"
 
 class BrickDestructionAnimation : public AnimationObject {
 public:
@@ -82,6 +83,7 @@ private:
 };
 
 void MessageAnimation::draw() {
+  const auto& appParams = BleepoutParameters::get();
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < _message.trails + 1; j++) {
       ofColor color = _message.color;
@@ -92,7 +94,7 @@ void MessageAnimation::draw() {
                color,
                _font,
                _message.size - (j * 1.5),
-               _config.domeRadius() + _config.domeMargin() * (1.25 + j * 0.1),
+               appParams.domeRadius + appParams.domeMargin * (1.25 + j * 0.1),
                15 - (j * 1.1),
                30 + i * 120);
     }

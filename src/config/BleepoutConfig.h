@@ -67,9 +67,6 @@ public:
   float modifierFadeTime() const { return _modifierFadeTime; }
   float ballSpawnedFadeTime() const { return _ballSpawnedFadeTime; }
   
-  float domeRadius() const { return _domeRadius; }
-  float domeMargin() const { return _domeMargin; }
-  
   const std::vector<BallSpec>& balls() const { return _balls; }
   const std::vector<BrickSpec>& bricks() const { return _bricks; }
   const std::vector<BrickRingSpec>& brickRings() const { return _brickRings; }
@@ -171,8 +168,6 @@ private:
   float _modifierRadius;
   float _modifierFadeTime;
   float _ballSpawnedFadeTime;
-  float _domeRadius;
-  float _domeMargin;
   GameRules _rules;
   
   std::vector<BallSpec> _balls;

@@ -9,25 +9,27 @@
 #include "Wall.h"
 #include "BleepoutConfig.h"
 #include "CircularTrajectory.h"
+#include "BleepoutParameters.h"
 
 const char GameObjectTypeTraits<Wall>::typeName[] = "wall";
 
 Wall::Wall(const RoundConfig& config, const WallSpec& spec)
 : GameObject(GAME_OBJECT_WALL), _visible(true)
 {
+  const auto& appParams = BleepoutParameters::get();
   thisGameObject = this;
   _isExit = spec.isExit;
   _visible = spec.visible;
-  this->setPositionSpherical(config.domeRadius() + config.domeMargin(), spec.elevation, spec.heading);
+  this->setPositionSpherical(appParams.domeRadius + appParams.domeMargin, spec.elevation, spec.heading);
   this->setSize(spec.size);
   if (spec.speed == 0) {
-    this->setPositionSpherical(config.domeRadius() +
-                               config.domeMargin(),
+    this->setPositionSpherical(appParams.domeRadius +
+                               appParams.domeMargin,
                                spec.elevation,
                                spec.heading);
   } else {
-    this->setTrajectory(new CircularTrajectory(config.domeRadius() +
-                                               config.domeMargin(),
+    this->setTrajectory(new CircularTrajectory(appParams.domeRadius +
+                                               appParams.domeMargin,
                                                spec.speed,
                                                spec.elevation,
                                                spec.heading,
