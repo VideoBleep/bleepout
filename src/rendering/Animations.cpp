@@ -69,15 +69,13 @@ void BrickDestructionAnimation::output(std::ostream &os) const {
 
 class MessageAnimation : public AnimationObject {
 public:
-  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font,
-                   const RoundConfig& config)
+  MessageAnimation(const MessageSpec& message, ofTrueTypeFont& font)
   : AnimationObject(message.delay, message.duration)
-  , _message(message), _font(font), _config(config) { }
+  , _message(message), _font(font) { }
   
   void draw() override;
   void output(std::ostream& os) const override;
 private:
-  const RoundConfig& _config;
   MessageSpec _message;
   ofTrueTypeFont& _font;
 };
@@ -230,14 +228,7 @@ MessageSpec AppAnimationManager::buildRoundEndMessage(const RoundResults &result
 }
 
 void AppAnimationManager::addMessage(const MessageSpec &message) {
-  const RoundConfig* config = _app.currentRoundConfig();
-  //....
-  if (!config) {
-    ofLogWarning() << "Trying to add message when roundconfig isn't available!";
-    //...????
-  } else {
-    addAnimation(new MessageAnimation(message, _messageFont, *config));
-  }
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void AppAnimationManager::addAnimation(AnimationObject *animation) {
@@ -260,7 +251,7 @@ RoundAnimationManager::~RoundAnimationManager() {
 }
 
 void RoundAnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont, _roundController.config()));
+  addAnimation(new MessageAnimation(message, _messageFont));
 }
 
 void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {
