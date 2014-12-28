@@ -7,6 +7,7 @@
 //
 
 #include "BleepoutApp.h"
+#include "Animations.h"
 
 BleepoutApp::BleepoutApp()
 : _config()
@@ -46,6 +47,8 @@ void BleepoutApp::setup() {
   // Handle playerCreate event
   ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected);
   //ofAddListener(_playerController->playerAddedEvent, _setupController.get(), &SetupController::handlePlayerAdded);
+  
+  _animationManager.reset(new AppAnimationManager(*this));
   
 #ifdef ENABLE_SYPHON
   _syphonClient.setup();
@@ -125,7 +128,23 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   notifyRoundStarted(_roundController->state());
 }
 
+const RoundConfig* BleepoutApp::currentRoundConfig() const {
+  if (_roundController)
+    return &_roundController->config();
+  return NULL;
+}
+
+MessageSpec BleepoutApp::buildRoundEndMessage(const RoundResults &results) const {
+  MessageSpec message("Round Ended...", ofColor(255, 0, 127));
+  message.setSize(16)
+    .setTiming(0, 2)
+    .setTrails(2);
+  return message;
+}
+
 void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
+  auto message = buildRoundEndMessage(e.results());
+  _animationManager->addMessage(message);
   _playerManager->setIsInRound(false);
   ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
   ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
