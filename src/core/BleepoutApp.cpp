@@ -130,6 +130,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
                 &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
+  _roundController->attachTo(*_adminController);
   e.markHandled();
   notifyRoundStarted(_roundController->state());
 }
