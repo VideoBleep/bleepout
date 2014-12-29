@@ -493,6 +493,18 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const MessageSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["text"] = spec.text;
+  obj["color"] = toJsonVal(spec.color);
+  obj["size"] = spec.size;
+  obj["trails"] = spec.trails;
+  obj["delay"] = spec.delay;
+  obj["duration"] = spec.duration;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          ValuePulserSpec<float> *result,
                          const ValuePulserSpec<float>& defaultVal) const {
@@ -507,6 +519,16 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const ValuePulserSpec<float>& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["minRate"] = toJsonVal(spec.minRate);
+  obj["maxRate"] = toJsonVal(spec.maxRate);
+  obj["changeInterval"] = toJsonVal(spec.changeInterval);
+  obj["startValue"] = toJsonVal(spec.startValue);
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          ValuePulserSpec<ofVec3f> *result,
                          const ValuePulserSpec<ofVec3f>& defaultVal) const {
@@ -518,6 +540,16 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(changeInterval);
     R_JPROP(startValue);
   }
+}
+
+template<>
+Json::Value toJsonVal(const ValuePulserSpec<ofVec3f>& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["minRate"] = toJsonVal(spec.minRate);
+  obj["maxRate"] = toJsonVal(spec.maxRate);
+  obj["changeInterval"] = toJsonVal(spec.changeInterval);
+  obj["startValue"] = toJsonVal(spec.startValue);
+  return obj;
 }
 
 template<>
@@ -536,4 +568,18 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(color);
   }
 }
+
+template<>
+Json::Value toJsonVal(const RingSetSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["spin"] = toJsonVal(spec.spin);
+  obj["spread"] = toJsonVal(spec.spread);
+  obj["spreadOffset"] = toJsonVal(spec.spreadOffset);
+  obj["count"] = spec.count;
+  obj["radiusScale"] = spec.radiusScale;
+  obj["lineWidth"] = spec.lineWidth;
+  obj["color"] = toJsonVal(spec.color);
+  return obj;
+}
+
 

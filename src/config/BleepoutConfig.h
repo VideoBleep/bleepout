@@ -26,6 +26,7 @@ public:
   GameRules& copyFrom(const GameRules& other);
   
   void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
@@ -62,6 +63,7 @@ public:
   explicit RoundConfig(std::string name);
   
   void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -177,7 +179,7 @@ public:
   
   float countdownTimerPeriod;
   
-  Json::Value toJsonVal() const;
+  std::string filepath;
 private:
   std::string _name;
   float _startDelay;
@@ -211,6 +213,7 @@ public:
   BleepoutConfig();
   
   void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -239,8 +242,6 @@ public:
   std::string playerLivesChangedSound;
   std::string playerLostSound;
   std::string countdownTimerTickSound;
-  
-  Json::Value toJsonVal() const;
 private:
   int _fps;
   ofLogLevel _logLevel;

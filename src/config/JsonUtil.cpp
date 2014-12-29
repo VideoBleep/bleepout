@@ -37,8 +37,7 @@ void writeJsonFile(std::string path, const Json::Value& obj) {
 template<>
 Json::Value toJsonVal(const ofVec3f& val) {
   Json::Value obj(Json::arrayValue);
-  obj.resize(3);
-  obj[0] = val.x;
+  obj[0u] = val.x;
   obj[1] = val.y;
   obj[2] = val.z;
   return obj;
@@ -47,12 +46,10 @@ Json::Value toJsonVal(const ofVec3f& val) {
 template<>
 Json::Value toJsonVal(const ofColor& val) {
   Json::Value obj(Json::arrayValue);
-  obj.resize(3);
-  obj[0] = val.r;
+  obj[0u] = val.r;
   obj[1] = val.g;
   obj[2] = val.b;
   if (val.a != ofColor::limit()) {
-    obj.resize(4);
     obj[3] = val.a;
   }
   return obj;
@@ -61,6 +58,21 @@ Json::Value toJsonVal(const ofColor& val) {
 template<>
 Json::Value toJsonVal(const float& val) {
   return Json::Value(val);
+}
+
+template<>
+Json::Value toJsonVal(const bool& val) {
+  return Json::Value(val);
+}
+
+template<>
+Json::Value toJsonVal(const int& val) {
+  return Json::Value(val);
+}
+
+template<>
+Json::Value toJsonVal(const unsigned char& val) {
+  return Json::Value((int)val);
 }
 
 
@@ -142,7 +154,7 @@ void JsonLoader::readVal(const Json::Value &val,
                          ofVec3f *result,
                          const ofVec3f& defaultVal) const {
   if (val.isArray()) {
-    readVal(val[0], &result->x, defaultVal.x);
+    readVal(val[0u], &result->x, defaultVal.x);
     readVal(val[1], &result->y, defaultVal.y);
     readVal(val[2], &result->z, defaultVal.z);
   } if (!assertType(val, Json::objectValue)) {
@@ -159,7 +171,7 @@ void JsonLoader::readVal(const Json::Value &val,
                          ofColor *result,
                          const ofColor& defaultVal) const {
   if (val.isArray()) {
-    readVal(val[0], &result->r, defaultVal.r);
+    readVal(val[0u], &result->r, defaultVal.r);
     readVal(val[1], &result->g, defaultVal.g);
     readVal(val[2], &result->b, defaultVal.b);
     readVal(val[3], &result->a, defaultVal.a);

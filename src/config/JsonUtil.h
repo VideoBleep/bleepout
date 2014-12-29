@@ -77,12 +77,23 @@ Json::Value toJsonArr(const std::vector<T>& vals) {
 }
 
 template<typename T>
-Json::Value toJsonVal(const std::map<std::string, T> map) {
+Json::Value toJsonObj(const std::map<std::string, T>& map) {
   Json::Value obj(Json::objectValue);
   for (const auto& entry : map) {
     obj[entry.first] = toJsonVal(entry.second);
   }
   return obj;
+}
+
+template<typename T>
+Json::Value valuesToJsonObj(const std::map<std::string, T>& map) {
+  Json::Value arr(Json::arrayValue);
+  int i = 0;
+  for (const auto& entry : map) {
+    arr[i] = toJsonVal(entry.second);
+    i++;
+  }
+  return arr;
 }
 
 void writeJsonFile(std::string path, const Json::Value& obj);

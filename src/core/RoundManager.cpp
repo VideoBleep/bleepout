@@ -14,6 +14,7 @@
 #include "Logging.h"
 #include "AdminController.h"
 #include "BleepoutParameters.h"
+#include "JsonUtil.h"
 
 RoundController::RoundController(RoundConfig& config,
                                  std::list<ofPtr<Player> > players,
@@ -271,6 +272,6 @@ void RoundController::dumpToLog(ofLogLevel level) const {
 
 void RoundController::dumpConfig(ofLogLevel level) const {
   ofLog(level) << "--BEGIN round config--";
-  ofLog(level) << _config.toJsonVal().toStyledString();
+  ofLog(level) << toJsonVal(_config).toStyledString();
   ofLog(level) << "--  END round config--";
 }

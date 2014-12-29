@@ -48,18 +48,8 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   return config;
 }
 
-Json::Value BleepoutConfig::toJsonVal() const {
-  Json::Value obj(Json::objectValue);
-  obj["fps"] = _fps;
-  obj["logLevel"] = (int)_logLevel;
-  obj["vsync"] = _vsync;
-  obj["syphonServer"] = _syphonServerName;
-  obj["syphonApp"] = _syphonAppName;
-  return obj;
-}
-
 void BleepoutConfig::saveJsonFile(std::string path) const {
-  Json::Value obj = toJsonVal();
+  Json::Value obj = buildJson();
   writeJsonFile(path, obj);
 }
 
@@ -74,23 +64,13 @@ _name(name),
 _startDelay(0),
 countdownTimerPeriod(10) { }
 
-Json::Value RoundConfig::toJsonVal() const {
-  Json::Value obj;
-  obj["paddleSize"] = ::toJsonVal(_paddleSize);
-  obj["ballRadius"] = _ballRadius;
-  obj["modifierRadius"] = _modifierRadius;
-  obj["brickFadeTime"] = _brickFadeTime;
-  obj["balls"] = toJsonArr(_balls);
-  obj["bricks"] = toJsonArr(_bricks);
-  obj["brickRings"] = toJsonArr(_brickRings);
-  obj["walls"] = toJsonArr(_walls);
-  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
-  obj["modifierDefs"] = ::toJsonVal(_modifierDefs);
-  return obj;
+template<>
+Json::Value toJsonVal(const RoundConfig& value) {
+  return value.buildJson();
 }
 
 void RoundConfig::saveJsonFile(std::string path) const {
-  Json::Value obj = toJsonVal();
+  Json::Value obj = buildJson();
   writeJsonFile(path, obj);
 }
 
@@ -150,6 +130,19 @@ void GameRules::readJson(const JsonLoader &loader,
   loader.readVal(obj["ballsRespawn"], &_ballsRespawn);
 }
 
+Json::Value GameRules::buildJson() const {
+  Json::Value obj(Json::objectValue);
+  obj["timeLimit"] = toJsonVal(_timeLimit);
+  obj["playersCanLoseLives"] = toJsonVal(_playersCanLoseLives);
+  obj["ballsRespawn"] = toJsonVal(_ballsRespawn);
+  return obj;
+}
+
+template<>
+Json::Value toJsonVal(const GameRules& value) {
+  return value.buildJson();
+}
+
 void RoundConfig::readJson(const JsonLoader &loader,
                            const Json::Value &obj) {
   if (!loader.assertType(obj, Json::objectValue))
@@ -181,6 +174,30 @@ void RoundConfig::readJson(const JsonLoader &loader,
   }
   loader.readArr(obj["startMessages"], &_startMessages);
   loader.readArr(obj["ringSets"], &_ringSets);
+}
+
+Json::Value RoundConfig::buildJson() const {
+  Json::Value obj(Json::objectValue);
+  obj["name"] = _name;
+  obj["startDelay"] = _startDelay;
+  obj["paddleSize"] = toJsonVal(_paddleSize);
+  obj["brickFadeTime"] = _brickFadeTime;
+  obj["modifierRadius"] = _modifierRadius;
+  obj["modifierFadeTime"] = _modifierFadeTime;
+  obj["ballSpawnedFadeTime"] = _ballSpawnedFadeTime;
+  obj["rules"] = _rules.buildJson();
+  obj["balls"] = toJsonArr(_balls);
+  obj["bricks"] = toJsonArr(_bricks);
+  obj["brickRings"] = toJsonArr(_brickRings);
+  obj["curvedBrickColumns"] = toJsonArr(_curvedBrickColumns);
+  obj["brickQuads"] = toJsonArr(_brickQuads);
+  obj["walls"] = toJsonArr(_walls);
+  obj["wallRings"] = toJsonArr(_wallRings);
+  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+  obj["modifierDefs"] = valuesToJsonObj(_modifierDefs);
+  obj["startMessages"] = toJsonArr(_startMessages);
+  obj["ringSets"] = toJsonArr(_ringSets);
+  return obj;
 }
 
 static RoundConfig* loadRoundFromObj(const JsonLoader& loader,
@@ -253,4 +270,26 @@ BleepoutConfig* BleepoutConfig::loadFromFile(std::string path) {
   BleepoutConfig* config = new BleepoutConfig();
   config->readJson(loader, obj);
   return config;
+}
+
+Json::Value BleepoutConfig::buildJson() const {
+  Json::Value obj(Json::objectValue);
+  obj["logLevel"] = toJsonVal(_logLevel);
+  obj["fps"] = _fps;
+  obj["vsync"] = _vsync;
+  obj["syphonServerName"] = _syphonServerName;
+  obj["syphonAppName"] = _syphonAppName;
+  obj["roundStartedSound"] = roundStartedSound;
+  obj["roundEndedSound"] = roundEndedSound;
+  obj["brickHitSound"] = brickHitSound;
+  obj["brickDestroyedSound"] = brickDestroyedSound;
+  obj["collisionSound"] = collisionSound;
+  obj["modifierAppliedSound"] = modifierAppliedSound;
+  obj["modifierRemovedSound"] = modifierRemovedSound;
+  obj["ballDestroyedSound"] = ballDestroyedSound;
+  obj["playerLivesChangedSound"] = playerLivesChangedSound;
+  obj["playerLostSound"] = playerLostSound;
+  obj["countdownTimerTickSound"] = countdownTimerTickSound;
+  obj["rounds"] = toJsonArr(_roundConfigs);
+  return obj;
 }
