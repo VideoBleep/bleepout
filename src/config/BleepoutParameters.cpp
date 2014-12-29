@@ -82,12 +82,3 @@ ofPtr<RoundConfig> BleepoutParameters::getNextRound() {
   const std::string& roundName = _queuedRoundNames.front();
   return _appConfig->getRound(roundName);
 }
-
-ofPtr<RoundConfig>
-BleepoutParameters::setCurrentRound(const std::string &name) {
-  ofPtr<RoundConfig> round = _appConfig->getRound(name);
-  if (!round)
-    return ofPtr<RoundConfig>();
-  _rulesOverrides.setBackup(&round->rules());
-  return round;
-}

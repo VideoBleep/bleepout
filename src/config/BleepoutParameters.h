@@ -31,7 +31,6 @@ public:
   const BleepoutConfig& appConfig() const { return *_appConfig; }
   BleepoutConfig& appConfig() { return *_appConfig; }
   std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
-  ofPtr<RoundConfig> setCurrentRound(const std::string& name);
   ofPtr<RoundConfig> popNextRound();
   ofPtr<RoundConfig> getNextRound();
   
