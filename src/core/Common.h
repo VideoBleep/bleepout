@@ -52,6 +52,28 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 
+template<typename T>
+struct EnumTypeTraits {
+  static bool parseString(const std::string& str, T* result, const T& defaultVal);
+  static std::string toString(const T& value);
+};
+
+template<typename T>
+bool parseEnumString(const std::string& str, T* result, const T& defaultVal) {
+  return EnumTypeTraits<T>::parseString(str, result, defaultVal);
+}
+
+template<typename T>
+bool parseEnumString(const std::string& str, T* result) {
+  T defaultVal;
+  return EnumTypeTraits<T>::parseString(str, result, defaultVal);
+}
+
+template<typename T>
+std::string enumToString(const T& value) {
+  return EnumTypeTraits<T>::toString(value);
+}
+
 class ValueSpecifier {
 public:
   enum Mode {

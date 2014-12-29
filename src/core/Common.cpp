@@ -7,6 +7,7 @@
 //
 
 #include "Common.h"
+#include "JsonUtil.h"
 
 template<>
 ofVec2f getInterpolated(const ofVec2f& a, const ofVec2f& b, float amount) {
@@ -28,4 +29,22 @@ float getInterpolated(const float& a, const float& b, float amount) {
 std::ostream& operator<<(std::ostream& os, const Outputable& obj) {
   obj.output(os);
   return os;
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         Optional<bool>* result) const {
+  if (!assertType(val, Json::booleanValue))
+    result->unset();
+  else
+    result->set(val.asBool());
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         Optional<float>* result) const {
+  if (!assertType(val, Json::realValue))
+    result->unset();
+  else
+    result->set(val.asFloat());
 }

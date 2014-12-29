@@ -126,6 +126,8 @@ public:
     }
   }
   
+  bool readFile(std::string path, Json::Value* result) const;
+  
   bool assertType(const Json::Value& val,
                   Json::ValueType type) const;
 private:

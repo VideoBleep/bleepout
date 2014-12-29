@@ -24,6 +24,7 @@ bool readJsonFile(std::string path, Json::Value* obj) {
     << obj->toStyledString();
     return false;
   }
+  return true;
 }
 
 void writeJsonFile(std::string path, const Json::Value& obj) {
@@ -33,182 +34,13 @@ void writeJsonFile(std::string path, const Json::Value& obj) {
   writer.write(fos, obj);
 }
 
-bool assertType(const Json::Value& val, Json::ValueType type) {
-  if (!val.isConvertibleTo(type) || val.isNull()) {
-    ofLogError() << "cannot conver value to " << type << ": " << val;
-    return false;
-  }
-  return true;
-}
-
-template<typename T>
-static bool readJsonValImpl(const Json::Value& val, T* result, Json::ValueType type, T (Json::Value::*converter)() const) {
-  if (!assertType(val, type))
-    return false;
-  *result = (T)(val.*converter)();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, float* result) {
-  if (!assertType(val, Json::realValue))
-    return false;
-  *result = val.asFloat();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, int* result) {
-  if (!assertType(val, Json::intValue))
-    return false;
-  *result = val.asInt();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, unsigned char* result) {
-  if (!assertType(val, Json::intValue))
-    return false;
-  *result = (unsigned char)val.asInt();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, bool* result) {
-  if (!assertType(val, Json::booleanValue))
-    return false;
-  *result = val.asBool();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, std::string* result) {
-  if (!assertType(val, Json::booleanValue))
-    return false;
-  *result = val.asString();
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, ofVec2f* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["x"], &result->x) ||
-      !readJsonVal(val["y"], &result->y))
-    return false;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, ofVec3f* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["x"], &result->x) ||
-      !readJsonVal(val["y"], &result->y) ||
-      !readJsonVal(val["z"], &result->z))
-    return false;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, ofColor* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["r"], &result->r) ||
-      !readJsonVal(val["g"], &result->g) ||
-      !readJsonVal(val["b"], &result->b))
-    return false;
-  if (!readJsonVal(val["a"], &result->a))
-    result->a = 255;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, BrickSpec* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["elevation"], &result->elevation) ||
-      !readJsonVal(val["heading"], &result->heading) ||
-      !readJsonVal(val["color"], &result->color))
-    return false;
-  if (!readJsonVal(val["value"], &result->value))
-    result->value = 1;
-  if (!readJsonVal(val["lives"], &result->lives))
-    result->lives = 1;
-  if (!readJsonVal(val["speed"], &result->speed))
-    result->speed = 0;
-  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
-    result->stopHeading = -1;
-  if (!readJsonVal(val["modifierName"], &result->modifierName))
-    result->modifierName = "";
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, BrickRingSpec* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["elevation"], &result->elevation) ||
-      !readJsonVal(val["color"], &result->color) ||
-      !readJsonVal(val["count"], &result->count) ||
-      !readJsonVal(val["phase"], &result->phase))
-    return false;
-  if (!readJsonVal(val["value"], &result->value))
-    result->value = 1;
-  if (!readJsonVal(val["lives"], &result->lives))
-    result->lives = 1;
-  if (!readJsonVal(val["speed"], &result->speed))
-    result->speed = 0;
-  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
-    result->stopHeading = -1;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, WallSpec* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["elevation"], &result->elevation) ||
-      !readJsonVal(val["heading"], &result->heading) ||
-      !readJsonVal(val["size"], &result->size))
-    return false;
-  if (!readJsonVal(val["isExit"], &result->isExit))
-    result->isExit = false;
-  if (!readJsonVal(val["speed"], &result->speed))
-    result->speed = 0;
-  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
-    result->stopHeading = -1;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, CurvedWallSpec* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["elevation1"], &result->elevation1) ||
-      !readJsonVal(val["heading1"], &result->heading1) ||
-      !readJsonVal(val["elevation2"], &result->elevation2) ||
-      !readJsonVal(val["heading2"], &result->heading2) ||
-      !readJsonVal(val["width"], &result->width))
-    return false;
-  if (!readJsonVal(val["isExit"], &result->isExit))
-    result->isExit = false;
-  if (!readJsonVal(val["speed"], &result->speed))
-    result->speed = 0;
-  if (!readJsonVal(val["stopHeading"], &result->stopHeading))
-    result->stopHeading = -1;
-  return true;
-}
-
-template<>
-bool readJsonVal(const Json::Value& val, BallSpec* result) {
-  if (!assertType(val, Json::objectValue))
-    return false;
-  if (!readJsonVal(val["elevation"], &result->elevation) ||
-      !readJsonVal(val["heading"], &result->heading))
-    return false;
-  return true;
-}
+//template<typename T>
+//static bool readJsonValImpl(const Json::Value& val, T* result, Json::ValueType type, T (Json::Value::*converter)() const) {
+//  if (!assertType(val, type))
+//    return false;
+//  *result = (T)(val.*converter)();
+//  return true;
+//}
 
 template<>
 Json::Value toJsonVal(const ofVec2f& val) {
@@ -318,30 +150,6 @@ Json::Value toJsonVal(const ModifierType& type) {
 }
 
 template<>
-bool readJsonVal(const Json::Value& val, ModifierType* result) {
-  if (val.isNull()) {
-    *result = MODIFIER_NONE;
-    return true;
-  }
-  if (!assertType(val, Json::stringValue))
-    return false;
-  std::string str = val.asString();
-  if (str.empty()) {
-    *result = MODIFIER_NONE;
-    return true;
-  }
-  if (str == "extra_life") {
-    *result = MODIFIER_EXTRA_LIFE;
-    return true;
-  }
-  if (str == "paddle_width") {
-    *result = MODIFIER_PADDLE_WIDTH;
-    return true;
-  }
-  return false;
-}
-
-template<>
 Json::Value toJsonVal(const ModifierSpec& spec) {
   Json::Value obj(Json::objectValue);
   obj["type"] = toJsonVal(spec.type);
@@ -349,20 +157,24 @@ Json::Value toJsonVal(const ModifierSpec& spec) {
   return obj;
 }
 
-template<>
-bool readJsonVal(const Json::Value& val, ModifierSpec* result) {
-  if (val.isNull()) {
-    result->type = MODIFIER_NONE;
-    return true;
-  }
-  if (!readJsonVal(val["type"], &result->type))
+
+
+bool JsonLoader::readFile(std::string path, Json::Value *result) const {
+  path = ofToDataPath(path);
+  std::ifstream fis(path.c_str());
+  Json::Reader reader;
+  if (!reader.parse(fis, *result)) {
+    ofLog(_logLevel) << "error loading json from: " << path
+    << ": " << reader.getFormattedErrorMessages();
     return false;
-  if (!readJsonVal(val["amount"], &result->amount))
-    result->amount = 0;
+  }
+  if (!result->isObject()) {
+    ofLog(_logLevel) << "invalid type for root (expected object): "
+    << result->toStyledString();
+    return false;
+  }
   return true;
 }
-
-
 
 bool JsonLoader::assertType(const Json::Value &val, Json::ValueType type) const {
   if (!val.isConvertibleTo(type) || val.isNull()) {
@@ -426,12 +238,13 @@ template<>
 void JsonLoader::readVal(const Json::Value &val,
                          ofVec3f *result,
                          const ofVec3f& defaultVal) const {
-  if (!assertType(val, Json::objectValue)) {
+  if (val.isArray()) {
+    readVal(val[0], &result->x, defaultVal.x);
+    readVal(val[1], &result->y, defaultVal.y);
+    readVal(val[2], &result->z, defaultVal.z);
+  } if (!assertType(val, Json::objectValue)) {
     *result = defaultVal;
   } else {
-    //    readVal(val["x"], &result->x, defaultVal.x);
-    //    readVal(val["y"], &result->y, defaultVal.y);
-    //    readVal(val["z"], &result->z, defaultVal.z);
     R_JPROP(x);
     R_JPROP(y);
     R_JPROP(z);
@@ -442,34 +255,17 @@ template<>
 void JsonLoader::readVal(const Json::Value &val,
                          ofColor *result,
                          const ofColor& defaultVal) const {
-  if (!assertType(val, Json::objectValue)) {
+  if (val.isArray()) {
+    readVal(val[0], &result->r, defaultVal.r);
+    readVal(val[1], &result->g, defaultVal.g);
+    readVal(val[2], &result->b, defaultVal.b);
+    readVal(val[3], &result->a, defaultVal.a);
+  } else if (!assertType(val, Json::objectValue)) {
     *result = defaultVal;
   } else {
-    //    readVal(val["r"], &result->r, defaultVal.r);
-    //    readVal(val["g"], &result->g, defaultVal.g);
-    //    readVal(val["b"], &result->b, defaultVal.b);
-    //    readVal(val["a"], &result->a, defaultVal.a);
     R_JPROP(r);
     R_JPROP(g);
     R_JPROP(b);
     R_JPROP(a);
   }
-}
-
-template<>
-void JsonLoader::readVal(const Json::Value &val,
-                         Optional<bool>* result) const {
-  if (!assertType(val, Json::booleanValue))
-    result->unset();
-  else
-    result->set(val.asBool());
-}
-
-template<>
-void JsonLoader::readVal(const Json::Value &val,
-                         Optional<float>* result) const {
-  if (!assertType(val, Json::realValue))
-    result->unset();
-  else
-    result->set(val.asFloat());
 }
