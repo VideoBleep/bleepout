@@ -238,7 +238,7 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readArr(obj["ringSets"], &_ringSets);
   const Json::Value& specsArr = obj["objects"];
   if (!specsArr.isNull()){
-    if (assertType(specsArr, Json::arrayValue)) {
+    if (loader.assertType(specsArr, Json::arrayValue)) {
       int size = specsArr.size();
       for (int i = 0; i < size; i++) {
         readSpecJson(loader, specsArr[i]);

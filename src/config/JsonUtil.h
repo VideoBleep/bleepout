@@ -16,7 +16,7 @@
 #include "ObjectSpecs.h"
 #include "Common.h"
 
-bool assertType(const Json::Value& val, Json::ValueType type);
+std::ostream& operator<<(std::ostream& os, const Json::ValueType& type);
 
 template<typename T>
 Json::Value toJsonVal(const T& val);

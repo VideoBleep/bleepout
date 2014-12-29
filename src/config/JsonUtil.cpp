@@ -7,8 +7,42 @@
 //
 
 #include "JsonUtil.h"
+#include "Logging.h"
 
 #include <fstream>
+
+#define FOR_EACH_JSON_VALUE_TYPE(X) \
+X(Json::nullValue, "null") \
+X(Json::intValue, "int") \
+X(Json::uintValue, "uint") \
+X(Json::realValue, "real") \
+X(Json::stringValue, "string") \
+X(Json::booleanValue, "bool") \
+X(Json::arrayValue, "array") \
+X(Json::objectValue, "object")
+
+template<>
+bool EnumTypeTraits<Json::ValueType>::parseString(const std::string &str, Json::ValueType *result, const Json::ValueType &defaultVal) {
+  FOR_EACH_JSON_VALUE_TYPE(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
+}
+
+template<>
+bool EnumTypeTraits<Json::ValueType>::toString(const Json::ValueType &value, std::string* result) {
+  switch (value) {
+    FOR_EACH_JSON_VALUE_TYPE(ENUM_TOSTR_CASE)
+    default:
+      return false;
+  }
+  return true;
+}
+
+#undef FOR_EACH_JSON_VALUE_TYPE
+
+std::ostream& operator<<(std::ostream& os, const Json::ValueType& type) {
+  return os << enumToString(type);
+}
 
 bool jsonValIsEmpty(const Json::Value& val) {
   if (val.empty())
@@ -198,9 +232,11 @@ bool JsonLoader::readFile(std::string path, Json::Value *result) const {
 }
 
 bool JsonLoader::assertType(const Json::Value &val, Json::ValueType type) const {
-  if (!val.isConvertibleTo(type) || val.isNull()) {
-    ofLog(_logLevel) << "cannot convert value to " << type
-    << ": " << val;
+  if (val.isNull())
+    return false;
+  if (!val.isConvertibleTo(type)) {
+    ofLog(_logLevel) << "cannot convert value to "
+      << enumToString(type) << ": " << val;
     return false;
   }
   return true;
@@ -261,7 +297,7 @@ void JsonLoader::readVal(const Json::Value &val,
     readVal(val[0u], &result->x, defaultVal.x);
     readVal(val[1], &result->y, defaultVal.y);
     readVal(val[2], &result->z, defaultVal.z);
-  } if (!assertType(val, Json::objectValue)) {
+  } else if (!assertType(val, Json::objectValue)) {
     *result = defaultVal;
   } else {
     readVal(val["x"], &result->x, defaultVal.x);
