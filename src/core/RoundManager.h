@@ -26,7 +26,7 @@ class AdminController;
 class RoundController : public EventSource
 {
 public:
-  RoundController(RoundConfig& config,
+  RoundController(ofPtr<RoundConfig> config,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
@@ -55,7 +55,7 @@ public:
   
   void setPaddlePosition(GameObjectId playerId, float xPercent);
   
-  const RoundConfig& config() const { return _config; }
+  const RoundConfig& config() const { return *_config; }
   
   void addAnimation(ofPtr<AnimationObject> animation);
   void addTimedAction(ofPtr<TimedAction> action);
@@ -88,7 +88,7 @@ private:
   bool _paused;
   float _startTime;
   PlayerManager& _playerManager;
-  RoundConfig& _config;
+  ofPtr<RoundConfig> _config;
   RoundState _state;
   ofPtr<RendererBase> _renderer;
   ofPtr<SpaceController> _spaceController;

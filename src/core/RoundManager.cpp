@@ -16,11 +16,11 @@
 #include "BleepoutParameters.h"
 #include "JsonUtil.h"
 
-RoundController::RoundController(RoundConfig& config,
+RoundController::RoundController(ofPtr<RoundConfig> config,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
 : _config(config)
-, _state(_config, players)
+, _state(*_config, players)
 , _playerManager(playerManager)
 , _timedActions(true)
 , _ending(false)
@@ -49,8 +49,8 @@ void RoundController::setup() {
   _cullDeadObjectsPulser = Pulser(5.0f);
   
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
-  _spaceController.reset(new SpaceController(_state, _config));
-  _logicController.reset(new LogicController(_state, _config));
+  _spaceController.reset(new SpaceController(_state, config()));
+  _logicController.reset(new LogicController(_state, config()));
   _animationManager.reset(new RoundAnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
@@ -61,11 +61,11 @@ void RoundController::setup() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer(_state, _config));
+  _renderer.reset(new DomeRenderer(_state, config()));
   _renderer->setup();
   _renderer->attachTo(*_logicController);
   
-  for (auto& msg : _config.startMessages()) {
+  for (auto& msg : _config->startMessages()) {
     _animationManager->addMessage(msg);
   }
 }
@@ -104,7 +104,7 @@ void RoundController::update() {
     return;
   _state.time = ofGetElapsedTimef() - _startTime;
   
-  if (_state.time >= _config.startDelay()) {
+  if (_state.time >= _config->startDelay()) {
     if (_state.paddles().size() == 0) {
       ofLogNotice() << "Initial Paddle Create";
       _spaceController->addInitialPaddles();
