@@ -59,39 +59,30 @@ void Modifier::setup(const RoundConfig &config,
   _visible = true;
 }
 
+#define FOR_EACH_MOD_TYPE(X) \
+X(MODIFIER_EXTRA_LIFE, "ExtraLife") \
+X(MODIFIER_PADDLE_WIDTH, "PaddleWidth") \
+X(MODIFIER_LASER_BALL, "LaserBall")
+
 template<>
 bool EnumTypeTraits<ModifierType>::parseString(const std::string &str, ModifierType *result, const ModifierType &defaultVal) {
-  if (str == "ExtraLife")
-    *result = MODIFIER_EXTRA_LIFE;
-  else if (str == "PaddleWidth")
-    *result = MODIFIER_PADDLE_WIDTH;
-  else if (str == "LaserBall")
-    *result = MODIFIER_LASER_BALL;
-  else {
-    *result = defaultVal;
-    return false;
-  }
-  return true;
+  FOR_EACH_MOD_TYPE(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
 }
 
 template<>
 bool EnumTypeTraits<ModifierType>::toString(const ModifierType &value, std::string* result) {
   switch (value) {
-    case MODIFIER_EXTRA_LIFE:
-      *result = "ExtraLife";
-      break;
-    case MODIFIER_PADDLE_WIDTH:
-      *result = "PaddleWidth";
-      break;
-    case MODIFIER_LASER_BALL:
-      *result = "LaserBall";
-      break;
+    FOR_EACH_MOD_TYPE(ENUM_TOSTR_CASE)
     case MODIFIER_NONE:
     default:
       return false;
   }
   return true;
 }
+
+#undef FOR_EACH_MOD_TYPE
 
 template<>
 void JsonLoader::readVal(const Json::Value &val,

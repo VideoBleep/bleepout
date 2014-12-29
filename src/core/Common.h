@@ -52,6 +52,9 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 
+#define ENUM_PARSE_CASE(V, S) if (str == S) { *result = V; return true; }
+#define ENUM_TOSTR_CASE(V, S) case V: { *result = S; break; }
+
 template<typename T>
 struct EnumTypeTraits {
   static bool parseString(const std::string& str, T* result, const T& defaultVal);

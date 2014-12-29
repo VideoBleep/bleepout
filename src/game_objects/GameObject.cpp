@@ -30,59 +30,34 @@ GameObject::~GameObject() {
 #endif // LOG_CONSTRUCTION_DESTRUCTION
 }
 
+#define FOR_EACH_OBJ_TYPE(X) \
+  X(GAME_OBJECT_BRICK, "Brick") \
+  X(GAME_OBJECT_PADDLE, "Paddle") \
+  X(GAME_OBJECT_BALL, "Ball") \
+  X(GAME_OBJECT_PLAYER, "Player") \
+  X(GAME_OBJECT_WALL, "Wall") \
+  X(GAME_OBJECT_ANIMATION, "AnimationObject") \
+  X(GAME_OBJECT_MODIFIER, "Modifier")
+
 template<>
 bool EnumTypeTraits<GameObjectType>::parseString(const std::string &str, GameObjectType *result, const GameObjectType &defaultVal) {
-  if (str == GameObjectTypeTraits<Brick>::typeName)
-    *result = GAME_OBJECT_BRICK;
-  else if (str == GameObjectTypeTraits<Paddle>::typeName)
-    *result = GAME_OBJECT_PADDLE;
-  else if (str == GameObjectTypeTraits<Ball>::typeName)
-    *result = GAME_OBJECT_BALL;
-  else if (str == GameObjectTypeTraits<Player>::typeName)
-    *result = GAME_OBJECT_PLAYER;
-  else if (str == GameObjectTypeTraits<Wall>::typeName)
-    *result = GAME_OBJECT_WALL;
-  else if (str == GameObjectTypeTraits<AnimationObject>::typeName)
-    *result = GAME_OBJECT_ANIMATION;
-  else if (str == GameObjectTypeTraits<Modifier>::typeName)
-    *result = GAME_OBJECT_MODIFIER;
-  else {
-    *result = defaultVal;
-    return false;
-  }
-  return true;
+  FOR_EACH_OBJ_TYPE(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
 }
 
 template<>
 bool EnumTypeTraits<GameObjectType>::toString(const GameObjectType &value, std::string* result) {
   switch (value) {
-    case GAME_OBJECT_BRICK:
-      *result = GameObjectTypeTraits<Brick>::typeName;
-      break;
-    case GAME_OBJECT_PADDLE:
-      *result = GameObjectTypeTraits<Paddle>::typeName;
-      break;
-    case GAME_OBJECT_BALL:
-      *result = GameObjectTypeTraits<Ball>::typeName;
-      break;
-    case GAME_OBJECT_PLAYER:
-      *result = GameObjectTypeTraits<Player>::typeName;
-      break;
-    case GAME_OBJECT_WALL:
-      *result = GameObjectTypeTraits<Wall>::typeName;
-      break;
-    case GAME_OBJECT_ANIMATION:
-      *result = GameObjectTypeTraits<AnimationObject>::typeName;
-      break;
-    case GAME_OBJECT_MODIFIER:
-      *result = GameObjectTypeTraits<Modifier>::typeName;
-      break;
+    FOR_EACH_OBJ_TYPE(ENUM_TOSTR_CASE)
     case GAME_OBJECT_OTHER:
     default:
       return false;
   }
   return true;
 }
+
+#undef FOR_EACH_OBJ_TYPE
 
 template<>
 void JsonLoader::readVal(const Json::Value &val,

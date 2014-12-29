@@ -11,6 +11,57 @@
 #include "BleepoutParameters.h"
 #include "JsonUtil.h"
 
+#define FOR_EACH_SPEC_TYPE(X) \
+  X(SPEC_BRICK, "Brick") \
+  X(SPEC_BRICK_RING, "BrickRing") \
+  X(SPEC_BRICK_QUADS, "BrickQuads") \
+  X(SPEC_WALL, "Wall") \
+  X(SPEC_WALL_RING, "WallRing") \
+  X(SPEC_CURVED_BRICK_COLUMN, "CurvedBrickColumn") \
+  X(SPEC_CURVED_WALL, "CurvedWall") \
+  X(SPEC_BALL, "Ball") \
+  X(SPEC_MODIFIER, "Modifier") \
+  X(SPEC_MESSAGE, "Message") \
+  X(SPEC_RING_SET, "RingSet")
+
+template<>
+bool EnumTypeTraits<SpecType>::parseString(const std::string &str, SpecType *result, const SpecType &defaultVal) {
+  FOR_EACH_SPEC_TYPE(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
+}
+
+template<>
+bool EnumTypeTraits<SpecType>::toString(const SpecType &value, std::string* result) {
+  switch (value) {
+    FOR_EACH_SPEC_TYPE(ENUM_TOSTR_CASE)
+    default:
+      return false;
+  }
+  return true;
+}
+
+#undef FOR_EACH_SPEC_TYPE
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         SpecType *result,
+                         const SpecType &defaultVal) const {
+  if (!assertType(val, Json::stringValue)) {
+    *result = defaultVal;
+  } else {
+    parseEnumString(val.asString(), result);
+  }
+}
+
+template<>
+Json::Value toJsonVal(const SpecType& type) {
+  std::string result;
+  if (!enumToString(type, &result))
+    return Json::Value::null;
+  return Json::Value(result);
+}
+
 void BrickRingSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec> *specs) const {
   BrickSpec prototype = BrickSpec()
     .setElevation(elevation)
@@ -177,6 +228,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const BrickSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_BRICK);
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   obj["size"] = toJsonVal(spec.size);
@@ -213,6 +265,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const BrickRingSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_BRICK_RING);
   obj["elevation"] = spec.elevation;
   obj["size"] = toJsonVal(spec.size);
   obj["color"] = toJsonVal(spec.color);
@@ -251,6 +304,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const BrickQuadsSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_BRICK_QUADS);
   obj["elevation"] = spec.elevation;
   obj["color1"] = toJsonVal(spec.color1);
   obj["color2"] = toJsonVal(spec.color2);
@@ -285,6 +339,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const WallSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_WALL);
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   obj["size"] = toJsonVal(spec.size);
@@ -317,6 +372,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const WallRingSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_WALL_RING);
   obj["elevation"] = spec.elevation;
   obj["size"] = toJsonVal(spec.size);
   if (spec.isExit)
@@ -380,6 +436,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const CurvedBrickColumnSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_CURVED_BRICK_COLUMN);
   obj["elevation1"] = spec.elevation1;
   obj["heading1"] = spec.heading1;
   obj["elevation2"] = spec.elevation2;
@@ -418,6 +475,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const CurvedWallSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_CURVED_WALL);
   obj["elevation1"] = spec.elevation1;
   obj["heading1"] = spec.heading1;
   obj["elevation2"] = spec.elevation2;
@@ -445,6 +503,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const BallSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_BALL);
   obj["elevation"] = spec.elevation;
   obj["heading"] = spec.heading;
   return obj;
@@ -468,6 +527,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const ModifierSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_MODIFIER);
   obj["name"] = spec.name;
   obj["type"] = toJsonVal(spec.type);
   obj["amount"] = spec.amount;
@@ -495,6 +555,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const MessageSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_MESSAGE);
   obj["text"] = spec.text;
   obj["color"] = toJsonVal(spec.color);
   obj["size"] = spec.size;
@@ -572,6 +633,7 @@ void JsonLoader::readVal(const Json::Value &val,
 template<>
 Json::Value toJsonVal(const RingSetSpec& spec) {
   Json::Value obj(Json::objectValue);
+  obj["_type"] = toJsonVal(SPEC_RING_SET);
   obj["spin"] = toJsonVal(spec.spin);
   obj["spread"] = toJsonVal(spec.spread);
   obj["spreadOffset"] = toJsonVal(spec.spreadOffset);

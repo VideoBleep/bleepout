@@ -73,53 +73,32 @@ void JsonLoader::readVal(const Json::Value &val,
     result->set(val.asFloat());
 }
 
+#define FOR_EACH_LOG_LEVEL(X) \
+  X(OF_LOG_VERBOSE, "Verbose") \
+  X(OF_LOG_NOTICE, "Notice") \
+  X(OF_LOG_WARNING, "Warning") \
+  X(OF_LOG_ERROR, "Error") \
+  X(OF_LOG_FATAL_ERROR, "FatalError") \
+  X(OF_LOG_SILENT, "Silent")
+
 template<>
 bool EnumTypeTraits<ofLogLevel>::parseString(const std::string &str, ofLogLevel *result, const ofLogLevel &defaultVal) {
-  if (str == "Verbose")
-    *result = OF_LOG_VERBOSE;
-  else if (str == "Notice")
-    *result = OF_LOG_NOTICE;
-  else if (str == "Warning")
-    *result = OF_LOG_WARNING;
-  else if (str == "Error")
-    *result = OF_LOG_ERROR;
-  else if (str == "FatalError")
-    *result = OF_LOG_FATAL_ERROR;
-  else if (str == "Silent")
-    *result = OF_LOG_SILENT;
-  else {
-    *result = defaultVal;
-    return false;
-  }
-  return true;
+  FOR_EACH_LOG_LEVEL(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
 }
 
 template<>
 bool EnumTypeTraits<ofLogLevel>::toString(const ofLogLevel &value, std::string* result) {
   switch (value) {
-    case OF_LOG_VERBOSE:
-      *result = "Verbose";
-      break;
-    case OF_LOG_NOTICE:
-      *result = "Notice";
-      break;
-    case OF_LOG_WARNING:
-      *result = "Warning";
-      break;
-    case OF_LOG_ERROR:
-      *result = "Error";
-      break;
-    case OF_LOG_FATAL_ERROR:
-      *result = "FatalError";
-      break;
-    case OF_LOG_SILENT:
-      *result = "Silent";
-      break;
+    FOR_EACH_LOG_LEVEL(ENUM_TOSTR_CASE)
     default:
       return false;
   }
   return true;
 }
+
+#undef FOR_EACH_LOG_LEVEL
 
 template<>
 void JsonLoader::readVal(const Json::Value &val,

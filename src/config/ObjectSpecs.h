@@ -15,6 +15,20 @@
 #include "Common.h"
 
 class RoundConfig;
+enum SpecType {
+  SPEC_UNKNOWN,
+  SPEC_BRICK,
+  SPEC_BRICK_RING,
+  SPEC_BRICK_QUADS,
+  SPEC_WALL,
+  SPEC_WALL_RING,
+  SPEC_CURVED_BRICK_COLUMN,
+  SPEC_CURVED_WALL,
+  SPEC_BALL,
+  SPEC_MODIFIER,
+  SPEC_MESSAGE,
+  SPEC_RING_SET
+};
 
 template<typename T>
 struct SpecGenerator {

@@ -10,6 +10,110 @@
 
 #include <fstream>
 
+bool jsonValIsEmpty(const Json::Value& val) {
+  if (val.empty())
+    return true;
+  if (val.isString() && val.asString().empty())
+    return true;
+  return false;
+}
+
+bool jsonValIsEmptyOrDefault(const Json::Value& val,
+                             const float defaultValue) {
+  if (jsonValIsEmpty(val))
+    return true;
+  if (!val.isConvertibleTo(Json::realValue))
+    return false;
+  return val.asFloat() == defaultValue;
+}
+bool jsonValIsEmptyOrDefault(const Json::Value& val,
+                             const int defaultValue) {
+  if (jsonValIsEmpty(val))
+    return true;
+  if (!val.isConvertibleTo(Json::intValue))
+    return false;
+  return val.asInt() == defaultValue;
+}
+bool jsonValIsEmptyOrDefault(const Json::Value& val,
+                             const bool defaultValue) {
+  if (jsonValIsEmpty(val))
+    return true;
+  if (!val.isConvertibleTo(Json::booleanValue))
+    return false;
+  return val.asBool() == defaultValue;
+}
+bool jsonValIsEmptyOrDefault(const Json::Value& val,
+                             const std::string& defaultValue) {
+  if (jsonValIsEmpty(val))
+    return true;
+  if (!val.isConvertibleTo(Json::stringValue))
+    return false;
+  return val.asString() == defaultValue;
+}
+
+static bool cleanJsonValImpl(Json::Value& val);
+
+static bool cleanJsonArr(Json::Value& arr) {
+  int size = arr.size();
+  int newSize = 0;
+  Json::Value newArr(Json::arrayValue);
+  bool changed = false;
+  for (int i = 0; i < size; i++) {
+    Json::Value& val = arr[i];
+    if (cleanJsonValImpl(val))
+      changed = true;
+    if (!jsonValIsEmpty(val)) {
+      newArr[newSize] = val;
+      newSize++;
+    }
+  }
+  if (!changed)
+    return false;
+  if (newArr.empty())
+    arr = Json::Value::null;
+  else
+    arr.swap(newArr);
+  return true;
+}
+
+static bool cleanJsonObj(Json::Value& obj) {
+  Json::Value newObj(Json::objectValue);
+  auto end = obj.end();
+  bool changed = false;
+  for (auto i = obj.begin(); i != end; i++) {
+    Json::Value& val = *i;
+    if (cleanJsonValImpl(val))
+      changed = true;
+    if (!jsonValIsEmpty(val))
+      newObj[i.key().asString()] = val;
+  }
+  if (!changed)
+    return false;
+  if (newObj.empty())
+    obj = Json::Value::null;
+  else
+    obj.swap(newObj);
+  return true;
+}
+
+static bool cleanJsonValImpl(Json::Value& val) {
+  if (val.isNull()) {
+    return false;
+  } else if (jsonValIsEmpty(val)) {
+    val = Json::Value::null;
+    return true;
+  } else if (val.isArray()) {
+    return cleanJsonArr(val);
+  } else if (val.isObject()) {
+    return cleanJsonObj(val);
+  }
+  return false;
+}
+
+void cleanJsonVal(Json::Value& val) {
+  cleanJsonValImpl(val);
+}
+
 bool readJsonFile(std::string path, Json::Value* obj) {
   path = ofToDataPath(path);
   std::ifstream fis(path.c_str());

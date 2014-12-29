@@ -50,6 +50,7 @@ BleepoutConfig* BleepoutConfig::createConfig() {
 
 void BleepoutConfig::saveJsonFile(std::string path) const {
   Json::Value obj = buildJson();
+  cleanJsonVal(obj);
   writeJsonFile(path, obj);
 }
 
@@ -78,6 +79,7 @@ Json::Value toJsonVal(const ofPtr<RoundConfig>& value) {
 
 void RoundConfig::saveJsonFile(std::string path) const {
   Json::Value obj = buildJson();
+  cleanJsonVal(obj);
   writeJsonFile(path, obj);
 }
 
