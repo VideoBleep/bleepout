@@ -22,6 +22,7 @@ public:
   ofVec3f normalOnA;
   ofVec3f pointOnA;
   ofVec3f pointOnB;
+  float penDistance;
 };
 
 class PhysicsImpl;
