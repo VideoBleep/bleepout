@@ -8,12 +8,12 @@
 
 #include "LogicController.h"
 #include "SpaceController.h"
+#include "BleepoutParameters.h"
 
 LogicController::LogicController(RoundState& state,
-                                 RoundConfig& config,
-                                 BleepoutParameters& appParams)
-:_state(state), _config(config), _appParams(appParams)
-, _lastSpecifiedTimeLimitOffset(-1)
+                                 RoundConfig& config)
+:_state(state), _config(config)
+, _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }
 
 void LogicController::setup() {
@@ -31,7 +31,7 @@ void LogicController::detachFrom(SpaceController &collisions) {
 }
 
 void LogicController::update() {
-  float limit = _appParams.rules().timeLimit();
+  float limit = BleepoutParameters::get().rules().timeLimit();
   if (limit != _lastSpecifiedTimeLimitOffset) {
     if (limit == -1) {
       _state.endTime = -1;
@@ -40,9 +40,14 @@ void LogicController::update() {
     }
     _lastSpecifiedTimeLimitOffset = limit;
   }
-  if (_state.endTime > 0 && _state.remainingTime() <= 0) {
-    notifyTryEndRound();
-    return;
+  if (_state.endTime > 0) {
+    if (_state.remainingTime() <= _config.countdownTimerPeriod &&
+        _countdownTickPulser.update(_state.time))
+      notifyCountdownTick();
+    if (_state.remainingTime() <= 0) {
+      notifyTryEndRound(END_TIME_LIMIT);
+      return;
+    }
   }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
@@ -137,7 +142,6 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
     if (!brick.alive()) {
       brick.kill();
       _state.decrementLiveBricks();
-      notifyBrickDestroyed(_state, &brick, &ball);
       
       const std::string& modifierName = brick.modifierName();
       if (!modifierName.empty()) {
@@ -155,27 +159,49 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       if (_state.liveBricks() <= 0) {
         notifyAllBricksDestroyed(_state);
-        notifyTryEndRound();
+        notifyTryEndRound(END_NO_BRICKS);
       }
     }
   }
+  notifyBrickHit(_state, &brick, &ball);
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
-  if (wall.isExit() && _appParams.exitsEnabled) {
+  if (wall.isExit() && BleepoutParameters::get().exitsEnabled) {
     Player* player = ball.player();
     
     ball.kill();
+    _state.decrementLiveBalls();
     notifyBallDestroyed(_state, &ball);
     
-    if (player) {
+    if (player && BleepoutParameters::get().rules().playersCanLoseLives()) {
       player->adjustLives(-1);
       notifyPlayerLivesChanged(_state, player);
       if (!player->alive()) {
         notifyPlayerLost(_state, player);
       }
     }
+    if (BleepoutParameters::get().rules().ballsRespawn()) {
+      respawnBall(player);
+    }
+    
+    if (_state.liveBalls() <= 0) {
+      notifyTryEndRound(END_NO_BALLS);
+    }
   }
+}
+
+void LogicController::respawnBall(Player *player) {
+  Paddle* paddle = player ? player->paddle() : NULL;
+  BallSpec spec;
+  spec.elevation = 30;
+  spec.heading = ofRandom(360);
+  if (paddle) {
+//    spec.heading = paddle->
+  } else {
+    
+  }
+  notifyTrySpawnBall(spec);
 }
 
 void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
@@ -195,10 +221,10 @@ void LogicController::notifyBallOwnerChanged(RoundState& state, Ball* ball, Play
   ofNotifyEvent(ballOwnerChangedEvent, e);
   logEvent("BallOwnerChanged", e);
 }
-void LogicController::notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball) {
-  BrickDestroyedEventArgs e(state, brick, ball);
-  ofNotifyEvent(brickDestroyedEvent, e);
-  logEvent("BrickDestroyed", e);
+void LogicController::notifyBrickHit(RoundState& state, Brick* brick, Ball* ball) {
+  BrickHitEventArgs e(state, brick, ball);
+  ofNotifyEvent(brickHitEvent, e);
+  logEvent("BrickHit", e);
 }
 void LogicController::notifyAllBricksDestroyed(RoundState& state) {
   RoundStateEventArgs e(state);
@@ -215,10 +241,11 @@ void LogicController::notifyBallDestroyed(RoundState& state, Ball* ball) {
   ofNotifyEvent(ballDestroyedEvent, e);
   logEvent("BallDestroyed", e);
 }
-void LogicController::notifyBallRespawned(RoundState& state, Ball* ball) {
-  BallStateEventArgs e(state, ball);
-  ofNotifyEvent(ballRespawnedEvent, e);
-  logEvent("BallRespawned", e);
+bool LogicController::notifyTrySpawnBall(BallSpec ballSpec) {
+  SpawnBallEventArgs e(ballSpec);
+  logEvent("TrySpawnBall", e);
+  ofNotifyEvent(trySpawnBallEvent, e);
+  return e.handled();
 }
 void LogicController::notifyPlayerLost(RoundState& state, Player* player) {
   PlayerStateEventArgs e(state, player);
@@ -230,10 +257,11 @@ void LogicController::notifyPlayerLivesChanged(RoundState& state, Player* player
   ofNotifyEvent(playerLivesChangedEvent, e);
   logEvent("PlayerLivesChanged", e);
 }
-bool LogicController::notifyTryEndRound() {
-  EndRoundEventArgs e;
+bool LogicController::notifyTryEndRound(RoundEndReason reason) {
+  EndRoundEventArgs e(reason);
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
+  return e.handled();
 }
 void LogicController::notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick) {
   ModifierEventArgs e(state, modifier, spawnerBrick);
@@ -254,4 +282,9 @@ void LogicController::notifyModifierRemoved(RoundState& state, const ModifierSpe
   ModifierRemovedEventArgs e(state, modifierSpec, target);
   ofNotifyEvent(modifierRemovedEvent, e);
   logEvent("ModifierRemoved", e);
+}
+void LogicController::notifyCountdownTick() {
+  TimerEventArgs e(_state.time, _state.remainingTime());
+  ofNotifyEvent(countdownTickEvent, e);
+  logEvent("CountdownTick", e);
 }
