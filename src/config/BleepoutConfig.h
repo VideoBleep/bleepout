@@ -57,6 +57,8 @@ public:
   static RoundConfig* createRoundConfig3();
   static RoundConfig* createRoundConfig4();
   
+  static RoundConfig* loadFromFile(std::string path);
+  
   explicit RoundConfig(std::string name);
   
   void readJson(const JsonLoader& loader, const Json::Value& obj);
@@ -204,7 +206,11 @@ class BleepoutConfig {
 public:
   static BleepoutConfig* createConfig();
   
+  static BleepoutConfig* loadFromFile(std::string path);
+  
   BleepoutConfig();
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;

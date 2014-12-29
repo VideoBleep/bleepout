@@ -168,8 +168,6 @@ bool GameRules::ballsRespawn() const {
   return _ballsRespawn.get(_backup ? &_backup->_ballsRespawn : NULL, false);
 }
 
-#define R_JPROP(property) readVal(val[#property], &result->property, defaultVal.property)
-
 void GameRules::readJson(const JsonLoader &loader,
                          const Json::Value &obj) {
   if (!loader.assertType(obj, Json::objectValue))
@@ -191,7 +189,8 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readVal(obj["modifierRadius"], &_modifierRadius);
   loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
   loader.readVal(obj["ballSpawnedFadeTime"], &_ballSpawnedFadeTime);
-  loader.readVal(obj["rules"], &_rules);
+//  loader.readVal(obj["rules"], &_rules);
+  _rules.readJson(loader, obj["rules"]);
   loader.readArr(obj["balls"], &_balls);
   loader.readArr(obj["bricks"], &_bricks);
   loader.readArr(obj["brickRings"], &_brickRings);
@@ -209,4 +208,76 @@ void RoundConfig::readJson(const JsonLoader &loader,
   }
   loader.readArr(obj["startMessages"], &_startMessages);
   loader.readArr(obj["ringSets"], &_ringSets);
+}
+
+static RoundConfig* loadRoundFromObj(const JsonLoader& loader,
+                                     const Json::Value& obj) {
+  Json::Value name = obj["name"];
+  if (!name.isString())
+    return NULL;
+  RoundConfig* config = new RoundConfig(name.asString());
+  config->readJson(loader, obj);
+  return config;
+}
+
+RoundConfig* RoundConfig::loadFromFile(std::string path) {
+  JsonLoader loader;
+  Json::Value obj;
+  if (!loader.readFile(path, &obj))
+    return NULL;
+  return loadRoundFromObj(loader, obj);
+}
+
+static RoundConfig* loadRoundFromSpecifier(const JsonLoader& loader,
+                                           const Json::Value& specifier) {
+  if (specifier.isString()) {
+    return RoundConfig::loadFromFile(specifier.asString());
+  }
+  if (!loader.assertType(specifier, Json::objectValue))
+    return NULL;
+  return loadRoundFromObj(loader, specifier);
+}
+
+static void loadRoundConfigs(const JsonLoader& loader,
+                             const Json::Value& arr,
+                             std::vector<ofPtr<RoundConfig> >* rounds) {
+  if (!arr.isArray())
+    return;
+  rounds->clear();
+  for (int i = 0; i < arr.size(); i++) {
+    RoundConfig* round = loadRoundFromSpecifier(loader, arr[i]);
+    if (round)
+      rounds->push_back(ofPtr<RoundConfig>(round));
+  }
+}
+
+void BleepoutConfig::readJson(const JsonLoader &loader, const Json::Value &obj) {
+  loader.readVal(obj["logLevel"], &_logLevel);
+  loader.readVal(obj["fps"], &_fps);
+  loader.readVal(obj["vsync"], &_vsync);
+  loader.readVal(obj["syphonServerName"], &_syphonServerName);
+  loader.readVal(obj["syphonAppName"], &_syphonAppName);
+  loader.readVal(obj["roundStartedSound"], &roundStartedSound);
+  loader.readVal(obj["roundEndedSound"], &roundEndedSound);
+  loader.readVal(obj["brickHitSound"], &brickHitSound);
+  loader.readVal(obj["brickDestroyedSound"], &brickDestroyedSound);
+  loader.readVal(obj["collisionSound"], &collisionSound);
+  loader.readVal(obj["modifierAppliedSound"], &modifierAppliedSound);
+  loader.readVal(obj["modifierRemovedSound"], &modifierRemovedSound);
+  loader.readVal(obj["ballDestroyedSound"], &ballDestroyedSound);
+  loader.readVal(obj["playerLivesChangedSound"], &playerLivesChangedSound);
+  loader.readVal(obj["playerLostSound"], &playerLostSound);
+  loader.readVal(obj["countdownTimerTickSound"], &countdownTimerTickSound);
+  
+  loadRoundConfigs(loader, obj["rounds"], &_roundConfigs);
+}
+
+BleepoutConfig* BleepoutConfig::loadFromFile(std::string path) {
+  JsonLoader loader;
+  Json::Value obj;
+  if (!loader.readFile(path, &obj))
+    return NULL;
+  BleepoutConfig* config = new BleepoutConfig();
+  config->readJson(loader, obj);
+  return config;
 }

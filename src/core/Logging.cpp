@@ -189,53 +189,11 @@ std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
 }
 
 std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
-  switch (type) {
-    case GAME_OBJECT_BRICK:
-      os << GameObjectTypeTraits<Brick>::typeName;
-      break;
-    case GAME_OBJECT_PADDLE:
-      os << GameObjectTypeTraits<Paddle>::typeName;
-      break;
-    case GAME_OBJECT_BALL:
-      os << GameObjectTypeTraits<Ball>::typeName;
-      break;
-    case GAME_OBJECT_PLAYER:
-      os << GameObjectTypeTraits<Player>::typeName;
-      break;
-    case GAME_OBJECT_WALL:
-      os << GameObjectTypeTraits<Wall>::typeName;
-      break;
-    case GAME_OBJECT_ANIMATION:
-      os << GameObjectTypeTraits<AnimationObject>::typeName;
-      break;
-    case GAME_OBJECT_MODIFIER:
-      os << GameObjectTypeTraits<Modifier>::typeName;
-      break;
-    case GAME_OBJECT_OTHER:
-    default:
-      os << "Unknown{" << (int)type << "}";
-      break;
-  }
-  return os;
+  return os << enumToString(type);
 }
 
 std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
-  switch (type) {
-    case MODIFIER_EXTRA_LIFE:
-      os << "ExtraLife";
-      break;
-    case MODIFIER_PADDLE_WIDTH:
-      os << "PaddleWidth";
-      break;
-    case MODIFIER_LASER_BALL:
-      os << "LaserBall";
-      break;
-    case MODIFIER_NONE:
-    default:
-      os << "Unknown{" << (int)type << "}";
-      break;
-  }
-  return os;
+  return os << enumToString(type);
 }
 
 std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec) {

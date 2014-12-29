@@ -32,19 +32,19 @@ GameObject::~GameObject() {
 
 template<>
 bool EnumTypeTraits<GameObjectType>::parseString(const std::string &str, GameObjectType *result, const GameObjectType &defaultVal) {
-  if (str == "brick")
+  if (str == GameObjectTypeTraits<Brick>::typeName)
     *result = GAME_OBJECT_BRICK;
-  else if (str == "paddle")
+  else if (str == GameObjectTypeTraits<Paddle>::typeName)
     *result = GAME_OBJECT_PADDLE;
-  else if (str == "ball")
+  else if (str == GameObjectTypeTraits<Ball>::typeName)
     *result = GAME_OBJECT_BALL;
-  else if (str == "player")
+  else if (str == GameObjectTypeTraits<Player>::typeName)
     *result = GAME_OBJECT_PLAYER;
-  else if (str == "wall")
+  else if (str == GameObjectTypeTraits<Wall>::typeName)
     *result = GAME_OBJECT_WALL;
-  else if (str == "animation")
+  else if (str == GameObjectTypeTraits<AnimationObject>::typeName)
     *result = GAME_OBJECT_ANIMATION;
-  else if (str == "wall")
+  else if (str == GameObjectTypeTraits<Modifier>::typeName)
     *result = GAME_OBJECT_MODIFIER;
   else {
     *result = defaultVal;
