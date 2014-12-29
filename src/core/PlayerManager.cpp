@@ -113,10 +113,18 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
 
     vector<string> parts = ofSplitString(args.message, messageDelimiter);
     std::string msgPrefix = parts[0];
-    char msgType = msgPrefix.at(0);
+    // If someone has a better way to convert this stupid char to a string, I'm all ears -jim
+    string msgType(1, msgPrefix.at(0)); 
     msgPrefix.erase(0, 1);
 
     ofPtr<Player> player = findPlayer(args.conn);
+
+    // PING (heartbeat)
+    if (msgType == PACKET_PING) {
+      // PONG (no, bleepout)
+      args.conn.send(PACKET_PONG);
+      return;
+    }
 
     // LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
     // if the prefix is ypr then we have a yaw-pitch-roll message, parse it
@@ -158,9 +166,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
 
       controller.connect(*player);
 
-      ofLogNotice() << "Player Created - id#" << parts[0];
-      // TODO: correct this Pong reply
-      args.conn.send("hello");
+      ofLogNotice() << "Player Created - id#" << parts[1];
       return;
     }
 
