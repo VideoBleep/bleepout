@@ -24,11 +24,28 @@ Json::Value toJsonVal(const T& val);
 template<typename T>
 Json::Value toJsonArr(const std::vector<T>& vals) {
   Json::Value arr(Json::arrayValue);
-  arr.resize(vals.size());
   for (int i = 0; i < vals.size(); i++) {
     arr[i] = toJsonVal(vals[i]);
   }
   return arr;
+}
+
+template<typename T>
+void addToJsonArr(Json::Value* arr, const std::vector<T>& vals) {
+  int size = arr->size();
+  for (const auto& val : vals) {
+    (*arr)[size] = toJsonVal(val);
+    size++;
+  }
+}
+
+template<typename T>
+void addValuesToJsonArr(Json::Value* arr, const std::map<std::string, T>& map) {
+  int size = arr->size();
+  for (const auto& entry : map) {
+    (*arr)[size] = toJsonVal(entry.second);
+    size++;
+  }
 }
 
 template<typename T>

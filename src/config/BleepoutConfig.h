@@ -181,6 +181,8 @@ public:
   
   std::string filepath;
 private:
+  void readSpecJson(const JsonLoader& loader, const Json::Value& obj);
+  
   std::string _name;
   float _startDelay;
   ofVec3f _paddleSize;

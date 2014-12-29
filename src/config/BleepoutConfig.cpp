@@ -152,6 +152,60 @@ Json::Value toJsonVal(const GameRules& value) {
   return value.buildJson();
 }
 
+void RoundConfig::readSpecJson(const JsonLoader &loader,
+                               const Json::Value &obj) {
+  SpecType type;
+  loader.readVal(obj["_type"], &type);
+  switch (type) {
+    case SPEC_BRICK:
+      loader.readVal(obj, &addBrick());
+      break;
+    case SPEC_BRICK_RING:
+      loader.readVal(obj, &addBrickRing());
+      break;
+    case SPEC_BRICK_QUADS:
+      loader.readVal(obj, &addBrickQuads());
+      break;
+    case SPEC_WALL:
+      loader.readVal(obj, &addWall());
+      break;
+    case SPEC_WALL_RING:
+      loader.readVal(obj, &addWallRing());
+      break;
+    case SPEC_CURVED_BRICK_COLUMN:
+      loader.readVal(obj, &addCurvedBrickColumn());
+      break;
+    case SPEC_CURVED_WALL:
+      loader.readVal(obj, &addCurvedWallSet());
+      break;
+    case SPEC_BALL: {
+      BallSpec spec;
+      loader.readVal(obj, &spec);
+      addBall(spec);
+      break;
+    }
+    case SPEC_MODIFIER: {
+      ModifierSpec spec;
+      loader.readVal(obj, &spec);
+      addModifierDef(spec.name, spec);
+      break;
+    }
+    case SPEC_MESSAGE: {
+      MessageSpec spec;
+      loader.readVal(obj, &spec);
+      addStartMessage(spec);
+      break;
+    }
+    case SPEC_RING_SET:
+      loader.readVal(obj, &addRingSet());
+      break;
+    case SPEC_UNKNOWN:
+    default:
+      //...
+      break;
+  }
+}
+
 void RoundConfig::readJson(const JsonLoader &loader,
                            const Json::Value &obj) {
   if (!loader.assertType(obj, Json::objectValue))
@@ -164,7 +218,6 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readVal(obj["modifierRadius"], &_modifierRadius);
   loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
   loader.readVal(obj["ballSpawnedFadeTime"], &_ballSpawnedFadeTime);
-//  loader.readVal(obj["rules"], &_rules);
   _rules.readJson(loader, obj["rules"]);
   loader.readArr(obj["balls"], &_balls);
   loader.readArr(obj["bricks"], &_bricks);
@@ -183,6 +236,15 @@ void RoundConfig::readJson(const JsonLoader &loader,
   }
   loader.readArr(obj["startMessages"], &_startMessages);
   loader.readArr(obj["ringSets"], &_ringSets);
+  const Json::Value& specsArr = obj["objects"];
+  if (!specsArr.isNull()){
+    if (assertType(specsArr, Json::arrayValue)) {
+      int size = specsArr.size();
+      for (int i = 0; i < size; i++) {
+        readSpecJson(loader, specsArr[i]);
+      }
+    }
+  }
 }
 
 Json::Value RoundConfig::buildJson() const {
@@ -195,17 +257,30 @@ Json::Value RoundConfig::buildJson() const {
   obj["modifierFadeTime"] = _modifierFadeTime;
   obj["ballSpawnedFadeTime"] = _ballSpawnedFadeTime;
   obj["rules"] = _rules.buildJson();
-  obj["balls"] = toJsonArr(_balls);
-  obj["bricks"] = toJsonArr(_bricks);
-  obj["brickRings"] = toJsonArr(_brickRings);
-  obj["curvedBrickColumns"] = toJsonArr(_curvedBrickColumns);
-  obj["brickQuads"] = toJsonArr(_brickQuads);
-  obj["walls"] = toJsonArr(_walls);
-  obj["wallRings"] = toJsonArr(_wallRings);
-  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
-  obj["modifierDefs"] = valuesToJsonObj(_modifierDefs);
-  obj["startMessages"] = toJsonArr(_startMessages);
-  obj["ringSets"] = toJsonArr(_ringSets);
+//  obj["balls"] = toJsonArr(_balls);
+//  obj["bricks"] = toJsonArr(_bricks);
+//  obj["brickRings"] = toJsonArr(_brickRings);
+//  obj["curvedBrickColumns"] = toJsonArr(_curvedBrickColumns);
+//  obj["brickQuads"] = toJsonArr(_brickQuads);
+//  obj["walls"] = toJsonArr(_walls);
+//  obj["wallRings"] = toJsonArr(_wallRings);
+//  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
+//  obj["modifierDefs"] = valuesToJsonObj(_modifierDefs);
+//  obj["startMessages"] = toJsonArr(_startMessages);
+//  obj["ringSets"] = toJsonArr(_ringSets);
+  Json::Value specsArr(Json::arrayValue);
+  addToJsonArr(&specsArr, _balls);
+  addToJsonArr(&specsArr, _bricks);
+  addToJsonArr(&specsArr, _brickRings);
+  addToJsonArr(&specsArr, _curvedBrickColumns);
+  addToJsonArr(&specsArr, _brickQuads);
+  addToJsonArr(&specsArr, _walls);
+  addToJsonArr(&specsArr, _wallRings);
+  addToJsonArr(&specsArr, _curvedWallSets);
+  addValuesToJsonArr(&specsArr, _modifierDefs);
+  addToJsonArr(&specsArr, _startMessages);
+  addToJsonArr(&specsArr, _ringSets);
+  obj["objects"] = specsArr;
   return obj;
 }
 
