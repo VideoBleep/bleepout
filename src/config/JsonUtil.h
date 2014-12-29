@@ -85,7 +85,6 @@ Json::Value toJsonVal(const std::map<std::string, T> map) {
   return obj;
 }
 
-bool readJsonFile(std::string path, Json::Value* obj);
 void writeJsonFile(std::string path, const Json::Value& obj);
 
 class JsonLoader {

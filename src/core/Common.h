@@ -55,6 +55,7 @@ std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 template<typename T>
 struct EnumTypeTraits {
   static bool parseString(const std::string& str, T* result, const T& defaultVal);
+  static bool toString(const T& value, std::string* result);
   static std::string toString(const T& value);
 };
 
@@ -70,8 +71,16 @@ bool parseEnumString(const std::string& str, T* result) {
 }
 
 template<typename T>
+inline bool enumToString(const T& value, std::string* result) {
+  return EnumTypeTraits<T>::toString(value, result);
+}
+
+template<typename T>
 std::string enumToString(const T& value) {
-  return EnumTypeTraits<T>::toString(value);
+  std::string result;
+  if (EnumTypeTraits<T>::toString(value, &result))
+    return result;
+  return std::string("Unknown{") + ofToString((int)value) + "}";
 }
 
 class ValueSpecifier {

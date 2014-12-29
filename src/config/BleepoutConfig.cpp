@@ -58,17 +58,6 @@ Json::Value BleepoutConfig::toJsonVal() const {
   return obj;
 }
 
-void BleepoutConfig::loadJsonFile(std::string path) {
-  Json::Value obj;
-  if (!readJsonFile(path, &obj))
-    return;
-  readJsonVal(obj["fps"], &_fps);
-  readJsonEnumVal(obj["logLevel"], &_logLevel);
-  readJsonVal(obj["vsync"], &_vsync);
-  readJsonVal(obj["syphonServer"], &_syphonServerName);
-  readJsonVal(obj["syphonApp"], &_syphonAppName);
-}
-
 void BleepoutConfig::saveJsonFile(std::string path) const {
   Json::Value obj = toJsonVal();
   writeJsonFile(path, obj);
@@ -84,22 +73,6 @@ _ballSpawnedFadeTime(0.2f),
 _name(name),
 _startDelay(0),
 countdownTimerPeriod(10) { }
-
-void RoundConfig::loadJsonFile(std::string path) {
-  Json::Value obj;
-  if (!readJsonFile(path, &obj))
-    return;
-  readJsonVal(obj["paddleSize"], &_paddleSize);
-  readJsonVal(obj["ballRadius"], &_ballRadius);
-  readJsonVal(obj["modifierRadius"], &_modifierRadius);
-  readJsonVal(obj["brickFadeTime"], &_brickFadeTime);
-  readJsonArr(obj["balls"], &_balls);
-  readJsonArr(obj["bricks"], &_bricks);
-  readJsonArr(obj["brickRings"], &_brickRings);
-  readJsonArr(obj["walls"], &_walls);
-  readJsonArr(obj["curvedWallSets"], &_curvedWallSets);
-  readJsonVal(obj["modifierDefs"], &_modifierDefs);
-}
 
 Json::Value RoundConfig::toJsonVal() const {
   Json::Value obj;

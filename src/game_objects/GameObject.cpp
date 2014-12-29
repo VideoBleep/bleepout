@@ -54,26 +54,34 @@ bool EnumTypeTraits<GameObjectType>::parseString(const std::string &str, GameObj
 }
 
 template<>
-std::string EnumTypeTraits<GameObjectType>::toString(const GameObjectType &value) {
+bool EnumTypeTraits<GameObjectType>::toString(const GameObjectType &value, std::string* result) {
   switch (value) {
     case GAME_OBJECT_BRICK:
-      return GameObjectTypeTraits<Brick>::typeName;
+      *result = GameObjectTypeTraits<Brick>::typeName;
+      break;
     case GAME_OBJECT_PADDLE:
-      return GameObjectTypeTraits<Paddle>::typeName;
+      *result = GameObjectTypeTraits<Paddle>::typeName;
+      break;
     case GAME_OBJECT_BALL:
-      return GameObjectTypeTraits<Ball>::typeName;
+      *result = GameObjectTypeTraits<Ball>::typeName;
+      break;
     case GAME_OBJECT_PLAYER:
-      return GameObjectTypeTraits<Player>::typeName;
+      *result = GameObjectTypeTraits<Player>::typeName;
+      break;
     case GAME_OBJECT_WALL:
-      return GameObjectTypeTraits<Wall>::typeName;
+      *result = GameObjectTypeTraits<Wall>::typeName;
+      break;
     case GAME_OBJECT_ANIMATION:
-      return GameObjectTypeTraits<AnimationObject>::typeName;
+      *result = GameObjectTypeTraits<AnimationObject>::typeName;
+      break;
     case GAME_OBJECT_MODIFIER:
-      return GameObjectTypeTraits<Modifier>::typeName;
+      *result = GameObjectTypeTraits<Modifier>::typeName;
+      break;
     case GAME_OBJECT_OTHER:
     default:
-      return std::string("Unknown{") + ofToString((int)value) + "}";
+      return false;
   }
+  return true;
 }
 
 template<>
@@ -85,5 +93,13 @@ void JsonLoader::readVal(const Json::Value &val,
   } else {
     parseEnumString(val.asString(), result);
   }
+}
+
+template<>
+Json::Value toJsonVal(const GameObjectType& type) {
+  std::string result;
+  if (!enumToString(type, &result))
+    return Json::Value::null;
+  return Json::Value(result);
 }
 

@@ -75,18 +75,22 @@ bool EnumTypeTraits<ModifierType>::parseString(const std::string &str, ModifierT
 }
 
 template<>
-std::string EnumTypeTraits<ModifierType>::toString(const ModifierType &value) {
+bool EnumTypeTraits<ModifierType>::toString(const ModifierType &value, std::string* result) {
   switch (value) {
     case MODIFIER_EXTRA_LIFE:
-      return "ExtraLife";
+      *result = "ExtraLife";
+      break;
     case MODIFIER_PADDLE_WIDTH:
-      return "PaddleWidth";
+      *result = "PaddleWidth";
+      break;
     case MODIFIER_LASER_BALL:
-      return "LaserBall";
+      *result = "LaserBall";
+      break;
     case MODIFIER_NONE:
     default:
-      return std::string("Unknown{") + ofToString((int)value) + "}";
+      return false;
   }
+  return true;
 }
 
 template<>
@@ -98,4 +102,12 @@ void JsonLoader::readVal(const Json::Value &val,
   } else {
     parseEnumString(val.asString(), result);
   }
+}
+
+template<>
+Json::Value toJsonVal(const ModifierType& type) {
+  std::string result;
+  if (!enumToString(type, &result))
+    return Json::Value::null;
+  return Json::Value(result);
 }

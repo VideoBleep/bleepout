@@ -175,6 +175,21 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const BrickSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  obj["size"] = toJsonVal(spec.size);
+  obj["value"] = spec.value;
+  obj["lives"] = spec.lives;
+  obj["color"] = toJsonVal(spec.color);
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  obj["modifierName"] = spec.modifierName;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          BrickRingSpec *result,
                          const BrickRingSpec& defaultVal) const {
@@ -193,6 +208,23 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(modifierName);
     R_JPROP(modifierChance);
   }
+}
+
+template<>
+Json::Value toJsonVal(const BrickRingSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["size"] = toJsonVal(spec.size);
+  obj["color"] = toJsonVal(spec.color);
+  obj["value"] = spec.value;
+  obj["lives"] = spec.lives;
+  obj["count"] = spec.count;
+  obj["phase"] = spec.phase;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  obj["modifierName"] = spec.modifierName;
+  obj["modifierChance"] = spec.modifierChance;
+  return obj;
 }
 
 template<>
@@ -217,6 +249,23 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const BrickQuadsSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["color1"] = toJsonVal(spec.color1);
+  obj["color2"] = toJsonVal(spec.color2);
+  obj["count"] = spec.count;
+  obj["elevationSpacing"] = spec.elevationSpacing;
+  obj["headingSpacing"] = spec.headingSpacing;
+  obj["size"] = toJsonVal(spec.size);
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  obj["modifierName"] = spec.modifierName;
+  obj["modifierChance"] = spec.modifierChance;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          WallSpec *result,
                          const WallSpec& defaultVal) const {
@@ -231,6 +280,20 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(stopHeading);
     R_JPROP(visible);
   }
+}
+
+template<>
+Json::Value toJsonVal(const WallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  obj["size"] = toJsonVal(spec.size);
+  if (spec.isExit)
+    obj["isExit"] = spec.isExit;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  obj["visible"] = spec.visible;
+  return obj;
 }
 
 template<>
@@ -252,6 +315,21 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const WallRingSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["size"] = toJsonVal(spec.size);
+  if (spec.isExit)
+    obj["isExit"] = spec.isExit;
+  obj["count"] = spec.count;
+  obj["phase"] = spec.phase;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  obj["visible"] = spec.visible;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          CurvedBrickColumnSpec::StripeSpec *result,
                          const CurvedBrickColumnSpec::StripeSpec& defaultVal) const {
@@ -263,6 +341,16 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(modifierName);
     R_JPROP(modifierChance);
   }
+}
+
+template<>
+Json::Value toJsonVal(const CurvedBrickColumnSpec::StripeSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["value"] = spec.value;
+  obj["lives"] = spec.lives;
+  obj["modifierName"] = spec.modifierName;
+  obj["modifierChance"] = spec.modifierChance;
+  return obj;
 }
 
 template<>
@@ -290,6 +378,26 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const CurvedBrickColumnSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation1"] = spec.elevation1;
+  obj["heading1"] = spec.heading1;
+  obj["elevation2"] = spec.elevation2;
+  obj["heading2"] = spec.heading2;
+  obj["color1"] = toJsonVal(spec.color1);
+  obj["color2"] = toJsonVal(spec.color2);
+  obj["size"] = toJsonVal(spec.size);
+  obj["stripe1"] = toJsonVal(spec.stripe1);
+  obj["stripe2"] = toJsonVal(spec.stripe2);
+  obj["stripe3"] = toJsonVal(spec.stripe3);
+  obj["count"] = spec.count;
+  obj["phase"] = spec.phase;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          CurvedWallSpec *result,
                          const CurvedWallSpec& defaultVal) const {
@@ -308,6 +416,21 @@ void JsonLoader::readVal(const Json::Value &val,
 }
 
 template<>
+Json::Value toJsonVal(const CurvedWallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation1"] = spec.elevation1;
+  obj["heading1"] = spec.heading1;
+  obj["elevation2"] = spec.elevation2;
+  obj["heading2"] = spec.heading2;
+  obj["width"] = toJsonVal(spec.width);
+  if (spec.isExit)
+    obj["isExit"] = spec.isExit;
+  obj["speed"] = spec.speed;
+  obj["stopHeading"] = spec.stopHeading;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          BallSpec *result,
                          const BallSpec& defaultVal) const {
@@ -317,6 +440,14 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(elevation);
     R_JPROP(heading);
   }
+}
+
+template<>
+Json::Value toJsonVal(const BallSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["elevation"] = spec.elevation;
+  obj["heading"] = spec.heading;
+  return obj;
 }
 
 template<>
@@ -332,6 +463,17 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(duration);
     R_JPROP(color);
   }
+}
+
+template<>
+Json::Value toJsonVal(const ModifierSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["name"] = spec.name;
+  obj["type"] = toJsonVal(spec.type);
+  obj["amount"] = spec.amount;
+  obj["duration"] = spec.duration;
+  obj["color"] = toJsonVal(spec.color);
+  return obj;
 }
 
 template<>
