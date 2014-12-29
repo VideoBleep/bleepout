@@ -69,6 +69,13 @@ Json::Value toJsonVal(const RoundConfig& value) {
   return value.buildJson();
 }
 
+template<>
+Json::Value toJsonVal(const ofPtr<RoundConfig>& value) {
+  if (value)
+    return toJsonVal(*value);
+  return Json::Value::null;
+}
+
 void RoundConfig::saveJsonFile(std::string path) const {
   Json::Value obj = buildJson();
   writeJsonFile(path, obj);

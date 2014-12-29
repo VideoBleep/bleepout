@@ -23,6 +23,7 @@ void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   _config.reset(BleepoutConfig::createConfig());
   BleepoutParameters::initializeConfig(*_config);
+  _config->saveJsonFile("bleepoutConfig.json");
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
