@@ -455,3 +455,21 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(a);
   }
 }
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         Optional<bool>* result) const {
+  if (!assertType(val, Json::booleanValue))
+    result->unset();
+  else
+    result->set(val.asBool());
+}
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         Optional<float>* result) const {
+  if (!assertType(val, Json::realValue))
+    result->unset();
+  else
+    result->set(val.asFloat());
+}

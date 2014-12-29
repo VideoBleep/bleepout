@@ -97,8 +97,21 @@ public:
                const T& defaultVal) const;
   
   template<typename T>
-  void readObj(const Json::Value& obj, T* result) const {
+  void readVal(const Json::Value& obj, T* result) const {
     readVal(obj, result, *result);
+  }
+  template<typename T>
+  void readMap(const Json::Value& obj,
+               std::map<std::string, T>* result) const {
+    result->clear();
+    if (!assertType(obj, Json::objectValue))
+      return;
+    auto end = obj.end();
+    for (auto i = obj.begin(); i != end; i++) {
+      T temp;
+      if (readVal(*i, &temp))
+        result->insert(std::make_pair(i.key().asString(), temp));
+    }
   }
   
   template<typename T>
@@ -108,8 +121,8 @@ public:
       return;
     for (int i = 0; i < arr.size(); i++) {
       T temp;
-      if (!readVal(arr[i], &temp, temp))
-        result->push_back(temp);
+      readVal(arr[i], &temp);
+      result->push_back(temp);
     }
   }
   

@@ -16,12 +16,16 @@
 #include "ObjectSpecs.h"
 #include "Common.h"
 
+class JsonLoader;
+
 class GameRules {
 public:
   GameRules();
   explicit GameRules(const GameRules& other);
   
   GameRules& copyFrom(const GameRules& other);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
   
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
@@ -54,6 +58,8 @@ public:
   static RoundConfig* createRoundConfig4();
   
   explicit RoundConfig(std::string name);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;

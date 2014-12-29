@@ -167,3 +167,46 @@ bool GameRules::playersCanLoseLives() const {
 bool GameRules::ballsRespawn() const {
   return _ballsRespawn.get(_backup ? &_backup->_ballsRespawn : NULL, false);
 }
+
+#define R_JPROP(property) readVal(val[#property], &result->property, defaultVal.property)
+
+void GameRules::readJson(const JsonLoader &loader,
+                         const Json::Value &obj) {
+  if (!loader.assertType(obj, Json::objectValue))
+    return;
+  loader.readVal(obj["timeLimit"], &_timeLimit);
+  loader.readVal(obj["playersCanLoseLives"], &_playersCanLoseLives);
+  loader.readVal(obj["ballsRespawn"], &_ballsRespawn);
+}
+
+void RoundConfig::readJson(const JsonLoader &loader,
+                           const Json::Value &obj) {
+  if (!loader.assertType(obj, Json::objectValue))
+    return;
+  loader.readVal(obj["name"], &_name, _name);
+  loader.readVal(obj["startDelay"], &_startDelay);
+  loader.readVal(obj["paddleSize"], &_paddleSize);
+  loader.readVal(obj["ballRadius"], &_ballRadius);
+  loader.readVal(obj["brickFadeTime"], &_brickFadeTime);
+  loader.readVal(obj["modifierRadius"], &_modifierRadius);
+  loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
+  loader.readVal(obj["ballSpawnedFadeTime"], &_ballSpawnedFadeTime);
+  loader.readVal(obj["rules"], &_rules);
+  loader.readArr(obj["balls"], &_balls);
+  loader.readArr(obj["bricks"], &_bricks);
+  loader.readArr(obj["brickRings"], &_brickRings);
+  loader.readArr(obj["curvedBrickColumns"], &_curvedBrickColumns);
+  loader.readArr(obj["brickQuads"], &_brickQuads);
+  loader.readArr(obj["walls"], &_walls);
+  loader.readArr(obj["wallRings"], &_wallRings);
+  loader.readArr(obj["curvedWallSets"], &_curvedWallSets);
+  std::vector<ModifierSpec> mods;
+  loader.readArr(obj["modifierDefs"], &mods);
+  _modifierDefs.clear();
+  for (auto& mod : mods) {
+    if (!mod.name.empty())
+      _modifierDefs[mod.name] = mod;
+  }
+  loader.readArr(obj["startMessages"], &_startMessages);
+  loader.readArr(obj["ringSets"], &_ringSets);
+}
