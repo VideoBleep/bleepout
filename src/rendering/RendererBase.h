@@ -17,23 +17,22 @@ class LogicController;
 class RendererBase : public RoundComponent {
 public:
   RendererBase(RoundState& state,
-               const RoundConfig& config,
-               const BleepoutParameters& appParams);
+               const RoundConfig& config);
   virtual ~RendererBase() {}
-    
+  
   virtual void setup() {}
   virtual void attachTo(LogicController& roundEvents) {}
   virtual void detachFrom(LogicController& roundEvents) {}
-
+  
   virtual void update() {}
   virtual void draw();
-
+  
   virtual void keyPressed(int key) {}
   virtual void mousePressed(int x, int y, int button) {}
   virtual void mouseReleased(int x, int y, int button) {}
   virtual void mouseDragged(int x, int y, int button) {}
   virtual void mouseMoved(int x, int y) {}
-
+  
 protected:
   virtual void drawBrick(Brick& brick) = 0;
   virtual void drawPaddle(Paddle& paddle) = 0;

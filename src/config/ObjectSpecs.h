@@ -11,9 +11,39 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "Common.h"
 
-typedef std::map<std::string, std::string> StringMap;
+class RoundConfig;
+enum SpecType {
+  SPEC_UNKNOWN,
+  SPEC_BRICK,
+  SPEC_BRICK_RING,
+  SPEC_BRICK_QUADS,
+  SPEC_WALL,
+  SPEC_WALL_RING,
+  SPEC_CURVED_BRICK_COLUMN,
+  SPEC_CURVED_WALL,
+  SPEC_BALL,
+  SPEC_MODIFIER,
+  SPEC_MESSAGE,
+  SPEC_RING_SET
+};
+
+template<typename T>
+struct SpecGenerator {
+  virtual void buildSpecs(const RoundConfig& config,
+                          std::vector<T>* specs) const = 0;
+};
+
+template<typename Group, typename T>
+void buildAllSpecs(const RoundConfig& config,
+                   const std::vector<Group>& groups,
+                   std::vector<T>* specs) {
+  for (const auto& group : groups) {
+    group.buildSpecs(config, specs);
+  }
+}
 
 struct BrickSpec {
   float elevation;
@@ -25,8 +55,14 @@ struct BrickSpec {
   float speed;
   float stopHeading;
   std::string modifierName;
+  float modifierChance;
   
-  BrickSpec() : speed(0), stopHeading(-1), modifierName(), size(7.0f, 5.0f, 17.0f) { }
+  BrickSpec()
+  : elevation(30), heading(0)
+  , speed(0), stopHeading(-1)
+  , size(7.0f, 5.0f, 17.0f), modifierName()
+  //, modifierChance(0)
+  { }
   BrickSpec& copyFrom(const BrickSpec& other) {
     elevation = other.elevation;
     heading = other.heading;
@@ -48,10 +84,15 @@ struct BrickSpec {
   BrickSpec& setLives(int l) { lives = l; return *this; }
   BrickSpec& setSpeed(float s) { speed = s; return *this; }
   BrickSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+//  BrickSpec& setModifier(std::string m, float chance = 1.0) {
+//    modifierName = m;
+//    modifierChance = chance;
+//    return *this;
+//  }
   BrickSpec& setModifier(std::string m) { modifierName = m; return *this; }
 };
 
-struct BrickRingSpec {
+struct BrickRingSpec : public SpecGenerator<BrickSpec> {
   float elevation;
   ofVec3f size;
   ofColor color;
@@ -61,6 +102,8 @@ struct BrickRingSpec {
   float phase;
   float speed;
   float stopHeading;
+  std::string modifierName;
+  float modifierChance;
   
   BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1), size(7.0f, 5.0f, 17.0f) { }
   BrickRingSpec& copyFrom(const BrickRingSpec& other) {
@@ -73,6 +116,8 @@ struct BrickRingSpec {
     phase = other.phase;
     speed = other.speed;
     stopHeading = other.stopHeading;
+    modifierName = other.modifierName;
+    modifierChance = other.modifierChance;
     return *this;
   }
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
@@ -84,6 +129,68 @@ struct BrickRingSpec {
   BrickRingSpec& setSpeed(float s) { speed = s; return *this; }
   BrickRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
   BrickRingSpec& setPhase(float p) { phase = p; return *this; }
+  BrickRingSpec& setModifier(std::string mod, float chance) {
+    modifierName = mod;
+    modifierChance = chance;
+    return *this;
+  }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
+};
+
+struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
+  float elevation;
+  ofColor color1;
+  ofColor color2;
+  int count;
+  float elevationSpacing;
+  float headingSpacing;
+  ofVec3f size;
+  float speed;
+  float stopHeading;
+  std::string modifierName;
+  float modifierChance;
+  
+  BrickQuadsSpec() : speed(0), size(7, 5, 17) { }
+  BrickQuadsSpec& copyFrom(const BrickQuadsSpec& other) {
+    color1 = other.color1;
+    color2 = other.color2;
+    elevation = other.elevation;
+    count = other.count;
+    elevationSpacing = other.elevationSpacing;
+    headingSpacing = other.headingSpacing;
+    size = other.size;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    modifierName = other.modifierName;
+    modifierChance = other.modifierChance;
+    return *this;
+  }
+  BrickQuadsSpec& setColor(ofColor c1, ofColor c2) {
+    color1 = c1;
+    color2 = c2;
+    return *this;
+  }
+  BrickQuadsSpec& setElevation(float e, float spacing) {
+    elevation = e;
+    elevationSpacing = spacing;
+    return *this;
+  }
+  BrickQuadsSpec& setHeadingSpacing(float spacing) {
+    headingSpacing = spacing;
+    return *this;
+  }
+  BrickQuadsSpec& setSize(ofVec3f s) { size = s; return *this; }
+  BrickQuadsSpec& setSpeed(float s) { speed = s; return *this; }
+  BrickQuadsSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  BrickQuadsSpec& setCount(int c) { count = c; return *this; }
+  BrickQuadsSpec& setModifier(std::string mod, float chance) {
+    modifierName = mod;
+    modifierChance = chance;
+    return *this;
+  }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
 };
 
 struct WallSpec {
@@ -115,7 +222,7 @@ struct WallSpec {
   WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
 };
 
-struct WallRingSpec {
+struct WallRingSpec : public SpecGenerator<WallSpec> {
   float elevation;
   ofVec3f size;
   bool isExit;
@@ -125,6 +232,17 @@ struct WallRingSpec {
   float speed;
   float stopHeading;
   WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1), visible(true) { }
+  WallRingSpec& copyFrom(const WallRingSpec& other) {
+    elevation = other.elevation;
+    size = other.size;
+    isExit = other.isExit;
+    visible = other.visible;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
@@ -133,9 +251,80 @@ struct WallRingSpec {
   WallRingSpec& setSpeed(float s) { speed = s; return *this; }
   WallRingSpec& setStopHeading(float s) { stopHeading = s; return *this; }
   WallRingSpec& setPhase(float p) { phase = p; return *this; }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<WallSpec>* specs) const override;
 };
 
-struct CurvedWallSpec {
+struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
+  struct StripeSpec {
+    int value;
+    int lives;
+    std::string modifierName;
+    float modifierChance;
+    StripeSpec()
+    : value(1), lives(1), modifierName(""), modifierChance(0) { }
+    StripeSpec(int v, int l, std::string mname, float mchance)
+    : value(v), lives(l), modifierName(mname), modifierChance(mchance) { }
+  };
+  float elevation1;
+  float heading1;
+  float elevation2;
+  float heading2;
+  ofColor color1;
+  ofColor color2;
+  ofVec3f size;
+  StripeSpec stripe1;
+  StripeSpec stripe2;
+  StripeSpec stripe3;
+  int count;
+  float phase;
+  float speed;
+  float stopHeading;
+  CurvedBrickColumnSpec& copyFrom(const CurvedBrickColumnSpec& other) {
+    elevation1 = other.elevation1;
+    heading1 = other.heading1;
+    elevation2 = other.elevation2;
+    heading2 = other.heading2;
+    color1 = other.color1;
+    color2 = other.color2;
+    size = other.size;
+    stripe1 = other.stripe1;
+    stripe2 = other.stripe2;
+    stripe3 = other.stripe3;
+    count = other.count;
+    phase = other.phase;
+    speed = other.speed;
+    stopHeading = other.stopHeading;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
+  CurvedBrickColumnSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
+  CurvedBrickColumnSpec& setCount(int c) { count = c; return *this; }
+  CurvedBrickColumnSpec& setSize(ofVec3f s) { size = s; return *this; }
+  CurvedBrickColumnSpec& setSpeed(float s) { speed = s; return *this; }
+  CurvedBrickColumnSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  CurvedBrickColumnSpec& setColor(ofColor c1, ofColor c2) {
+    color1 = c1;
+    color2 = c2;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe1(StripeSpec stripe) {
+    stripe1 = stripe;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe2(StripeSpec stripe) {
+    stripe2 = stripe;
+    return *this;
+  }
+  CurvedBrickColumnSpec& setStripe3(StripeSpec stripe) {
+    stripe3 = stripe;
+    return *this;
+  }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<BrickSpec>* specs) const override;
+};
+
+struct CurvedWallSpec : public SpecGenerator<WallSpec> {
   float elevation1;
   float heading1;
   float elevation2;
@@ -152,6 +341,8 @@ struct CurvedWallSpec {
   CurvedWallSpec& setIsExit(float e) { isExit = e; return *this; }
   CurvedWallSpec& setSpeed(float s) { speed = s; return *this; }
   CurvedWallSpec& setStopHeading(float s) { stopHeading = s; return *this; }
+  void buildSpecs(const RoundConfig& config,
+                  std::vector<WallSpec>* specs) const override;
 };
 
 struct BallSpec {

@@ -11,20 +11,17 @@
 
 class RoundState;
 class RoundConfig;
-class BleepoutParameters;
 
 class RoundComponent {
 public:
   RoundComponent(RoundState& state,
-                 const RoundConfig& config,
-                 const BleepoutParameters& appParams);
+                 const RoundConfig& config);
   virtual ~RoundComponent() {}
   
   virtual void setup() {}
   virtual void update() {}
   virtual void draw() {}
 protected:
-  const BleepoutParameters& _appParams;
   const RoundConfig& _config;
   RoundState& _state;
 };

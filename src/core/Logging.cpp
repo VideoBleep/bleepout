@@ -10,13 +10,21 @@
 #include "GameEvents.h"
 #include <ofMain.h>
 
+std::ostream& operator<<(std::ostream& os, const BallSpec& spec) {
+  os << "BallSpec{";
+  os << "elevation: " << spec.elevation;
+  os << ", heading: " << spec.heading;
+  os << "}";
+  return os;
+}
+
 void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
   os << "position:(" << obj.getPosition() << ")"
-  << ", size:(" << obj.getSize() << ")"
-  << ", boundingBox:" << obj.getBoundingBox()
-  << ", velocity:" << obj.getVelocity()
-  << ", collisionShape:" << obj.collisionShape
-  << ", trajectory:";
+    << ", size:(" << obj.getSize() << ")"
+    << ", boundingBox:" << obj.getBoundingBox()
+    << ", velocity:" << obj.getVelocity()
+    << ", collisionShape:" << obj.collisionShape
+    << ", trajectory:";
   if (obj.trajectory)
     os << (obj.trajectory.get());
   else
@@ -24,8 +32,8 @@ void outputPhysicsObjectFields(std::ostream& os, const PhysicsObject& obj) {
 }
 
 std::ostream& operator<<(std::ostream& os, const PhysicsObject& obj) {
-    obj.output(os);
-    return os;
+  obj.output(os);
+  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const GameObject& obj) {
@@ -51,7 +59,7 @@ static void outputGameObjectFields(std::ostream& os, const GameObject& obj) {
 }
 
 void PhysicsObject::output(std::ostream& os) const {
-    outputPhysicsObjectFields(os, *this);
+  outputPhysicsObjectFields(os, *this);
 }
 
 void Brick::output(std::ostream &os) const {
@@ -87,9 +95,9 @@ void Ball::output(std::ostream &os) const {
 
 void Player::output(std::ostream &os) const {
   os << "Player{id:" << id()
-     << ", score:" << score()
-     << ", lives:" << lives()
-     << ", paddle:";
+  << ", score:" << score()
+  << ", lives:" << lives()
+  << ", paddle:";
   outputObjectId(os, paddle());
   os << "}";
 }
@@ -139,16 +147,16 @@ std::ostream& operator<<(std::ostream& os, const RoundState& state) {
 
 void OrbitalTrajectory::output(std::ostream &os) const {
   os << "OrbitalTrajectory{radius:" << getRadius()
-     << ", speed:" << getSpeed()
-     << ", pos:" << getPosition()
-     << ", u:" << _u
-     << ", w:" << _w
-     << ", t:" << _t
-     << "}";
+    << ", speed:" << getSpeed()
+    << ", pos:" << getPosition()
+    << ", u:" << _u
+    << ", w:" << _w
+    << ", t:" << _t
+    << "}";
 }
 
 void CircularTrajectory::output(std::ostream &os) const {
-    os << "OrbitalTrajectory{radius:" << getRadius()
+  os << "OrbitalTrajectory{radius:" << getRadius()
     << ", speed:" << getSpeed()
     << ", pos:" << getPosition()
     << ", t:" << _t
@@ -162,7 +170,7 @@ std::ostream& operator<<(std::ostream& os, const Trajectory& trajectory) {
 
 std::ostream& operator<<(std::ostream& os, const BoundingBox& box) {
   return os << "BoundingBox{center:" << box.center
-            << ", hw:" << box.halfwidths << "}";
+  << ", hw:" << box.halfwidths << "}";
 }
 
 std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
@@ -181,60 +189,18 @@ std::ostream& operator<<(std::ostream& os, const CollisionShape& shape) {
 }
 
 std::ostream& operator<<(std::ostream& os, const GameObjectType& type) {
-  switch (type) {
-    case GAME_OBJECT_BRICK:
-      os << GameObjectTypeTraits<Brick>::typeName;
-      break;
-    case GAME_OBJECT_PADDLE:
-      os << GameObjectTypeTraits<Paddle>::typeName;
-      break;
-    case GAME_OBJECT_BALL:
-      os << GameObjectTypeTraits<Ball>::typeName;
-      break;
-    case GAME_OBJECT_PLAYER:
-      os << GameObjectTypeTraits<Player>::typeName;
-      break;
-    case GAME_OBJECT_WALL:
-      os << GameObjectTypeTraits<Wall>::typeName;
-      break;
-    case GAME_OBJECT_ANIMATION:
-      os << GameObjectTypeTraits<AnimationObject>::typeName;
-      break;
-    case GAME_OBJECT_MODIFIER:
-      os << GameObjectTypeTraits<Modifier>::typeName;
-      break;
-    case GAME_OBJECT_OTHER:
-    default:
-      os << "Unknown{" << (int)type << "}";
-      break;
-  }
-  return os;
+  return os << enumToString(type);
 }
 
 std::ostream& operator<<(std::ostream& os, const ModifierType& type) {
-  switch (type) {
-    case MODIFIER_EXTRA_LIFE:
-      os << "ExtraLife";
-      break;
-    case MODIFIER_PADDLE_WIDTH:
-      os << "PaddleWidth";
-      break;
-    case MODIFIER_LASER_BALL:
-      os << "LaserBall";
-      break;
-    case MODIFIER_NONE:
-    default:
-      os << "Unknown{" << (int)type << "}";
-      break;
-  }
-  return os;
+  return os << enumToString(type);
 }
 
 std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec) {
   os << "(type:" << spec.type
-     << ", duration:" << spec.duration
-     << ", amount:" << spec.amount
-     << ")";
+    << ", duration:" << spec.duration
+    << ", amount:" << spec.amount
+    << ")";
   return os;
 }
 
@@ -262,4 +228,74 @@ void BallModifier::output(std::ostream &os) const {
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason) {
+  switch (reason) {
+    case END_TIME_LIMIT:
+      os << "TimeLimit";
+      break;
+    case END_NO_BALLS:
+      os << "NoBalls";
+      break;
+    case END_NO_BRICKS:
+      os << "NoBricks";
+      break;
+    case END_NO_PLAYERS:
+      os << "NoPlayers";
+      break;
+    case END_ADMIN_OVERRIDE:
+      os << "AdminOverride";
+      break;
+    default:
+      os << "Unknown{" << (int)reason << "}";
+      break;
+  }
+  return os;
+}
+
+void PlayerRoundResult::output(std::ostream &os) const {
+  os << "PlayerResult{";
+  os << "id: " << playerId << ", ";
+  os << "score: " << score << ", ";
+  os << "modifiers: (";
+  bool first = true;
+  for (const auto& entry : modifierCounts) {
+    if (!first)
+      os << ", ";
+    else
+      first = false;
+    os << entry.first << ": " << entry.second;
+  }
+  os << ")}";
+}
+
+std::ostream& operator<<(std::ostream& os, const PlayerRoundResult& result) {
+  result.output(os);
+  return os;
+}
+
+void RoundResults::output(std::ostream &os) const {
+  os << "RoundResults{";
+  os << "reason: " << reason << ", ";
+  os << "duration: " << std::setprecision(4) << std::fixed
+                     << duration << "sec, ";
+  os << "remainingBricks: " << liveBricks << "/" << totalBricks << ", ";
+  os << "remainingBalls: " << liveBalls << "/" << totalBalls << ", ";
+  os << "players: (";
+  bool first = true;
+  for (const auto& player : _playerResults) {
+    if (!first)
+      os << ", ";
+    else
+      first = false;
+    os << player;
+  }
+  os << ")";
+  os << "}";
+}
+
+std::ostream& operator<<(std::ostream& os, const RoundResults& results) {
+  results.output(os);
+  return os;
 }

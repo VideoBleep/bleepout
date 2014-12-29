@@ -15,37 +15,38 @@
 #include "RendererExtras.h"
 #include "Geometry.h"
 
-class RoundConfig;
-
 class DomeRenderer : public RendererBase {
 public:
-    DomeRenderer(RoundState& state,
-                 const RoundConfig& config,
-                 const BleepoutParameters& appParams);
-    virtual ~DomeRenderer() {}
-    virtual void setup() override;
-    virtual void update() override;
-    virtual void draw() override;
-    
-    virtual void mousePressed(int x, int y, int button);
-    virtual void mouseReleased(int x, int y, int button);
-    virtual void mouseDragged(int x, int y, int button);
+  DomeRenderer(RoundState& state,
+               const RoundConfig& config);
+  virtual ~DomeRenderer() {}
+  virtual void setup() override;
+  virtual void update() override;
+  virtual void draw() override;
 
+#ifndef RADOME
+  virtual void mousePressed(int x, int y, int button);
+  virtual void mouseReleased(int x, int y, int button);
+  virtual void mouseDragged(int x, int y, int button);
+#endif
+    
 protected:
-    virtual void drawBrick(Brick& brick) override;
-    virtual void drawPaddle(Paddle& paddle) override;
-    virtual void drawWall(Wall& wall) override;
-    virtual void drawBall(Ball& ball) override;
-    virtual void drawModifier(Modifier& modifier) override;
-    
-    void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
-    
-    ofxTurntableCam _cam;
+  virtual void drawBrick(Brick& brick) override;
+  virtual void drawPaddle(Paddle& paddle) override;
+  virtual void drawWall(Wall& wall) override;
+  virtual void drawBall(Ball& ball) override;
+  virtual void drawModifier(Modifier& modifier) override;
   
-    RendererExtras _extras;
+  void drawGenMesh(const GenMesh& gm, ofMaterial& faceColor, const ofColor& edgeColor, float lineWidth);
+  
+#ifndef RADOME
+  ofxTurntableCam _cam;
+#endif
     
-    vector<ofLight> lights;
-    ofMaterial wallMaterial;
+  RendererExtras _extras;
+  
+  vector<ofLight> lights;
+  ofMaterial wallMaterial;
 };
 
 #endif /* defined(__bleepout__DomeRenderer__) */

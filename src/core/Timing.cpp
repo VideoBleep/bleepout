@@ -36,12 +36,12 @@ ValuePulser<float> createValuePulser(const ValuePulserSpec<float>& spec) {
                             spec.changeInterval, spec.startValue);
 }
 
-bool OnceAction::update(RoundState& state) {
+bool OnceAction::update(float time) {
   if (_called)
     return true;
-  if (state.time < _triggerTime)
+  if (time < _triggerTime)
     return false;
-  this->call(state);
+  this->call(time);
   _called = true;
   return true;
 }
@@ -51,8 +51,8 @@ public:
   FunctorOnceAction(float triggerTime, ofPtr<TimedFunc> fn)
   : OnceAction(triggerTime), _function(fn) { }
   
-  virtual void call(RoundState& state) override {
-    (*_function)(state);
+  virtual void call(float time) override {
+    (*_function)(time);
   }
 private:
   ofPtr<TimedFunc> _function;
@@ -60,26 +60,26 @@ private:
 
 TimedAction*
 OnceAction::newOnceAction(float triggerTime,
-                           ofPtr<TimedFunc> fn) {
+                          ofPtr<TimedFunc> fn) {
   return new FunctorOnceAction(triggerTime, fn);
 }
 
-bool DurationAction::update(RoundState& state) {
+bool DurationAction::update(float time) {
   if (_ended)
     return true;
   if (!_started) {
-    if (state.time >= _startTime)
+    if (time >= _startTime)
       this->start();
     else
       return false;
   } else {
-    if (state.time >= _endTime) {
+    if (time >= _endTime) {
       this->end();
       return true;
     }
   }
-  float percentage = ofMap(state.time, _startTime, _endTime, 0, 1);
-  call(state, percentage);
+  float percentage = ofMap(time, _startTime, _endTime, 0, 1);
+  call(time, percentage);
   return false;
 }
 
@@ -96,8 +96,8 @@ public:
   FunctorDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn)
   : DurationAction(start, end), _function(fn) { }
   
-  virtual void call(RoundState& state, float percentage) override {
-    (*_function)(state, percentage);
+  virtual void call(float time, float percentage) override {
+    (*_function)(time, percentage);
   }
 private:
   ofPtr<TimedPercentageFunc> _function;
@@ -116,7 +116,7 @@ bool TimedActionSet::done() const {
   return true;
 }
 
-bool TimedActionSet::update(RoundState& state) {
+bool TimedActionSet::update(float time) {
   bool allDone = true;
   for (auto i = _actions.begin();
        i != _actions.end(); ) {
@@ -125,7 +125,7 @@ bool TimedActionSet::update(RoundState& state) {
     if (!action) {
       done = true;
     } else {
-      action->update(state);
+      action->update(time);
       if (action->done())
         done = true;
     }

@@ -17,34 +17,35 @@ class BoundingBox;
 
 class CollisionArgs : public ofEventArgs {
 public:
-    GameObject* a;
-    GameObject* b;
-    ofVec3f normalOnA;
-    ofVec3f pointOnA;
-    ofVec3f pointOnB;
+  GameObject* a;
+  GameObject* b;
+  ofVec3f normalOnA;
+  ofVec3f pointOnA;
+  ofVec3f pointOnB;
+  float penDistance;
 };
 
 class PhysicsImpl;
 
 class PhysicsWorld {
-public:    
-    void setup();
-    
-    void addObject(PhysicsObject* obj);
-    void removeObject(PhysicsObject* obj);
-    
-    void updateCollisionObject(PhysicsObject* obj);
-    
-    void update();
-    
-    void notifyCollision(CollisionArgs& args);
-    
-    BoundingBox getObjBoundingBox(PhysicsObject* obj);
-    
-    ofEvent<CollisionArgs> collisionEvent;
-    
+public:
+  void setup();
+  
+  void addObject(PhysicsObject* obj);
+  void removeObject(PhysicsObject* obj);
+  
+  void updateCollisionObject(PhysicsObject* obj);
+  
+  void update();
+  
+  void notifyCollision(CollisionArgs& args);
+  
+  BoundingBox getObjBoundingBox(PhysicsObject* obj);
+  
+  ofEvent<CollisionArgs> collisionEvent;
+  
 protected:
-    ofPtr<PhysicsImpl> _impl;
+  ofPtr<PhysicsImpl> _impl;
 };
 
 #endif /* defined(__bleepout__PhysicsWorld__) */

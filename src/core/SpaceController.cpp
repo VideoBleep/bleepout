@@ -11,18 +11,18 @@
 #include "BleepoutParameters.h"
 
 namespace {
-    
+  
   static ofVec3f getBallStartPosition(int i, int numPlayers,
                                       const RoundConfig& config) {
-    return ofVec3f(0, config.domeRadius() + config.domeMargin());
+    const auto& appParams = BleepoutParameters::get();
+    return ofVec3f(0, appParams.domeRadius + appParams.domeMargin);
   }
   
 }
 
 SpaceController::SpaceController(RoundState& state,
-                                 const RoundConfig& config,
-                                 const BleepoutParameters& appParams)
-: RoundComponent(state, config, appParams)
+                                 const RoundConfig& config)
+: RoundComponent(state, config)
 , EventSource() {
 }
 
@@ -58,17 +58,19 @@ void SpaceController::addBrick(const BrickSpec &brickSpec) {
   _world.addObject(&brick);
 }
 
-void SpaceController::addBall(const BallSpec &ballSpec) {
+Ball& SpaceController::addBall(const BallSpec &ballSpec) {
   Ball& ball = _state.addBall(ballSpec);
   _world.addObject(&ball);
+  return ball;
 }
 
 void SpaceController::addPaddle(float heading, Player* player) {
-    Paddle& paddle = _state.addPaddle(player);
-    player->setPaddle(&paddle);
-    paddle.setPositionCylindrical(_config.domeRadius() + _config.domeMargin(), heading, _config.domeMargin());
-
-    _world.addObject(&paddle);
+  const auto& appParams = BleepoutParameters::get();
+  Paddle& paddle = _state.addPaddle(player);
+  player->setPaddle(&paddle);
+  paddle.setPositionCylindrical(appParams.domeRadius + appParams.domeMargin, heading, appParams.domeMargin);
+  
+  _world.addObject(&paddle);
 }
 
 void SpaceController::addWall(const WallSpec &wallSpec) {
@@ -87,40 +89,41 @@ void SpaceController::removeObject(PhysicsObject &object) {
 }
 
 void SpaceController::update() {
-    _world.update();
+  _world.update();
 }
 
 float paddleTrueHitFactor(const ofVec3f& paddlePos, const ofVec3f& paddleSize) {
-    ofVec3f scaledPos = paddlePos / (0.5 * paddleSize);
-    if (scaledPos.y == 1.0) {
-        // paddle hit on top face
-        float factor = 1 - abs(scaledPos.z);
-        return factor * factor * 0.9;
-    } else {
-        // all other faces
-        return 0;
-    }
+  ofVec3f scaledPos = paddlePos / (0.5 * paddleSize);
+  if (scaledPos.y == 1.0) {
+    // paddle hit on top face
+    float factor = 1 - abs(scaledPos.z);
+    return factor * factor * 0.9;
+  } else {
+    // all other faces
+    return 0;
+  }
 }
 
 void SpaceController::onCollision(CollisionArgs &cdata) {
-    if (cdata.a->type() == GAME_OBJECT_BALL) {
-        Ball& ball = static_cast<Ball&>(*cdata.a);
-        if (cdata.b->type() == GAME_OBJECT_PADDLE) {
-            auto paddle = static_cast<Paddle&>(*cdata.b);
-            ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
-        } else if ((!ball.isLaser() && !_appParams.allLasers) || cdata.b->type() != GAME_OBJECT_BRICK) {
-            ball.bounce(cdata.normalOnA);
-        }
-    } else if (cdata.b->type() == GAME_OBJECT_BALL) {
-        Ball& ball = static_cast<Ball&>(*cdata.b);
-        if (cdata.a->type() == GAME_OBJECT_PADDLE) {
-            auto paddle = static_cast<Paddle&>(*cdata.a);
-            ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
-        } else if ((!ball.isLaser() && !_appParams.allLasers) || cdata.a->type() != GAME_OBJECT_BRICK) {
-            ball.bounce(-cdata.normalOnA);
-        }
+  auto& appParams = BleepoutParameters::get();
+  if (cdata.a->type() == GAME_OBJECT_BALL) {
+    Ball& ball = static_cast<Ball&>(*cdata.a);
+    if (cdata.b->type() == GAME_OBJECT_PADDLE) {
+      auto paddle = static_cast<Paddle&>(*cdata.b);
+      ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
+    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.b->type() != GAME_OBJECT_BRICK) {
+      ball.bounce(cdata.normalOnA);
     }
-    notifyCollision(cdata.a, cdata.b);
+  } else if (cdata.b->type() == GAME_OBJECT_BALL) {
+    Ball& ball = static_cast<Ball&>(*cdata.b);
+    if (cdata.a->type() == GAME_OBJECT_PADDLE) {
+      auto paddle = static_cast<Paddle&>(*cdata.a);
+      ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
+    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.a->type() != GAME_OBJECT_BRICK) {
+      ball.bounce(-cdata.normalOnA);
+    }
+  }
+  notifyCollision(cdata.a, cdata.b);
 }
 
 void SpaceController::notifyCollision(GameObject *a, GameObject *b) {

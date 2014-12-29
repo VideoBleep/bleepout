@@ -19,18 +19,17 @@
 class SpaceController : public EventSource, public RoundComponent {
 public:
   SpaceController(RoundState& state,
-                  const RoundConfig& config,
-                  const BleepoutParameters& appParams);
+                  const RoundConfig& config);
   
   ofEvent<CollisionEventArgs> collisionEvent;
   
   void setup();
   void update();
   void drawDebug();
-    
+  
   void addInitialPaddles();
-    
-  void addBall(const BallSpec& ballSpec);
+  
+  Ball& addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
   
   void setUpModifier(Modifier& modifier,
@@ -38,11 +37,11 @@ public:
   void removeObject(PhysicsObject& object);
   
   const char* eventSourceName() const override { return "SpaceController"; }
-    
+
 private:
   void addBrick(const BrickSpec& brickSpec);
   void addWall(const WallSpec& wallSpec);
-  
+
   void onCollision(CollisionArgs &cdata);
 
   void notifyCollision(GameObject* a, GameObject* b);

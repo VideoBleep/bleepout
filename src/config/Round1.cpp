@@ -7,12 +7,15 @@
 //
 
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 RoundConfig* RoundConfig::createRoundConfig1() {
-  RoundConfig* config = new RoundConfig("Round1");
+  const auto& appParams = BleepoutParameters::get();
+  RoundConfig* config = new RoundConfig("Round 1");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
+  config->_rules.setBallsRespawn(true);
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));
@@ -32,25 +35,18 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   
   int cols = 12;
   int rows = 10;
-  
   for (int col = 0; col < cols; col++) {
-    for (int row = 0; row < rows; row++) {
-      float s = col / (cols * 1.0);
-      auto& spec = config->addBrick()
-        .setElevation(30 + 3 * row)
-        .setHeading(s * 360 + row * 2 + ((col % 2) ? 5 : -5))
-        .setColor(ofColor(s * 255,
-                          row / (rows * 1.0) * 255,
-                          (1 - s) * 255))
-        .setLives((row % 3 == 1) ? 2 : 1)
-        .setValue(1)
-        .setSpeed(0)
-        .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
-      if (col % 3 == 0 && row % 3 == 0)
-        spec.modifierName = widePaddleName;
-      else if (col % 7 == 0 && row % 5 == 0)
-        spec.modifierName = narrowPaddleName;
-    }
+    float s = col / (float)cols;
+    auto& spec = config->addCurvedBrickColumn()
+      .setEnd1(30, s * 360)
+      .setEnd2(60, s * 360 + 20)
+      .setCount(rows)
+      .setColor(ofColor(s * 255, 0, 255),
+                ofColor(s * 255, 255, 0))
+      .setSize(ofVec3f(7, 5, 17))
+      .setStripe1(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0))
+      .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, widePaddleName, 0.3))
+      .setStripe3(CurvedBrickColumnSpec::StripeSpec(1, 1, narrowPaddleName, 0.2));
   }
   
   for (int i = 0; i < 6; i++) {
@@ -105,12 +101,13 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   // Create the floor exit wall
-  float d = (config->domeMargin() + config->domeRadius()) * 5;
+  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)

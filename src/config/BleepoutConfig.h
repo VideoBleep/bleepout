@@ -14,23 +14,41 @@
 #include <vector>
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include "ObjectSpecs.h"
-#include "JsonUtil.h"
 #include "Common.h"
+
+class JsonLoader;
 
 class GameRules {
 public:
   GameRules();
   explicit GameRules(const GameRules& other);
   
+  GameRules& copyFrom(const GameRules& other);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
+  
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
   void unsetTimeLimit() { _timeLimit.unset(); }
   bool specifiesTimeLimit() const { return _timeLimit.hasValue(); }
   
+  bool playersCanLoseLives() const;
+  void setPlayersCanLoseLives(bool value) { _playersCanLoseLives.set(value); }
+  void unsetPlayersCanLoseLives() { _playersCanLoseLives.unset(); }
+  bool specifiesPlayersCanLoseLives() const { return _playersCanLoseLives.hasValue(); }
+  
+  bool ballsRespawn() const;
+  void setBallsRespawn(bool value) { _ballsRespawn.set(value); }
+  void unsetBallsRespawn() { _ballsRespawn.unset(); }
+  bool specifiesBallsRespawn() const { return _ballsRespawn.hasValue(); }
+  
   void setBackup(const GameRules* backup) { _backup = backup; }
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
+  Optional<bool> _playersCanLoseLives;
+  Optional<bool> _ballsRespawn;
 };
 
 class RoundConfig {
@@ -38,8 +56,14 @@ public:
   static RoundConfig* createRoundConfig1();
   static RoundConfig* createRoundConfig2();
   static RoundConfig* createRoundConfig3();
+  static RoundConfig* createRoundConfig4();
+  
+  static RoundConfig* loadFromFile(std::string path);
   
   explicit RoundConfig(std::string name);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -52,9 +76,7 @@ public:
   float brickFadeTime() const { return _brickFadeTime; }
   float modifierRadius() const { return _modifierRadius; }
   float modifierFadeTime() const { return _modifierFadeTime; }
-  
-  float domeRadius() const { return _domeRadius; }
-  float domeMargin() const { return _domeMargin; }
+  float ballSpawnedFadeTime() const { return _ballSpawnedFadeTime; }
   
   const std::vector<BallSpec>& balls() const { return _balls; }
   const std::vector<BrickSpec>& bricks() const { return _bricks; }
@@ -129,6 +151,16 @@ public:
     return _ringSets.back();
   }
   
+  BrickQuadsSpec& addBrickQuads() {
+    _brickQuads.push_back(BrickQuadsSpec());
+    return _brickQuads.back();
+  }
+  
+  CurvedBrickColumnSpec& addCurvedBrickColumn() {
+    _curvedBrickColumns.push_back(CurvedBrickColumnSpec());
+    return _curvedBrickColumns.back();
+  }
+  
   ModifierSpec& addModifierDef(std::string name, ModifierType type) {
     _modifierDefs[name] = ModifierSpec(name, type);
     return _modifierDefs.at(name);
@@ -145,8 +177,12 @@ public:
   const GameRules& rules() const { return _rules; }
   GameRules& rules() { return _rules; }
   
-  Json::Value toJsonVal() const;
+  float countdownTimerPeriod;
+  
+  std::string filepath;
 private:
+  void readSpecJson(const JsonLoader& loader, const Json::Value& obj);
+  
   std::string _name;
   float _startDelay;
   ofVec3f _paddleSize;
@@ -154,13 +190,14 @@ private:
   float _brickFadeTime;
   float _modifierRadius;
   float _modifierFadeTime;
-  float _domeRadius;
-  float _domeMargin;
+  float _ballSpawnedFadeTime;
   GameRules _rules;
   
   std::vector<BallSpec> _balls;
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
+  std::vector<CurvedBrickColumnSpec> _curvedBrickColumns;
+  std::vector<BrickQuadsSpec> _brickQuads;
   std::vector<WallSpec> _walls;
   std::vector<WallRingSpec> _wallRings;
   std::vector<CurvedWallSpec> _curvedWallSets;
@@ -173,7 +210,12 @@ class BleepoutConfig {
 public:
   static BleepoutConfig* createConfig();
   
+  static BleepoutConfig* loadFromFile(std::string path);
+  
   BleepoutConfig();
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -191,7 +233,17 @@ public:
   
   ofPtr<RoundConfig> getRound(const std::string& name);
   
-  Json::Value toJsonVal() const;
+  std::string roundStartedSound;
+  std::string roundEndedSound;
+  std::string brickHitSound;
+  std::string brickDestroyedSound;
+  std::string collisionSound;
+  std::string modifierAppliedSound;
+  std::string modifierRemovedSound;
+  std::string ballDestroyedSound;
+  std::string playerLivesChangedSound;
+  std::string playerLostSound;
+  std::string countdownTimerTickSound;
 private:
   int _fps;
   ofLogLevel _logLevel;

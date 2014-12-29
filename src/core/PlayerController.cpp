@@ -58,7 +58,7 @@ void PlayerController::connect(Player& player) {
   ofPtr<Player> p(&player);
 	_setup.lobby().push_back(p);
 	
-  // TODO: Set player state to 'select color'  
+	// TODO: Set player state to 'select color'
   // Send message to player that they are in the select color state
   // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
   PlayerManager::setPlayerColor(player);
@@ -80,7 +80,7 @@ void PlayerController::queue(Player& player) {
 void PlayerController::calibrate(Player& player) {
 	/*
 		1. Show player a stationary object in the position we believe them to be pointing
-    2. Player should now point to the target object with their phone, and click the action button on their screen
+		2. Player should now point to the target object with their phone, and click the action button on their screen
 		3. TODO: Client should now record compass settings / offset
 
     //5.[SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
@@ -126,7 +126,7 @@ void PlayerController::notifyPlayerReady(Player& player) {
 	ofNotifyEvent(playerReadyEvent, e);
 	logEvent("PlayerReady", e);
 }
-
+	
 void PlayerController::notifyPlayerStart(Player& player) {
 	PlayerEventArgs e(&player);
 	ofNotifyEvent(playerStartEvent, e);

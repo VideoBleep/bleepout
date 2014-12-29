@@ -27,6 +27,7 @@ void Paddle::addWidthModifier(const RoundState& state,
                               const PaddleWidthModifier& modifier) {
   _widthModifier.set(modifier.spec(), state.time);
   setSize(_origSize * modifier.amount());
+  _player.incrementModifierCount(modifier.modifierType());
 }
 
 const ModifierSpec* Paddle::removeWidthModifier() {

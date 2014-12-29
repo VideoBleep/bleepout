@@ -21,6 +21,7 @@
 #include "PhysicsObject.h"
 #include "OrbitalTrajectory.h"
 #include "CircularTrajectory.h"
+#include "RoundResults.h"
 
 std::ostream& operator<<(std::ostream& os, const PhysicsObject& obj);
 std::ostream& operator<<(std::ostream& os, const GameObject& obj);
@@ -31,6 +32,10 @@ std::ostream& operator<<(std::ostream& os, const CollisionShape& shape);
 std::ostream& operator<<(std::ostream& os, const GameObjectType& type);
 std::ostream& operator<<(std::ostream& os, const ModifierType& type);
 std::ostream& operator<<(std::ostream& os, const ModifierSpec& spec);
+std::ostream& operator<<(std::ostream& os, const PlayerRoundResult& result);
+std::ostream& operator<<(std::ostream& os, const RoundResults& results);
+std::ostream& operator<<(std::ostream& os, const RoundEndReason& reason);
+std::ostream& operator<<(std::ostream& os, const BallSpec& spec);
 
 template<typename T>
 void outputField(std::ostream& os, const char* label, const T* obj) {

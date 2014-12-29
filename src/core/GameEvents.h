@@ -20,6 +20,7 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "GameState.h"
+#include "RoundResults.h"
 
 class EmptyEventArgs : public Outputable {
 public:
@@ -51,7 +52,7 @@ public:
   const Modifier* modifier() const { return _modifier; }
   Paddle* paddle() { return _paddle; }
   const Paddle* paddle() const { return _paddle; }
-
+  
   virtual void output(std::ostream& os) const override;
 private:
   Modifier* _modifier;
@@ -96,9 +97,9 @@ private:
   Player* _previousPlayer;
 };
 
-class BrickDestroyedEventArgs : public RoundStateEventArgs {
+class BrickHitEventArgs : public RoundStateEventArgs {
 public:
-  BrickDestroyedEventArgs(RoundState& state, Brick* brick, Ball* ball)
+  BrickHitEventArgs(RoundState& state, Brick* brick, Ball* ball)
   : RoundStateEventArgs(state)
   , _brick(brick), _ball(ball) { }
   
@@ -192,6 +193,18 @@ private:
   bool _handled;
 };
 
+class SpawnBallEventArgs
+: public RequestEventArgs
+, public Outputable {
+public:
+  SpawnBallEventArgs(BallSpec ballSpec)
+  : RequestEventArgs(), _ballSpec(ballSpec) { }
+  void output(std::ostream& os) const override;
+  BallSpec& ballSpec() { return _ballSpec; }
+private:
+  BallSpec _ballSpec;
+};
+
 class StartRoundEventArgs
 : public RequestEventArgs
 , public Outputable {
@@ -215,8 +228,25 @@ class EndRoundEventArgs
 : public RequestEventArgs
 , public Outputable {
 public:
-  EndRoundEventArgs() : RequestEventArgs() { }
+  EndRoundEventArgs(RoundEndReason reason)
+  : RequestEventArgs(), _reason(reason) { }
   void output(std::ostream& os) const override;
+  RoundEndReason reason() const { return _reason; }
+private:
+  RoundEndReason _reason;
+};
+
+class RoundEndedEventArgs
+: public Outputable {
+public:
+  RoundEndedEventArgs(const RoundResults& results)
+  : _results(results) { }
+  
+  const RoundResults& results() const { return _results; }
+  
+  void output(std::ostream& os) const override;
+private:
+  const RoundResults& _results;
 };
 
 class PlayerYawPitchRollEventArgs {
@@ -235,6 +265,18 @@ private:
   float _yaw;
   float _pitch;
   float _roll;
+};
+
+class TimerEventArgs : public Outputable {
+public:
+  TimerEventArgs(float currentTime, float remainingTime)
+  : _currentTime(currentTime), _remainingTime(remainingTime) { }
+  float currentTime() const { return _currentTime; }
+  float remainingTime() const { return _remainingTime; }
+  void output(std::ostream& os) const override;
+private:
+  float _currentTime;
+  float _remainingTime;
 };
 
 class EventSource {

@@ -7,13 +7,14 @@
 //
 
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
 RoundConfig* RoundConfig::createRoundConfig2() {
-  RoundConfig* config = new RoundConfig("Round2");
+  const auto& appParams = BleepoutParameters::get();
+  RoundConfig* config = new RoundConfig("Round 2");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
-  config->rules().setTimeLimit(30);
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));
@@ -38,35 +39,30 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   
   {
     int cols = 18;
-    int rows = 10;
-    BrickSpec prototype = BrickSpec()
-      .setValue(1)
-      .setSpeed(0)
-      .setSize(ofVec3f(5.0f, 2.0f, 10.0f));
+    int rows = 14;
     for (int col = 0; col < cols; col++) {
-      for (int row = 0; row < rows; row++) {
-        float s = col / (cols * 1.0);
-        auto& spec = config->addBrick()
-          .copyFrom(prototype)
-          .setElevation(35 + 5 * row)
-          .setHeading(s * 360 + row * 6)
-          .setColor((row % 3 == 1) ? ofColor(0, 127, 255)
-                    : ofColor::green)
-          .setLives((row % 3 == 1) ? 2 : 1);
-        if (col % 6 == 0 && row == 1) {
-          spec.setModifier(laserModName);
-        }
-      }
+      float s = col / (cols * 1.0);
+      auto& spec = config->addCurvedBrickColumn()
+        .setEnd1(35, s * 360)
+        .setEnd2(75, s * 360 + 3 * (rows-1))
+        .setCount(rows)
+        .setColor(ofColor(0, 255, 255),
+                  ofColor(0, 255, 0))
+        .setSize(ofVec3f(5, 2, 10))
+        .setStripe1(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0))
+        .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, laserModName, 0.3))
+        .setStripe3(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0));
     }
   }
   
   // Create the floor exit wall
-  float d = (config->domeMargin() + config->domeRadius()) * 5;
+  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   // bottom moving walls
   config->addWallRing()

@@ -12,10 +12,13 @@
 #include <ofMain.h>
 #include <functional>
 #include <list>
+#include <map>
 #include <iostream>
 
 #ifdef TARGET_OSX
+#ifndef RADOME
 #define ENABLE_SYPHON
+#endif
 #define BLEEPOUT_CONTROL_KEY OF_KEY_COMMAND
 #else
 #define BLEEPOUT_CONTROL_KEY OF_KEY_CONTROL
@@ -49,6 +52,40 @@ public:
 
 std::ostream& operator<<(std::ostream& os, const Outputable& obj);
 
+#define ENUM_PARSE_CASE(V, S) if (str == S) { *result = V; return true; }
+#define ENUM_TOSTR_CASE(V, S) case V: { *result = S; break; }
+
+template<typename T>
+struct EnumTypeTraits {
+  static bool parseString(const std::string& str, T* result, const T& defaultVal);
+  static bool toString(const T& value, std::string* result);
+  static std::string toString(const T& value);
+};
+
+template<typename T>
+bool parseEnumString(const std::string& str, T* result, const T& defaultVal) {
+  return EnumTypeTraits<T>::parseString(str, result, defaultVal);
+}
+
+template<typename T>
+bool parseEnumString(const std::string& str, T* result) {
+  T defaultVal;
+  return EnumTypeTraits<T>::parseString(str, result, defaultVal);
+}
+
+template<typename T>
+inline bool enumToString(const T& value, std::string* result) {
+  return EnumTypeTraits<T>::toString(value, result);
+}
+
+template<typename T>
+std::string enumToString(const T& value) {
+  std::string result;
+  if (EnumTypeTraits<T>::toString(value, &result))
+    return result;
+  return std::string("Unknown{") + ofToString((int)value) + "}";
+}
+
 class ValueSpecifier {
 public:
   enum Mode {
@@ -80,17 +117,17 @@ public:
         return ofRandom(_minVal, _maxVal);
       case CONSTANT:
       default:
-      return _minVal;
+        return _minVal;
     }
   }
   
   float minValue() const { return _minVal; }
   float maxValue() const { return _maxVal; }
-
+  
   bool isConstant() const { return _mode == CONSTANT; }
   bool isRandom() const { return _mode == RANDOM; }
   bool isRange() const { return _mode == RANGE; }
-
+  
 private:
   
   Mode _mode;
@@ -159,6 +196,44 @@ public:
 private:
   T _value;
   bool _hasValue;
+};
+
+template<typename T>
+class Counters {
+public:
+  Counters() : _counters() { }
+  Counters(const Counters<T>& other)
+  : _counters(other._counters) { }
+  Counters& operator=(const Counters& other) {
+    _counters.clear();
+    for (const auto& entry : other._counters) {
+      _counters.insert(entry);
+    }
+    return *this;
+  }
+  
+  int operator[](const T& key) const {
+    const auto iter = _counters.find(key);
+    return iter == _counters.end() ? 0 : iter->second;
+  }
+  
+  void add(T key, int amount = 1) {
+    auto iter = _counters.find(key);
+    if (iter == _counters.end()) {
+      _counters[key] = amount;
+    } else {
+      _counters[key] = iter->second + amount;
+    }
+  }
+  
+  inline typename std::map<T, int>::const_iterator begin() const {
+    return _counters.begin();
+  }
+  inline typename std::map<T, int>::const_iterator end() const {
+    return _counters.end();
+  }
+private:
+  std::map<T, int> _counters;
 };
 
 #endif

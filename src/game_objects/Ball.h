@@ -21,16 +21,16 @@ struct BallSpec;
 
 class Ball : public GameObject, public PhysicsObject {
 public:
-  Ball(const RoundConfig* config = NULL, const BallSpec* spec = NULL);
+  Ball(const RoundConfig& config, const BallSpec& spec);
   
   Player* player() { return _player; }
   const Player* player() const { return _player; }
   void setPlayer(Player* player) { _player = player; }
   
   bool isLaser() const;
-
+  
   virtual const ofColor& getColor() const override;
-    
+  
   void output(std::ostream& os) const override;
   void bounce(ofVec3f normal, float trueHitFactor = 0.0);
   
@@ -39,7 +39,7 @@ public:
   
   const ModifierSpec* updateLaserModifier(const RoundState& state);
   const ModifierSpec* removeLaserModifier();
-
+  
 private:
   Player* _player;
   ModifierSlot _laserModifier;

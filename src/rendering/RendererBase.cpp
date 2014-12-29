@@ -11,9 +11,8 @@
 #include "BleepoutParameters.h"
 
 RendererBase::RendererBase(RoundState& state,
-                           const RoundConfig& config,
-                           const BleepoutParameters& appParams)
-: RoundComponent(state, config, appParams) { }
+                           const RoundConfig& config)
+: RoundComponent(state, config) { }
 
 void RendererBase::draw() {
   for (auto& obj : _state.bricks()) {
@@ -43,5 +42,5 @@ void RendererBase::draw() {
 }
 
 void RendererBase::drawAnimation(AnimationObject &animation) {
-  animation.draw(_state.config());
+  animation.draw();
 }

@@ -12,21 +12,20 @@
 #include "GameState.h"
 #include "GameEvents.h"
 #include "BleepoutConfig.h"
-#include "BleepoutParameters.h"
+#include "Timing.h"
 
 class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, RoundConfig& config,
-                  BleepoutParameters& appParams);
+  LogicController(RoundState& state, RoundConfig& config);
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
-  ofEvent<BrickDestroyedEventArgs> brickDestroyedEvent;
+  ofEvent<BrickHitEventArgs> brickHitEvent;
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
   ofEvent<BallStateEventArgs> ballDestroyedEvent;
-  ofEvent<BallStateEventArgs> ballRespawnedEvent;
+  ofEvent<SpawnBallEventArgs> trySpawnBallEvent;
   ofEvent<PlayerStateEventArgs> playerLostEvent;
   ofEvent<PlayerStateEventArgs> playerLivesChangedEvent;
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;
@@ -34,6 +33,7 @@ public:
   ofEvent<ModifierEventArgs> modifierDestroyedEvent;
   ofEvent<ModifierEventArgs> modifierAppliedEvent;
   ofEvent<ModifierRemovedEventArgs> modifierRemovedEvent;
+  ofEvent<TimerEventArgs> countdownTickEvent;
   
   void setup();
   void update();
@@ -45,18 +45,19 @@ public:
   
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
-  void notifyBrickDestroyed(RoundState& state, Brick* brick, Ball* ball);
+  void notifyBrickHit(RoundState& state, Brick* brick, Ball* ball);
   void notifyAllBricksDestroyed(RoundState& state);
   void notifyPlayerScoreChanged(RoundState& state, Player* player);
   void notifyBallDestroyed(RoundState& state, Ball* ball);
-  void notifyBallRespawned(RoundState& state, Ball* ball);
+  bool notifyTrySpawnBall(BallSpec ballSpec);
   void notifyPlayerLost(RoundState& state, Player* player);
   void notifyPlayerLivesChanged(RoundState& state, Player* player);
-  bool notifyTryEndRound();
+  bool notifyTryEndRound(RoundEndReason reason);
   void notifyModifierAppeared(RoundState& state, Modifier* modifier, Brick* spawnerBrick);
   void notifyModifierDestroyed(RoundState& state, Modifier* modifier);
   void notifyModifierApplied(RoundState& state, Modifier* modifier, GameObject* target);
   void notifyModifierRemoved(RoundState& state, const ModifierSpec &modifierSpec, GameObject* target);
+  void notifyCountdownTick();
   
   void onCollision(CollisionEventArgs& e);
   
@@ -68,11 +69,13 @@ private:
   void onBallHitWall(Ball& ball, Wall& wall);
   void onBallHitBall(Ball& ball, Ball& otherBall);
   void onModifierHitPaddle(Modifier& modifier, Paddle& paddle);
-
+  
+  void respawnBall(Player* player);
+  
   RoundState& _state;
   RoundConfig& _config;
-  BleepoutParameters& _appParams;
   float _lastSpecifiedTimeLimitOffset;
+  Pulser _countdownTickPulser;
 };
 
 #endif /* defined(__bleepout__LogicController__) */

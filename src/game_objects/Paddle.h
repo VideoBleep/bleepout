@@ -27,7 +27,7 @@ public:
   const Player& player() const { return _player; }
   
   void output(std::ostream& os) const override;
-    
+  
   virtual const ofColor& getColor() const override;
   
   const ModifierSpec* updateWidthModifier(const RoundState& state);

@@ -7,44 +7,11 @@
 //
 
 #include "BleepoutConfig.h"
-
-static void createBrickGroups(RoundConfig* config,
-                              float elevation,
-                              int count,
-                              float eSpace,
-                              float hSpace) {
-  ofColor color1(0, 255, 0);
-  ofColor color2(0, 127, 127);
-  config->addBrickRing()
-    .setElevation(elevation - eSpace)
-    .setCount(count)
-    .setColor(color1)
-    .setPhase(-hSpace)
-    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
-    .setValue(2).setLives(2);
-  config->addBrickRing()
-    .setElevation(elevation - eSpace)
-    .setCount(count)
-    .setColor(color2)
-    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
-    .setPhase(hSpace);
-  config->addBrickRing()
-    .setElevation(elevation + eSpace)
-    .setCount(count)
-    .setColor(color2)
-    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
-    .setPhase(-hSpace);
-  config->addBrickRing()
-    .setElevation(elevation + eSpace)
-    .setCount(count)
-    .setColor(color1)
-    .setPhase(hSpace)
-    .setSize(ofVec3f(7.0f, 5.0f, 17.0f))
-    .setValue(2).setLives(2);
-}
+#include "BleepoutParameters.h"
 
 RoundConfig* RoundConfig::createRoundConfig3() {
-  RoundConfig* config = new RoundConfig("Round3");
+  const auto& appParams = BleepoutParameters::get();
+  RoundConfig* config = new RoundConfig("Round 3");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierRadius = 9.0f;
@@ -53,10 +20,32 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   
-  createBrickGroups(config, 45, 12, 1.5, 4);
-  createBrickGroups(config, 55, 12, 1.5, 4);
-  createBrickGroups(config, 65, 3, 1.5, 8);
-  createBrickGroups(config, 75, 3, 1.5, 12);
+  {
+    BrickQuadsSpec prototype = BrickQuadsSpec()
+      .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
+      .setSize(ofVec3f(7, 5, 14));
+    
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(45, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(55, 1.5)
+      .setCount(12)
+      .setHeadingSpacing(4);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(65, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(8);
+    config->addBrickQuads()
+      .copyFrom(prototype)
+      .setElevation(75, 1.5)
+      .setCount(3)
+      .setHeadingSpacing(12);
+  }
   
   config->addBrickRing()
     .setElevation(30)
@@ -110,12 +99,13 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setSpeed(0.007);
   
   // Create the floor exit wall
-  float d = (config->domeMargin() + config->domeRadius()) * 5;
+  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
     .setHeading(0)
     .setSize(ofVec3f(d, 10, d))
-    .setIsExit(true);
+    .setIsExit(true)
+    .setVisible(false);
   
   config->addStartMessage("Video Bleep\npresents", ofColor(255))
     .setSize(12)
@@ -146,8 +136,8 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setLineWidth(1.4)
     .setColor(ofColor(0, 255, 63, 63));
   config->addRingSet()
-    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.2, 5.0f, ofVec3f(0)))
-    .setSpread(ValuePulserSpec<ofVec3f>(0.01, 0.16, 10.0f, ofVec3f(0)),
+    .setSpin(ValuePulserSpec<ofVec3f>(0, 0.2, 10.0f, ofVec3f(0.2)))
+    .setSpread(ValuePulserSpec<ofVec3f>(0.01, 0.16, 15.0f, ofVec3f(0.1)),
                ofVec3f(60))
     .setCount(50)
     .setRadiusScale(2)

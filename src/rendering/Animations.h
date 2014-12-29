@@ -15,12 +15,31 @@
 #include "GameState.h"
 #include <ofTrueTypeFont.h>
 
+class BleepoutApp;
 class RoundController;
 class LogicController;
+class RoundResults;
 
-class AnimationManager {
+class AppAnimationManager {
 public:
-  AnimationManager(RoundController& roundController);
+  AppAnimationManager(BleepoutApp& app);
+  ~AppAnimationManager();
+  
+  void addMessage(const MessageSpec& message);
+private:
+  void addAnimation(AnimationObject* animation);
+  void onRoundEnded(RoundEndedEventArgs& e);
+  
+  MessageSpec buildRoundEndMessage(const RoundResults& results) const;
+  
+  BleepoutApp& _app;
+  ofTrueTypeFont _messageFont;
+};
+
+class RoundAnimationManager {
+public:
+  RoundAnimationManager(RoundController& roundController);
+  ~RoundAnimationManager();
   
   void attachTo(LogicController& roundEvents);
   void detachFrom(LogicController& roundEvents);
@@ -29,9 +48,11 @@ public:
   
 private:
   void addAnimation(AnimationObject* animation);
-  void onBrickDestroyed(BrickDestroyedEventArgs& e);
+  void onBrickHit(BrickHitEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
+  void onCountdownTick(TimerEventArgs& e);
+  void onBallSpawned(BallStateEventArgs& e);
 private:
   RoundController& _roundController;
   ofTrueTypeFont _messageFont;

@@ -9,6 +9,7 @@
 #include "Brick.h"
 #include "BleepoutConfig.h"
 #include "CircularTrajectory.h"
+#include "BleepoutParameters.h"
 
 const char GameObjectTypeTraits<Brick>::typeName[] = "brick";
 
@@ -17,6 +18,7 @@ Brick::Brick(const RoundConfig& config, const BrickSpec& spec)
 , PhysicsObject(CollisionBox)
 , _value(1), _lives(1), _maxLives(1)
 {
+  const auto& appParams = BleepoutParameters::get();
   thisGameObject = this;
   this->setSize(spec.size);
   this->setColor(spec.color);
@@ -25,16 +27,16 @@ Brick::Brick(const RoundConfig& config, const BrickSpec& spec)
   _maxLives = spec.lives;
   _modifierName = spec.modifierName;
   if (spec.speed == 0) {
-      this->setPositionSpherical(config.domeRadius() +
-                                 config.domeMargin(),
-                                 spec.elevation,
-                                 spec.heading);
+    this->setPositionSpherical(appParams.domeRadius +
+                               appParams.domeMargin,
+                               spec.elevation,
+                               spec.heading);
   } else {
-      this->setTrajectory(new CircularTrajectory(config.domeRadius() +
-                                                 config.domeMargin(),
-                                                 spec.speed,
-                                                 spec.elevation,
-                                                 spec.heading,
-                                                 spec.stopHeading));
+    this->setTrajectory(new CircularTrajectory(appParams.domeRadius +
+                                               appParams.domeMargin,
+                                               spec.speed,
+                                               spec.elevation,
+                                               spec.heading,
+                                               spec.stopHeading));
   }
 }

@@ -43,7 +43,7 @@ void BallOwnerChangedEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
-void BrickDestroyedEventArgs::output(std::ostream &os) const {
+void BrickHitEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, brick());
   os << " ";
@@ -77,6 +77,13 @@ void BallStateEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void SpawnBallEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "ballSpec: " << _ballSpec << ", ";
+  os << "handled: " << handled();
+  os << ")";
+}
+
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
   os << "config:" << config()->name() << ", ";
@@ -87,7 +94,14 @@ void StartRoundEventArgs::output(std::ostream &os) const {
 
 void EndRoundEventArgs::output(std::ostream &os) const {
   os << "(";
+  os << "reason:" << _reason << " ";
   os << "handled:" << std::boolalpha << handled();
+  os << ")";
+}
+
+void RoundEndedEventArgs::output(std::ostream &os) const {
+  os << "(";
+  os << "results:" << _results;
   os << ")";
 }
 
@@ -96,6 +110,13 @@ void ModifierRemovedEventArgs::output(std::ostream &os) const {
   os << "spec:" << _modifierSpec;
   os << " ";
   outputField(os, "target", _target);
+  os << ")";
+}
+
+void TimerEventArgs::output(std::ostream& os) const {
+  os << "(";
+  os << "current:" << _currentTime << ", ";
+  os << "remaining:" << _remainingTime;
   os << ")";
 }
 

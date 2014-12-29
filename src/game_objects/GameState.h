@@ -46,7 +46,7 @@ public:
   GameObjectCollection<AnimationObject>& animations() { return _animations; }
   
   const RoundConfig& config() const { return _config; }
-
+  
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
   Wall& addWall(const WallSpec& wallSpec);
@@ -54,14 +54,17 @@ public:
   void addModifier(ofPtr<Modifier> modifier);
   void addAnimation(ofPtr<AnimationObject> animation);
   
-  int decrementLiveBricks() {
-    return ++_liveBricks;
-  }
+  void decrementLiveBricks() { _liveBricks--; }
+  void decrementLiveBalls() { _liveBalls--; }
   
   int liveBricks() const { return _liveBricks; }
+  int totalBricks() const { return _totalBricks; }
+  
+  int liveBalls() const { return _liveBalls; }
+  int totalBalls() const { return _totalBalls; }
   
   void output(std::ostream& os) const;
-
+  
   float time;
   float endTime;
   
@@ -88,6 +91,9 @@ private:
   GameObjectCollection<Modifier> _modifiers;
   GameObjectCollection<AnimationObject> _animations;
   int _liveBricks;
+  int _totalBricks;
+  int _liveBalls;
+  int _totalBalls;
 };
 
 #endif /* defined(__bleepout__GameState__) */

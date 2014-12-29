@@ -67,7 +67,7 @@ public:
 	// Player's playtime is up. Evaluated at round end.
 	void expire(Player& player);
 
-  /*
+	/*
 		Events
 	*/
 	// Raised when player connects initially
@@ -75,7 +75,7 @@ public:
 	ofEvent<PlayerEventArgs> playerReadyEvent;
 	ofEvent<PlayerEventArgs> playerStartEvent;
 	ofEvent<PlayerEventArgs> playerQuitEvent;
-
+  
   const char* eventSourceName() const { return "PlayerController"; }
 
 private:
