@@ -52,9 +52,9 @@ void BleepoutApp::setup() {
   _audioManager->setup();
   _audioManager->attachTo(*this);
 
-  _playerController.reset(new PlayerController());
+  _playerController.reset(new PlayerController(*_setupController));
   
-  _playerManager.reset(new PlayerManager(*_playerController));
+  _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
   // Temporary, I believe
   _playerManager->addPlayer();
