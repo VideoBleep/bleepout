@@ -15,6 +15,7 @@
 #include "OrbitalTrajectory.h"
 #include "PhysicsUtil.h"
 #include "BleepoutParameters.h"
+#include "JsonUtil.h"
 
 const char GameObjectTypeTraits<Modifier>::typeName[] = "modifier";
 
@@ -56,4 +57,48 @@ void Modifier::setup(const RoundConfig &config,
   this->setColor(ofColor(127, 255, 0));
   _physical = true;
   _visible = true;
+}
+
+#define FOR_EACH_MOD_TYPE(X) \
+X(MODIFIER_EXTRA_LIFE, "ExtraLife") \
+X(MODIFIER_PADDLE_WIDTH, "PaddleWidth") \
+X(MODIFIER_LASER_BALL, "LaserBall")
+
+template<>
+bool EnumTypeTraits<ModifierType>::parseString(const std::string &str, ModifierType *result, const ModifierType &defaultVal) {
+  FOR_EACH_MOD_TYPE(ENUM_PARSE_CASE)
+  *result = defaultVal;
+  return false;
+}
+
+template<>
+bool EnumTypeTraits<ModifierType>::toString(const ModifierType &value, std::string* result) {
+  switch (value) {
+    FOR_EACH_MOD_TYPE(ENUM_TOSTR_CASE)
+    case MODIFIER_NONE:
+    default:
+      return false;
+  }
+  return true;
+}
+
+#undef FOR_EACH_MOD_TYPE
+
+template<>
+void JsonLoader::readVal(const Json::Value &val,
+                         ModifierType *result,
+                         const ModifierType &defaultVal) const {
+  if (!assertType(val, Json::stringValue)) {
+    *result = defaultVal;
+  } else {
+    parseEnumString(val.asString(), result);
+  }
+}
+
+template<>
+Json::Value toJsonVal(const ModifierType& type) {
+  std::string result;
+  if (!enumToString(type, &result))
+    return Json::Value::null;
+  return Json::Value(result);
 }

@@ -13,6 +13,7 @@ BleepoutParameters* BleepoutParameters::_instance = NULL;
 void BleepoutParameters::initialize() {
   if (_instance) {
     ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
+//    delete _instance; ...?
   }
   _instance = new BleepoutParameters();
 }
@@ -30,7 +31,8 @@ void BleepoutParameters::cleanup() {
 
 void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
   if (_appConfig) {
-    ofLogWarning() << "Reinitializing BleepoutParameters, which is odd and probably a bug";
+    ofLogWarning() << "Reinitializing BleepoutParameters config, which is odd and probably a bug";
+//    delete _appConfig; ...?
   }
   _appConfig = &appConfig;
   _queuedRoundNames.clear();
@@ -46,7 +48,8 @@ void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
 }
 
 BleepoutParameters::BleepoutParameters(void)
-: paused(false)
+: _appConfig(NULL)
+, paused(false)
 , inRound(false)
 , exitsEnabled(false)
 , debugGraphics(false)

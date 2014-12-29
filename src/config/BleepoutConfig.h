@@ -14,13 +14,19 @@
 #include <vector>
 #include <json.h> // it's included as part of ofxLibwebsockets
 #include "ObjectSpecs.h"
-#include "JsonUtil.h"
 #include "Common.h"
+
+class JsonLoader;
 
 class GameRules {
 public:
   GameRules();
   explicit GameRules(const GameRules& other);
+  
+  GameRules& copyFrom(const GameRules& other);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   float timeLimit() const;
   void setTimeLimit(float value) { _timeLimit.set(value); }
@@ -52,7 +58,12 @@ public:
   static RoundConfig* createRoundConfig3();
   static RoundConfig* createRoundConfig4();
   
+  static RoundConfig* loadFromFile(std::string path);
+  
   explicit RoundConfig(std::string name);
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -145,6 +156,11 @@ public:
     return _brickQuads.back();
   }
   
+  CurvedBrickColumnSpec& addCurvedBrickColumn() {
+    _curvedBrickColumns.push_back(CurvedBrickColumnSpec());
+    return _curvedBrickColumns.back();
+  }
+  
   ModifierSpec& addModifierDef(std::string name, ModifierType type) {
     _modifierDefs[name] = ModifierSpec(name, type);
     return _modifierDefs.at(name);
@@ -163,8 +179,10 @@ public:
   
   float countdownTimerPeriod;
   
-  Json::Value toJsonVal() const;
+  std::string filepath;
 private:
+  void readSpecJson(const JsonLoader& loader, const Json::Value& obj);
+  
   std::string _name;
   float _startDelay;
   ofVec3f _paddleSize;
@@ -178,6 +196,7 @@ private:
   std::vector<BallSpec> _balls;
   std::vector<BrickSpec> _bricks;
   std::vector<BrickRingSpec> _brickRings;
+  std::vector<CurvedBrickColumnSpec> _curvedBrickColumns;
   std::vector<BrickQuadsSpec> _brickQuads;
   std::vector<WallSpec> _walls;
   std::vector<WallRingSpec> _wallRings;
@@ -191,7 +210,12 @@ class BleepoutConfig {
 public:
   static BleepoutConfig* createConfig();
   
+  static BleepoutConfig* loadFromFile(std::string path);
+  
   BleepoutConfig();
+  
+  void readJson(const JsonLoader& loader, const Json::Value& obj);
+  Json::Value buildJson() const;
   
   void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
@@ -220,8 +244,6 @@ public:
   std::string playerLivesChangedSound;
   std::string playerLostSound;
   std::string countdownTimerTickSound;
-  
-  Json::Value toJsonVal() const;
 private:
   int _fps;
   ofLogLevel _logLevel;

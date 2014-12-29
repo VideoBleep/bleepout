@@ -21,8 +21,18 @@ BleepoutApp::~BleepoutApp() {
 void BleepoutApp::setup() {
   BleepoutParameters::initialize();
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
-  _config.reset(BleepoutConfig::createConfig());
+  BleepoutConfig* cfg = BleepoutConfig::loadFromFile("config/bleepoutConfig.json");
+  if (!cfg) {
+    ofLogWarning() << "Unable to load config file: config/bleepoutConfig.json";
+    cfg = BleepoutConfig::createConfig();
+  }
+  _config.reset(cfg);
   BleepoutParameters::initializeConfig(*_config);
+//  _config->saveJsonFile("config/bleepoutConfig.json");
+//  for (auto& round : _config->roundConfigs()) {
+//    std::string filepath = "config/" + round->name() + ".json";
+//    round->saveJsonFile(filepath);
+//  }
   ofSetFrameRate(_config->fps());
   ofSetLogLevel(_config->logLevel());
   ofSetVerticalSync(_config->vsync());
