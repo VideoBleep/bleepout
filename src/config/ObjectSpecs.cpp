@@ -521,6 +521,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(amount);
     R_JPROP(duration);
     R_JPROP(color);
+    R_JPROP(beneficial);
   }
 }
 
@@ -533,6 +534,7 @@ Json::Value toJsonVal(const ModifierSpec& spec) {
   obj["amount"] = spec.amount;
   obj["duration"] = spec.duration;
   obj["color"] = toJsonVal(spec.color);
+  obj["beneficial"] = spec.beneficial;
   return obj;
 }
 

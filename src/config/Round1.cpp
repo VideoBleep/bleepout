@@ -31,7 +31,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   config->addModifierDef(narrowPaddleName, MODIFIER_PADDLE_WIDTH)
     .setAmount(0.5)
     .setDuration(5.0)
-    .setColor(ofColor::red);
+    .setColor(ofColor::red)
+    .setBeneficial(false);
   
   int cols = 12;
   int rows = 10;

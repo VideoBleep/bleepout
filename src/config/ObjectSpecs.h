@@ -366,13 +366,15 @@ struct ModifierSpec {
   float amount;
   float duration;
   ofColor color;
+  bool beneficial;
   
-  ModifierSpec() : type(MODIFIER_NONE) { }
+  ModifierSpec() : type(MODIFIER_NONE), beneficial(true) { }
   ModifierSpec(std::string n, ModifierType t)
   : type(t), name(n), amount(0), duration(0) { }
   ModifierSpec& setAmount(float amt) { amount = amt; return *this; }
   ModifierSpec& setDuration(float dur) { duration = dur; return *this; }
   ModifierSpec& setColor(ofColor c) { color = c; return *this; }
+  ModifierSpec& setBeneficial(bool b) { beneficial = b; return *this; }
 };
 
 struct MessageSpec {

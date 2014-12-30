@@ -613,7 +613,8 @@
 			"color" : [ 255, 0, 0 ],
 			"duration" : 5.0,
 			"name" : "narrowPaddle",
-			"type" : "PaddleWidth"
+			"type" : "PaddleWidth",
+			"beneficial" : false
 		},
 		
 		{
