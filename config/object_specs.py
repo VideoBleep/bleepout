@@ -1,70 +1,57 @@
-def build_color(color):
-  if not color:
-    return None
-  d = dict(r = color[0], g = color[1], b = color[2])
-  if len(color) == 4:
-    d['a'] = color[3]
-  else:
-    d['a'] = 255
-  return d
 
-class BrickSpec:
-  def __init__(self, elevation = 0, heading = 0, size = None, value = 1,
-               lives = 1, color = None, speed = 0,
-               stopHeading = -1, modifier = None):
-    self.elevation = elevation
-    self.heading = heading
-    self.size = size if size else (7.0, 5.0, 17.0)
-    self.value = value
-    self.lives = lives
-    self.color = color if color else (0, 255, 0, 255)
-    self.speed = speed
-    self.stopHeading = stopHeading
-    self.modifier = modifier
+defaultBrickSize = [7, 5, 17]
 
-  def build(self):
-    d = dict(elevation = self.elevation,
-             heading = self.heading,
-             size = self.size,
-             value = self.value,
-             lives = self.lives,
-             color = build_color(self.color))
-    if self.speed and self.speed != 0:
-      d['speed'] = self.speed
-    if self.stopHeading:
-      d['stopHeading'] = self.stopHeading
-    if self.modifier:
-      d['modifier'] = self.modifier
-    return d
+def createBrickSpec(elevation = 30,
+                    heading = 0,
+                    speed = 0,
+                    stopHeading = -1,
+                    lives = 1,
+                    value = 1,
+                    modifier = None,
+                    color = None,
+                    size = None):
+  return dict(_type = "Brick",
+              elevation = elevation,
+              heading = heading,
+              size = size if size else defaultBrickSize,
+              value = value,
+              lives = lives,
+              color = color if color else [255, 0, 255],
+              speed = speed,
+              stopHeading = stopHeading,
+              modifier = modifier)
 
-class BrickRingSpec:
-  def __init__(self, elevation = 0, count = 1, phase = 0, size = None,
-               value = 1, lives = 1, color = None, speed = 0,
-               stopHeading = -1):
-    self.elevation = elevation
-    self.count = count
-    self.phase = phase
-    self.size = size if size else (7.0, 5.0, 17.0)
-    self.value = value
-    self.lives = lives
-    self.color = color if color else (0, 255, 0, 255)
-    self.speed = speed
-    self.stopHeading = stopHeading
+def createBrickRing(elevation = 0, size = None, color = None, value = 1, lives = 1,
+                    count = 1, phase = 0, speed = 0, stopHeading = -1,
+                    modifierName = "", modifierChance = 1):
+  return dict(_type = "BrickRing",
+              elevation = elevation,
+              size = size if size else defaultBrickSize,
+              color = color if color else [255, 0, 255],
+              value = value,
+              lives = lives,
+              count = count,
+              phase = phase,
+              speed = speed,
+              stopHeading = stopHeading,
+              modifierName = modifierName,
+              modifierChance = modifierChance)
 
-  def build(self):
-    d = dict(elevation = self.elevation,
-             count = self.count,
-             size = self.size,
-             value = self.value,
-             lives = self.lives,
-             color = build_color(self.color))
-    if self.phase:
-      d['phase'] = self.phase
-    if self.speed:
-      d['speed'] = self.speed
-    if self.stopHeading:
-      d['stopHeading'] = self.stopHeading
-    return d
+def createBrickQuads(elevation = 0, color1 = None, color2 = None, count = 1,
+                     elevationSpacing = 5, headingSpacing = 5, size = None,
+                     speed = 0, stopHeading = -1, modifierName = "", modifierChance = 1):
+  return dict(_type = "BrickQuads",
+              elevation = elevation,
+              size = size if size else defaultBrickSize,
+              color1 = color1 if color1 else [255, 0, 255],
+              color2 = color2 if color2 else [255, 255, 0],
+              count = count,
+              elevationSpacing = elevationSpacing,
+              headingSpacing = headingSpacing,
+              speed = speed,
+              stopHeading = stopHeading,
+              modifierName = modifierName,
+              modifierChance = modifierChance)
 
 class WallSpec:
   def __init__(self, elevation = 0, heading = 0, size = None,
@@ -173,7 +160,7 @@ class MessageSpec:
 
   def build(self):
     d = dict(text = self.text,
-             color = build_color(self.color),
+             color = self.color,
              size = self.size,
              trails = self.trails,
              delay = self.delay,
@@ -212,7 +199,7 @@ class RingSetSpec:
              count = self.count,
              radiusScale = self.radiusScale,
              lineWidth = self.lineWidth,
-             color = build_color(self.color))
+             color = self.color)
     return d
 
 def build_all(objects):
