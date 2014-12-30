@@ -27,7 +27,7 @@ public:
   const Player* player() const { return _player; }
   void setPlayer(Player* player) { _player = player; }
   
-  bool isLaser() const;
+  bool isSupercharged() const;
   
   virtual const ofColor& getColor() const override;
   
@@ -37,12 +37,12 @@ public:
   void applyModifier(const RoundState& state,
                      const ModifierSpec& modifierSpec);
   
-  const ModifierSpec* updateLaserModifier(const RoundState& state);
-  const ModifierSpec* removeLaserModifier();
+  const ofPtr<ModifierSpec> updateModifier(const RoundState& state);
+  const ofPtr<ModifierSpec> removeModifier();
   
 private:
   Player* _player;
-  ModifierSlot _laserModifier;
+  ModifierSlot _modifier;
 };
 
 template<>

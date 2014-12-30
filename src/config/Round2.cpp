@@ -32,8 +32,8 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     .setTiming(7.5, 3);
   config->_startDelay = 10;
   
-  std::string laserModName("laser");
-  config->addModifierDef(laserModName, MODIFIER_LASER_BALL)
+  std::string superchargeModName("supercharge");
+  config->addModifierDef(superchargeModName, MODIFIER_SUPERCHARGED_BALL)
     .setColor(ofColor::green)
     .setDuration(20);
   
@@ -50,7 +50,7 @@ RoundConfig* RoundConfig::createRoundConfig2() {
                   ofColor(0, 255, 0))
         .setSize(ofVec3f(5, 2, 10))
         .setStripe1(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0))
-        .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, laserModName, 0.3))
+        .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, superchargeModName, 0.3))
         .setStripe3(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0));
     }
   }

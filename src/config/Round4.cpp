@@ -20,8 +20,8 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   
-  std::string laserModName("laser");
-  config->addModifierDef(laserModName, MODIFIER_LASER_BALL)
+  std::string superchargedModName("supercharge");
+  config->addModifierDef(superchargedModName, MODIFIER_SUPERCHARGED_BALL)
     .setColor(ofColor::green)
     .setDuration(20);
   
@@ -30,7 +30,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     prototype
       .setColor(ofColor(0, 255, 0), ofColor(0, 127, 127))
       .setSize(ofVec3f(7, 5, 14))
-      .setModifier(laserModName, .7);
+      .setModifier(superchargedModName, .7);
     
     config->addBrickQuads()
       .copyFrom(prototype)
@@ -121,7 +121,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setValue(2)
     .setColor(ofColor(0, 255, 127))
     .setSpeed(0.005)
-    .setModifier(laserModName, .5);
+    .setModifier(superchargedModName, .5);
   
   config->addBrickRing()
     .setElevation(42)

@@ -61,7 +61,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -95,7 +95,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -129,7 +129,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -163,7 +163,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -197,7 +197,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -231,7 +231,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -265,7 +265,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -299,7 +299,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -333,7 +333,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -367,7 +367,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -401,7 +401,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -435,7 +435,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -469,7 +469,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -503,7 +503,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -537,7 +537,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -571,7 +571,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -605,7 +605,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -639,7 +639,7 @@
 			{
 				"lives" : 1,
 				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "laser",
+				"modifierName" : "supercharge",
 				"value" : 2
 			},
 			"stripe3" : 
@@ -688,8 +688,8 @@
 			"amount" : 0.0,
 			"color" : [ 0, 255, 0 ],
 			"duration" : 20.0,
-			"name" : "laser",
-			"type" : "LaserBall"
+			"name" : "supercharge",
+			"type" : "SuperchargedBall"
 		},
 		
 		{

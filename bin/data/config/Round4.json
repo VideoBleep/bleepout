@@ -143,7 +143,7 @@
 			"elevation" : 44.0,
 			"lives" : 2,
 			"modifierChance" : 0.50,
-			"modifierName" : "laser",
+			"modifierName" : "supercharge",
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.004999999888241291,
@@ -188,7 +188,7 @@
 			"elevationSpacing" : 1.50,
 			"headingSpacing" : 4.0,
 			"modifierChance" : 0.6999999880790710,
-			"modifierName" : "laser",
+			"modifierName" : "supercharge",
 			"size" : [ 7.0, 5.0, 14.0 ],
 			"speed" : 0.0,
 			"stopHeading" : 2.802596928649634e-45
@@ -203,7 +203,7 @@
 			"elevationSpacing" : 1.50,
 			"headingSpacing" : 4.0,
 			"modifierChance" : 0.6999999880790710,
-			"modifierName" : "laser",
+			"modifierName" : "supercharge",
 			"size" : [ 7.0, 5.0, 14.0 ],
 			"speed" : 0.0,
 			"stopHeading" : 2.802596928649634e-45
@@ -218,7 +218,7 @@
 			"elevationSpacing" : 1.50,
 			"headingSpacing" : 8.0,
 			"modifierChance" : 0.6999999880790710,
-			"modifierName" : "laser",
+			"modifierName" : "supercharge",
 			"size" : [ 7.0, 5.0, 14.0 ],
 			"speed" : 0.0,
 			"stopHeading" : 2.802596928649634e-45
@@ -233,7 +233,7 @@
 			"elevationSpacing" : 1.50,
 			"headingSpacing" : 12.0,
 			"modifierChance" : 0.6999999880790710,
-			"modifierName" : "laser",
+			"modifierName" : "supercharge",
 			"size" : [ 7.0, 5.0, 14.0 ],
 			"speed" : 0.0,
 			"stopHeading" : 2.802596928649634e-45
@@ -354,8 +354,8 @@
 			"amount" : 0.0,
 			"color" : [ 0, 255, 0 ],
 			"duration" : 20.0,
-			"name" : "laser",
-			"type" : "LaserBall"
+			"name" : "supercharge",
+			"type" : "SuperchargedBall"
 		},
 		
 		{

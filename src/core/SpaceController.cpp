@@ -110,7 +110,7 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.b->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.b);
       ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
-    } else if (cdata.b->type() == GAME_OBJECT_BRICK && !ball.isLaser() && !appParams.allLasers) {
+    } else if (cdata.b->type() == GAME_OBJECT_BRICK && !ball.isSupercharged()) {
       ball.bounce(cdata.normalOnA);
     } else if (cdata.b->type() == GAME_OBJECT_WALL) {
       ball.bounce(cdata.normalOnA);
@@ -120,7 +120,7 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.a->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.a);
       ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
-    } else if (cdata.a->type() == GAME_OBJECT_BRICK && !ball.isLaser() && !appParams.allLasers) {
+    } else if (cdata.a->type() == GAME_OBJECT_BRICK && !ball.isSupercharged()) {
       ball.bounce(-cdata.normalOnA);
     } else if (cdata.a->type() == GAME_OBJECT_WALL) {
       ball.bounce(-cdata.normalOnA);

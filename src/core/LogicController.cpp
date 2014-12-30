@@ -50,7 +50,7 @@ void LogicController::update() {
   }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
-      const ModifierSpec* mod = obj->updateWidthModifier(_state);
+      const ofPtr<ModifierSpec> mod = obj->updateWidthModifier(_state);
       if (mod) {
         notifyModifierRemoved(_state, *mod, obj.get());
       }
@@ -58,7 +58,7 @@ void LogicController::update() {
   }
   for (auto& obj : _state.balls()) {
     if (obj && obj->alive()) {
-      const ModifierSpec* mod = obj->updateLaserModifier(_state);
+      const ofPtr<ModifierSpec> mod = obj->updateModifier(_state);
       if (mod) {
         notifyModifierRemoved(_state, *mod, obj.get());
       }

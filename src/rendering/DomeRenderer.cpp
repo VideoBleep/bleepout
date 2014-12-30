@@ -280,7 +280,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 void DomeRenderer::drawBall(Ball &ball) {
   auto& appParams = BleepoutParameters::get();
   
-  if (!appParams.allLasers && !ball.isLaser()) {
+  if (!appParams.allLasers) {
     
     ofPushStyle();
     ofPushMatrix();
@@ -301,7 +301,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     
     ofPopMatrix();
     
-    if (appParams.drawComets) {
+    if (appParams.drawComets || ball.isSupercharged()) {
       drawCometTail(ball, 6.8, 50,  0, ofColor(255, 120, 30, 200));
       drawCometTail(ball, 5.0, 30, -1, ofColor(255, 200, 50, 200));
       drawCometTail(ball, 5.0, 30,  1, ofColor(255, 200, 50, 200));
