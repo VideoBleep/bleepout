@@ -227,21 +227,21 @@ void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
 */
 // Send 'Select Color' state message to player
 void PlayerManager::setPlayerColor(Player& player) {
-  player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
 }
 // Send 'Queued' state message to player
 void PlayerManager::setPlayerQueued(Player& player) {
-	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
 }
 // Send 'Calibrate' state message to player
 void PlayerManager::setPlayerCalibrate(Player& player) {
-	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
 }
 // Send game 'Ready' state message to player 
 void PlayerManager::setPlayerReady(Player& player) {
-	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_READY);
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_READY);
 }
 // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
 void PlayerManager::setPlayerPlay(Player& player) {
-	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_PLAY);
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_PLAY);
 }
