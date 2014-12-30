@@ -131,8 +131,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
-  appParams.setCurrentRound(e.config()->name());
-  _roundController.reset(new RoundController(*e.config(),
+  _roundController.reset(new RoundController(e.config(),
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();

@@ -1,0 +1,15 @@
+
+{
+	"fps" : 30,
+	"logLevel" : "Notice",
+	"rounds" : 
+	[
+		"config/Round1.json",
+		"config/Round2.json",
+		"config/Round3.json",
+		"config/Round4.json"
+	],
+	"syphonAppName" : "Arena",
+	"syphonServerName" : "Composition",
+	"vsync" : true
+}
