@@ -2,7 +2,7 @@
 Bleepout - Game Sequence & Logistics
 ==============
 
-
+```
 People wait in line
 
 then N people enter the pen from the line
@@ -38,7 +38,7 @@ phone says "thanks for playing"
 signals outside operator to send in a new round
 
 [technical: round is torn down, active players deleted]
-
+```
 Failure Modes
 =============
 
