@@ -47,40 +47,46 @@ void SpaceController::setup() {
     addBrick(brick);
   }
   
-  for (const WallSpec& wall : _state.config().allWalls()) {
-    //addWall(wall);
-  }
+  bool testCurvedWallMeshCollisions = true;
   
-  auto appParams = BleepoutParameters::get();
-    
+  if (!testCurvedWallMeshCollisions) {
+    for (const WallSpec& wall : _state.config().allWalls()) {
+      addWall(wall);
+    }
+  } else {
+  
+    auto appParams = BleepoutParameters::get();
+      
     for (const CurvedWallSpec& cw : _state.config().curvedWallSets()) {
       float r = appParams.domeRadius + appParams.domeMargin;
       float d = cw.width / 4.0;
+      float w2 = cw.width / 2.0;
       int steps = 20;
       
       Sweep* sweep = new Sweep();
-      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
-      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
-      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
-      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
-      sweep->path.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1));
+      sweep->startFace.addPoint(sphericalToCartesian(r - w2, cw.elevation1, cw.heading1 - d));
+      sweep->startFace.addPoint(sphericalToCartesian(r - w2, cw.elevation1, cw.heading1 + d));
+      sweep->startFace.addPoint(sphericalToCartesian(r + w2 * 2, cw.elevation1, cw.heading1 + d));
+      sweep->startFace.addPoint(sphericalToCartesian(r + w2 * 2, cw.elevation1, cw.heading1 - d));
+      sweep->path.addPoint(sphericalToCartesian(r - w2, cw.elevation1, cw.heading1));
       for (int i = 0; i < steps; i++) {
-          float s = i / ((steps - 1) * 1.0);
-          sweep->path.addPoint(sphericalToCartesian(r,
-                                                   lerp(cw.elevation1, cw.elevation2, s),
-                                                   lerp(cw.heading1, cw.heading2, s)));
+        float s = i / ((steps - 1) * 1.0);
+        sweep->path.addPoint(sphericalToCartesian(r - w2,
+                                                  lerp(cw.elevation1, cw.elevation2, s),
+                                                  lerp(cw.heading1, cw.heading2, s)));
       }
       
       sweep->generate();
-        auto o = new Wall(_state.config(), WallSpec());
-        o->setPosition(ofVec3f(0, 0, 0));
-        o->setMesh(sweep);
-        _world.addObject(o);
+      auto o = new Wall(_state.config(), WallSpec());
+      o->setPosition(ofVec3f(0, 0, 0));
+      o->setMesh(sweep);
+      _world.addObject(o);
     }
     
-  // Create the floor exit wall
-  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
-  addWall(WallSpec().setElevation(-10).setHeading(0).setSize(ofVec3f(d, 10, d)).setIsExit(true));
+    // Create the floor exit wall
+    float d = (appParams.domeMargin + appParams.domeRadius) * 5;
+    addWall(WallSpec().setElevation(-10).setHeading(0).setSize(ofVec3f(d, 10, d)).setIsExit(true).setVisible(false));
+  }
 }
 
 void SpaceController::addBrick(const BrickSpec &brickSpec) {
