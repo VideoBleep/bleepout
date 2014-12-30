@@ -84,7 +84,7 @@ void PlayerManager::onOpen(ofxLibwebsockets::Event& args){
 
   // TODO - Create a proper SID
 	// TODO - Build with a JSON builder
-	std::string handshake = "{ \"sid\": 1, \"upgrades\": [\"websockets\"], \"pingInterval\": 100, \"pingTimeout\": 1000 }";
+	std::string handshake = "{ \"sid\": 1, \"upgrades\": [\"websockets\"], \"pingInterval\": 10000, \"pingTimeout\": 5000 }";
 
 	args.conn.send(PACKET_OPEN + handshake);
 }
@@ -95,12 +95,19 @@ void PlayerManager::onClose(ofxLibwebsockets::Event& args){
 
 void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
   cout << "on idle " << args.message << endl;
-
+  args.conn.send(PACKET_PONG);
 }
 
 // THIS BADLY NEEDS REFACTORING, it only grows from here... but maybe not today.
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
 	ofLogVerbose() << "got message " << args.message << endl;
+
+  // PING (heartbeat)
+  if (args.message == PACKET_PING) {
+    // PONG (no, bleepout)
+    args.conn.send(PACKET_PONG);
+    return;
+  }
 
 	// Parse message
 	// TODO: Create an engine.io packet parser
@@ -118,13 +125,6 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
 	msgPrefix.erase(0, 1);
 
 	ofPtr<Player> player = findPlayer(args.conn);
-
-    // PING (heartbeat)
-    if (msgType == PACKET_PING) {
-      // PONG (no, bleepout)
-      args.conn.send(PACKET_PONG);
-      return;
-    }
 
 	// LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
 	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
