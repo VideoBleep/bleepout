@@ -70,10 +70,8 @@ namespace {
   
 }
 
-DomeRenderer::DomeRenderer(RoundState& state,
-                           const RoundConfig& config)
-: RendererBase(state, config)
-, _extras(state, config) { }
+DomeRenderer::DomeRenderer(RoundState& state)
+: RendererBase(state), _extras(state) { }
 
 void DomeRenderer::setup() {
   ofEnableDepthTest();
@@ -151,7 +149,7 @@ void DomeRenderer::draw() {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
   }
   
-  for (auto& cw : _config.curvedWallSets()) {
+  for (auto& cw : _state.config().curvedWallSets()) {
     float r = appParams.domeRadius + appParams.domeMargin;
     float d = cw.width / 4.0;
     int steps = 20;

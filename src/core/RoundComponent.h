@@ -10,19 +10,16 @@
 #define __bleepout__RoundComponent__
 
 class RoundState;
-class RoundConfig;
 
 class RoundComponent {
 public:
-  RoundComponent(RoundState& state,
-                 const RoundConfig& config);
+  RoundComponent(RoundState& state);
   virtual ~RoundComponent() {}
   
   virtual void setup() {}
   virtual void update() {}
   virtual void draw() {}
 protected:
-  const RoundConfig& _config;
   RoundState& _state;
 };
 

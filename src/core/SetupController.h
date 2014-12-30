@@ -36,7 +36,7 @@ public:
   void handlePlayerConnected(PlayerEventArgs& e);
 
 private:
-  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+  bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                            std::list<ofPtr<Player> > players);
   bool tryStartRound();
 

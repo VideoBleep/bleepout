@@ -86,7 +86,17 @@ void SpawnBallEventArgs::output(std::ostream &os) const {
 
 void StartRoundEventArgs::output(std::ostream &os) const {
   os << "(";
-  os << "config:" << config()->name() << ", ";
+  os << "configs:(";
+  bool first = true;
+  for (const auto& config : _configs) {
+    if (first) {
+      first = false;
+    } else {
+      os << ", ";
+    }
+    os << config->name();
+  }
+  os << "), ";
   os << "players:" << players().size() << ", ";
   os << "handled:" << std::boolalpha << handled();
   os << ")";

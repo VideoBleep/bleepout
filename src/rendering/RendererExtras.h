@@ -17,8 +17,7 @@ class RendererExtrasImpl;
 
 class RendererExtras : public RoundComponent {
 public:
-  RendererExtras(RoundState& state,
-                 const RoundConfig& config);
+  RendererExtras(RoundState& state);
   void setup() override;
   void update() override;
   void draw() override;

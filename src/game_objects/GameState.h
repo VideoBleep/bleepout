@@ -25,9 +25,10 @@
 class RoundState {
 public:
   
-  RoundState(const RoundConfig& config,
-             std::list<ofPtr<Player> >& players);
+  RoundState(std::list<ofPtr<Player> >& players);
   ~RoundState();
+  
+  void initialize(ofPtr<RoundConfig> config);
   
   const GameObjectCollection<Paddle>& paddles() const { return _paddles; }
   const GameObjectCollection<Ball>& balls() const { return _balls; }
@@ -45,7 +46,7 @@ public:
   GameObjectCollection<Modifier>& modifiers() { return _modifiers; }
   GameObjectCollection<AnimationObject>& animations() { return _animations; }
   
-  const RoundConfig& config() const { return _config; }
+  const RoundConfig& config() const { return *_config; }
   
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
@@ -82,7 +83,7 @@ private:
   RoundState(const RoundState& other) : _config(other._config) {
     ofLogWarning() << "DUPLICATING ROUND STATE!!!";
   }
-  const RoundConfig& _config;
+  ofPtr<RoundConfig> _config;
   GameObjectCollection<Paddle> _paddles;
   GameObjectCollection<Ball>   _balls;
   GameObjectCollection<Brick>  _bricks;

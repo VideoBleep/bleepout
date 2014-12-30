@@ -16,19 +16,27 @@
 #include "BleepoutParameters.h"
 #include "JsonUtil.h"
 
-RoundController::RoundController(ofPtr<RoundConfig> config,
+RoundController::RoundController(std::list<ofPtr<RoundConfig> > configs,
                                  std::list<ofPtr<Player> > players,
                                  PlayerManager& playerManager)
-: _config(config)
-, _state(*_config, players)
+: _queuedConfigs(configs)
+, _state(players)
 , _playerManager(playerManager)
 , _timedActions(true)
 , _ending(false)
+, _readyPlayers(0)
 , EventSource() {
 }
 
 RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+  ofRemoveListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
+  endCurrentConfig();
+}
+
+void RoundController::endCurrentConfig() {
+  if (!_config)
+    return;
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofRemoveListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
@@ -37,20 +45,21 @@ RoundController::~RoundController() {
   _animationManager->detachFrom(*_logicController);
   _timedActions.clear();
   _logicController.reset();
-  _renderer.reset();
   _spaceController.reset();
   _animationManager.reset();
+  _renderer.reset();
+  _config.reset();
 }
 
-void RoundController::setup() {
+void RoundController::loadNextConfig() {
+  endCurrentConfig();
+  _config = _queuedConfigs.front();
+  _queuedConfigs.pop_front();
   _startTime = ofGetElapsedTimef();
-  _state.time = 0;
+  _state.initialize(_config);
   
-  _cullDeadObjectsPulser = Pulser(5.0f);
-  
-  ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
-  _spaceController.reset(new SpaceController(_state, config()));
-  _logicController.reset(new LogicController(_state, config()));
+  _spaceController.reset(new SpaceController(_state));
+  _logicController.reset(new LogicController(_state));
   _animationManager.reset(new RoundAnimationManager(*this));
   _spaceController->setup();
   _logicController->setup();
@@ -61,13 +70,22 @@ void RoundController::setup() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer(_state, config()));
+  _renderer.reset(new DomeRenderer(_state));
   _renderer->setup();
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config->startMessages()) {
     _animationManager->addMessage(msg);
   }
+}
+
+void RoundController::setup() {
+  _cullDeadObjectsPulser = Pulser(5.0f);
+  
+  ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
+  ofAddListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
+  
+  loadNextConfig();
 }
 
 void RoundController::attachTo(AdminController &adminController) {
@@ -136,10 +154,27 @@ void RoundController::update() {
   }
 }
 
+bool RoundController::areEnoughPlayersReady() const {
+  if (_readyPlayers < BleepoutParameters::get().minReadyPlayers)
+    return false;
+  return true;
+}
+
+void RoundController::onPlayerReady(PlayerEventArgs &e) {
+  _readyPlayers++;
+  if (areEnoughPlayersReady()) {
+    // do stuff!
+  }
+}
+
 void RoundController::endRound() {
-  auto results = buildRoundResults(_endReason);
   _ending = false;
-  notifyRoundEnded(results);
+  if (_queuedConfigs.empty()) {
+    auto results = buildRoundResults(_endReason);
+    notifyRoundEnded(results);
+  } else {
+    loadNextConfig();
+  }
 }
 
 void RoundController::onTryEndRound(EndRoundEventArgs &e) {
