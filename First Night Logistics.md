@@ -24,11 +24,11 @@ if yes, operator presses a button to send "Round Queue Event"
 [technical: event is broadcast to phones, they enter calibration mode]
 all the players run through calibration - asked "point at your paddle"
 [technical: store offsets]
-inside operator asks "everyone calibrated?"
-if yes, operator presses a button "round start event"
 ```
 * Round starts
 ```
+inside operator asks "everyone calibrated?" (maybe sees a display like 5 calibrated / 6 connected)
+if yes, operator presses a button "round start event"
 dome shows "video bleep presents bleepout, etc."
 N players get M stages to play (M=3, probably)
 [technical: users' phones send controller data, balls bounce, etc.]
