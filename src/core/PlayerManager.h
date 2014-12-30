@@ -19,25 +19,30 @@
 #include "GameEvents.h"
 #include <list>
 
+class BleepoutApp; 
+
 class PlayerManager : public EventSource {
 public:
-  PlayerManager(PlayerController& playerController);
-  
+	//PlayerManager();
+	PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController);
+
+	std::list<ofPtr<Player> >& players() { return _players; }
+
   // Sockets Server
   ofxLibwebsockets::Server server;
   PlayerController controller;
-  
+
   void setup();
   void update();
   void gotMessage(ofMessage msg);
   
   ofPtr<Player> addPlayer();
   void setIsInRound(bool r) { _inRoundMode = r; }
-  
+
   // Message queue (temporary?)
   ofTrueTypeFont font;
   vector<string> messages;
-  
+
   // Websocket event handlers
   void onConnect(ofxLibwebsockets::Event& args);
   void onOpen(ofxLibwebsockets::Event& args);
@@ -45,36 +50,39 @@ public:
   void onIdle(ofxLibwebsockets::Event& args);
   void onMessage(ofxLibwebsockets::Event& args);
   void onBroadcast(ofxLibwebsockets::Event& args);
-  
-  // Send messages
+
+	/*
+	SEND STATE MESSAGES TO PLAYER
+	*/
   // Send 'Select Color' state message to player
-  void setPlayerColor(Player& player);
+	static void setPlayerColor(Player& player);
   // Send 'Queued' state message to player
-  void setPlayerQueued(Player& player);
+	static void setPlayerQueued(Player& player);
   // Send 'Calibrate' state message to player
-  void setPlayerCalibrate(Player& player);
-  // Send 'Ready' state message to player
-  void setPlayerReady(Player& player);
+	static void setPlayerCalibrate(Player& player);
+  // Send 'Ready' state message to player 
+	static void setPlayerReady(Player& player);
   // Send 'Play' message to player (player should send back "start" message I think, to tell balls to drop)
-  void setPlayerPlay(Player& player);
-  
+	static void setPlayerPlay(Player& player);
+
   ofPtr<Player> findPlayer(ofxLibwebsockets::Connection& conn);
-  
+
   /*
-   Events
-   */
+	Events
+  */
   // Raised when player control message arrives
   ofEvent<PlayerYawPitchRollEventArgs> playerYawPitchRollEvent;
   
   const char* eventSourceName() const override { return "PlayerManager"; }
   
 private:
-  
+
   void notifyPlayerYawPitchRoll(Player* player, float yaw,
                                 float pitch, float roll);
   
   bool _inRoundMode;
-  
+
+	BleepoutApp& _bleepoutApp;
   std::list<ofPtr<Player> > _players;
 };
 

@@ -9,7 +9,6 @@
 #ifndef __bleepout__BleepoutParameters__
 #define __bleepout__BleepoutParameters__
 
-#include <ofParameterGroup.h>
 #include "BleepoutConfig.h"
 #include <ofTypes.h>
 #include <deque>
@@ -29,12 +28,9 @@ public:
     return *_instance;
   }
   
-  ofParameterGroup& params() { return _params; }
   const BleepoutConfig& appConfig() const { return *_appConfig; }
   BleepoutConfig& appConfig() { return *_appConfig; }
-  const RoundConfig* currentRoundConfig() const { return _currentRoundConfig.get(); }
   std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
-  ofPtr<RoundConfig> setCurrentRound(const std::string& name);
   ofPtr<RoundConfig> popNextRound();
   ofPtr<RoundConfig> getNextRound();
   
@@ -57,9 +53,7 @@ public:
   float domeRadius;
   float domeMargin;
 private:
-  ofParameterGroup _params;
   BleepoutConfig* _appConfig;
-  ofPtr<RoundConfig> _currentRoundConfig;
   std::string _currentRoundName;
   std::deque<std::string> _queuedRoundNames;
   GameRules _rulesOverrides;

@@ -57,7 +57,8 @@ Json::Value toJsonVal(const Optional<float>& val) {
 
 template<>
 void JsonLoader::readVal(const Json::Value &val,
-                         Optional<bool>* result) const {
+                         Optional<bool>* result,
+                         const Optional<bool>& defaultVal) const {
   if (!assertType(val, Json::booleanValue))
     result->unset();
   else
@@ -66,7 +67,8 @@ void JsonLoader::readVal(const Json::Value &val,
 
 template<>
 void JsonLoader::readVal(const Json::Value &val,
-                         Optional<float>* result) const {
+                         Optional<float>* result,
+                         const Optional<float>& defaultVal) const {
   if (!assertType(val, Json::realValue))
     result->unset();
   else

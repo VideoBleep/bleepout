@@ -381,9 +381,9 @@ public:
               static CollisionArgs args;
               args.a = obj1->thisGameObject;
               args.b = obj2->thisGameObject;
-              args.normal = m.normal;
-              
-              
+              args.normalOnA = m.normal;
+              // TODO: Dewb - add recent enh. to non-bullet physics
+
               world.notifyCollision(args);
             }
           }
