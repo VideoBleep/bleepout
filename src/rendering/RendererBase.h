@@ -9,15 +9,14 @@
 #ifndef __bleepout__RendererBase__
 #define __bleepout__RendererBase__
 
-#include "GameState.h"
 #include "RoundComponent.h"
+#include "GameState.h"
 
 class LogicController;
 
 class RendererBase : public RoundComponent {
 public:
-  RendererBase(RoundState& state,
-               const RoundConfig& config);
+  RendererBase(RoundState& state);
   virtual ~RendererBase() {}
   
   virtual void setup() {}

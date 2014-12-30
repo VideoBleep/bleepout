@@ -18,8 +18,7 @@
 
 class SpaceController : public EventSource, public RoundComponent {
 public:
-  SpaceController(RoundState& state,
-                  const RoundConfig& config);
+  SpaceController(RoundState& state);
   
   ofEvent<CollisionEventArgs> collisionEvent;
   

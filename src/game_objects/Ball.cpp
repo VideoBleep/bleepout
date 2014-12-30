@@ -46,28 +46,28 @@ const ofColor& Ball::getColor() const {
   }
 }
 
-bool Ball::isLaser() const {
-  return _laserModifier.active();
+bool Ball::isSupercharged() const {
+  return _modifier.active() && _modifier.spec()->type == MODIFIER_SUPERCHARGED_BALL;
 }
 
 void Ball::applyModifier(const RoundState &state,
                          const ModifierSpec &modifierSpec) {
-  _laserModifier.set(modifierSpec, state.time);
+  _modifier.set(modifierSpec, state.time);
 }
 
-const ModifierSpec* Ball::removeLaserModifier() {
-  if (_laserModifier.active()) {
-    return _laserModifier.clear();
+const ofPtr<ModifierSpec> Ball::removeModifier() {
+  if (_modifier.active()) {
+    return _modifier.clear();
   }
-  return NULL;
+  return ofPtr<ModifierSpec>();
 }
 
-const ModifierSpec* Ball::updateLaserModifier(const RoundState &state) {
-  if (_laserModifier.active() &&
-      _laserModifier.checkExpiration(state.time)) {
-    return removeLaserModifier();
+const ofPtr<ModifierSpec> Ball::updateModifier(const RoundState &state) {
+  if (_modifier.active() &&
+      _modifier.checkExpiration(state.time)) {
+    return removeModifier();
   }
-  return NULL;
+  return ofPtr<ModifierSpec>();
 }
 
 bool BallModifier::applyToTarget(RoundState &state, GameObject &target) {

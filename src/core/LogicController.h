@@ -18,7 +18,8 @@ class SpaceController;
 
 class LogicController : public EventSource {
 public:
-  LogicController(RoundState& state, const RoundConfig& config);
+  LogicController(RoundState& state);
+  virtual ~LogicController() {}
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickHitEventArgs> brickHitEvent;
@@ -73,7 +74,6 @@ private:
   void respawnBall(Player* player);
   
   RoundState& _state;
-  const RoundConfig& _config;
   float _lastSpecifiedTimeLimitOffset;
   Pulser _countdownTickPulser;
 };

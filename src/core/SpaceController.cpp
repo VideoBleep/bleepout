@@ -20,9 +20,8 @@ namespace {
   
 }
 
-SpaceController::SpaceController(RoundState& state,
-                                 const RoundConfig& config)
-: RoundComponent(state, config)
+SpaceController::SpaceController(RoundState& state)
+: RoundComponent(state)
 , EventSource() {
 }
 
@@ -31,7 +30,7 @@ void SpaceController::addInitialPaddles() {
   int i = 0;
   for (ofPtr<Player>& player : _state.players()) {
     addPaddle(360 * i / (numPlayers * 1.0), player.get());
-    ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _config);
+    ofVec2f ballCenter = getBallStartPosition(i, numPlayers, _state.config());
     i++;
   }
 }
@@ -40,15 +39,15 @@ void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
   
-  for (const BallSpec& ball : _config.balls()) {
+  for (const BallSpec& ball : _state.config().balls()) {
     addBall(ball);
   }
   
-  for (const BrickSpec& brick : _config.allBricks()) {
+  for (const BrickSpec& brick : _state.config().allBricks()) {
     addBrick(brick);
   }
   
-  for (const WallSpec& wall : _config.allWalls()) {
+  for (const WallSpec& wall : _state.config().allWalls()) {
     addWall(wall);
   }
 }
@@ -80,7 +79,7 @@ void SpaceController::addWall(const WallSpec &wallSpec) {
 
 void SpaceController::setUpModifier(Modifier &modifier,
                                     Brick &spawnerBrick) {
-  modifier.setup(_config, spawnerBrick);
+  modifier.setup(_state.config(), spawnerBrick);
   _world.addObject(&modifier);
 }
 
@@ -111,7 +110,9 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.b->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.b);
       ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
-    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.b->type() != GAME_OBJECT_BRICK) {
+    } else if (cdata.b->type() == GAME_OBJECT_BRICK && !ball.isSupercharged()) {
+      ball.bounce(cdata.normalOnA);
+    } else if (cdata.b->type() == GAME_OBJECT_WALL) {
       ball.bounce(cdata.normalOnA);
     }
   } else if (cdata.b->type() == GAME_OBJECT_BALL) {
@@ -119,7 +120,9 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.a->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.a);
       ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
-    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.a->type() != GAME_OBJECT_BRICK) {
+    } else if (cdata.a->type() == GAME_OBJECT_BRICK && !ball.isSupercharged()) {
+      ball.bounce(-cdata.normalOnA);
+    } else if (cdata.a->type() == GAME_OBJECT_WALL) {
       ball.bounce(-cdata.normalOnA);
     }
   }

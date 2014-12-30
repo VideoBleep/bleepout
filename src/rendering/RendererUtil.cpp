@@ -67,3 +67,50 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofPopStyle();
   ofPopMatrix();
 }
+
+void drawTetrahedron(const ofVec3f& origin, float radius) {
+  
+  ofVec3f a(origin.x + radius, origin.y + radius, origin.z + radius);
+  ofVec3f b(origin.x - radius, origin.y - radius, origin.z + radius);
+  ofVec3f c(origin.x - radius, origin.y + radius, origin.z - radius);
+  ofVec3f d(origin.x + radius, origin.y - radius, origin.z - radius);
+  
+  if (ofGetFill()) {
+    glBegin(GL_TRIANGLES);
+  } else {
+    glBegin(GL_LINE_LOOP);
+  }
+  
+  glVertex3fv(a.getPtr());
+  glVertex3fv(b.getPtr());
+  glVertex3fv(c.getPtr());
+
+  if (!ofGetFill()) {
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+  }
+  
+  glVertex3fv(a.getPtr());
+  glVertex3fv(c.getPtr());
+  glVertex3fv(d.getPtr());
+
+  if (!ofGetFill()) {
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+  }
+  
+  glVertex3fv(a.getPtr());
+  glVertex3fv(d.getPtr());
+  glVertex3fv(b.getPtr());
+
+  if (!ofGetFill()) {
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+  }
+  
+  glVertex3fv(b.getPtr());
+  glVertex3fv(d.getPtr());
+  glVertex3fv(c.getPtr());
+
+  glEnd();
+}

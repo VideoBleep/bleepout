@@ -20,12 +20,14 @@ typedef BinaryAction<float, float> TimedPercentageFunc;
 
 class TimedAction {
 public:
+  virtual ~TimedAction() {}
   virtual bool done() const = 0;
   virtual bool update(float args) = 0;
 };
 
 class OnceAction : public TimedAction {
 public:
+  virtual ~OnceAction() {}
   static TimedAction* newOnceAction(float triggerTime,
                                     ofPtr<TimedFunc> fn);
   
@@ -49,6 +51,7 @@ public:
   
   DurationAction(float start, float end)
   : _startTime(start), _endTime(end), _started(false), _ended(false) { }
+  virtual ~DurationAction() {}
   
   bool started() const { return _started; }
   virtual bool done() const override { return _ended; }
@@ -90,6 +93,8 @@ class TimedActionSet : public TimedAction {
 public:
   TimedActionSet(bool autoRemove = true)
   : _autoRemove(autoRemove) { }
+  
+  virtual ~TimedActionSet() {}
   
   void add(ofPtr<TimedAction> action) {
     _actions.push_back(action);

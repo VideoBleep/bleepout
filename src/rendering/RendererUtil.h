@@ -17,4 +17,6 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
 
 void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, float size, float radius, float elevation, float heading);
 
+void drawTetrahedron(const ofVec3f& origin, float radius);
+
 #endif /* defined(__bleepout__RendererUtil__) */

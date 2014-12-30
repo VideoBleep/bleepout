@@ -30,6 +30,7 @@ public:
 
 class GenMesh {
 public:
+  virtual ~GenMesh() {}
   virtual void generate(bool merge = true) = 0;
   
   ofPtr<ofMesh> mesh;
@@ -39,6 +40,7 @@ public:
 class Sweep : public GenMesh {
 public:
   virtual void generate(bool merge = true) override;
+  virtual ~Sweep() {}
   
   FaceLoop startFace;
   Path path;

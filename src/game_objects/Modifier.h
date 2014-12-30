@@ -60,24 +60,24 @@ struct GameObjectTypeTraits<Modifier> {
 
 class ModifierSlot {
 public:
-  ModifierSlot() : _spec(NULL), _endTime(-1) { }
-  void set(const ModifierSpec &spec, float time) {
-    _spec = &spec;
+  ModifierSlot() : _endTime(-1) { }
+  void set(const ModifierSpec& spec, float time) {
+    _spec.reset(new ModifierSpec(spec));
     _endTime = time + spec.duration;
   }
-  const ModifierSpec* clear() {
-    const ModifierSpec* s = _spec;
-    _spec = NULL;
+  const ofPtr<ModifierSpec> clear() {
+    const ofPtr<ModifierSpec> s = _spec;
+    _spec.reset();
     return s;
   }
-  const ModifierSpec* spec() const { return _spec; }
-  bool active() const { return !!_spec; }
+  const ofPtr<ModifierSpec> spec() const { return _spec; }
+  bool active() const { return _spec.get() != NULL; }
   bool checkExpiration(float time) const {
     return time >= _endTime;
   }
   
 private:
-  const ModifierSpec* _spec;
+  ofPtr<ModifierSpec> _spec;
   float _endTime;
 };
 

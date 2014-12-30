@@ -32,6 +32,7 @@ enum SpecType {
 
 template<typename T>
 struct SpecGenerator {
+  virtual ~SpecGenerator() {}
   virtual void buildSpecs(const RoundConfig& config,
                           std::vector<T>* specs) const = 0;
 };
@@ -128,6 +129,7 @@ struct BrickRingSpec : public SpecGenerator<BrickSpec> {
     modifier = other.modifier;
     return *this;
   }
+  virtual ~BrickRingSpec() {}
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
   BrickRingSpec& setSize(ofVec3f s) { size = s; return *this; }
   BrickRingSpec& setCount(int c) { count = c; return *this; }
@@ -176,6 +178,7 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
     modifier = other.modifier;
     return *this;
   }
+  virtual ~BrickQuadsSpec() {}
   BrickQuadsSpec& setColor(ofColor c1, ofColor c2) {
     color1 = c1;
     color2 = c2;
@@ -258,6 +261,7 @@ struct WallRingSpec : public SpecGenerator<WallSpec> {
     stopHeading = other.stopHeading;
     return *this;
   }
+  virtual ~WallRingSpec() {}
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
@@ -280,6 +284,7 @@ struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
     StripeSpec(int v, int l, std::string mname, float mchance)
     : value(v), lives(l), modifier(mname, mchance) { }
   };
+  virtual ~CurvedBrickColumnSpec() {}
   float elevation1;
   float elevation2;
   float heading1;
@@ -349,6 +354,7 @@ struct CurvedWallSpec : public SpecGenerator<WallSpec> {
   float width;
   
   CurvedWallSpec() : speed(0), stopHeading(-1), isExit(false) { }
+  virtual ~CurvedWallSpec() {}
   CurvedWallSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
   CurvedWallSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
   CurvedWallSpec& setWidth(float w) { width = w; return *this; }
@@ -374,13 +380,15 @@ struct ModifierSpec {
   float amount;
   float duration;
   ofColor color;
+  bool beneficial;
   
-  ModifierSpec() : type(MODIFIER_NONE) { }
+  ModifierSpec() : type(MODIFIER_NONE), beneficial(true) { }
   ModifierSpec(std::string n, ModifierType t)
   : type(t), name(n), amount(0), duration(0) { }
   ModifierSpec& setAmount(float amt) { amount = amt; return *this; }
   ModifierSpec& setDuration(float dur) { duration = dur; return *this; }
   ModifierSpec& setColor(ofColor c) { color = c; return *this; }
+  ModifierSpec& setBeneficial(bool b) { beneficial = b; return *this; }
 };
 
 struct MessageSpec {

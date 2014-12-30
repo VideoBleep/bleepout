@@ -7,10 +7,7 @@
 //
 
 #include "RoundComponent.h"
-#include "BleepoutParameters.h"
-#include "BleepoutConfig.h"
 #include "GameState.h"
 
-RoundComponent::RoundComponent(RoundState& state,
-                               const RoundConfig& config)
-: _state(state) , _config(config) { }
+RoundComponent::RoundComponent(RoundState& state)
+: _state(state) { }

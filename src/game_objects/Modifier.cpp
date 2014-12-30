@@ -27,7 +27,7 @@ Modifier* Modifier::createModifier(const ModifierSpec &spec) {
       return new ExtraLifeModifier(spec);
     case MODIFIER_PADDLE_WIDTH:
       return new PaddleWidthModifier(spec);
-    case MODIFIER_LASER_BALL:
+    case MODIFIER_SUPERCHARGED_BALL:
       return new BallModifier(spec);
     default:
       return NULL;
@@ -45,7 +45,7 @@ Modifier::Modifier(const ModifierSpec& spec)
 void Modifier::setup(const RoundConfig &config,
                      const Brick &spawner) {
   const auto& appParams = BleepoutParameters::get();
-  this->setSize(ofVec3f(config.modifierRadius()));
+  this->setSize(ofVec3f(config.modifierSize()));
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
   t->setSpeed(0.02);
@@ -62,7 +62,7 @@ void Modifier::setup(const RoundConfig &config,
 #define FOR_EACH_MOD_TYPE(X) \
 X(MODIFIER_EXTRA_LIFE, "ExtraLife") \
 X(MODIFIER_PADDLE_WIDTH, "PaddleWidth") \
-X(MODIFIER_LASER_BALL, "LaserBall")
+X(MODIFIER_SUPERCHARGED_BALL, "SuperchargedBall")
 
 template<>
 bool EnumTypeTraits<ModifierType>::parseString(const std::string &str, ModifierType *result, const ModifierType &defaultVal) {

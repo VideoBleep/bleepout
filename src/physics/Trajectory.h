@@ -14,6 +14,7 @@
 class Trajectory {
 public:
   Trajectory();
+  virtual ~Trajectory() {}
   
   virtual float getSpeed() const { return _speed; }
   virtual void setSpeed(float s) { _speed = s; }

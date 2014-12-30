@@ -14,7 +14,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   RoundConfig* config = new RoundConfig("Round1");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
-  config->_modifierRadius = 9.0f;
+  config->_modifierSize.set(9.0f, 16.0f, 9.0f);
   config->_rules.setBallsRespawn(true);
   
   for (int i = 0; i < 5; i ++) {
@@ -31,7 +31,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   config->addModifierDef(narrowPaddleName, MODIFIER_PADDLE_WIDTH)
     .setAmount(0.5)
     .setDuration(5.0)
-    .setColor(ofColor::red);
+    .setColor(ofColor::red)
+    .setBeneficial(false);
   
   int cols = 12;
   int rows = 10;
@@ -109,7 +110,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setIsExit(true)
     .setVisible(false);
   
-  config->addStartMessage("Video Bleep\npresents", ofColor(255))
+  config->addStartMessage("VideoBleep\n presents", ofColor(255))
     .setSize(12)
     .setTiming(0, 3);
   config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))

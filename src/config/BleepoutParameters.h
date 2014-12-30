@@ -13,6 +13,7 @@
 #include <ofTypes.h>
 #include <deque>
 #include <string>
+#include <list>
 
 // parameters are things that can change, whereas config is fixed
 class BleepoutParameters {
@@ -29,8 +30,8 @@ public:
   const BleepoutConfig& appConfig() const { return *_appConfig; }
   BleepoutConfig& appConfig() { return *_appConfig; }
   std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
-  ofPtr<RoundConfig> popNextRound();
-  ofPtr<RoundConfig> getNextRound();
+  
+  std::list<ofPtr<RoundConfig> > getRoundQueue();
   
   GameRules& rules() { return _rulesOverrides; }
   const GameRules& rules() const { return _rulesOverrides; }
@@ -50,6 +51,7 @@ public:
   float audioVolume;
   float domeRadius;
   float domeMargin;
+  int minReadyPlayers;
 private:
   BleepoutConfig* _appConfig;
   std::string _currentRoundName;

@@ -36,6 +36,7 @@ enum CollisionShape {
 class PhysicsObject {
 public:
   PhysicsObject(CollisionShape shape = CollisionBox);
+  virtual ~PhysicsObject() {}
   
   const ofVec3f& getPosition() const;
   void setPosition(const ofVec3f& newPosition);
@@ -77,6 +78,7 @@ protected:
   PhysicsWorld* world;
   GameObject* thisGameObject;
   bool isCollidable;
+  bool sizeDirty;
   
   friend class GameObject;
   friend class PhysicsWorld;

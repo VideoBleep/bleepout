@@ -30,11 +30,11 @@ public:
   
   virtual const ofColor& getColor() const override;
   
-  const ModifierSpec* updateWidthModifier(const RoundState& state);
+  const ofPtr<ModifierSpec> updateWidthModifier(const RoundState& state);
   
   void addWidthModifier(const RoundState& state,
                         const PaddleWidthModifier& modifier);
-  const ModifierSpec* removeWidthModifier();
+  const ofPtr<ModifierSpec> removeWidthModifier();
   
 private:
   Player& _player;

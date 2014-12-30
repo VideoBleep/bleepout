@@ -20,6 +20,21 @@
 #define SCENE_SIZE 500
 #define MAX_OBJECTS 16000
 
+inline bool operator==(const ofVec3f& ofVec, const btVector3 btVec) {
+  return
+    abs(ofVec.x - btVec.x()) < FLT_EPSILON &&
+    abs(ofVec.y - btVec.y()) < FLT_EPSILON &&
+    abs(ofVec.z - btVec.z()) < FLT_EPSILON;
+}
+
+inline bool operator!=(const ofVec3f& ofVec, const btVector3 btVec) {
+  return
+  abs(ofVec.x - btVec.x()) > FLT_EPSILON ||
+  abs(ofVec.y - btVec.y()) > FLT_EPSILON ||
+  abs(ofVec.z - btVec.z()) > FLT_EPSILON;
+}
+
+
 class PhysicsImpl {
 public:
   std::map<PhysicsObject*, btCollisionObject*> objectMap;
@@ -66,6 +81,7 @@ public:
       shape->setMargin(2.0);
       co->setCollisionShape(shape);
     }
+    obj->sizeDirty = false;
     
     updateCollisionObject(obj, co);
     
@@ -82,13 +98,32 @@ public:
   }
   
   void updateCollisionObject(PhysicsObject* obj, btCollisionObject* co) {
+
+    // Update position
     ofVec3f pos = obj->getPosition();
-    ofVec3f size = obj->getSize();
-    
     co->getWorldTransform().setOrigin(btVector3(pos.x, pos.y, pos.z));
-    // setLocalScaling is the wrong place.
-    // if we want to have size-changing objects, we'll need to figure out the right place
-    //co->getCollisionShape()->setLocalScaling(btVector3(size.x, size.y, size.z));
+    
+    // If size has changed, need to clear it from broadphase cache
+    if (obj->sizeDirty) {
+      ofVec3f size = obj->getSize()/2.0;
+      if (obj->collisionShape == CollisionSphere) {
+        auto sphereShape = (btConvexInternalShape*)(co->getCollisionShape());
+        size.y = size.z = 0;
+        if (size != sphereShape->getImplicitShapeDimensions()) {
+          btVector3 btSize(size.x, 0, 0);
+          sphereShape->setImplicitShapeDimensions(btSize);
+          bt_broadphase->getOverlappingPairCache()->cleanProxyFromPairs(co->getBroadphaseHandle(), bt_dispatcher);
+        }
+      } else if (obj->collisionShape == CollisionBox) {
+        auto boxShape = (btConvexInternalShape*)(co->getCollisionShape());
+        if (size != boxShape->getImplicitShapeDimensions()) {
+          btVector3 btSize(size.x, size.y, size.z);
+          boxShape->setImplicitShapeDimensions(btSize);
+          bt_broadphase->getOverlappingPairCache()->cleanProxyFromPairs(co->getBroadphaseHandle(), bt_dispatcher);
+        }
+      }
+      obj->sizeDirty = false;
+    }
     
     btQuaternion btq;
     btq.setRotation(btVector3(0, 1, 0), obj->getRotation() * PI/180.0);
@@ -346,9 +381,9 @@ public:
               static CollisionArgs args;
               args.a = obj1->thisGameObject;
               args.b = obj2->thisGameObject;
-              args.normal = m.normal;
-              
-              
+              args.normalOnA = m.normal;
+              // TODO: Dewb - add recent enh. to non-bullet physics
+
               world.notifyCollision(args);
             }
           }
@@ -406,5 +441,6 @@ BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
   if (_impl.get()) {
     return _impl->getObjBoundingBox(obj);
   }
+  return BoundingBox();
 }
 

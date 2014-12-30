@@ -10,9 +10,8 @@
 #include "SpaceController.h"
 #include "BleepoutParameters.h"
 
-LogicController::LogicController(RoundState& state,
-                                 const RoundConfig& config)
-:_state(state), _config(config)
+LogicController::LogicController(RoundState& state)
+:_state(state)
 , _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }
 
@@ -41,7 +40,7 @@ void LogicController::update() {
     _lastSpecifiedTimeLimitOffset = limit;
   }
   if (_state.endTime > 0) {
-    if (_state.remainingTime() <= _config.countdownTimerPeriod &&
+    if (_state.remainingTime() <= _state.config().countdownTimerPeriod &&
         _countdownTickPulser.update(_state.time))
       notifyCountdownTick();
     if (_state.remainingTime() <= 0) {
@@ -51,7 +50,7 @@ void LogicController::update() {
   }
   for (auto& obj : _state.paddles()) {
     if (obj && obj->alive()) {
-      const ModifierSpec* mod = obj->updateWidthModifier(_state);
+      const ofPtr<ModifierSpec> mod = obj->updateWidthModifier(_state);
       if (mod) {
         notifyModifierRemoved(_state, *mod, obj.get());
       }
@@ -59,7 +58,7 @@ void LogicController::update() {
   }
   for (auto& obj : _state.balls()) {
     if (obj && obj->alive()) {
-      const ModifierSpec* mod = obj->updateLaserModifier(_state);
+      const ofPtr<ModifierSpec> mod = obj->updateModifier(_state);
       if (mod) {
         notifyModifierRemoved(_state, *mod, obj.get());
       }
@@ -145,10 +144,10 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       const std::string& modifierName = brick.modifierName();
       if (!modifierName.empty()) {
-        const ModifierSpec& spec = _config.modifierDef(modifierName);
+        const ModifierSpec& spec = _state.config().modifierDef(modifierName);
         ofPtr<Modifier> modifier(Modifier::createModifier(spec));
         if (modifier) {
-          modifier->setup(_config, brick);
+          modifier->setup(_state.config(), brick);
           _state.addModifier(modifier);
           notifyModifierAppeared(_state, modifier.get(), &brick);
         }
@@ -211,9 +210,8 @@ void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
 void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
   if (modifier.applyToTarget(_state, paddle)) {
     notifyModifierApplied(_state, &modifier, &paddle);
-    //...?
   }
-  //...
+  modifier.kill();
 }
 
 void LogicController::notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {

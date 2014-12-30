@@ -26,11 +26,11 @@ class AdminController;
 class RoundController : public EventSource
 {
 public:
-  RoundController(ofPtr<RoundConfig> config,
+  RoundController(std::list<ofPtr<RoundConfig> > configs,
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
-  ~RoundController();
+  virtual ~RoundController();
   
   void setup();
   void draw();
@@ -76,6 +76,10 @@ private:
   void onRoundEnded(RoundStateEventArgs& e);
   void onTryEndRound(EndRoundEventArgs& e);
   
+  void onPlayerReady(PlayerEventArgs& e);
+  
+  bool areEnoughPlayersReady() const;
+  
   bool notifyRoundQueue(RoundStateEventArgs &e);
   bool notifyRoundPlay(RoundStateEventArgs &e);
   bool notifyRoundEnded(RoundStateEventArgs &e);
@@ -90,10 +94,15 @@ private:
   void notifyRoundEnded(RoundResults& results);
   RoundResults buildRoundResults(RoundEndReason reason);
   
+  void endCurrentConfig();
+  void loadNextConfig();
+  
   bool _paused;
   float _startTime;
+  int _readyPlayers;
   PlayerManager& _playerManager;
   ofPtr<RoundConfig> _config;
+  std::list<ofPtr<RoundConfig> > _queuedConfigs;
   RoundState _state;
   ofPtr<RendererBase> _renderer;
   ofPtr<SpaceController> _spaceController;

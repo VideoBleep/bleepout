@@ -30,20 +30,20 @@ void Paddle::addWidthModifier(const RoundState& state,
   _player.incrementModifierCount(modifier.modifierType());
 }
 
-const ModifierSpec* Paddle::removeWidthModifier() {
+const ofPtr<ModifierSpec> Paddle::removeWidthModifier() {
   if (_widthModifier.active()) {
     setSize(_origSize);
     return _widthModifier.clear();
   }
-  return NULL;
+  return ofPtr<ModifierSpec>();
 }
 
-const ModifierSpec* Paddle::updateWidthModifier(const RoundState &state) {
+const ofPtr<ModifierSpec> Paddle::updateWidthModifier(const RoundState &state) {
   if (_widthModifier.active() &&
       _widthModifier.checkExpiration(state.time)) {
     return removeWidthModifier();
   }
-  return NULL;
+  return ofPtr<ModifierSpec>();
 }
 
 PaddleWidthModifier::PaddleWidthModifier(const ModifierSpec& spec)

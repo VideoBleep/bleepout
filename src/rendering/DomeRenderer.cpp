@@ -70,10 +70,8 @@ namespace {
   
 }
 
-DomeRenderer::DomeRenderer(RoundState& state,
-                           const RoundConfig& config)
-: RendererBase(state, config)
-, _extras(state, config) { }
+DomeRenderer::DomeRenderer(RoundState& state)
+: RendererBase(state), _extras(state) { }
 
 void DomeRenderer::setup() {
   ofEnableDepthTest();
@@ -146,12 +144,13 @@ void DomeRenderer::draw() {
     drawBoundingBoxes(_state.paddles());
     drawBoundingBoxes(_state.bricks());
     drawBoundingBoxes(_state.walls());
+    drawBoundingBoxes(_state.modifiers());
     drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
   } else if (appParams.drawTrajectories) {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
   }
   
-  for (auto& cw : _config.curvedWallSets()) {
+  for (auto& cw : _state.config().curvedWallSets()) {
     float r = appParams.domeRadius + appParams.domeMargin;
     float d = cw.width / 4.0;
     int steps = 20;
@@ -281,7 +280,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
 void DomeRenderer::drawBall(Ball &ball) {
   auto& appParams = BleepoutParameters::get();
   
-  if (!appParams.allLasers && !ball.isLaser()) {
+  if (!appParams.allLasers) {
     
     ofPushStyle();
     ofPushMatrix();
@@ -302,7 +301,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     
     ofPopMatrix();
     
-    if (appParams.drawComets) {
+    if (appParams.drawComets || ball.isSupercharged()) {
       drawCometTail(ball, 6.8, 50,  0, ofColor(255, 120, 30, 200));
       drawCometTail(ball, 5.0, 30, -1, ofColor(255, 200, 50, 200));
       drawCometTail(ball, 5.0, 30,  1, ofColor(255, 200, 50, 200));
@@ -353,19 +352,38 @@ void DomeRenderer::drawBall(Ball &ball) {
 }
 
 void DomeRenderer::drawModifier(Modifier &modifier) {
-  //...?
   ofPushStyle();
   ofPushMatrix();
   
   ofTranslate(modifier.getPosition());
   ofRotateX(360 * modifier.getTrajectory()->getTime());
   ofRotateY(45);
-  ofSetLineWidth(8.0);
-  ofFill();
-  ofSetColor(modifier.spec().color);
-  ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+
+  if (modifier.spec().beneficial) {
+    float length = modifier.getSize().y;
+    float r = modifier.getSize().x * 0.5;
+    float d = r * 1.25;
+    ofFill();
+    ofSetColor(200, 200, 200);
+    ofDrawCylinder(ofVec3f::zero(), r * 0.8, length * 0.9);
+    ofSetColor(modifier.spec().color);
+    ofDrawCylinder(ofVec3f(0, (length - d) * -0.5, 0), r, d);
+    ofDrawCylinder(ofVec3f(0, (length - d) *  0.5, 0), r, d);
+  } else {
+    float r = (modifier.getSize().x + modifier.getSize().y) * 0.25;
+    ofDisableLighting();
+    ofFill();
+    ofSetColor(40, 40, 50);
+    drawTetrahedron(ofVec3f::zero(), r);
+    drawTetrahedron(ofVec3f::zero(), -r);
+    ofNoFill();
+    ofSetLineWidth(2.5);
+    ofSetColor(modifier.spec().color);
+    drawTetrahedron(ofVec3f::zero(), r);
+    drawTetrahedron(ofVec3f::zero(), -r);
+    ofEnableLighting();
+  }
   
   ofPopMatrix();
-  
   ofPopStyle();
 }

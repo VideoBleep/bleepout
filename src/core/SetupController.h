@@ -20,6 +20,7 @@
 class SetupController : public EventSource {
 public:
   SetupController(const BleepoutConfig& appConfig);
+  virtual ~SetupController() {}
   void setup();
   void update();
   void draw();
@@ -36,7 +37,7 @@ public:
   void handlePlayerConnected(PlayerEventArgs& e);
 
 private:
-  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+  bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                            std::list<ofPtr<Player> > players);
   bool tryStartRound();
 

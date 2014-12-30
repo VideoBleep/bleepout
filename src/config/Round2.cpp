@@ -14,13 +14,13 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   RoundConfig* config = new RoundConfig("Round2");
   config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
-  config->_modifierRadius = 9.0f;
+  config->_modifierSize.set(9.0f, 16.0f, 9.0f);
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   //...
-  config->addStartMessage("Video Bleep\npresents", ofColor(255))
+  config->addStartMessage("VideoBleep\n presents", ofColor(255))
     .setSize(12)
     .setTiming(0, 3);
   config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
@@ -32,8 +32,8 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     .setTiming(7.5, 3);
   config->_startDelay = 10;
   
-  std::string laserModName("laser");
-  config->addModifierDef(laserModName, MODIFIER_LASER_BALL)
+  std::string superchargeModName("supercharge");
+  config->addModifierDef(superchargeModName, MODIFIER_SUPERCHARGED_BALL)
     .setColor(ofColor::green)
     .setDuration(20);
   
@@ -50,7 +50,7 @@ RoundConfig* RoundConfig::createRoundConfig2() {
                   ofColor(0, 255, 0))
         .setSize(ofVec3f(5, 2, 10))
         .setStripe1(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0))
-        .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, laserModName, 0.3))
+        .setStripe2(CurvedBrickColumnSpec::StripeSpec(2, 1, superchargeModName, 0.3))
         .setStripe3(CurvedBrickColumnSpec::StripeSpec(1, 1, "", 0));
     }
   }

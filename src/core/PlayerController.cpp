@@ -61,7 +61,7 @@ void PlayerController::connect(Player& player) {
 	// TODO: Set player state to 'select color'
   // Send message to player that they are in the select color state
   // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
-  PlayerManager::setPlayerColor(player);
+  PlayerManager::setPlayerColor(player, ofColor::red);
 
 	// TODO: Remove this... For now: Set player to Queued. 
   this->queue(player);
@@ -72,8 +72,6 @@ void PlayerController::queue(Player& player) {
   // 4.[QUEUED] PlayerManager::setPlayerQueued < Queued -
   PlayerManager::setPlayerQueued(player);
 };
-
-
 
 // Calibrate Player Position
 //5.[SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
@@ -90,6 +88,12 @@ void PlayerController::calibrate(Player& player) {
   PlayerManager::setPlayerCalibrate(player);
 };
 
+// Player is calibrated
+void PlayerController::setCalibrate(Player& player) {
+  // This sets GAME READY, not "Player Ready"
+  PlayerManager::setPlayerReady(player);
+};
+
 // Handle configure message from player (set color)
 // 3. [CONFIGURED] Client - Set Color > PlayerController::configure
 void PlayerController::configure(Player& player, ofColor color) {
@@ -101,7 +105,7 @@ void PlayerController::configure(Player& player, ofColor color) {
 
 // Player has started their game.
 void PlayerController::start(Player& player) {
-	// TODO: implement
+  notifyPlayerReady(player);
 };
 
 // Player has quit. Called by player.
