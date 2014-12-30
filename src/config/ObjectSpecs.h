@@ -57,13 +57,13 @@ struct ModifierSourceSpec {
 struct BrickSpec {
   float elevation;
   float heading;
-  ofVec3f size;
-  int value;
-  int lives;
-  ofColor color;
   float speed;
   float stopHeading;
+  int lives;
+  int value;
   ModifierSourceSpec modifier;
+  ofColor color;
+  ofVec3f size;
   
   BrickSpec()
   : elevation(30), heading(0)
@@ -104,15 +104,15 @@ struct BrickSpec {
 
 struct BrickRingSpec : public SpecGenerator<BrickSpec> {
   float elevation;
-  ofVec3f size;
-  ofColor color;
-  int value;
-  int lives;
-  int count;
   float phase;
   float speed;
   float stopHeading;
+  int count;
+  int lives;
+  int value;
   ModifierSourceSpec modifier;
+  ofColor color;
+  ofVec3f size;
   
   BrickRingSpec() : value(1), lives(1), phase(0), speed(0), stopHeading(-1), size(7.0f, 5.0f, 17.0f), modifier() { }
   BrickRingSpec& copyFrom(const BrickRingSpec& other) {
@@ -152,15 +152,15 @@ struct BrickRingSpec : public SpecGenerator<BrickSpec> {
 
 struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
   float elevation;
-  ofColor color1;
-  ofColor color2;
-  int count;
   float elevationSpacing;
   float headingSpacing;
-  ofVec3f size;
   float speed;
   float stopHeading;
+  int count;
   ModifierSourceSpec modifier;
+  ofColor color1;
+  ofColor color2;
+  ofVec3f size;
   
   BrickQuadsSpec() : speed(0), size(7, 5, 17), modifier() { }
   BrickQuadsSpec& copyFrom(const BrickQuadsSpec& other) {
@@ -208,13 +208,13 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
 };
 
 struct WallSpec {
+  bool isExit;
+  bool visible;
   float elevation;
   float heading;
-  ofVec3f size;
-  bool isExit;
   float speed;
   float stopHeading;
-  bool visible;
+  ofVec3f size;
   
   WallSpec() : speed(0), stopHeading(-1), isExit(false), visible(true) { }
   WallSpec& copyFrom(const WallSpec& other) {
@@ -237,14 +237,15 @@ struct WallSpec {
 };
 
 struct WallRingSpec : public SpecGenerator<WallSpec> {
-  float elevation;
-  ofVec3f size;
   bool isExit;
   bool visible;
-  int count;
+  float elevation;
   float phase;
   float speed;
   float stopHeading;
+  int count;
+  ofVec3f size;
+
   WallRingSpec() : speed(0), count(1), isExit(false), phase(0), stopHeading(-1), visible(true) { }
   WallRingSpec& copyFrom(const WallRingSpec& other) {
     elevation = other.elevation;
@@ -280,19 +281,19 @@ struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
     : value(v), lives(l), modifier(mname, mchance) { }
   };
   float elevation1;
-  float heading1;
   float elevation2;
+  float heading1;
   float heading2;
+  float phase;
+  float speed;
+  float stopHeading;
+  int count;
   ofColor color1;
   ofColor color2;
   ofVec3f size;
   StripeSpec stripe1;
   StripeSpec stripe2;
   StripeSpec stripe3;
-  int count;
-  float phase;
-  float speed;
-  float stopHeading;
   CurvedBrickColumnSpec& copyFrom(const CurvedBrickColumnSpec& other) {
     elevation1 = other.elevation1;
     heading1 = other.heading1;
@@ -338,14 +339,14 @@ struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
 };
 
 struct CurvedWallSpec : public SpecGenerator<WallSpec> {
-  float elevation1;
-  float heading1;
-  float elevation2;
-  float heading2;
-  float width;
   bool isExit;
+  float elevation1;
+  float elevation2;
+  float heading1;
+  float heading2;
   float speed;
   float stopHeading;
+  float width;
   
   CurvedWallSpec() : speed(0), stopHeading(-1), isExit(false) { }
   CurvedWallSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
