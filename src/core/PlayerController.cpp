@@ -61,7 +61,7 @@ void PlayerController::connect(Player& player) {
 	// TODO: Set player state to 'select color'
   // Send message to player that they are in the select color state
   // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
-  PlayerManager::setPlayerColor(player);
+  PlayerManager::setPlayerColor(player, ofColor::red);
 
 	// TODO: Remove this... For now: Set player to Queued. 
   this->queue(player);
