@@ -27,6 +27,8 @@ public:
   typedef std::set<std::pair<PhysicsObject*, PhysicsObject*> > ContactSet;
   ContactSet* newContacts;
   ContactSet* oldContacts;
+  typedef std::map<GameObject*, CollisionArgs> ActionableCollisionMap;
+  ActionableCollisionMap actionableCollisions;
   
   PhysicsWorld& world;
   btCollisionConfiguration* bt_collision_configuration;
@@ -219,13 +221,47 @@ public:
             args.normalOnA = -normalFromBtoA;
             args.pointOnA = contactPointOnA;
             args.pointOnB = contactPointOnB;
+            args.penDistance = penDist;
             
             ofLog(OF_LOG_VERBOSE) << "* Collision detected\n" << *obj1 << *obj2;
-            world.notifyCollision(args);
+            
+            // Only act on one collision per dynamic object. Store the collision with the deepest pen distance
+            if (obj1->isDynamic()) {
+              auto otherCollision = actionableCollisions.find(args.a);
+              if (otherCollision == actionableCollisions.end() ||
+                  otherCollision->second.penDistance < args.penDistance) {
+                actionableCollisions[args.a] = args;
+              }
+            }
+            if (obj2->isDynamic()) {
+              auto otherCollision = actionableCollisions.find(args.b);
+              if (otherCollision == actionableCollisions.end() ||
+                  otherCollision->second.penDistance < args.penDistance) {
+                actionableCollisions[args.b] = args;
+              }
+            }
           }
         }
       }
     }
+
+    // Go through detected dynamic object collisions, only fire event once in the case of dynamic-dynamic collisions
+    auto iter = actionableCollisions.begin();
+    while (iter != actionableCollisions.end()) {
+      GameObject* thisObj = iter->first;
+      GameObject* otherObj = thisObj == iter->second.a ? iter->second.b : iter->second.a;
+      auto otherCollision = actionableCollisions.find(otherObj);
+      if (otherCollision != actionableCollisions.end() &&
+          (otherCollision->second.a == thisObj || otherCollision->second.b == thisObj)) {
+        auto toDelete = iter;
+        ++iter;
+        actionableCollisions.erase(toDelete);
+      } else {
+        world.notifyCollision(iter->second);
+        ++iter;
+      }
+    }
+    actionableCollisions.clear();
     
     std::swap(oldContacts, newContacts);
     newContacts->clear();

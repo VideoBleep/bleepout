@@ -15,20 +15,14 @@ SetupController::SetupController(const BleepoutConfig& appConfig)
 , EventSource() { }
 
 void SetupController::setup() {
-  // TODO: Remove. This is temporary test code
-  _lobby.push_back(ofPtr<Player>(new Player()));
-  _lobby.push_back(ofPtr<Player>(new Player()));
-  _lobby.push_back(ofPtr<Player>(new Player()));
-  _lobby.push_back(ofPtr<Player>(new Player()));
-  _lobby.push_back(ofPtr<Player>(new Player()));
-  //...
+
 }
 
 void SetupController::update() {
   //...
 }
 
-// TODO: Are we even calling this anymore?
+// TODO: Are we even calling this anymore? 
 void SetupController::draw() {
   ofBackground(ofColor::white);
   ofPushStyle();
@@ -38,7 +32,7 @@ void SetupController::draw() {
     ofTranslate(100, 250);
     ofDrawBitmapString("Waiting for players...", 0, 0);
     ofTranslate(0, 15);
-    ofDrawBitmapString("Players: " + ofToString(_lobby.size()), 0, 0);
+	ofDrawBitmapString("Players: " + ofToString(_lobby.size()), 0, 0);
     if (canStartRound()) {
       ofTranslate(0, 15);
       ofDrawBitmapString("Press ENTER to start round...", 0, 0);
@@ -82,11 +76,11 @@ void SetupController::keyPressed(int key) {
 }
 
 bool SetupController::canStartRound() const {
-  return !_lobby.empty() && _roundConfig;
+	return !_lobby.empty() && _roundConfig;
 }
 
 bool SetupController::tryStartRound() {
-  if (_lobby.empty()) {
+	if (_lobby.empty()) {
     ofLogError() << "Cannot start round: no players!";
     return false;
   }
@@ -94,7 +88,15 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no round config selected";
     return false;
   }
-  return notifyTryStartRound(_roundConfig, _lobby);
+
+  // Copy lobby (in this case, e.players()) to players.
+  _roundPlayers.clear();
+  for (auto player : _lobby) {
+    _roundPlayers.push_back(player);
+    PlayerManager::setPlayerReady(*player);
+  }
+
+  return notifyTryStartRound(_roundConfig, _roundPlayers);
 }
 
 bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
@@ -106,5 +108,5 @@ bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
 }
 
 void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
-  _lobby.push_back(e.player());
+	_lobby.push_back(ofPtr<Player>(e.player()));
 }

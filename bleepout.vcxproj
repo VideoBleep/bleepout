@@ -58,7 +58,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\Gimpact;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionShapes;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\BroadphaseCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\LinearMath;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\NarrowPhaseCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\lib\vs;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionDispatch;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\render;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\joints;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\events;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\shapes;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\src;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\libs;%(AdditionalIncludeDirectories);src\core;src\config;src\rendering;src\physics;src\game_objects;src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port\win32helpers</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\dev\of_v0.8.4_vs_release\addons\ofxUI\src;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\Gimpact;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionShapes;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\BroadphaseCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\LinearMath;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\NarrowPhaseCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\lib\vs;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\libs\bullet2.8.1\include\BulletCollision\CollisionDispatch;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\render;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\joints;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\events;E:\dev\of_v0.8.4_vs_release\addons\ofxBullet\src\shapes;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\src;E:\dev\of_v0.8.4_vs_release\addons\ofxXmlSettings\libs;%(AdditionalIncludeDirectories);src\core;src\config;src\rendering;src\physics;src\game_objects;src;..\..\..\addons\ofxBox2d\libs;..\..\..\addons\ofxBox2d\src;..\..\..\addons\ofxBox2d\libs\Box2D;..\..\..\addons\ofxBox2d\libs\Box2D\Collision;..\..\..\addons\ofxBox2d\libs\Box2D\Collision\Shapes;..\..\..\addons\ofxBox2d\libs\Box2D\Common;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Contacts;..\..\..\addons\ofxBox2d\libs\Box2D\Dynamics\Joints;..\..\..\addons\ofxBox2d\libs\Box2D\Rope;..\..\..\addons\ofxBox2d\libs\triangle;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp;..\..\..\addons\ofxLibwebsockets\libs\jsoncpp\json;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets;..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\src;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port;..\..\..\addons\ofxLibwebsockets\libs\libwebsockets\include\win32port\win32helpers</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -156,11 +156,15 @@
     <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Reactor.cpp" />
     <ClCompile Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\src\Server.cpp" />
     <ClCompile Include="src\config\BleepoutConfig.cpp" />
+    <ClCompile Include="src\config\BleepoutParameters.cpp" />
     <ClCompile Include="src\config\JsonUtil.cpp" />
     <ClCompile Include="src\config\ObjectSpecs.cpp" />
     <ClCompile Include="src\config\Round1.cpp" />
     <ClCompile Include="src\config\Round2.cpp" />
     <ClCompile Include="src\config\Round3.cpp" />
+    <ClCompile Include="src\config\Round4.cpp" />
+    <ClCompile Include="src\core\AdminController.cpp" />
+    <ClCompile Include="src\core\AudioManager.cpp" />
     <ClCompile Include="src\core\BleepoutApp.cpp" />
     <ClCompile Include="src\core\Common.cpp" />
     <ClCompile Include="src\core\GameEvents.cpp" />
@@ -169,7 +173,9 @@
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\core\PlayerController.cpp" />
     <ClCompile Include="src\core\PlayerManager.cpp" />
+    <ClCompile Include="src\core\RoundComponent.cpp" />
     <ClCompile Include="src\core\RoundManager.cpp" />
+    <ClCompile Include="src\core\RoundResults.cpp" />
     <ClCompile Include="src\core\SetupController.cpp" />
     <ClCompile Include="src\core\SpaceController.cpp" />
     <ClCompile Include="src\core\Timing.cpp" />
@@ -275,16 +281,22 @@
     <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Server.h" />
     <ClInclude Include="..\..\..\addons\ofxLibwebsockets\libs\ofxLibwebsockets\include\ofxLibwebsockets\Util.h" />
     <ClInclude Include="src\config\BleepoutConfig.h" />
+    <ClInclude Include="src\config\BleepoutParameters.h" />
     <ClInclude Include="src\config\JsonUtil.h" />
     <ClInclude Include="src\config\ObjectSpecs.h" />
+    <ClInclude Include="src\core\AdminController.h" />
+    <ClInclude Include="src\core\AudioManager.h" />
     <ClInclude Include="src\core\BleepoutApp.h" />
     <ClInclude Include="src\core\Common.h" />
     <ClInclude Include="src\core\GameEvents.h" />
     <ClInclude Include="src\core\Logging.h" />
     <ClInclude Include="src\core\LogicController.h" />
+    <ClInclude Include="src\core\MessageQueue.h" />
     <ClInclude Include="src\core\PlayerController.h" />
     <ClInclude Include="src\core\PlayerManager.h" />
+    <ClInclude Include="src\core\RoundComponent.h" />
     <ClInclude Include="src\core\RoundManager.h" />
+    <ClInclude Include="src\core\RoundResults.h" />
     <ClInclude Include="src\core\SetupController.h" />
     <ClInclude Include="src\core\SpaceController.h" />
     <ClInclude Include="src\core\Timing.h" />

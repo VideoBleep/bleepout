@@ -64,7 +64,7 @@ public:
   void detachFrom(AdminController& adminController);
   
   const char* eventSourceName() const override { return "RoundController"; }
-  
+
   LogicController& logicController() { return *_logicController; }
   SpaceController& spaceController() { return *_spaceController; }
 
@@ -73,8 +73,13 @@ private:
   
   void onRoundQueue(RoundStateEventArgs& e);
   void onRoundPlay(RoundStateEventArgs& e);
-  
+  void onRoundEnded(RoundStateEventArgs& e);
   void onTryEndRound(EndRoundEventArgs& e);
+  
+  bool notifyRoundQueue(RoundStateEventArgs &e);
+  bool notifyRoundPlay(RoundStateEventArgs &e);
+  bool notifyRoundEnded(RoundStateEventArgs &e);
+  bool notifyTryEndRound(EndRoundEventArgs &e);
   
   void onModifierAppeared(ModifierEventArgs& e);
   void onCountdownTick(TimerEventArgs& e);

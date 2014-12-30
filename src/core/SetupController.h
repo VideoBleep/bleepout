@@ -31,20 +31,23 @@ public:
   const char* eventSourceName() const override { return "SetupController"; }
   
   std::list<ofPtr<Player> >& lobby() { return _lobby; }
-  
+
   // Event Handlers
   void handlePlayerConnected(PlayerEventArgs& e);
-  
+
 private:
   bool notifyTryStartRound(ofPtr<RoundConfig> config,
                            std::list<ofPtr<Player> > players);
   bool tryStartRound();
+
+	//ofPtr<PlayerManager> _playerManager;
+	// Lobby is the list of players queued for the game
+	std::list<ofPtr<Player> > _lobby;
+  std::list<ofPtr<Player> > _roundPlayers;
+
+	// ConnectedPlayers is all current players
+	std::list<ofPtr<Player> > _connectedPlayers;
   
-  //ofPtr<PlayerManager> _playerManager;
-  // Lobby is the list of players queued for the game
-  std::list<ofPtr<Player> > _lobby;
-  // ConnectedPlayers is all current players
-  std::list<ofPtr<Player> > _connectedPlayers;
   
   const BleepoutConfig& _appConfig;
   ofPtr<RoundConfig> _roundConfig;

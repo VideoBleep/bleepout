@@ -67,7 +67,7 @@ void PlayerStateEventArgs::output(std::ostream &os) const {
 
 void PlayerEventArgs::output(std::ostream &os) const {
   os << "(";
-  outputField(os, _player.get());
+  outputField(os, _player);
   os << ")";
 }
 

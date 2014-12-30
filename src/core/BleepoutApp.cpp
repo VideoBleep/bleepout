@@ -52,9 +52,9 @@ void BleepoutApp::setup() {
   _audioManager->setup();
   _audioManager->attachTo(*this);
 
-  _playerController.reset(new PlayerController());
+  _playerController.reset(new PlayerController(*_setupController));
   
-  _playerManager.reset(new PlayerManager(*_playerController));
+  _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
   // Temporary, I believe
   _playerManager->addPlayer();
@@ -137,8 +137,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   _roundController->setup();
   ofAddListener(_roundController->roundEndedEvent, this,
                 &BleepoutApp::onRoundEnded);
-  ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
-                &PlayerController::onRoundQueue);
+  //ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
+  //              &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
   _roundController->attachTo(*_adminController);
   e.markHandled();
@@ -154,7 +154,7 @@ const RoundConfig* BleepoutApp::currentRoundConfig() const {
 void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
   _playerManager->setIsInRound(false);
   ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
-  ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
+  //ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
   _audioManager->detachFrom(*_roundController);
   _roundController->detachFrom(*_adminController);
   _roundController.reset();
