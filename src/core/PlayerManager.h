@@ -55,7 +55,7 @@ public:
 	SEND STATE MESSAGES TO PLAYER
 	*/
   // Send 'Select Color' state message to player
-	static void setPlayerColor(Player& player);
+  static void setPlayerColor(Player& player, ofColor color);
   // Send 'Queued' state message to player
 	static void setPlayerQueued(Player& player);
   // Send 'Calibrate' state message to player

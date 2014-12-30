@@ -226,8 +226,8 @@ void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
 	SEND STATE MESSAGES TO PLAYER
 */
 // Send 'Select Color' state message to player
-void PlayerManager::setPlayerColor(Player& player) {
-  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
+void PlayerManager::setPlayerColor(Player& player, ofColor color) {
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR + messageDelimiter + ofToHex(color.getHex()));
 }
 // Send 'Queued' state message to player
 void PlayerManager::setPlayerQueued(Player& player) {

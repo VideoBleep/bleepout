@@ -300,7 +300,7 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   }
 }
 
-bool AdminController::tryStartRound() {
+void AdminController::tryStartRound() {
   auto& appParams = BleepoutParameters::get();
   auto& players = _setupController.lobby();
   std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();

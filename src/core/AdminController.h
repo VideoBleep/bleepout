@@ -42,7 +42,7 @@ private:
   void onUIEvent(ofxUIEventArgs& e);
   void onRoundStarted(RoundStateEventArgs& e);
   void onRoundEnded(RoundEndedEventArgs& e);
-  bool tryStartRound();
+  void tryStartRound();
   bool canStartRound();
   void tryEndRound();
   bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
