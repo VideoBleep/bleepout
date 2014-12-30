@@ -8,11 +8,10 @@
 
 #include "GameState.h"
 #include "BleepoutConfig.h"
+#include "BleepoutParameters.h"
 
-RoundState::RoundState(const RoundConfig& config,
-                       std::list<ofPtr<Player> >& players)
-: _config(config)
-, _totalBricks(0)
+RoundState::RoundState(std::list<ofPtr<Player> >& players)
+: _totalBricks(0)
 , _liveBricks(0)
 , _totalBalls(0)
 , _liveBalls(0)
@@ -31,18 +30,35 @@ RoundState::~RoundState() {
   }
 }
 
+void RoundState::initialize(ofPtr<RoundConfig> config) {
+  _config = config;
+  for (auto& player : _players) {
+    player->setPaddle(NULL);
+  }
+  _paddles.clear();
+  _balls.clear();
+  _bricks.clear();
+  _walls.clear();
+  _modifiers.clear();
+  _animations.clear();
+  _totalBalls = _liveBalls = 0;
+  _totalBricks = _liveBricks = 0;
+  time = 0;
+  endTime = BleepoutParameters::get().rules().timeLimit();
+}
+
 void RoundState::addPlayer(ofPtr<Player> player) {
   _players.push_back(player);
 }
 
 Paddle& RoundState::addPaddle(Player* player) {
-  ofPtr<Paddle> paddle(new Paddle(*player, _config.paddleSize()));
+  ofPtr<Paddle> paddle(new Paddle(*player, _config->paddleSize()));
   _paddles.push_back(paddle);
   return *paddle;
 }
 
 Brick& RoundState::addBrick(const BrickSpec& brickSpec) {
-  ofPtr<Brick> brick(new Brick(_config, brickSpec));
+  ofPtr<Brick> brick(new Brick(*_config, brickSpec));
   _bricks.push_back(brick);
   if (brick->alive())
     _liveBricks++;
@@ -51,13 +67,13 @@ Brick& RoundState::addBrick(const BrickSpec& brickSpec) {
 }
 
 Wall& RoundState::addWall(const WallSpec& wallSpec) {
-  ofPtr<Wall> wall(new Wall(_config, wallSpec));
+  ofPtr<Wall> wall(new Wall(*_config, wallSpec));
   _walls.push_back(wall);
   return *wall;
 }
 
 Ball& RoundState::addBall(const BallSpec& ballSpec) {
-  ofPtr<Ball> ball(new Ball(_config, ballSpec));
+  ofPtr<Ball> ball(new Ball(*_config, ballSpec));
   _balls.push_back(ball);
   if (ball->alive())
     _liveBalls++;

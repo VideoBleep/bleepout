@@ -209,18 +209,18 @@ class StartRoundEventArgs
 : public RequestEventArgs
 , public Outputable {
 public:
-  StartRoundEventArgs(ofPtr<RoundConfig> config,
+  StartRoundEventArgs(std::list<ofPtr<RoundConfig> > configs,
                       std::list<ofPtr<Player> > players)
-  : RequestEventArgs(), _config(config) , _players(players) { }
+  : RequestEventArgs(), _configs(configs) , _players(players) { }
   
-  ofPtr<RoundConfig>& config() { return _config; }
-  const ofPtr<RoundConfig>& config() const { return _config; }
+  std::list<ofPtr<RoundConfig> >& configs() { return _configs; }
+  const std::list<ofPtr<RoundConfig> >& config() const { return _configs; }
   std::list<ofPtr<Player> >& players() { return _players; }
   const std::list<ofPtr<Player> >& players() const { return _players; }
   
   void output(std::ostream& os) const override;
 private:
-  ofPtr<RoundConfig> _config;
+  std::list<ofPtr<RoundConfig> > _configs;
   std::list<ofPtr<Player> > _players;
 };
 

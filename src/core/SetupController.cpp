@@ -8,6 +8,7 @@
 
 #include "SetupController.h"
 #include "RoundManager.h"
+#include "BleepoutParameters.h"
 #include <ofMain.h>
 
 SetupController::SetupController(const BleepoutConfig& appConfig)
@@ -84,10 +85,6 @@ bool SetupController::tryStartRound() {
     ofLogError() << "Cannot start round: no players!";
     return false;
   }
-  if (!_roundConfig) {
-    ofLogError() << "Cannot start round: no round config selected";
-    return false;
-  }
 
   // Copy lobby (in this case, e.players()) to players.
   _roundPlayers.clear();
@@ -95,13 +92,15 @@ bool SetupController::tryStartRound() {
     _roundPlayers.push_back(player);
     PlayerManager::setPlayerCalibrate(*player);
   }
+  
+  auto rounds = BleepoutParameters::get().getRoundQueue();
 
-  return notifyTryStartRound(_roundConfig, _roundPlayers);
+  return notifyTryStartRound(rounds, _roundPlayers);
 }
 
-bool SetupController::notifyTryStartRound(ofPtr<RoundConfig> config,
+bool SetupController::notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                                           std::list<ofPtr<Player> > players) {
-  StartRoundEventArgs e(config, players);
+  StartRoundEventArgs e(configs, players);
   ofNotifyEvent(tryStartRoundEvent, e);
   logEvent("TryStartRound", e);
   return e.handled();

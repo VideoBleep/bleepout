@@ -10,9 +10,8 @@
 #include "SpaceController.h"
 #include "BleepoutParameters.h"
 
-LogicController::LogicController(RoundState& state,
-                                 const RoundConfig& config)
-:_state(state), _config(config)
+LogicController::LogicController(RoundState& state)
+:_state(state)
 , _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }
 
@@ -41,7 +40,7 @@ void LogicController::update() {
     _lastSpecifiedTimeLimitOffset = limit;
   }
   if (_state.endTime > 0) {
-    if (_state.remainingTime() <= _config.countdownTimerPeriod &&
+    if (_state.remainingTime() <= _state.config().countdownTimerPeriod &&
         _countdownTickPulser.update(_state.time))
       notifyCountdownTick();
     if (_state.remainingTime() <= 0) {
@@ -145,10 +144,10 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       
       const std::string& modifierName = brick.modifierName();
       if (!modifierName.empty()) {
-        const ModifierSpec& spec = _config.modifierDef(modifierName);
+        const ModifierSpec& spec = _state.config().modifierDef(modifierName);
         ofPtr<Modifier> modifier(Modifier::createModifier(spec));
         if (modifier) {
-          modifier->setup(_config, brick);
+          modifier->setup(_state.config(), brick);
           _state.addModifier(modifier);
           notifyModifierAppeared(_state, modifier.get(), &brick);
         }

@@ -17,8 +17,7 @@
 
 class DomeRenderer : public RendererBase {
 public:
-  DomeRenderer(RoundState& state,
-               const RoundConfig& config);
+  DomeRenderer(RoundState& state);
   virtual ~DomeRenderer() {}
   virtual void setup() override;
   virtual void update() override;

@@ -303,11 +303,8 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 bool AdminController::tryStartRound() {
   auto& appParams = BleepoutParameters::get();
   auto& players = _setupController.lobby();
-  ofPtr<RoundConfig> roundConfig = appParams.getNextRound();
-  if (!roundConfig)
-    return false;
-  if (notifyTryStartRound(roundConfig, players)) {
-    appParams.popNextRound();
+  std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();
+  if (notifyTryStartRound(rounds, players)) {
     _controls->updateQueueSlots(appParams);
   }
 }
@@ -319,9 +316,9 @@ bool AdminController::canStartRound() {
 void AdminController::tryEndRound() {
   notifyTryEndRound();
 }
-bool AdminController::notifyTryStartRound(ofPtr<RoundConfig> config,
+bool AdminController::notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                                           std::list<ofPtr<Player> > players) {
-  StartRoundEventArgs e(config, players);
+  StartRoundEventArgs e(configs, players);
   ofNotifyEvent(tryStartRoundEvent, e);
   logEvent("TryStartRound", e);
   return e.handled();

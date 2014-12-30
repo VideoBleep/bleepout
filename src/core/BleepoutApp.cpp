@@ -125,7 +125,7 @@ void BleepoutApp::draw() {
 
 void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   auto& appParams = BleepoutParameters::get();
-  if (!e.config() || e.players().empty()) {
+  if (e.configs().empty() || e.players().empty()) {
     ofLogWarning() << "Cannot start round: " << e;
     return;
   }
@@ -134,7 +134,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
-  _roundController.reset(new RoundController(e.config(),
+  _roundController.reset(new RoundController(e.configs(),
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();

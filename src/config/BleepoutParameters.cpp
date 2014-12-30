@@ -61,24 +61,15 @@ BleepoutParameters::BleepoutParameters(void)
 , enableSyphon(true)
 , audioVolume(.5)
 , domeRadius(150)
-, domeMargin(20) { }
+, domeMargin(20)
+, minReadyPlayers(2) { }
 
-ofPtr<RoundConfig> BleepoutParameters::popNextRound() {
-  for (int i = 0; i < _queuedRoundNames.size(); i++) {
-    std::string roundName = _queuedRoundNames.front();
-    _queuedRoundNames.pop_front();
-    _queuedRoundNames.push_back(roundName);
-    ofPtr<RoundConfig> round = _appConfig->getRound(roundName);
-    if (round) {
-      _rulesOverrides.setBackup(&round->rules());
-      return round;
-    }
+std::list<ofPtr<RoundConfig> > BleepoutParameters::getRoundQueue() {
+  std::list<ofPtr<RoundConfig> > rounds;
+  for (const auto& name : _queuedRoundNames) {
+    ofPtr<RoundConfig> round = appConfig().getRound(name);
+    if (round)
+      rounds.push_back(round);
   }
-  ofLogError() << "Could not find valid round name";
-  return ofPtr<RoundConfig>();
-}
-
-ofPtr<RoundConfig> BleepoutParameters::getNextRound() {
-  const std::string& roundName = _queuedRoundNames.front();
-  return _appConfig->getRound(roundName);
+  return rounds;
 }

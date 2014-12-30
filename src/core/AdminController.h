@@ -45,7 +45,7 @@ private:
   bool tryStartRound();
   bool canStartRound();
   void tryEndRound();
-  bool notifyTryStartRound(ofPtr<RoundConfig> config,
+  bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                            std::list<ofPtr<Player> > players);
   bool notifyTryEndRound();
   

@@ -10,9 +10,8 @@
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
 
-RendererBase::RendererBase(RoundState& state,
-                           const RoundConfig& config)
-: RoundComponent(state, config) { }
+RendererBase::RendererBase(RoundState& state)
+: RoundComponent(state) { }
 
 void RendererBase::draw() {
   for (auto& obj : _state.bricks()) {
