@@ -11,7 +11,7 @@
 #include "BleepoutParameters.h"
 
 LogicController::LogicController(RoundState& state,
-                                 RoundConfig& config)
+                                 const RoundConfig& config)
 :_state(state), _config(config)
 , _lastSpecifiedTimeLimitOffset(-1), _countdownTickPulser(1)
 , EventSource() { }

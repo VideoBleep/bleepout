@@ -1,0 +1,306 @@
+
+{
+	"ballSpawnedFadeTime" : 0.2000000029802322,
+	"brickFadeTime" : 0.4000000059604645,
+	"modifierFadeTime" : 0.2000000029802322,
+	"modifierRadius" : 9.0,
+	"name" : "Round3",
+	"objects" : 
+	[
+		
+		{
+			"_type" : "Ball",
+			"elevation" : 30.0,
+			"heading" : 55.49971771240234
+		},
+		
+		{
+			"_type" : "Ball",
+			"elevation" : 30.0,
+			"heading" : 23.75652694702148
+		},
+		
+		{
+			"_type" : "Ball",
+			"elevation" : 30.0,
+			"heading" : 35.95928955078125
+		},
+		
+		{
+			"_type" : "Ball",
+			"elevation" : 30.0,
+			"heading" : 287.8036804199219
+		},
+		
+		{
+			"_type" : "Ball",
+			"elevation" : 30.0,
+			"heading" : 156.4295196533203
+		},
+		
+		{
+			"_type" : "BrickRing",
+			"color" : [ 0, 255, 255 ],
+			"count" : 24,
+			"elevation" : 30.0,
+			"lives" : 1,
+			"modifierChance" : 6.086441788902340e-40,
+			"phase" : 0.0,
+			"size" : [ 7.0, 5.0, 17.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"value" : 1
+		},
+		
+		{
+			"_type" : "BrickQuads",
+			"color1" : [ 0, 255, 0 ],
+			"color2" : [ 0, 127, 127 ],
+			"count" : 12,
+			"elevation" : 45.0,
+			"elevationSpacing" : 1.50,
+			"headingSpacing" : 4.0,
+			"modifierChance" : 2.044074069910611e-41,
+			"size" : [ 7.0, 5.0, 14.0 ],
+			"speed" : 0.0,
+			"stopHeading" : 2.543251335105026e-38
+		},
+		
+		{
+			"_type" : "BrickQuads",
+			"color1" : [ 0, 255, 0 ],
+			"color2" : [ 0, 127, 127 ],
+			"count" : 12,
+			"elevation" : 55.0,
+			"elevationSpacing" : 1.50,
+			"headingSpacing" : 4.0,
+			"modifierChance" : 2.044074069910611e-41,
+			"size" : [ 7.0, 5.0, 14.0 ],
+			"speed" : 0.0,
+			"stopHeading" : 2.543251335105026e-38
+		},
+		
+		{
+			"_type" : "BrickQuads",
+			"color1" : [ 0, 255, 0 ],
+			"color2" : [ 0, 127, 127 ],
+			"count" : 3,
+			"elevation" : 65.0,
+			"elevationSpacing" : 1.50,
+			"headingSpacing" : 8.0,
+			"modifierChance" : 2.044074069910611e-41,
+			"size" : [ 7.0, 5.0, 14.0 ],
+			"speed" : 0.0,
+			"stopHeading" : 2.543251335105026e-38
+		},
+		
+		{
+			"_type" : "BrickQuads",
+			"color1" : [ 0, 255, 0 ],
+			"color2" : [ 0, 127, 127 ],
+			"count" : 3,
+			"elevation" : 75.0,
+			"elevationSpacing" : 1.50,
+			"headingSpacing" : 12.0,
+			"modifierChance" : 2.044074069910611e-41,
+			"size" : [ 7.0, 5.0, 14.0 ],
+			"speed" : 0.0,
+			"stopHeading" : 2.543251335105026e-38
+		},
+		
+		{
+			"_type" : "Wall",
+			"elevation" : -10.0,
+			"heading" : 0.0,
+			"isExit" : true,
+			"size" : [ 850.0, 10.0, 850.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : false
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 3,
+			"elevation" : 65.0,
+			"phase" : 60.0,
+			"size" : [ 8.0, 3.0, 28.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 3,
+			"elevation" : 75.0,
+			"phase" : 60.0,
+			"size" : [ 8.0, 3.0, 26.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 12,
+			"elevation" : 60.0,
+			"phase" : 15.0,
+			"size" : [ 8.0, 3.0, 25.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 12,
+			"elevation" : 55.0,
+			"phase" : 15.0,
+			"size" : [ 8.0, 3.0, 20.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 12,
+			"elevation" : 50.0,
+			"phase" : 15.0,
+			"size" : [ 8.0, 3.0, 15.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 12,
+			"elevation" : 45.0,
+			"phase" : 15.0,
+			"size" : [ 8.0, 3.0, 10.0 ],
+			"speed" : 0.0,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "WallRing",
+			"count" : 6,
+			"elevation" : 35.0,
+			"phase" : 0.0,
+			"size" : [ 8.0, 3.0, 25.0 ],
+			"speed" : 0.007000000216066837,
+			"stopHeading" : -1.0,
+			"visible" : true
+		},
+		
+		{
+			"_type" : "Message",
+			"color" : [ 255, 255, 255 ],
+			"delay" : 0.0,
+			"duration" : 3.0,
+			"size" : 12.0,
+			"text" : "Video Bleep\npresents",
+			"trails" : 0
+		},
+		
+		{
+			"_type" : "Message",
+			"color" : [ 0, 120, 240 ],
+			"delay" : 3.0,
+			"duration" : 4.50,
+			"size" : 50.0,
+			"text" : "BLEEPOUT",
+			"trails" : 4
+		},
+		
+		{
+			"_type" : "Message",
+			"color" : [ 0, 255, 0 ],
+			"delay" : 7.50,
+			"duration" : 2.50,
+			"size" : 25.0,
+			"text" : "STAGE 3 START",
+			"trails" : 0
+		},
+		
+		{
+			"_type" : "RingSet",
+			"color" : [ 0, 255, 0, 63 ],
+			"count" : 30,
+			"lineWidth" : 1.200000047683716,
+			"radiusScale" : 1.950000047683716,
+			"spin" : 
+			{
+				"changeInterval" : 5.0,
+				"maxRate" : 0.3000000119209290,
+				"minRate" : 0.0,
+				"startValue" : [ 0.0, 0.0, 0.0 ]
+			},
+			"spread" : 
+			{
+				"changeInterval" : 10.0,
+				"maxRate" : 0.1000000014901161,
+				"minRate" : 0.0,
+				"startValue" : [ 20.0, 20.0, 20.0 ]
+			},
+			"spreadOffset" : [ 20.0, 20.0, 20.0 ]
+		},
+		
+		{
+			"_type" : "RingSet",
+			"color" : [ 0, 255, 63, 63 ],
+			"count" : 60,
+			"lineWidth" : 1.399999976158142,
+			"radiusScale" : 2.299999952316284,
+			"spin" : 
+			{
+				"changeInterval" : 5.0,
+				"maxRate" : 0.4000000059604645,
+				"minRate" : 0.0,
+				"startValue" : [ 0.0, 0.0, 0.0 ]
+			},
+			"spread" : 
+			{
+				"changeInterval" : 40.0,
+				"maxRate" : 0.50,
+				"minRate" : 0.0,
+				"startValue" : [ 0.0, 0.0, 0.0 ]
+			},
+			"spreadOffset" : [ 60.0, 60.0, 60.0 ]
+		},
+		
+		{
+			"_type" : "RingSet",
+			"color" : [ 0, 127, 255, 63 ],
+			"count" : 50,
+			"lineWidth" : 0.8999999761581421,
+			"radiusScale" : 2.0,
+			"spin" : 
+			{
+				"changeInterval" : 10.0,
+				"maxRate" : 0.2000000029802322,
+				"minRate" : 0.0,
+				"startValue" : [ 0.2000000029802322, 0.2000000029802322, 0.2000000029802322 ]
+			},
+			"spread" : 
+			{
+				"changeInterval" : 15.0,
+				"maxRate" : 0.1599999964237213,
+				"minRate" : 0.009999999776482582,
+				"startValue" : [ 0.1000000014901161, 0.1000000014901161, 0.1000000014901161 ]
+			},
+			"spreadOffset" : [ 60.0, 60.0, 60.0 ]
+		}
+	],
+	"paddleSize" : [ 16.0, 8.0, 40.0 ],
+	"rules" : 
+	{
+		"ballsRespawn" : null,
+		"playersCanLoseLives" : null,
+		"timeLimit" : null
+	},
+	"startDelay" : 10.0
+}

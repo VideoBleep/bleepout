@@ -57,7 +57,10 @@ void BleepoutApp::setup() {
   _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
   // Temporary, I believe
-  _playerManager->addPlayer();
+  Player* testPlayer = new Player();
+  testPlayer->setColor(ofColor::green);
+  _setupController->lobby().push_back(ofPtr<Player>(testPlayer));
+//  _playerManager->addPlayer();
   
   
   // Handle playerCreate event
@@ -131,8 +134,7 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
     return;
   }
   _playerManager->setIsInRound(true);
-  appParams.setCurrentRound(e.config()->name());
-  _roundController.reset(new RoundController(*e.config(),
+  _roundController.reset(new RoundController(e.config(),
                                              e.players(),
                                              *_playerManager));
   _roundController->setup();
