@@ -20,7 +20,7 @@ RoundConfig* RoundConfig::createRoundConfig2() {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
   //...
-  config->addStartMessage("Video Bleep\npresents", ofColor(255))
+  config->addStartMessage("VideoBleep\n presents", ofColor(255))
     .setSize(12)
     .setTiming(0, 3);
   config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))

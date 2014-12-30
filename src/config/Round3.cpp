@@ -107,7 +107,7 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setIsExit(true)
     .setVisible(false);
   
-  config->addStartMessage("Video Bleep\npresents", ofColor(255))
+  config->addStartMessage("VideoBleep\n presents", ofColor(255))
     .setSize(12)
     .setTiming(0, 3);
   config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
