@@ -50,7 +50,7 @@ class FunctorOnceAction : public OnceAction {
 public:
   FunctorOnceAction(float triggerTime, ofPtr<TimedFunc> fn)
   : OnceAction(triggerTime), _function(fn) { }
-  
+  virtual ~FunctorOnceAction() {}
   virtual void call(float time) override {
     (*_function)(time);
   }
@@ -95,7 +95,7 @@ class FunctorDurationAction : public DurationAction {
 public:
   FunctorDurationAction(float start, float end, ofPtr<TimedPercentageFunc> fn)
   : DurationAction(start, end), _function(fn) { }
-  
+  virtual ~FunctorDurationAction() {}
   virtual void call(float time, float percentage) override {
     (*_function)(time, percentage);
   }

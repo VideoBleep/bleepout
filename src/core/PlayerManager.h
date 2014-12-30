@@ -23,8 +23,8 @@ class BleepoutApp;
 
 class PlayerManager : public EventSource {
 public:
-	//PlayerManager();
 	PlayerManager(BleepoutApp& bleepoutApp, PlayerController& playerController);
+  virtual ~PlayerManager() {}
 
 	std::list<ofPtr<Player> >& players() { return _players; }
 

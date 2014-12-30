@@ -32,6 +32,7 @@ enum SpecType {
 
 template<typename T>
 struct SpecGenerator {
+  virtual ~SpecGenerator() {}
   virtual void buildSpecs(const RoundConfig& config,
                           std::vector<T>* specs) const = 0;
 };
@@ -120,6 +121,7 @@ struct BrickRingSpec : public SpecGenerator<BrickSpec> {
     modifierChance = other.modifierChance;
     return *this;
   }
+  virtual ~BrickRingSpec() {}
   BrickRingSpec& setElevation(float e) { elevation = e; return *this; }
   BrickRingSpec& setSize(ofVec3f s) { size = s; return *this; }
   BrickRingSpec& setCount(int c) { count = c; return *this; }
@@ -166,6 +168,7 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
     modifierChance = other.modifierChance;
     return *this;
   }
+  virtual ~BrickQuadsSpec() {}
   BrickQuadsSpec& setColor(ofColor c1, ofColor c2) {
     color1 = c1;
     color2 = c2;
@@ -243,6 +246,7 @@ struct WallRingSpec : public SpecGenerator<WallSpec> {
     stopHeading = other.stopHeading;
     return *this;
   }
+  virtual ~WallRingSpec() {}
   WallRingSpec& setElevation(float e) { elevation = e; return *this; }
   WallRingSpec& setCount(int c) { count = c; return *this; }
   WallRingSpec& setSize(ofVec3f s) { size = s; return *this; }
@@ -266,6 +270,7 @@ struct CurvedBrickColumnSpec : public SpecGenerator<BrickSpec> {
     StripeSpec(int v, int l, std::string mname, float mchance)
     : value(v), lives(l), modifierName(mname), modifierChance(mchance) { }
   };
+  virtual ~CurvedBrickColumnSpec() {}
   float elevation1;
   float heading1;
   float elevation2;
@@ -335,6 +340,7 @@ struct CurvedWallSpec : public SpecGenerator<WallSpec> {
   float stopHeading;
   
   CurvedWallSpec() : speed(0), stopHeading(-1), isExit(false) { }
+  virtual ~CurvedWallSpec() {}
   CurvedWallSpec& setEnd1(float e, float h) { elevation1 = e; heading1 = h; return *this; }
   CurvedWallSpec& setEnd2(float e, float h) { elevation2 = e; heading2 = h; return *this; }
   CurvedWallSpec& setWidth(float w) { width = w; return *this; }

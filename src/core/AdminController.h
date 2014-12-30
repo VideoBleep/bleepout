@@ -25,7 +25,7 @@ class RoundState;
 class AdminController : public EventSource {
 public:
   AdminController(SetupController& setupController);
-  ~AdminController();
+  virtual ~AdminController();
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;

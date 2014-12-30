@@ -19,6 +19,7 @@ class SpaceController;
 class LogicController : public EventSource {
 public:
   LogicController(RoundState& state);
+  virtual ~LogicController() {}
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickHitEventArgs> brickHitEvent;

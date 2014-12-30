@@ -301,12 +301,16 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
+  if (_setupController.canStartRound()) {
+    return false;
+  }
   auto& appParams = BleepoutParameters::get();
   auto& players = _setupController.lobby();
   std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();
   if (notifyTryStartRound(rounds, players)) {
     _controls->updateQueueSlots(appParams);
   }
+  return true;
 }
 
 bool AdminController::canStartRound() {

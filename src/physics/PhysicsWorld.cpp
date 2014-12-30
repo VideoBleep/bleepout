@@ -441,5 +441,6 @@ BoundingBox PhysicsWorld::getObjBoundingBox(PhysicsObject* obj) {
   if (_impl.get()) {
     return _impl->getObjBoundingBox(obj);
   }
+  return BoundingBox();
 }
 

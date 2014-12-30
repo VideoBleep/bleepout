@@ -20,6 +20,7 @@
 class SetupController : public EventSource {
 public:
   SetupController(const BleepoutConfig& appConfig);
+  virtual ~SetupController() {}
   void setup();
   void update();
   void draw();

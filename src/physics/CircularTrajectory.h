@@ -16,6 +16,7 @@ class CircularTrajectory : public Trajectory {
 public:
   CircularTrajectory();
   CircularTrajectory(float domeRadius, float speed, float elevation, float startHeading, float stopHeading = -1);
+  virtual ~CircularTrajectory() {}
   
   void initWithElevationHeading(float elevation, float startHeading, float stopHeading = -1);
   

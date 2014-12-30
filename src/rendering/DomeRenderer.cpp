@@ -351,7 +351,6 @@ void DomeRenderer::drawBall(Ball &ball) {
 }
 
 void DomeRenderer::drawModifier(Modifier &modifier) {
-  //...?
   ofPushStyle();
   ofPushMatrix();
   
@@ -361,7 +360,7 @@ void DomeRenderer::drawModifier(Modifier &modifier) {
   ofSetLineWidth(8.0);
   ofFill();
   ofSetColor(modifier.spec().color);
-  ofDrawSphere(ofVec3f::zero(), modifier.getSize().x / 2.0);
+  ofDrawCylinder(ofVec3f::zero(), modifier.getSize().x / 2.0, modifier.getSize().y * 2.0);
   
   ofPopMatrix();
   

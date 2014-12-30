@@ -24,6 +24,7 @@ static void rotate3d(ofVec3f rotations) {
 
 class Drawable {
 public:
+  virtual ~Drawable() {}
   virtual void draw(RoundState& state) = 0;
 };
 
@@ -38,6 +39,7 @@ public:
     _lineWidth = spec.lineWidth;
     _color = spec.color;
   }
+  virtual ~RingSet() {}
   
   virtual void draw(RoundState& state) override {
     const auto& appParams = BleepoutParameters::get();
@@ -95,6 +97,7 @@ public:
     ofPopStyle();
     ofPopMatrix();
   }
+  virtual ~SphereRingSet() {}
   //private:
   int _count;
   float _radiusScale;

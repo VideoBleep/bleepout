@@ -48,6 +48,7 @@ class PlayerController : public EventSource
 {
 public:
   PlayerController(SetupController& setup);
+  virtual ~PlayerController() {}
 
 	/*
 		Player Actions

@@ -16,6 +16,7 @@
 class OrbitalTrajectory : public Trajectory {
 public:
   OrbitalTrajectory();
+  virtual ~OrbitalTrajectory() {}
   OrbitalTrajectory(float radius, ofVec3f start, ofVec3f through, float speed = 0.02);
   
   void initWithTwoPoints(ofVec3f start, ofVec3f through);

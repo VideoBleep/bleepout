@@ -47,6 +47,7 @@ struct Nothing { };
 
 class Outputable {
 public:
+  virtual ~Outputable() {}
   virtual void output(std::ostream& os) const = 0;
 };
 
@@ -150,12 +151,14 @@ public:
 template<typename Arg>
 class UnaryAction {
 public:
+  virtual ~UnaryAction() {}
   virtual void operator()(Arg) = 0;
 };
 
 template<typename Arg1, typename Arg2>
 class BinaryAction {
 public:
+  virtual ~BinaryAction() {}
   virtual void operator()(Arg1, Arg2) = 0;
 };
 

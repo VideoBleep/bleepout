@@ -1442,6 +1442,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1454,6 +1458,15 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_BULLET = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/include/**\"";
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -1531,6 +1544,7 @@
 				LIB_BULLET_MATH_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libLinearMath.a\"";
 				LIB_BULLET_MINI_CL_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libMiniCL.a\"";
 				LIB_BULLET_SOFT_BODY_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletSoftBody.a\"";
+				OTHER_CFLAGS = "-Wall";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/libwebsockets/lib/osx/libwebsockets.a,
@@ -1546,6 +1560,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_WARN_ASSIGN_ENUM = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1557,6 +1575,15 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(OF_PATH)/libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_BULLET = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/include/**\"";
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -1634,6 +1661,7 @@
 				LIB_BULLET_MATH_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libLinearMath.a\"";
 				LIB_BULLET_MINI_CL_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libMiniCL.a\"";
 				LIB_BULLET_SOFT_BODY_RELEASE = "\"$(OF_PATH)/addons/ofxBullet/libs/bullet2.8.1/lib/osx/i386/libBulletSoftBody.a\"";
+				OTHER_CFLAGS = "-Wall";
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					../of_v0.8.4_osx_release/addons/ofxLibwebsockets/libs/libwebsockets/lib/osx/libwebsockets.a,

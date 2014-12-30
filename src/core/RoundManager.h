@@ -30,7 +30,7 @@ public:
                   std::list<ofPtr<Player> > players,
                   PlayerManager& playerManager);
   
-  ~RoundController();
+  virtual ~RoundController();
   
   void setup();
   void draw();
