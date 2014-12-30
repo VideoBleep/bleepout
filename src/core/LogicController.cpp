@@ -210,9 +210,8 @@ void LogicController::onBallHitBall(Ball& ball, Ball& otherBall) {
 void LogicController::onModifierHitPaddle(Modifier& modifier, Paddle& paddle) {
   if (modifier.applyToTarget(_state, paddle)) {
     notifyModifierApplied(_state, &modifier, &paddle);
-    //...?
   }
-  //...
+  modifier.kill();
 }
 
 void LogicController::notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer) {

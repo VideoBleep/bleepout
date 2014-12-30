@@ -14,7 +14,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
   RoundConfig* config = new RoundConfig("Round4");
   config->_paddleSize.set(16, 8, 40);
   config->_ballRadius = 8;
-  config->_modifierRadius = 9;
+  config->_modifierSize.set(9, 16, 9);
   
   for (int i = 0; i < 5; i++) {
     config->addBall(BallSpec(30, ofRandom(360)));

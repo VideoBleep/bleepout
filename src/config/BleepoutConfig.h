@@ -74,7 +74,7 @@ public:
   const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
-  float modifierRadius() const { return _modifierRadius; }
+  ofVec3f modifierSize() const { return _modifierSize; }
   float modifierFadeTime() const { return _modifierFadeTime; }
   float ballSpawnedFadeTime() const { return _ballSpawnedFadeTime; }
   
@@ -188,7 +188,7 @@ private:
   ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;
-  float _modifierRadius;
+  ofVec3f _modifierSize;
   float _modifierFadeTime;
   float _ballSpawnedFadeTime;
   GameRules _rules;

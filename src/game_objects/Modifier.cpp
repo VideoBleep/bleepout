@@ -45,7 +45,7 @@ Modifier::Modifier(const ModifierSpec& spec)
 void Modifier::setup(const RoundConfig &config,
                      const Brick &spawner) {
   const auto& appParams = BleepoutParameters::get();
-  this->setSize(ofVec3f(config.modifierRadius()));
+  this->setSize(ofVec3f(config.modifierSize()));
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
   t->setSpeed(0.02);

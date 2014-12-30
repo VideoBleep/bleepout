@@ -144,6 +144,7 @@ void DomeRenderer::draw() {
     drawBoundingBoxes(_state.paddles());
     drawBoundingBoxes(_state.bricks());
     drawBoundingBoxes(_state.walls());
+    drawBoundingBoxes(_state.modifiers());
     drawTrajectories(_state.balls(), ofColor(255, 0, 0, 100), true);
   } else if (appParams.drawTrajectories) {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
@@ -360,8 +361,8 @@ void DomeRenderer::drawModifier(Modifier &modifier) {
   ofSetLineWidth(8.0);
   ofFill();
   ofSetColor(modifier.spec().color);
-  ofDrawCylinder(ofVec3f::zero(), modifier.getSize().x / 2.0, modifier.getSize().y * 2.0);
-  
+  ofDrawCylinder(ofVec3f::zero(), modifier.getSize().x/2.0, modifier.getSize().y);
+ 
   ofPopMatrix();
   
   ofPopStyle();

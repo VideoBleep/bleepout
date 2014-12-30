@@ -57,7 +57,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 RoundConfig::RoundConfig(std::string name)
 : _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
-_modifierRadius(9.0f),
+_modifierSize(9.0f, 16.0f, 9.0f),
 _brickFadeTime(0.4f),
 _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
@@ -215,7 +215,7 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readVal(obj["paddleSize"], &_paddleSize);
   loader.readVal(obj["ballRadius"], &_ballRadius);
   loader.readVal(obj["brickFadeTime"], &_brickFadeTime);
-  loader.readVal(obj["modifierRadius"], &_modifierRadius);
+  loader.readVal(obj["modifierSize"], &_modifierSize);
   loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
   loader.readVal(obj["ballSpawnedFadeTime"], &_ballSpawnedFadeTime);
   _rules.readJson(loader, obj["rules"]);
@@ -253,7 +253,7 @@ Json::Value RoundConfig::buildJson() const {
   obj["startDelay"] = _startDelay;
   obj["paddleSize"] = toJsonVal(_paddleSize);
   obj["brickFadeTime"] = _brickFadeTime;
-  obj["modifierRadius"] = _modifierRadius;
+  obj["modifierSize"] = toJsonVal(_modifierSize);
   obj["modifierFadeTime"] = _modifierFadeTime;
   obj["ballSpawnedFadeTime"] = _ballSpawnedFadeTime;
   obj["rules"] = _rules.buildJson();
