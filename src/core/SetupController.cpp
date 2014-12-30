@@ -90,7 +90,7 @@ bool SetupController::tryStartRound() {
   _roundPlayers.clear();
   for (auto player : _lobby) {
     _roundPlayers.push_back(player);
-    PlayerManager::setPlayerReady(*player);
+    PlayerManager::setPlayerCalibrate(*player);
   }
   
   auto rounds = BleepoutParameters::get().getRoundQueue();
