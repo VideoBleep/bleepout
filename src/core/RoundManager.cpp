@@ -100,6 +100,14 @@ void RoundController::detachFrom(AdminController &adminController) {
 
 void RoundController::draw() {
   _renderer->draw();
+  
+  if (_renderer->getCamera()) {
+    ofDisableLighting();
+    _renderer->getCamera()->begin();
+    _spaceController->drawDebug();
+    _renderer->getCamera()->end();
+    ofEnableLighting();
+  }
 }
 
 template<typename T>

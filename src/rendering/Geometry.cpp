@@ -8,17 +8,29 @@
 
 #include "Geometry.h"
 
-void addFaceToMesh(ofPtr<ofMesh>& mesh, const vector<ofVec3f>& points) {
-  int count = mesh->getVertices().size();
-  mesh->addVertices(points);
-  mesh->addIndex(count + points.size() - 1);
-  mesh->addIndex(count);
-  mesh->addIndex(count + 1);
-  for (int i = count + 1; i < count + points.size() - 2; i += 2) {
-    mesh->addIndex(i);
-    mesh->addIndex(i + 1);
-    mesh->addIndex(i + 2);
-  }
+void addFaceToMesh(ofPtr<ofMesh>& mesh, const vector<ofVec3f>& points, bool reverse = false) {
+    int count = mesh->getVertices().size();
+    mesh->addVertices(points);
+    if (reverse) {
+        mesh->addIndex(count + 1);
+        mesh->addIndex(count);
+        mesh->addIndex(count + points.size() - 1);
+    } else {
+        mesh->addIndex(count + points.size() - 1);
+        mesh->addIndex(count);
+        mesh->addIndex(count + 1);
+    }
+    for (int i = count + 1; i < count + points.size() - 2; i += 2) {
+        if (reverse) {
+            mesh->addIndex(i + 2);
+            mesh->addIndex(i + 1);
+            mesh->addIndex(i);
+        } else {
+            mesh->addIndex(i);
+            mesh->addIndex(i + 1);
+            mesh->addIndex(i + 2);
+        }
+    }
 }
 
 void addLineToMesh(ofPtr<ofMesh>& mesh, const ofVec3f& pt1, const ofVec3f& pt2) {
@@ -51,7 +63,7 @@ void Sweep::generate(bool merge) {
   outline->setMode(OF_PRIMITIVE_LINES);
   outline->enableIndices();
   
-  addFaceToMesh(mesh, startFace.points);
+  addFaceToMesh(mesh, startFace.points, true);
   addLinesToMesh(outline, startFace.points, true);
   
   vector<ofVec3f> currRing(startFace.points);
@@ -73,7 +85,7 @@ void Sweep::generate(bool merge) {
     }
     currRing = nextRing;
   }
-  
+
   addFaceToMesh(mesh, nextRing);
   addLinesToMesh(outline, nextRing, true);
   if (merge) {

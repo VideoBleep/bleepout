@@ -37,6 +37,7 @@ public:
   void updateCollisionObject(PhysicsObject* obj);
   
   void update();
+  void drawDebug();
   
   void notifyCollision(CollisionArgs& args);
   

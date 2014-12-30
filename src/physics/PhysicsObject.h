@@ -10,7 +10,8 @@
 #define __bleepout__PhysicsObject__
 
 #include <ofMain.h>
-#include <Trajectory.h>
+#include "Trajectory.h"
+#include "Geometry.h"
 
 class PhysicsWorld;
 class GameObject;
@@ -30,7 +31,8 @@ struct BoundingBox {
 
 enum CollisionShape {
   CollisionSphere,
-  CollisionBox
+  CollisionBox,
+  CollisionMesh
 };
 
 class PhysicsObject {
@@ -62,6 +64,9 @@ public:
   
   PhysicsWorld* getWorld() { return world; }
   
+  void setMesh(GenMesh* m) { mesh.reset(m); collisionShape = CollisionMesh; }
+  GenMesh* getMesh() { return mesh.get(); }
+  
   virtual void output(std::ostream& os) const;
   
 protected:
@@ -79,6 +84,7 @@ protected:
   GameObject* thisGameObject;
   bool isCollidable;
   bool sizeDirty;
+  ofPtr<GenMesh> mesh;
   
   friend class GameObject;
   friend class PhysicsWorld;

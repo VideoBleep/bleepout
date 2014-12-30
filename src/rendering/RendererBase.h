@@ -31,6 +31,7 @@ public:
   virtual void mouseReleased(int x, int y, int button) {}
   virtual void mouseDragged(int x, int y, int button) {}
   virtual void mouseMoved(int x, int y) {}
+  virtual ofCamera* getCamera() { return NULL; }
   
 protected:
   virtual void drawBrick(Brick& brick) = 0;

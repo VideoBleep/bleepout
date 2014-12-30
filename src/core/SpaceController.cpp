@@ -48,8 +48,39 @@ void SpaceController::setup() {
   }
   
   for (const WallSpec& wall : _state.config().allWalls()) {
-    addWall(wall);
+    //addWall(wall);
   }
+  
+  auto appParams = BleepoutParameters::get();
+    
+    for (const CurvedWallSpec& cw : _state.config().curvedWallSets()) {
+      float r = appParams.domeRadius + appParams.domeMargin;
+      float d = cw.width / 4.0;
+      int steps = 20;
+      
+      Sweep* sweep = new Sweep();
+      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
+      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
+      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
+      sweep->startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
+      sweep->path.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1));
+      for (int i = 0; i < steps; i++) {
+          float s = i / ((steps - 1) * 1.0);
+          sweep->path.addPoint(sphericalToCartesian(r,
+                                                   lerp(cw.elevation1, cw.elevation2, s),
+                                                   lerp(cw.heading1, cw.heading2, s)));
+      }
+      
+      sweep->generate();
+        auto o = new Wall(_state.config(), WallSpec());
+        o->setPosition(ofVec3f(0, 0, 0));
+        o->setMesh(sweep);
+        _world.addObject(o);
+    }
+    
+  // Create the floor exit wall
+  float d = (appParams.domeMargin + appParams.domeRadius) * 5;
+  addWall(WallSpec().setElevation(-10).setHeading(0).setSize(ofVec3f(d, 10, d)).setIsExit(true));
 }
 
 void SpaceController::addBrick(const BrickSpec &brickSpec) {
@@ -89,6 +120,10 @@ void SpaceController::removeObject(PhysicsObject &object) {
 
 void SpaceController::update() {
   _world.update();
+}
+
+void SpaceController::drawDebug() {
+  _world.drawDebug();
 }
 
 float paddleTrueHitFactor(const ofVec3f& paddlePos, const ofVec3f& paddleSize) {

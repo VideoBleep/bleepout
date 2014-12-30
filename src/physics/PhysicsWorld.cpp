@@ -15,10 +15,10 @@
 #ifdef USE_BULLET_COLLISIONS
 
 #include <ofxBullet.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
-#define SCENE_SIZE 500
+#define SCENE_SIZE 250
 #define MAX_OBJECTS 16000
+
 
 inline bool operator==(const ofVec3f& ofVec, const btVector3 btVec) {
   return
@@ -34,6 +34,15 @@ inline bool operator!=(const ofVec3f& ofVec, const btVector3 btVec) {
   abs(ofVec.z - btVec.z()) > FLT_EPSILON;
 }
 
+void convertOfMeshToBt(ofMesh* ofMesh, btTriangleMesh* triMesh) {
+    auto indices = ofMesh->getIndices();
+    for (int i = 0; i < indices.size(); i += 3) {
+        ofVec3f a = ofMesh->getVertex(indices[i + 0]);
+        ofVec3f b = ofMesh->getVertex(indices[i + 1]);
+        ofVec3f c = ofMesh->getVertex(indices[i + 2]);
+        triMesh->addTriangle(btVector3(a.x, a.y, a.z), btVector3(b.x, b.y, b.z), btVector3(c.x, c.y, c.z), false);
+    }
+}
 
 class PhysicsImpl {
 public:
@@ -50,6 +59,7 @@ public:
   btCollisionDispatcher* bt_dispatcher;
   btBroadphaseInterface* bt_broadphase;
   btCollisionWorld* bt_collision_world;
+  GLDebugDrawer* debugDrawer;
   
   PhysicsImpl(PhysicsWorld& w) : world(w) {
     bt_collision_configuration = new btDefaultCollisionConfiguration();
@@ -59,8 +69,9 @@ public:
     btVector3 worldAabbMin(-sscene_size, -sscene_size, -sscene_size);
     btVector3 worldAabbMax(sscene_size, sscene_size, sscene_size);
     bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, MAX_OBJECTS, 0, true);
-    
     bt_collision_world = new btCollisionWorld(bt_dispatcher, bt_broadphase, bt_collision_configuration);
+    
+    debugDrawer = NULL;
     
     newContacts = new ContactSet();
     oldContacts = new ContactSet();
@@ -78,6 +89,12 @@ public:
     } else if (obj->collisionShape == CollisionBox) {
       ofVec3f size = obj->getSize();
       btBoxShape* shape = new btBoxShape(btVector3(size.x * 0.5, size.y * 0.5, size.z * 0.5));
+      shape->setMargin(2.0);
+      co->setCollisionShape(shape);
+    } else if (obj->collisionShape == CollisionMesh) {
+      btTriangleMesh* mesh = new btTriangleMesh();
+      convertOfMeshToBt(obj->getMesh()->mesh.get(), mesh);
+      auto shape = new btBvhTriangleMeshShape(mesh, false);
       shape->setMargin(2.0);
       co->setCollisionShape(shape);
     }
@@ -181,6 +198,8 @@ public:
     delete bt_broadphase;
     delete bt_dispatcher;
     delete bt_collision_configuration;
+    
+    delete debugDrawer;
   }
   
   void update() {
@@ -194,12 +213,12 @@ public:
   }
   
   void drawDebug() {
-    for (auto const &it : objectMap) {
-      ofSetColor(255, 0, 0);
-      btVector3 pos = it.second->getWorldTransform().getOrigin();
-      btVector3 size = it.second->getCollisionShape()->getLocalScaling();
-      ofRect(pos.x()-3, pos.y()-3, size.x()+6, size.y()+6);
+    if (!debugDrawer) {
+      debugDrawer = new GLDebugDrawer();
+      bt_collision_world->setDebugDrawer(debugDrawer);
+      debugDrawer->setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
     }
+    bt_collision_world->debugDrawWorld();
   }
   
   void performCollisionDetection() {
@@ -349,6 +368,10 @@ public:
     performCollisionDetection();
   }
   
+  void drawDebug() {
+    
+  }
+  
   BoundingBox getObjBoundingBox(PhysicsObject* obj) {
     return obj->getBoundingBox();
   }
@@ -424,6 +447,12 @@ void PhysicsWorld::removeObject(PhysicsObject* obj) {
 void PhysicsWorld::update() {
   if (_impl.get()) {
     _impl->update();
+  }
+}
+
+void PhysicsWorld::drawDebug() {
+  if (_impl.get()) {
+    _impl->drawDebug();
   }
 }
 
