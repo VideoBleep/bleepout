@@ -360,22 +360,30 @@ void DomeRenderer::drawModifier(Modifier &modifier) {
   ofRotateY(45);
 
   if (modifier.spec().beneficial) {
+    float length = modifier.getSize().y;
+    float r = modifier.getSize().x * 0.5;
+    float d = r * 1.25;
     ofFill();
+    ofSetColor(200, 200, 200);
+    ofDrawCylinder(ofVec3f::zero(), r * 0.8, length * 0.9);
     ofSetColor(modifier.spec().color);
-    ofDrawCylinder(ofVec3f::zero(), modifier.getSize().x/2.0, modifier.getSize().y);
+    ofDrawCylinder(ofVec3f(0, (length - d) * -0.5, 0), r, d);
+    ofDrawCylinder(ofVec3f(0, (length - d) *  0.5, 0), r, d);
   } else {
     float r = (modifier.getSize().x + modifier.getSize().y) * 0.25;
+    ofDisableLighting();
     ofFill();
-    ofSetColor(80, 80, 90);
+    ofSetColor(40, 40, 50);
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);
     ofNoFill();
-    ofSetLineWidth(3.0);
+    ofSetLineWidth(2.5);
     ofSetColor(modifier.spec().color);
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);
+    ofEnableLighting();
   }
-  ofPopMatrix();
   
+  ofPopMatrix();
   ofPopStyle();
 }

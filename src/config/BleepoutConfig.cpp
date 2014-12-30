@@ -57,7 +57,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 RoundConfig::RoundConfig(std::string name)
 : _paddleSize(16.0f, 8.0f, 40.0f),
 _ballRadius(8.0f),
-_modifierSize(9.0f, 16.0f, 9.0f),
+_modifierSize(9.0f, 20.0f, 9.0f),
 _brickFadeTime(0.4f),
 _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
