@@ -110,7 +110,9 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.b->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.b);
       ball.bounce(cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnB, paddle.getSize()));
-    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.b->type() != GAME_OBJECT_BRICK) {
+    } else if (cdata.b->type() == GAME_OBJECT_BRICK && !ball.isLaser() && !appParams.allLasers) {
+      ball.bounce(cdata.normalOnA);
+    } else if (cdata.b->type() == GAME_OBJECT_WALL) {
       ball.bounce(cdata.normalOnA);
     }
   } else if (cdata.b->type() == GAME_OBJECT_BALL) {
@@ -118,7 +120,9 @@ void SpaceController::onCollision(CollisionArgs &cdata) {
     if (cdata.a->type() == GAME_OBJECT_PADDLE) {
       auto paddle = static_cast<Paddle&>(*cdata.a);
       ball.bounce(-cdata.normalOnA, paddleTrueHitFactor(cdata.pointOnA, paddle.getSize()));
-    } else if ((!ball.isLaser() && !appParams.allLasers) || cdata.a->type() != GAME_OBJECT_BRICK) {
+    } else if (cdata.a->type() == GAME_OBJECT_BRICK && !ball.isLaser() && !appParams.allLasers) {
+      ball.bounce(-cdata.normalOnA);
+    } else if (cdata.a->type() == GAME_OBJECT_WALL) {
       ball.bounce(-cdata.normalOnA);
     }
   }
