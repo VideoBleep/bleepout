@@ -91,9 +91,9 @@ bool SetupController::tryStartRound() {
 
   // Copy lobby (in this case, e.players()) to players.
   _roundPlayers.clear();
-  for (std::list<ofPtr<Player>>::iterator iterator = _lobby.begin(), end = _lobby.end(); iterator != end; ++iterator) {
-    _roundPlayers.push_back(*iterator);
-    PlayerManager::setPlayerReady(**iterator);
+  for (auto player : _lobby) {
+    _roundPlayers.push_back(player);
+    PlayerManager::setPlayerReady(*player);
   }
 
   return notifyTryStartRound(_roundConfig, _roundPlayers);
