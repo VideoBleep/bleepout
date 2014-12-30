@@ -257,17 +257,6 @@ Json::Value RoundConfig::buildJson() const {
   obj["modifierFadeTime"] = _modifierFadeTime;
   obj["ballSpawnedFadeTime"] = _ballSpawnedFadeTime;
   obj["rules"] = _rules.buildJson();
-//  obj["balls"] = toJsonArr(_balls);
-//  obj["bricks"] = toJsonArr(_bricks);
-//  obj["brickRings"] = toJsonArr(_brickRings);
-//  obj["curvedBrickColumns"] = toJsonArr(_curvedBrickColumns);
-//  obj["brickQuads"] = toJsonArr(_brickQuads);
-//  obj["walls"] = toJsonArr(_walls);
-//  obj["wallRings"] = toJsonArr(_wallRings);
-//  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
-//  obj["modifierDefs"] = valuesToJsonObj(_modifierDefs);
-//  obj["startMessages"] = toJsonArr(_startMessages);
-//  obj["ringSets"] = toJsonArr(_ringSets);
   Json::Value specsArr(Json::arrayValue);
   addToJsonArr(&specsArr, _balls);
   addToJsonArr(&specsArr, _bricks);

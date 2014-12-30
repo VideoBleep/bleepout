@@ -38,8 +38,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   for (int col = 0; col < cols; col++) {
     float s = col / (float)cols;
     auto& spec = config->addCurvedBrickColumn()
-      .setEnd1(30, s * 360)
-      .setEnd2(60, s * 360 + 20)
+      .setEnd1(30, s * 360 + ((col % 2) ? 5 : -5))
+      .setEnd2(60, s * 360 + 20 + ((col % 2) ? 5 : -5))
       .setCount(rows)
       .setColor(ofColor(s * 255, 0, 255),
                 ofColor(s * 255, 255, 0))

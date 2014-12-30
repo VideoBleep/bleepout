@@ -11,31 +11,31 @@
 		{
 			"_type" : "Ball",
 			"elevation" : 30.0,
-			"heading" : 119.36816406250
+			"heading" : 274.4908752441406
 		},
 		
 		{
 			"_type" : "Ball",
 			"elevation" : 30.0,
-			"heading" : 300.7104187011719
+			"heading" : 328.0710754394531
 		},
 		
 		{
 			"_type" : "Ball",
 			"elevation" : 30.0,
-			"heading" : 359.9494934082031
+			"heading" : 130.3501586914062
 		},
 		
 		{
 			"_type" : "Ball",
 			"elevation" : 30.0,
-			"heading" : 230.9569549560547
+			"heading" : 195.0697479248047
 		},
 		
 		{
 			"_type" : "Ball",
 			"elevation" : 30.0,
-			"heading" : 173.5763092041016
+			"heading" : 17.26078414916992
 		},
 		
 		{
@@ -87,8 +87,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 0.0,
-			"heading2" : 20.0,
+			"heading1" : -5.0,
+			"heading2" : 15.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -122,8 +122,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 30.0,
-			"heading2" : 50.0,
+			"heading1" : 35.0,
+			"heading2" : 55.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -157,8 +157,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 60.0,
-			"heading2" : 80.0,
+			"heading1" : 55.0,
+			"heading2" : 75.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -192,8 +192,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 90.0,
-			"heading2" : 110.0,
+			"heading1" : 95.0,
+			"heading2" : 115.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -227,8 +227,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 120.0,
-			"heading2" : 140.0,
+			"heading1" : 115.0,
+			"heading2" : 135.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -262,8 +262,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 150.0,
-			"heading2" : 170.0,
+			"heading1" : 155.0,
+			"heading2" : 175.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -297,8 +297,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 180.0,
-			"heading2" : 200.0,
+			"heading1" : 175.0,
+			"heading2" : 195.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -332,8 +332,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 210.0,
-			"heading2" : 230.0,
+			"heading1" : 215.0,
+			"heading2" : 235.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -367,8 +367,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 240.0,
-			"heading2" : 260.0,
+			"heading1" : 235.0,
+			"heading2" : 255.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -402,8 +402,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 270.0,
-			"heading2" : 290.0,
+			"heading1" : 275.0,
+			"heading2" : 295.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -437,8 +437,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 300.0,
-			"heading2" : 320.0,
+			"heading1" : 295.0,
+			"heading2" : 315.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
@@ -472,8 +472,8 @@
 			"count" : 10,
 			"elevation1" : 30.0,
 			"elevation2" : 60.0,
-			"heading1" : 330.0,
-			"heading2" : 350.0,
+			"heading1" : 335.0,
+			"heading2" : 355.0,
 			"phase" : 0.0,
 			"size" : [ 7.0, 5.0, 17.0 ],
 			"speed" : 0.0,
