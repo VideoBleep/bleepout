@@ -77,6 +77,7 @@ protected:
   PhysicsWorld* world;
   GameObject* thisGameObject;
   bool isCollidable;
+  bool sizeDirty;
   
   friend class GameObject;
   friend class PhysicsWorld;

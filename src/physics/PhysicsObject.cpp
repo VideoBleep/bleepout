@@ -51,6 +51,7 @@ PhysicsObject::PhysicsObject(CollisionShape shape)
 : collisionShape(shape)
 , world(NULL)
 , isCollidable(false)
+, sizeDirty(false)
 {
   
 }
@@ -97,6 +98,7 @@ void PhysicsObject::setRotation(float heading) {
 
 void PhysicsObject::setSize(const ofVec3f& newSize) {
   size = newSize;
+  sizeDirty = true;
   updateBoundingBox();
 }
 
