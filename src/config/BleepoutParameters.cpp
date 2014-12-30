@@ -39,10 +39,6 @@ void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
   for (const auto& round : appConfig.roundConfigs()) {
     _queuedRoundNames.push_back(round->name());
   }
-  // yes this is intentional
-  for (const auto& round : appConfig.roundConfigs()) {
-    _queuedRoundNames.push_back(round->name());
-  }
   syphonAppName = appConfig.syphonAppName();
   syphonServerName = appConfig.syphonServerName();
 }
