@@ -237,7 +237,7 @@ void PlayerManager::setPlayerQueued(Player& player) {
 void PlayerManager::setPlayerCalibrate(Player& player) {
 	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
 }
-// Send 'Ready' state message to player 
+// Send game 'Ready' state message to player 
 void PlayerManager::setPlayerReady(Player& player) {
 	player.connection()->send(std::string(PACKET_MESSAGE) + STATE_READY);
 }

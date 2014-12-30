@@ -73,8 +73,6 @@ void PlayerController::queue(Player& player) {
   PlayerManager::setPlayerQueued(player);
 };
 
-
-
 // Calibrate Player Position
 //5.[SETCALIBRATE] PlayerManager::setPlayerCalibrate < Calibrate -
 void PlayerController::calibrate(Player& player) {
@@ -90,6 +88,12 @@ void PlayerController::calibrate(Player& player) {
   PlayerManager::setPlayerCalibrate(player);
 };
 
+// Player is calibrated
+void PlayerController::setCalibrate(Player& player) {
+  // This sets GAME READY, not "Player Ready"
+  PlayerManager::setPlayerReady(player);
+};
+
 // Handle configure message from player (set color)
 // 3. [CONFIGURED] Client - Set Color > PlayerController::configure
 void PlayerController::configure(Player& player, ofColor color) {
@@ -101,7 +105,7 @@ void PlayerController::configure(Player& player, ofColor color) {
 
 // Player has started their game.
 void PlayerController::start(Player& player) {
-	// TODO: implement
+  notifyPlayerReady(player);
 };
 
 // Player has quit. Called by player.

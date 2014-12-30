@@ -58,8 +58,10 @@ public:
   void configure(Player& player, ofColor color); // , std::string[] & messageParts);
 	// Player has entered the 'lobby' - called by player controller itself
 	void queue(Player& player);
-	// Calibrate Player Position - called by player, but this likely is a complicated step
+	// Calibrate Player Position 
 	void calibrate(Player& player);
+  // Player is calibrated
+  void setCalibrate(Player& player);
 	// Player has started their game - called by player
 	void start(Player& player);
 	// Player has quit. Called by player.
