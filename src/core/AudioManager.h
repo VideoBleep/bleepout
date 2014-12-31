@@ -28,7 +28,8 @@ private:
   void onRoundStarted(RoundStateEventArgs& e);
   void onRoundEnded(RoundEndedEventArgs& e);
   void onBrickHit(BrickHitEventArgs& e);
-  void onCollision(CollisionEventArgs& e);
+  void onPaddleHit(PaddleHitEventArgs& e);
+  void onWallHit(WallHitEventArgs& e);
   void onModifierApplied(ModifierEventArgs& e);
   void onModifierRemoved(ModifierRemovedEventArgs& e);
   void onBallDestroyed(BallStateEventArgs& e);
@@ -40,7 +41,8 @@ private:
   ofSoundPlayer _roundEndedSound;
   ofSoundPlayer _brickDestroyedSound;
   ofSoundPlayer _brickHitSound;
-  ofSoundPlayer _collisionSound;
+  ofSoundPlayer _paddleHitSound;
+  ofSoundPlayer _wallHitSound;
   ofSoundPlayer _modifierAppliedSound;
   ofSoundPlayer _modifierRemovedSound;
   ofSoundPlayer _ballDestroyedSound;

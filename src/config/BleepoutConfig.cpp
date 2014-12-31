@@ -33,8 +33,10 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   
   config->roundStartedSound = "";
   config->roundEndedSound = "";
+  config->brickHitSound = "";
   config->brickDestroyedSound = "";
-  config->collisionSound = "";
+  config->paddleHitSound = "";
+  config->wallHitSound = "";
   config->modifierAppliedSound = "";
   config->modifierRemovedSound = "";
   config->ballDestroyedSound = "";
@@ -330,7 +332,8 @@ void BleepoutConfig::readJson(const JsonLoader &loader, const Json::Value &obj) 
   loader.readVal(obj["roundEndedSound"], &roundEndedSound);
   loader.readVal(obj["brickHitSound"], &brickHitSound);
   loader.readVal(obj["brickDestroyedSound"], &brickDestroyedSound);
-  loader.readVal(obj["collisionSound"], &collisionSound);
+  loader.readVal(obj["paddleHitSound"], &paddleHitSound);
+  loader.readVal(obj["wallHitSound"], &wallHitSound);
   loader.readVal(obj["modifierAppliedSound"], &modifierAppliedSound);
   loader.readVal(obj["modifierRemovedSound"], &modifierRemovedSound);
   loader.readVal(obj["ballDestroyedSound"], &ballDestroyedSound);
@@ -371,7 +374,8 @@ Json::Value BleepoutConfig::buildJson() const {
   obj["roundEndedSound"] = roundEndedSound;
   obj["brickHitSound"] = brickHitSound;
   obj["brickDestroyedSound"] = brickDestroyedSound;
-  obj["collisionSound"] = collisionSound;
+  obj["paddleHitSound"] = paddleHitSound;
+  obj["wallHitSound"] = wallHitSound;
   obj["modifierAppliedSound"] = modifierAppliedSound;
   obj["modifierRemovedSound"] = modifierRemovedSound;
   obj["ballDestroyedSound"] = ballDestroyedSound;
