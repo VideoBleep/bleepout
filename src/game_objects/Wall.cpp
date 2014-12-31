@@ -21,22 +21,21 @@ Wall::Wall(const RoundConfig& config, const WallSpec& spec)
   _isExit = spec.isExit;
   _visible = spec.visible;
   float d = appParams.domeMargin + appParams.domeRadius;
-  this->setPositionSpherical(appParams.domeRadius + appParams.domeMargin, spec.elevation, spec.heading);
   if (spec.isFloor) {
-    this->setSize(ofVec3f(d, 10, d));
+    this->setSize(ofVec3f(d * 10, 10, d * 10));
+    this->setPosition(ofVec3f(0, spec.elevation, 0));
   } else {
     this->setSize(spec.size);
-  }
-  if (spec.speed == 0) {
-    this->setPositionSpherical(appParams.domeRadius +
-                               appParams.domeMargin,
-                               spec.elevation,
-                               spec.heading);
-  } else {
-    this->setTrajectory(new CircularTrajectory(d,
-                                               spec.speed,
-                                               spec.elevation,
-                                               spec.heading,
-                                               spec.stopHeading));
+    if (spec.speed == 0) {
+      this->setPositionSpherical(d,
+                                 spec.elevation,
+                                 spec.heading);
+    } else {
+      this->setTrajectory(new CircularTrajectory(d,
+                                                 spec.speed,
+                                                 spec.elevation,
+                                                 spec.heading,
+                                                 spec.stopHeading));
+    }
   }
 }
