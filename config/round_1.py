@@ -3,7 +3,7 @@ import random
 
 def generate():
   config = {
-    "name": "Round1",
+    "name": "Round1asdf",
     "paddleSize": (16, 8, 40),
     "ballRadius": 8,
     "modifierSize": (9, 16, 9),
@@ -31,27 +31,26 @@ def generate():
 
   objects += [widePaddle, narrowPaddle]
 
-  rows = 12
-  cols = 10
-  for row in range(rows):
-    for col in range(cols):
-      s = col / (cols * 1.0)
-      objects.append(createCurvedBrickCol(elevation1= 30,
-                                          heading1= s * 360 + (5 if (col % 2) else -5),
-                                          elevation2= 60,
-                                          heading2= s * 360 + 20 + (5 if (col % 2) else -5),
-                                          count= rows,
-                                          color1= [s * 255, 0, 255],
-                                          color2= [s * 255, 255, 0],
-                                          size= [7, 5, 17],
-                                          stripe1= {},
-                                          stripe2= {
-                                            "lives": 2,
-                                            "modifier": { "name": widePaddle["name"], "chance": .3}
-                                          },
-                                          stripe3= {
-                                            "modifier": { "name": narrowPaddle["name"], "chance": .2}
-                                          }))
+  cols = 12
+  rows = 10
+  for col in range(cols):
+    s = col / float(cols)
+    objects.append(createCurvedBrickCol(elevation1= 30,
+                                        heading1= s * 360 + (5 if (col % 2) else -5),
+                                        elevation2= 60,
+                                        heading2= s * 360 + 20 + (5 if (col % 2) else -5),
+                                        count= rows,
+                                        color1= [s * 255, 0, 255],
+                                        color2= [s * 255, 255, 0],
+                                        size= [7, 5, 17],
+                                        stripe1= {},
+                                        stripe2= {
+                                          "lives": 2,
+                                          "modifier": { "name": widePaddle["name"], "chance": .3}
+                                        },
+                                        stripe3= {
+                                          "modifier": { "name": narrowPaddle["name"], "chance": .2}
+                                        }))
 
   for i in range(6):
     objects.append(createCurvedWall(elevation1=30,

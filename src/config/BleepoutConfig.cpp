@@ -286,8 +286,11 @@ static RoundConfig* loadRoundFromObj(const JsonLoader& loader,
 RoundConfig* RoundConfig::loadFromFile(std::string path) {
   JsonLoader loader;
   Json::Value obj;
-  if (!loader.readFile(path, &obj))
+  if (!loader.readFile(path, &obj)) {
+    ofLogWarning() << "unable to load round from file: " << path;
     return NULL;
+  }
+  ofLogWarning() << "loading round from file: " << path;
   return loadRoundFromObj(loader, obj);
 }
 
