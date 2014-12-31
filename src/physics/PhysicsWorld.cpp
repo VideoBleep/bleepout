@@ -216,7 +216,12 @@ public:
     if (!debugDrawer) {
       debugDrawer = new GLDebugDrawer();
       bt_collision_world->setDebugDrawer(debugDrawer);
-      debugDrawer->setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
+      debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe
+                                | btIDebugDraw::DBG_DrawAabb
+                                | btIDebugDraw::DBG_DrawContactPoints
+                                | btIDebugDraw::DBG_EnableCCD
+                                | btIDebugDraw::DBG_DrawNormals
+                                );
     }
     bt_collision_world->debugDrawWorld();
   }
