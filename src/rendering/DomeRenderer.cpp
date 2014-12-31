@@ -13,6 +13,7 @@
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
 
+
 namespace {
   
   template<typename T>
@@ -87,15 +88,19 @@ void DomeRenderer::setup() {
   light.setDiffuseColor(ofColor(225, 225, 255));
   light.setSpecularColor(ofColor(220, 220, 255));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
   light.setDiffuseColor(ofColor(255, 225, 255));
   light.setSpecularColor(ofColor(188, 220, 255));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
   light.setDiffuseColor(ofColor(225, 255, 225));
   light.setSpecularColor(ofColor(235, 220, 188));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
+  
+  ofLight ambient;
+  ambient.setAmbientColor(ofColor(70, 70, 70));
+  staticLights.push_back(ambient);
   
   wallMaterial.setDiffuseColor(ofColor(80, 80, 90));
   wallMaterial.setAmbientColor(ofColor(98, 98, 118));
@@ -121,23 +126,36 @@ void DomeRenderer::draw() {
 #endif
     
   float t = ofGetElapsedTimef() * 0.3;
-  for (int i = 0; i < lights.size(); i++) {
-    lights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
-    lights[i].setAttenuation(0.25, 0.007, 0.0);
-    lights[i].enable();
+  for (int i = 0; i < movingLights.size(); i++) {
+    movingLights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
+
+#ifdef RADOME
+    movingLights[i].setAttenuation(0.008, 0.005, 0.0);
+#else
+    movingLights[i].setAttenuation(0.35, 0.25, 0.0);
+#endif
+    
+    movingLights[i].enable();
+  }
+  for (int i = 0; i < staticLights.size(); i++) {
+    staticLights[i].enable();
   }
   
+  
+#ifndef RADOME
+  // draw circle on ground plane to represent dome extents
   ofPushMatrix();
   ofPushStyle();
   
   ofSetColor(80, 80, 110);
   ofNoFill();
   ofRotateX(90);
-  ofSetLineWidth(1.5);
+  LineWidthAdjuster::setLineWidth(1.5);
   ofCircle(0, 0, 0, appParams.domeRadius);
   
   ofPopStyle();
   ofPopMatrix();
+#endif
   
   RendererBase::draw();
   
@@ -174,13 +192,13 @@ void DomeRenderer::draw() {
       drawGenMesh(sweep, wallMaterial, ofColor(80, 80, 90), 1.5);
     }
   }
+
   
-  for (int i = 0; i < lights.size(); i++) {
-    lights[i].setAttenuation(0,0,0);
-  }
-  
-  if (appParams.drawExtras)
+  if (appParams.drawExtras) {
+    ofDisableLighting();
     _extras.draw();
+    ofEnableLighting();
+  }
 
 #ifndef RADOME
   _cam.end();
@@ -197,7 +215,7 @@ void DomeRenderer::drawGenMesh(const GenMesh& gm, ofMaterial& mat, const ofColor
   mat.end();
   
   ofSetColor(edgeColor);
-  ofSetLineWidth(lineWidth);
+  LineWidthAdjuster::setLineWidth(lineWidth);
     
 #ifndef RADOME
   ofTranslate(_cam.getLookAtDir().normalized() * -0.2);
@@ -261,7 +279,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
   ofVec3f jitter = perpVec * ofRandom(-s, s) + vel.normalized() * ofRandom(-s, s);
   vel += jitter;
   
-  ofVec3f stack = pos.normalized() * 0.01 * order;
+  ofVec3f stack = pos.normalized() * 0.05 * order;
   ofVec3f tailPt = pos - vel * length + stack;
   ofVec3f headPt = pos + vel * 2.2 * width + stack;
   ofVec3f offsetVec = perpVec * 1.2 * width;
@@ -291,7 +309,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     ofTranslate(ball.getPosition());
     ofRotateX(360 * ball.getTrajectory()->getTime());
     ofRotateY(45);
-    ofSetLineWidth(8.0);
+    LineWidthAdjuster::setLineWidth(8.0);
     if (ball.player() != NULL) {
       ofFill();
       ofSetColor(ball.getColor());
@@ -323,7 +341,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       ofEnableBlendMode(OF_BLENDMODE_ADD);
       
       ofSetColor(255, 255, 255, 255);
-      ofSetLineWidth(1.5);
+      LineWidthAdjuster::setLineWidth(1.5);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -331,7 +349,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       ofColor c = ball.getColor();
       c.a = 172;
       ofSetColor(c);
-      ofSetLineWidth(5.0);
+      LineWidthAdjuster::setLineWidth(5.0);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -340,7 +358,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       
       c.a = 127;
       ofSetColor(c);
-      ofSetLineWidth(20.0);
+      LineWidthAdjuster::setLineWidth(20.0);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -380,7 +398,7 @@ void DomeRenderer::drawModifier(Modifier &modifier) {
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);
     ofNoFill();
-    ofSetLineWidth(2.5);
+    LineWidthAdjuster::setLineWidth(2.5);
     ofSetColor(modifier.spec().color);
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);

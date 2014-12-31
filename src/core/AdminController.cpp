@@ -126,8 +126,8 @@ void AdminController::setup() {
   _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 0,
                          uiWidth, totalHeight);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
-  
-  _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
+  _gui->setFont("GUI/Exo-Regular.ttf", true, true, false, 0.0, OFX_UI_FONT_RESOLUTION);
+  _gui->addLabel("BLEEPOUT", OFX_UI_FONT_LARGE);
   _gui->addSpacer();
   _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);

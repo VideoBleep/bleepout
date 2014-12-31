@@ -45,7 +45,8 @@ protected:
     
   RendererExtras _extras;
   
-  vector<ofLight> lights;
+  vector<ofLight> movingLights;
+  vector<ofLight> staticLights;
   ofMaterial wallMaterial;
 };
 

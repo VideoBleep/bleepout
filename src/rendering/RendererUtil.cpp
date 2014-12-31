@@ -25,7 +25,7 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   // Edge lines
   ofNoFill();
   ofDisableLighting();
-  ofSetLineWidth(lineWidth);
+  LineWidthAdjuster::setLineWidth(lineWidth);
   ofSetColor(edgeColor);
   ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
   
@@ -50,6 +50,8 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofPushMatrix();
   ofPushStyle();
   
+  ofDisableLighting();
+  
   ofVec3f pos = sphericalToCartesian(radius, elevation, heading);
   ofTranslate(pos);
   ofRotateY(360 - heading - 90);
@@ -62,7 +64,10 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofTranslate(-rect.width/2, -rect.height/2, 0);
   
   ofSetColor(color);
+  
   font.drawStringAsShapes(text, 0, 0);
+  
+  ofEnableLighting();
   
   ofPopStyle();
   ofPopMatrix();

@@ -239,4 +239,7 @@ private:
   std::map<T, int> _counters;
 };
 
+std::string colorToRGBHexString(ofColor color);
+
+
 #endif
