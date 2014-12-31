@@ -107,6 +107,9 @@ void DomeRenderer::setup() {
   wallMaterial.setEmissiveColor(ofColor(68, 60, 98));
   wallMaterial.setShininess(10.0);
   wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
+    
+  ofSetSphereResolution(10);
+  ofSetCylinderResolution(10, 4);
 }
 
 void DomeRenderer::setupExtras() {
@@ -188,7 +191,7 @@ void DomeRenderer::draw() {
                                                  lerp(cw.heading1, cw.heading2, s)));
       }
       
-      sweep.generate();
+      sweep.generate(false);
       drawGenMesh(sweep, wallMaterial, ofColor(80, 80, 90), 1.5);
     }
   }

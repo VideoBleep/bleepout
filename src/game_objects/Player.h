@@ -25,6 +25,7 @@ class Player : public GameObject {
 public:
   Player();
   Player(ofxLibwebsockets::Connection* conn);
+  virtual ~Player();
   
   void setPaddle(Paddle* paddle) { _paddle = paddle; }
   Paddle* paddle() { return _paddle; }
