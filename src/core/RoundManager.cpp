@@ -91,6 +91,10 @@ void RoundController::loadNextConfig() {
 void RoundController::setup() {
   _cullDeadObjectsPulser = Pulser(5.0f);
   
+  for (auto& player : _state.players()) {
+    player->isPlaying = true;
+  }
+  
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofAddListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   

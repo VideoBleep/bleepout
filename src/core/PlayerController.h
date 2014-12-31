@@ -40,14 +40,15 @@
 #ifndef __bleepout__PlayerController__
 #define __bleepout__PlayerController__
 
-#include "SetupController.h"
 #include "Player.h"
 #include "GameEvents.h"
+
+class AdminController;
 
 class PlayerController : public EventSource
 {
 public:
-  PlayerController(SetupController& setup);
+  PlayerController(AdminController& setup);
   virtual ~PlayerController() {}
 
 	/*
@@ -82,7 +83,7 @@ public:
   const char* eventSourceName() const { return "PlayerController"; }
 
 private:
-  SetupController& _setup;
+  AdminController& _setup;
 
 	void notifyPlayerConnected(Player& player);
 	void notifyPlayerReady(Player& player);
