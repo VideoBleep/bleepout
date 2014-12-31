@@ -89,15 +89,19 @@ void DomeRenderer::setup() {
   light.setDiffuseColor(ofColor(225, 225, 255));
   light.setSpecularColor(ofColor(220, 220, 255));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
   light.setDiffuseColor(ofColor(255, 225, 255));
   light.setSpecularColor(ofColor(188, 220, 255));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
   light.setDiffuseColor(ofColor(225, 255, 225));
   light.setSpecularColor(ofColor(235, 220, 188));
   light.setPointLight();
-  lights.push_back(light);
+  movingLights.push_back(light);
+  
+  ofLight ambient;
+  ambient.setAmbientColor(ofColor(70, 70, 70));
+  staticLights.push_back(ambient);
   
   wallMaterial.setDiffuseColor(ofColor(80, 80, 90));
   wallMaterial.setAmbientColor(ofColor(98, 98, 118));
@@ -119,12 +123,18 @@ void DomeRenderer::draw() {
 #endif
     
   float t = ofGetElapsedTimef() * 0.3;
-  for (int i = 0; i < lights.size(); i++) {
-    lights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
-    lights[i].setAttenuation(0.25, 0.007, 0.0);
-    lights[i].enable();
+  for (int i = 0; i < movingLights.size(); i++) {
+    movingLights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
+    movingLights[i].setAttenuation(0.03, 0.01, 0.0);
+    movingLights[i].enable();
+  }
+  for (int i = 0; i < staticLights.size(); i++) {
+    staticLights[i].enable();
   }
   
+  
+#ifndef RADOME
+  // draw circle on ground plane to represent dome extents
   ofPushMatrix();
   ofPushStyle();
   
@@ -136,6 +146,7 @@ void DomeRenderer::draw() {
   
   ofPopStyle();
   ofPopMatrix();
+#endif
   
   RendererBase::draw();
   
@@ -171,13 +182,13 @@ void DomeRenderer::draw() {
     sweep.generate();
     drawGenMesh(sweep, wallMaterial, ofColor(80, 80, 90), 1.5);
   }
+
   
-  for (int i = 0; i < lights.size(); i++) {
-    lights[i].setAttenuation(0,0,0);
-  }
-  
-  if (appParams.drawExtras)
+  if (appParams.drawExtras) {
+    ofDisableLighting();
     _extras.draw();
+    ofEnableLighting();
+  }
 
 #ifndef RADOME
   _cam.end();

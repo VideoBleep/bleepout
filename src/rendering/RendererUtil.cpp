@@ -62,6 +62,7 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofTranslate(-rect.width/2, -rect.height/2, 0);
   
   ofSetColor(color);
+  
   font.drawStringAsShapes(text, 0, 0);
   
   ofPopStyle();
