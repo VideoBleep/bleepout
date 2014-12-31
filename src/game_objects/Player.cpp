@@ -21,6 +21,13 @@ Player::Player(ofxLibwebsockets::Connection* conn)
   init();
 }
 
+Player::~Player() {
+  if (_conn) {
+    _conn->close();
+    _conn = NULL;
+  }
+}
+
 void Player::init() {
   _paddle = NULL;
   _score = 0;
