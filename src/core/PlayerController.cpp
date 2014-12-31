@@ -45,8 +45,9 @@
 #include "PlayerManager.h"
 #include "GameEvents.h"
 #include "Logging.h"
+#include "AdminController.h"
 
-PlayerController::PlayerController(SetupController& setup)
+PlayerController::PlayerController(AdminController& setup)
 	: _setup(setup) 
 {
 

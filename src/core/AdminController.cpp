@@ -12,7 +12,6 @@
 #include <ofMain.h>
 #include "GameEvents.h"
 #include "BleepoutApp.h"
-#include "SetupController.h"
 #include "GameState.h"
 #include "BleepoutParameters.h"
 
@@ -103,9 +102,8 @@ struct AdminUIControls {
   }
 };
 
-AdminController::AdminController(SetupController& setupController)
+AdminController::AdminController()
 : _appConfig(BleepoutParameters::get().appConfig())
-, _setupController(setupController)
 , _gui(NULL), _controls(NULL), _roundState(NULL)
 , EventSource() { }
 
@@ -258,7 +256,7 @@ void AdminController::update() {
   _gui->update();
   _gui->setPosition(ofGetWidth() - uiWidth - 10, 0);
   _gui->setHeight(ofGetHeight());
-  _controls->lobbyCount->setLabel("Players in lobby: " + ofToString(_setupController.lobby().size()));
+  _controls->lobbyCount->setLabel("Players in lobby: " + ofToString(_lobby.size()));
 }
 
 void AdminController::draw() {
@@ -323,11 +321,11 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
-  if (!_setupController.canStartRound()) {
+  if (!canStartRound()) {
     return false;
   }
   auto& appParams = BleepoutParameters::get();
-  auto& players = _setupController.lobby();
+  auto& players = _lobby;
   std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();
   if (notifyTryStartRound(rounds, players)) {
     _controls->updateQueueSlots(appParams);
@@ -336,7 +334,7 @@ bool AdminController::tryStartRound() {
 }
 
 bool AdminController::canStartRound() {
-  return _setupController.canStartRound();
+  return !_lobby.empty();
 }
 
 void AdminController::tryEndRound() {
@@ -361,6 +359,10 @@ bool AdminController::notifyTryEndRound() {
   ofNotifyEvent(tryEndRoundEvent, e);
   logEvent("TryEndRound", e);
   return e.handled();
+}
+
+void AdminController::handlePlayerConnected(PlayerEventArgs& e) {
+  _lobby.push_back(ofPtr<Player>(e.player()));
 }
 
 

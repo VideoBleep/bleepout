@@ -24,7 +24,7 @@ class RoundState;
 
 class AdminController : public EventSource {
 public:
-  AdminController(SetupController& setupController);
+  AdminController();
   virtual ~AdminController();
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
@@ -39,6 +39,11 @@ public:
   void detachFrom(BleepoutApp& app);
   
   const char* eventSourceName() const override { return "AdminController"; }
+  
+  std::list<ofPtr<Player> >& lobby() { return _lobby; }
+  
+  // Event Handlers
+  void handlePlayerConnected(PlayerEventArgs& e);
 private:
   void onUIEvent(ofxUIEventArgs& e);
   void onRoundStarted(RoundStateEventArgs& e);
@@ -53,7 +58,8 @@ private:
   void notifyPlayRound();
   
   BleepoutConfig& _appConfig;
-  SetupController& _setupController;
+  // Lobby is the list of players queued for the game
+  std::list<ofPtr<Player> > _lobby;
   ofxUICanvas* _gui;
   RoundState* _roundState;
   AdminUIControls* _controls;
