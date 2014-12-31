@@ -8,6 +8,9 @@
 
 #include "Common.h"
 #include "JsonUtil.h"
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 template<>
 ofVec2f getInterpolated(const ofVec2f& a, const ofVec2f& b, float amount) {
@@ -119,4 +122,13 @@ Json::Value toJsonVal(const ofLogLevel& type) {
   if (!enumToString(type, &result))
     return Json::Value::null;
   return Json::Value(result);
+}
+
+std::string colorToRGBHexString(ofColor color) {
+  std::ostringstream os;
+  os << std::hex << std::setfill('0') << std::right;
+  os << std::setw(2) << (int)color.r;
+  os << std::setw(2) << (int)color.g;
+  os << std::setw(2) << (int)color.b;
+  return os.str();
 }
