@@ -23,6 +23,8 @@ RoundController::RoundController(std::list<ofPtr<RoundConfig> > configs,
 , _state(players)
 , _playerManager(playerManager)
 , _timedActions(true)
+, _playing(false)
+, _started(false)
 , _ending(false)
 , _readyPlayers(0)
 , EventSource() {
@@ -51,6 +53,13 @@ void RoundController::endCurrentConfig() {
   _config.reset();
 }
 
+void RoundController::onPlayRound(EmptyEventArgs &e) {
+  if (!_config) {
+    loadNextConfig();
+    _playing = true;
+  }
+}
+
 void RoundController::loadNextConfig() {
   endCurrentConfig();
   _config = _queuedConfigs.front();
@@ -77,6 +86,10 @@ void RoundController::loadNextConfig() {
   for (auto& msg : _config->startMessages()) {
     _animationManager->addMessage(msg);
   }
+  _spaceController->addInitialPaddles();
+  _started = false;
+  
+  notifyRoundPlay();
 }
 
 void RoundController::setup() {
@@ -85,21 +98,28 @@ void RoundController::setup() {
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofAddListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   
-  loadNextConfig();
+  // create paddles...!!!@#!@#!
+  
+//  loadNextConfig();
 }
 
 void RoundController::attachTo(AdminController &adminController) {
   ofAddListener(adminController.tryEndRoundEvent,
                 this, &RoundController::onTryEndRound);
+  ofAddListener(adminController.playRoundEvent, this,
+                &RoundController::onPlayRound);
 }
 
 void RoundController::detachFrom(AdminController &adminController) {
   ofRemoveListener(adminController.tryEndRoundEvent,
                    this, &RoundController::onTryEndRound);
+  ofRemoveListener(adminController.playRoundEvent, this,
+                   &RoundController::onPlayRound);
 }
 
 void RoundController::draw() {
-  _renderer->draw();
+  if (_playing)
+    _renderer->draw();
 }
 
 template<typename T>
@@ -112,6 +132,9 @@ static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
 }
 
 void RoundController::update() {
+  if (!_playing) {
+    return;
+  }
   auto& appParams = BleepoutParameters::get();
   if (_paused && !appParams.paused) {
     _startTime = ofGetElapsedTimef() - _state.time;
@@ -122,10 +145,10 @@ void RoundController::update() {
     return;
   _state.time = ofGetElapsedTimef() - _startTime;
   
-  if (_state.time >= _config->startDelay()) {
-    if (_state.paddles().size() == 0) {
-      ofLogNotice() << "Initial Paddle Create";
-      _spaceController->addInitialPaddles();
+  if (!_started) {
+    if (_state.time >= _config->startDelay()) {
+      _spaceController->addInitialBalls();
+      _started = true;
     }
   }
   
@@ -187,6 +210,12 @@ void RoundController::notifyRoundEnded(RoundResults &results) {
   logEvent("RoundEnded", e);
   // after this notification is sent off, the roundcontroller ceases to exist!
   ofNotifyEvent(roundEndedEvent, e);
+}
+
+void RoundController::notifyRoundPlay() {
+  RoundStateEventArgs e(_state);
+  logEvent("RoundPlay", e);
+  ofNotifyEvent(roundPlayEvent, e);
 }
 
 RoundResults RoundController::buildRoundResults(RoundEndReason reason) {
