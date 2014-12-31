@@ -126,7 +126,13 @@ void DomeRenderer::draw() {
   float t = ofGetElapsedTimef() * 0.3;
   for (int i = 0; i < movingLights.size(); i++) {
     movingLights[i].setPosition(sphericalToCartesian(appParams.domeRadius * (0.25 + 0.85 * sin(t)), 25 + 15 * sin(t/2.0), i * 120 + 120 * cos(t/3.0)));
-    movingLights[i].setAttenuation(0.03, 0.01, 0.0);
+
+#ifdef RADOME
+    movingLights[i].setAttenuation(0.008, 0.005, 0.0);
+#else
+    movingLights[i].setAttenuation(0.35, 0.25, 0.0);
+#endif
+    
     movingLights[i].enable();
   }
   for (int i = 0; i < staticLights.size(); i++) {

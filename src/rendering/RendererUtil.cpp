@@ -50,6 +50,8 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofPushMatrix();
   ofPushStyle();
   
+  ofDisableLighting();
+  
   ofVec3f pos = sphericalToCartesian(radius, elevation, heading);
   ofTranslate(pos);
   ofRotateY(360 - heading - 90);
@@ -64,6 +66,8 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   ofSetColor(color);
   
   font.drawStringAsShapes(text, 0, 0);
+  
+  ofEnableLighting();
   
   ofPopStyle();
   ofPopMatrix();
