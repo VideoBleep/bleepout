@@ -293,7 +293,10 @@ template<>
 void JsonLoader::readVal(const Json::Value &val,
                          ofVec3f *result,
                          const ofVec3f& defaultVal) const {
-  if (val.isArray()) {
+  if (val.isNumeric()) {
+    float v = val.asFloat();
+    result->set(v);
+  } else if (val.isArray()) {
     readVal(val[0u], &result->x, defaultVal.x);
     readVal(val[1], &result->y, defaultVal.y);
     readVal(val[2], &result->z, defaultVal.z);
