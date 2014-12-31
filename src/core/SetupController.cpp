@@ -88,9 +88,15 @@ bool SetupController::tryStartRound() {
 
   // Copy lobby (in this case, e.players()) to players.
   _roundPlayers.clear();
+  unsigned char hue = 0;
+  unsigned char hueStep = (unsigned char)round(255.0 / _lobby.size());
   for (auto player : _lobby) {
+    ofColor color = ofColor::fromHsb(hue, 255, 200);
+    player->setColor(color);
     _roundPlayers.push_back(player);
+    PlayerManager::setPlayerColor(*player, color);
     PlayerManager::setPlayerCalibrate(*player);
+    hue += hueStep;
   }
   
   auto rounds = BleepoutParameters::get().getRoundQueue();
