@@ -18,6 +18,7 @@
 static const int uiWidth = 200;
 
 struct AdminUIControls {
+  ofxUIButton* reloadConfig;
   ofxUIToggle* timeLimitToggle;
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
@@ -114,6 +115,8 @@ void AdminController::setup() {
   _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
 #endif
   _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &appParams.audioVolume);
+  
+  _controls->reloadConfig = _gui->addButton("Reload Config", false);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -241,6 +244,9 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->endRound &&
              _controls->endRound->getValue()) {
     tryEndRound();
+  } else if (e.widget == _controls->reloadConfig &&
+             _controls->reloadConfig->getValue()) {
+    reloadConfig();
   }
 }
 
@@ -289,6 +295,9 @@ void AdminController::handlePlayerConnected(PlayerEventArgs& e) {
   _lobby.push_back(ofPtr<Player>(e.player()));
 }
 
+void AdminController::reloadConfig() {
+  _appConfig.loadJsonFile("config/bleepoutConfig.json");
+}
 
 
 

@@ -342,13 +342,21 @@ void BleepoutConfig::readJson(const JsonLoader &loader, const Json::Value &obj) 
 }
 
 BleepoutConfig* BleepoutConfig::loadFromFile(std::string path) {
+  BleepoutConfig* config = new BleepoutConfig();
+  if (!config->loadJsonFile(path)) {
+    delete config;
+    return NULL;
+  }
+  return config;
+}
+
+bool BleepoutConfig::loadJsonFile(std::string path) {
   JsonLoader loader;
   Json::Value obj;
   if (!loader.readFile(path, &obj))
-    return NULL;
-  BleepoutConfig* config = new BleepoutConfig();
-  config->readJson(loader, obj);
-  return config;
+    return false;
+  readJson(loader, obj);
+  return true;
 }
 
 Json::Value BleepoutConfig::buildJson() const {

@@ -56,6 +56,7 @@ private:
                            std::list<ofPtr<Player> > players);
   bool notifyTryEndRound();
   void notifyPlayRound();
+  void reloadConfig();
   
   BleepoutConfig& _appConfig;
   // Lobby is the list of players queued for the game

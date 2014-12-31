@@ -16,7 +16,7 @@ void BleepoutParameters::initializeConfig(BleepoutConfig &appConfig) {
 
 void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
   if (_appConfig) {
-    ofLogWarning() << "Reinitializing BleepoutParameters config, which is odd and probably a bug";
+    ofLogWarning() << "Reinitializing BleepoutParameters config...";
 //    delete _appConfig; ...?
   }
   _appConfig = &appConfig;
