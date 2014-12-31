@@ -43,17 +43,8 @@ protected:
 class PointHistory : public SimpleRingBuffer<ofVec3f> {
 public:
   PointHistory() : SimpleRingBuffer(50) {}
-  void emitPoints() {
-    int last = (_caret - 1) % _size;
-    for (int i = last; i >= 0; i--) {
-      glVertex3f(_buffer[i].x, _buffer[i].y, _buffer[i].z);
-    }
-    if (_filled) {
-      for (int i = _size - 1; i > last; i--) {
-        glVertex3f(_buffer[i].x, _buffer[i].y, _buffer[i].z);
-      }
-    }
-  }
+  void emitPoints();
+  void emitQuadStrip(float width, float zoffset);
 };
 
 #endif /* defined(__bleepout__PointHistory__) */

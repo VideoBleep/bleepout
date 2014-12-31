@@ -22,7 +22,7 @@ Ball::Ball(const RoundConfig& config, const BallSpec& spec)
 {
   const auto& appParams = BleepoutParameters::get();
   thisGameObject = this;
-  _color = ofColor(220, 220, 220);
+  _color = ofColor(90, 90, 70);
   this->setSize(ofVec3f(config.ballRadius()));
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
