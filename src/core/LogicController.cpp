@@ -188,7 +188,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
         player->isPlaying = false;
       }
     }
-    if (BleepoutParameters::get().rules().ballsRespawn()) {
+    if (BleepoutParameters::get().ballsRespawn) {
       respawnBall(player);
     }
     

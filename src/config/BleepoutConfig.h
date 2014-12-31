@@ -38,17 +38,11 @@ public:
   void unsetPlayersCanLoseLives() { _playersCanLoseLives.unset(); }
   bool specifiesPlayersCanLoseLives() const { return _playersCanLoseLives.hasValue(); }
   
-  bool ballsRespawn() const;
-  void setBallsRespawn(bool value) { _ballsRespawn.set(value); }
-  void unsetBallsRespawn() { _ballsRespawn.unset(); }
-  bool specifiesBallsRespawn() const { return _ballsRespawn.hasValue(); }
-  
   void setBackup(const GameRules* backup) { _backup = backup; }
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
   Optional<bool> _playersCanLoseLives;
-  Optional<bool> _ballsRespawn;
 };
 
 class RoundConfig {
@@ -215,7 +209,7 @@ public:
   void readJson(const JsonLoader& loader, const Json::Value& obj);
   Json::Value buildJson() const;
   
-  void loadJsonFile(std::string path);
+  bool loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
   int fps() const { return _fps; }
