@@ -50,11 +50,6 @@ void BleepoutApp::setup() {
   
   _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
-  // Temporary, I believe
-  Player* testPlayer = new Player();
-  testPlayer->setColor(ofColor::green);
-  _adminController->lobby().push_back(ofPtr<Player>(testPlayer));
-//  _playerManager->addPlayer();
   
   
   // Handle playerCreate event

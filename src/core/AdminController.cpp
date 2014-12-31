@@ -26,7 +26,6 @@ struct AdminUIControls {
   ofxUILabel* lobbyCount;
   ofxUILabel* roundPlayersCount;
   ofxUIToggle* exitsEnabled;
-  ofxUIToggle* overrideBallsRespawn;
   ofxUIToggle* ballsRespawn;
   ofxUIToggle* debugGraphics;
   ofxUIToggle* drawTrajectories;
@@ -35,11 +34,11 @@ struct AdminUIControls {
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
   ofxUIButton* addManyBalls;
+  ofxUISlider* ballSpeedMultiplier;
 #ifdef ENABLE_SYPHON
   ofxUIToggle* enableSyphon;
-  ofxUITextInput* syphonAppName;
-  ofxUITextInput* syphonServerName;
 #endif
+  ofxUIButton* addTestPlayer;
   ofxUIButton* startRound;
   ofxUIButton* playRound;
   ofxUIButton* endRound;
@@ -79,9 +78,11 @@ void AdminController::setup() {
   _controls->lobbyCount = _gui->addLabel("Lobby players: 0");
   _controls->roundPlayersCount = _gui->addLabel("Round players: 0");
   
-  _controls->startRound = _gui->addButton("Start Round", false);
-  _controls->playRound = _gui->addButton("Play Round", false);
-  _controls->endRound = _gui->addButton("End Round", false);
+  _gui->addSpacer();
+  
+  _controls->startRound = _gui->addLabelButton("Prepare Players", false);
+  _controls->playRound = _gui->addLabelButton("Start Gameplay", false);
+  _controls->endRound = _gui->addLabelButton("Next/End Round", false);
   
   _gui->addSpacer();
   
@@ -93,30 +94,25 @@ void AdminController::setup() {
   _controls->timeLimit->setDisplayLabel(true);
   
   _controls->pause = _gui->addLabelToggle("Pause", &appParams.paused);
+  _controls->ballSpeedMultiplier = _gui->addSlider("Ball Speed", 0.01, 3.0, &appParams.ballSpeedMultiplier);
   _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &appParams.exitsEnabled);
   
-  _controls->overrideBallsRespawn = _gui->addToggle("Override Respawn", false);
-  _controls->overrideBallsRespawn->setLabelVisible(true);
-  _controls->overrideBallsRespawn->setValue(false);
-  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", appParams.rules().ballsRespawn());
+  _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", &appParams.ballsRespawn);
   
   _controls->debugGraphics = _gui->addLabelToggle("Debug Graphics", &appParams.debugGraphics);
   _controls->drawTrajectories = _gui->addLabelToggle("Trajectories", &appParams.drawTrajectories);
   _controls->drawComets = _gui->addLabelToggle("Comets", &appParams.drawComets);
   _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &appParams.drawExtras);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &appParams.allLasers);
-  _controls->addBall = _gui->addButton("Add Ball", false);
-  _controls->addManyBalls = _gui->addButton("Add Many Balls", false);
+  _controls->addBall = _gui->addLabelButton("Add Ball", false);
+  _controls->addManyBalls = _gui->addLabelButton("Add Many Balls", false);
 #ifdef ENABLE_SYPHON
   _controls->enableSyphon = _gui->addLabelToggle("Syphon", &appParams.enableSyphon);
-  _controls->syphonAppName = _gui->addTextInput("Syphon App", appParams.syphonAppName);
-  _controls->syphonAppName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
-  _controls->syphonServerName = _gui->addTextInput("Syphon Server", appParams.syphonServerName);
-  _controls->syphonServerName->setTriggerType(OFX_UI_TEXTINPUT_ON_UNFOCUS);
 #endif
   _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &appParams.audioVolume);
   
-  _controls->reloadConfig = _gui->addButton("Reload Config", false);
+  _controls->addTestPlayer = _gui->addLabelButton("Add Test Player", false);
+  _controls->reloadConfig = _gui->addLabelButton("Reload Config", false);
   
   ofAddListener(_gui->newGUIEvent, this,
                 &AdminController::onUIEvent);
@@ -208,18 +204,11 @@ void AdminController::draw() {
 
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
   auto& appParams = BleepoutParameters::get();
-#ifdef ENABLE_SYPHON
-  if (e.widget == _controls->syphonAppName) {
-    appParams.syphonAppName = _controls->syphonAppName->getTextString();
-  } else if (e.widget == _controls->syphonServerName) {
-    appParams.syphonServerName = _controls->syphonServerName->getTextString();
-  } else if (e.widget == _controls->enableSyphon) {
-    appParams.enableSyphon = _controls->enableSyphon->getValue();
-  }
-#endif
-  if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
+  if (e.widget == _controls->addBall &&
+      _controls->addBall->getValue()) {
     appParams.ballsToAdd++;
-  } else if (e.widget == _controls->addManyBalls && _controls->addManyBalls->getValue()) {
+  } else if (e.widget == _controls->addManyBalls &&
+             _controls->addManyBalls->getValue()) {
     appParams.ballsToAdd += 20;
   } else if (e.widget == _controls->timeLimitToggle ||
              e.widget == _controls->timeLimit) {
@@ -227,13 +216,6 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
       appParams.rules().setTimeLimit(_controls->timeLimit->getValue());
     } else {
       appParams.rules().unsetTimeLimit();
-    }
-  } else if (e.widget == _controls->overrideBallsRespawn ||
-             e.widget == _controls->ballsRespawn) {
-    if (_controls->overrideBallsRespawn->getValue()) {
-      appParams.rules().setBallsRespawn(_controls->ballsRespawn->getValue());
-    } else {
-      appParams.rules().unsetBallsRespawn();
     }
   } else if (e.widget == _controls->startRound &&
              _controls->startRound->getValue()) {
@@ -247,7 +229,16 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->reloadConfig &&
              _controls->reloadConfig->getValue()) {
     reloadConfig();
+  } else if (e.widget == _controls->addTestPlayer &&
+             _controls->addTestPlayer->getValue()) {
+    addTestPlayer();
   }
+}
+
+void AdminController::addTestPlayer() {
+  Player* player = new Player();
+  player->setColor(ofColor::green);
+  _lobby.push_back(ofPtr<Player>(player));
 }
 
 bool AdminController::tryStartRound() {
@@ -298,16 +289,4 @@ void AdminController::handlePlayerConnected(PlayerEventArgs& e) {
 void AdminController::reloadConfig() {
   _appConfig.loadJsonFile("config/bleepoutConfig.json");
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

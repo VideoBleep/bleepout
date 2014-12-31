@@ -39,7 +39,8 @@ BleepoutParameters::BleepoutParameters(void)
 , audioVolume(.5)
 , domeRadius(150)
 , domeMargin(20)
-, minReadyPlayers(2) { }
+, minReadyPlayers(2)
+, ballSpeedMultiplier(1) { }
 
 std::list<ofPtr<RoundConfig> > BleepoutParameters::getRoundQueue() {
   std::list<ofPtr<RoundConfig> > rounds;

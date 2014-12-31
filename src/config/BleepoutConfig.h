@@ -38,17 +38,11 @@ public:
   void unsetPlayersCanLoseLives() { _playersCanLoseLives.unset(); }
   bool specifiesPlayersCanLoseLives() const { return _playersCanLoseLives.hasValue(); }
   
-  bool ballsRespawn() const;
-  void setBallsRespawn(bool value) { _ballsRespawn.set(value); }
-  void unsetBallsRespawn() { _ballsRespawn.unset(); }
-  bool specifiesBallsRespawn() const { return _ballsRespawn.hasValue(); }
-  
   void setBackup(const GameRules* backup) { _backup = backup; }
 private:
   const GameRules* _backup;
   Optional<float> _timeLimit;
   Optional<bool> _playersCanLoseLives;
-  Optional<bool> _ballsRespawn;
 };
 
 class RoundConfig {

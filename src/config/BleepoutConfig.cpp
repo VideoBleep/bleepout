@@ -31,15 +31,15 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
   
-  config->roundStartedSound = "";
-  config->roundEndedSound = "";
-  config->brickHitSound = "";
-  config->brickDestroyedSound = "";
-  config->paddleHitSound = "";
-  config->wallHitSound = "";
-  config->modifierAppliedSound = "";
-  config->modifierRemovedSound = "";
-  config->ballDestroyedSound = "";
+  config->roundStartedSound = "sounds/StageStart.wav";
+  config->roundEndedSound = "sounds/StageEnd.wav";
+  config->brickHitSound = "sounds/BrickHit.wav";
+  config->brickDestroyedSound = "sounds/BrickDest.wav";
+  config->paddleHitSound = "sounds/PaddleHit.wav";
+  config->wallHitSound = "sounds/WallHit.wav";
+  config->modifierAppliedSound = "sounds/PowerupOn.wav";
+  config->modifierRemovedSound = "sounds/PowerupOff.wav";
+  config->ballDestroyedSound = "sounds/BallDie.wav";
   config->playerLivesChangedSound = "";
   config->playerLostSound = "";
   config->countdownTimerTickSound = "";
@@ -105,19 +105,16 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
 GameRules::GameRules()
 : _backup(NULL)
 , _timeLimit()
-, _playersCanLoseLives()
-, _ballsRespawn() { }
+, _playersCanLoseLives() { }
 
 GameRules::GameRules(const GameRules& other)
 : _backup(other._backup)
 , _timeLimit(other._timeLimit)
-, _playersCanLoseLives(other._playersCanLoseLives)
-, _ballsRespawn(other._ballsRespawn) { }
+, _playersCanLoseLives(other._playersCanLoseLives) { }
 
 GameRules& GameRules::copyFrom(const GameRules &other) {
   _timeLimit = other._timeLimit;
   _playersCanLoseLives = other._playersCanLoseLives;
-  _ballsRespawn = other._ballsRespawn;
   return *this;
 }
 
@@ -129,24 +126,18 @@ bool GameRules::playersCanLoseLives() const {
   return _playersCanLoseLives.get(_backup ? &_backup->_playersCanLoseLives : NULL, false);
 }
 
-bool GameRules::ballsRespawn() const {
-  return _ballsRespawn.get(_backup ? &_backup->_ballsRespawn : NULL, false);
-}
-
 void GameRules::readJson(const JsonLoader &loader,
                          const Json::Value &obj) {
   if (!loader.assertType(obj, Json::objectValue))
     return;
   loader.readVal(obj["timeLimit"], &_timeLimit);
   loader.readVal(obj["playersCanLoseLives"], &_playersCanLoseLives);
-  loader.readVal(obj["ballsRespawn"], &_ballsRespawn);
 }
 
 Json::Value GameRules::buildJson() const {
   Json::Value obj(Json::objectValue);
   obj["timeLimit"] = toJsonVal(_timeLimit);
   obj["playersCanLoseLives"] = toJsonVal(_playersCanLoseLives);
-  obj["ballsRespawn"] = toJsonVal(_ballsRespawn);
   return obj;
 }
 

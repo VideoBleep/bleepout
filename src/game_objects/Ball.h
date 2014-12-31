@@ -34,6 +34,8 @@ public:
   void output(std::ostream& os) const override;
   void bounce(ofVec3f normal, float trueHitFactor = 0.0);
   
+  void updateSpeed();
+  
   void applyModifier(const RoundState& state,
                      const ModifierSpec& modifierSpec);
   
@@ -43,6 +45,7 @@ public:
 private:
   Player* _player;
   ModifierSlot _modifier;
+  float _baseSpeed;
 };
 
 template<>

@@ -27,6 +27,7 @@ Ball::Ball(const RoundConfig& config, const BallSpec& spec)
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
   t->setSpeed(config.ballSpeed);
+  _baseSpeed = config.ballSpeed;
   t->initWithTwoPoints(spec.elevation, spec.heading, -14,
                        spec.heading + ofRandom(-45, 45));
   this->setTrajectory(t);
@@ -35,6 +36,12 @@ Ball::Ball(const RoundConfig& config, const BallSpec& spec)
 void Ball::bounce(ofVec3f normal, float trueHitFactor /* = 0.0 */) {
   if (trajectory) {
     trajectory->reflect(normal, trueHitFactor);
+  }
+}
+
+void Ball::updateSpeed() {
+  if (trajectory) {
+    trajectory->setSpeed(_baseSpeed * BleepoutParameters::get().ballSpeedMultiplier);
   }
 }
 

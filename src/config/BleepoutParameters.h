@@ -38,6 +38,7 @@ public:
   bool inRound;
   bool paused;
   bool exitsEnabled;
+  bool ballsRespawn;
   bool debugGraphics;
   bool drawTrajectories;
   bool drawComets;
@@ -51,6 +52,7 @@ public:
   float domeRadius;
   float domeMargin;
   int minReadyPlayers;
+  float ballSpeedMultiplier;
 private:
   BleepoutConfig* _appConfig;
   std::string _currentRoundName;
