@@ -17,46 +17,7 @@
 
 static const int uiWidth = 200;
 
-class RoundQueueSlot {
-public:
-  RoundQueueSlot(ofxUILabelButton* button, int slotIndex)
-  : _button(button), _slotIndex(slotIndex) { }
-  void setSelectedIndex(int i, const BleepoutConfig& config) {
-    _valueIndex = i % config.roundConfigs().size();
-    _button->setLabelText(config.roundConfigs()[_valueIndex]->name());
-  }
-  void setSelectedValue(const std::string& name, const BleepoutConfig& config) {
-    for (int i = 0; i < config.roundConfigs().size(); i++) {
-      if (config.roundConfigs()[i]->name() == name) {
-        _valueIndex = i;
-        _button->setLabelText(name);
-        return;
-      }
-    }
-  }
-  std::string getSelected() const {
-    return _button->getLabel()->getLabel();
-  }
-  bool handleEvent(const ofxUIEventArgs& e,
-                   const BleepoutConfig& config) {
-    if ((e.widget == _button || e.widget == _button->getLabel()) &&
-        _button->getValue()) {
-      setSelectedIndex(_valueIndex + 1, config);
-      return true;
-    }
-    return false;
-  }
-  void updateSlot(BleepoutParameters& params) const {
-    params.queuedRoundNames()[_slotIndex] = getSelected();
-  }
-private:
-  ofxUILabelButton* _button;
-  int _slotIndex;
-  int _valueIndex;
-};
-
 struct AdminUIControls {
-  std::vector<RoundQueueSlot*> roundQueueSlots;
   ofxUIToggle* timeLimitToggle;
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
@@ -83,24 +44,6 @@ struct AdminUIControls {
   ofxUIButton* endRound;
   ofxUILabel* remainingTime;
   ofxUISlider* audioVolume;
-  
-  ~AdminUIControls() {
-    for (auto& slot : roundQueueSlots)
-      delete slot;
-  }
-  
-  void updateQueueSlots(BleepoutParameters& appParams) {
-    // going to assume that the number of slots hasn't changed.
-    // eventually we should do something better with that..
-    auto nameIter = appParams.queuedRoundNames().begin();
-    auto slotIter = roundQueueSlots.begin();
-    while (nameIter != appParams.queuedRoundNames().end() &&
-           slotIter != roundQueueSlots.end()) {
-      (*slotIter)->setSelectedValue(*nameIter, appParams.appConfig());
-      nameIter++;
-      slotIter++;
-    }
-  }
 };
 
 AdminController::AdminController()
@@ -134,18 +77,6 @@ void AdminController::setup() {
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
   _controls->lobbyCount = _gui->addLabel("Lobby players: 0");
   _controls->roundPlayersCount = _gui->addLabel("Round players: 0");
-  _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
-  
-  const auto& allRoundNames = appParams.queuedRoundNames();
-  for (int i = 0; i < appParams.queuedRoundNames().size(); i++) {
-    ofxUILabelButton* button = _gui->addLabelButton("RoundQueueSlot" + ofToString(i), true);
-    button->setColorBack(ofColor(0, 255, 0));
-    button->setColorFill(ofColor(0, 0, 0));
-    button->setColorFillHighlight(ofColor(0, 0, 0));
-    RoundQueueSlot* slot = new RoundQueueSlot(button, i);
-    slot->setSelectedIndex(i, _appConfig);
-    _controls->roundQueueSlots.push_back(slot);
-  }
   
   _controls->startRound = _gui->addButton("Start Round", false);
   _controls->playRound = _gui->addButton("Play Round", false);
@@ -272,14 +203,6 @@ void AdminController::draw() {
   _gui->draw();
 }
 
-static void dumpRoundQueue(BleepoutParameters& params) {
-  ofLog log(OF_LOG_NOTICE);
-  log << "Round queue:";
-  for (const auto& name : params.queuedRoundNames()) {
-    log << " " << name;
-  }
-}
-
 void AdminController::onUIEvent(ofxUIEventArgs &e) {
   auto& appParams = BleepoutParameters::get();
 #ifdef ENABLE_SYPHON
@@ -318,14 +241,6 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->endRound &&
              _controls->endRound->getValue()) {
     tryEndRound();
-  } else {
-    for (auto& slot : _controls->roundQueueSlots) {
-      if (slot->handleEvent(e, _appConfig)) {
-        slot->updateSlot(appParams);
-        dumpRoundQueue(appParams);
-        return;
-      }
-    }
   }
 }
 
@@ -337,7 +252,6 @@ bool AdminController::tryStartRound() {
   auto& players = _lobby;
   std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();
   if (notifyTryStartRound(rounds, players)) {
-    _controls->updateQueueSlots(appParams);
     _lobby.clear();
   }
   return true;

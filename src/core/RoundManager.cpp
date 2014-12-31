@@ -50,6 +50,7 @@ void RoundController::endCurrentConfig() {
   _animationManager->detachFrom(*_logicController);
   _timedActions.clear();
   _animationManager.reset();
+  BleepoutParameters::get().rules().setBackup(NULL);
   _config.reset();
 }
 
@@ -84,6 +85,7 @@ void RoundController::loadNextConfig() {
     _animationManager->addMessage(msg);
   }
   _started = false;
+  BleepoutParameters::get().rules().setBackup(&_config->rules());
   
   notifyRoundPlay();
 }

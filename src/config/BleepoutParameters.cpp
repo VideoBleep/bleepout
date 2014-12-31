@@ -20,10 +20,6 @@ void BleepoutParameters::initConfig(BleepoutConfig &appConfig) {
 //    delete _appConfig; ...?
   }
   _appConfig = &appConfig;
-  _queuedRoundNames.clear();
-  for (const auto& round : appConfig.roundConfigs()) {
-    _queuedRoundNames.push_back(round->name());
-  }
   syphonAppName = appConfig.syphonAppName();
   syphonServerName = appConfig.syphonServerName();
 }
@@ -39,7 +35,7 @@ BleepoutParameters::BleepoutParameters(void)
 , drawExtras(true)
 , allLasers(false)
 , ballsToAdd(0)
-, enableSyphon(true)
+, enableSyphon(false)
 , audioVolume(.5)
 , domeRadius(150)
 , domeMargin(20)
@@ -47,10 +43,8 @@ BleepoutParameters::BleepoutParameters(void)
 
 std::list<ofPtr<RoundConfig> > BleepoutParameters::getRoundQueue() {
   std::list<ofPtr<RoundConfig> > rounds;
-  for (const auto& name : _queuedRoundNames) {
-    ofPtr<RoundConfig> round = appConfig().getRound(name);
-    if (round)
-      rounds.push_back(round);
+  for (auto& round : appConfig().roundConfigs()) {
+    rounds.push_back(round);
   }
   return rounds;
 }
