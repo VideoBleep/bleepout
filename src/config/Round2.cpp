@@ -33,7 +33,7 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   
   std::string superchargeModName("supercharge");
   config->addModifierDef(superchargeModName, MODIFIER_SUPERCHARGED_BALL)
-    .setColor(ofColor::green)
+    .setColor(ofColor::orangeRed)
     .setDuration(20);
   
   {

@@ -370,7 +370,7 @@ struct ModifierSpec {
   
   ModifierSpec() : type(MODIFIER_NONE), beneficial(true) { }
   ModifierSpec(std::string n, ModifierType t)
-  : type(t), name(n), amount(0), duration(0) { }
+  : type(t), name(n), amount(0), duration(0), beneficial(true) { }
   ModifierSpec& setAmount(float amt) { amount = amt; return *this; }
   ModifierSpec& setDuration(float dur) { duration = dur; return *this; }
   ModifierSpec& setColor(ofColor c) { color = c; return *this; }
