@@ -56,6 +56,14 @@ void RoundController::endCurrentConfig() {
 void RoundController::onPlayRound(EmptyEventArgs &e) {
   if (!_config) {
     loadNextConfig();
+    unsigned char hue = 0;
+    unsigned char hueStep = (unsigned char)(255.0 / _state.players().size());
+    for (auto& player : _state.players()) {
+      ofColor color = ofColor::fromHsb(hue, 255, 200);
+      player->setColor(color);
+      PlayerManager::setPlayerCalibrate(*player, color);
+      hue += hueStep;
+    }
     _playing = true;
   }
 }

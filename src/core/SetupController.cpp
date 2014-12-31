@@ -63,11 +63,7 @@ void SetupController::draw() {
 }
 
 void SetupController::keyPressed(int key) {
-  if (key == OF_KEY_RETURN) {
-    if (!tryStartRound()) {
-      //...?
-    }
-  } else if (key >= '0' && key <= '9') {
+  if (key >= '0' && key <= '9') {
     int i = key - '0';
     if (i < _appConfig.roundConfigs().size()) {
       _roundConfig = _appConfig.roundConfigs()[i];
@@ -78,37 +74,6 @@ void SetupController::keyPressed(int key) {
 
 bool SetupController::canStartRound() const {
 	return !_lobby.empty() && _roundConfig;
-}
-
-bool SetupController::tryStartRound() {
-	if (_lobby.empty()) {
-    ofLogError() << "Cannot start round: no players!";
-    return false;
-  }
-
-  // Copy lobby (in this case, e.players()) to players.
-  _roundPlayers.clear();
-  unsigned char hue = 0;
-  unsigned char hueStep = (unsigned char)(255.0 / _lobby.size());
-  for (auto player : _lobby) {
-    ofColor color = ofColor::fromHsb(hue, 255, 200);
-    player->setColor(color);
-    _roundPlayers.push_back(player);
-    PlayerManager::setPlayerCalibrate(*player, color);
-    hue += hueStep;
-  }
-  
-  auto rounds = BleepoutParameters::get().getRoundQueue();
-
-  return notifyTryStartRound(rounds, _roundPlayers);
-}
-
-bool SetupController::notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
-                                          std::list<ofPtr<Player> > players) {
-  StartRoundEventArgs e(configs, players);
-  ofNotifyEvent(tryStartRoundEvent, e);
-  logEvent("TryStartRound", e);
-  return e.handled();
 }
 
 void SetupController::handlePlayerConnected(PlayerEventArgs& e) {
