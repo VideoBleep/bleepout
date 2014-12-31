@@ -28,14 +28,11 @@ RoundState::~RoundState() {
     }
     player.reset();
   }
+  _paddles.clear();
 }
 
 void RoundState::initialize(ofPtr<RoundConfig> config) {
   _config = config;
-  for (auto& player : _players) {
-    player->setPaddle(NULL);
-  }
-  _paddles.clear();
   _balls.clear();
   _bricks.clear();
   _walls.clear();
@@ -52,7 +49,7 @@ void RoundState::addPlayer(ofPtr<Player> player) {
 }
 
 Paddle& RoundState::addPaddle(Player* player) {
-  ofPtr<Paddle> paddle(new Paddle(*player, _config->paddleSize()));
+  ofPtr<Paddle> paddle(new Paddle(*player, BleepoutParameters::get().appConfig().paddleSize));
   _paddles.push_back(paddle);
   return *paddle;
 }

@@ -48,6 +48,8 @@ public:
   
   const RoundConfig& config() const { return *_config; }
   
+  bool hasConfig() const { return !!_config; }
+  
   Paddle& addPaddle(Player* player);
   Brick& addBrick(const BrickSpec& brickSpec);
   Wall& addWall(const WallSpec& wallSpec);

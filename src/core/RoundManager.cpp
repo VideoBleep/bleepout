@@ -83,7 +83,6 @@ void RoundController::loadNextConfig() {
   for (auto& msg : _config->startMessages()) {
     _animationManager->addMessage(msg);
   }
-  _spaceController->addInitialPaddles();
   _started = false;
   
   notifyRoundPlay();
@@ -104,6 +103,7 @@ void RoundController::setup() {
   _logicController->setup();
   
   // create paddles...!!!@#!@#!
+  _spaceController->addInitialPaddles();
   unsigned char hue = 0;
   unsigned char hueStep = (unsigned char)(255.0 / _state.players().size());
   for (auto& player : _state.players()) {
@@ -131,17 +131,14 @@ void RoundController::detachFrom(AdminController &adminController) {
 }
 
 void RoundController::draw() {
-  if (_playing)
-    _renderer->draw();
+  _renderer->draw();
 }
 
 template<typename T>
 static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
                                       SpaceController& spaceController) {
-  for (auto& obj : objects.extractDeadObjects()) {
-    spaceController.removeObject(*obj);
-    obj.reset();
-  }
+  auto deadObjects = objects.extractDeadObjects();
+  spaceController.removeObjects(deadObjects);
 }
 
 void RoundController::update() {

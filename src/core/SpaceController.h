@@ -39,6 +39,13 @@ public:
                      Brick& spawnerBrick);
   void removeObject(PhysicsObject& object);
   
+  template<typename Seq>
+  void removeObjects(Seq& objects) {
+    for (auto& obj : objects) {
+      removeObject(*obj);
+    }
+  }
+  
   const char* eventSourceName() const override { return "SpaceController"; }
 
 private:

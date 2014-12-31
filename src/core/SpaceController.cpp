@@ -41,7 +41,10 @@ void SpaceController::setup() {
 }
 
 void SpaceController::resetState() {
-  _world.setup();
+  removeObjects(_state.bricks());
+  removeObjects(_state.balls());
+  removeObjects(_state.walls());
+  removeObjects(_state.modifiers());
 }
 
 void SpaceController::loadBricksAndWalls() {
