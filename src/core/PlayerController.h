@@ -54,7 +54,7 @@ public:
 		Player Actions
 	*/
 	// Player connected - called by message from player
-  void connect(Player& player);
+  void connect(ofPtr<Player> player);
 	// Player configuring - called by message from player
   void configure(Player& player, ofColor color); // , std::string[] & messageParts);
 	// Player has entered the 'lobby' - called by player controller itself

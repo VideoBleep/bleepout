@@ -100,7 +100,7 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 
 // THIS BADLY NEEDS REFACTORING, it only grows from here... but maybe not today.
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
-	ofLogVerbose() << "got message " << args.message << endl;
+  ofLogNotice() << "got message " << args.message << endl;
 
   // PING (heartbeat)
   if (args.message == PACKET_PING) {
@@ -109,88 +109,89 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
     return;
   }
 
-	// Parse message
-	// TODO: Create an engine.io packet parser
-	int pos = args.message.find(messageDelimiter);
+  ofPtr<Player> player = findPlayer(args.conn);
+
+  // Parse message
+  // TODO: Create an engine.io packet parser
+  int pos = args.message.find(messageDelimiter);
 
   // HAHAHAH, rookie mistake.
   if (pos >= 0) {
-	//std::string msgPrefix = args.message.substr(0, pos);
-	std::string msgData = args.message.substr(pos, args.message.length());
+    //std::string msgPrefix = args.message.substr(0, pos);
+    std::string msgData = args.message.substr(pos, args.message.length());
 
-	vector<string> parts = ofSplitString(args.message, messageDelimiter);
-	std::string msgPrefix = parts[0];
+    vector<string> parts = ofSplitString(args.message, messageDelimiter);
+    std::string msgPrefix = parts[0];
     // If someone has a better way to convert this stupid char to a string, I'm all ears -jim
-    string msgType(1, msgPrefix.at(0)); 
-	msgPrefix.erase(0, 1);
+    string msgType(1, msgPrefix.at(0));
+    msgPrefix.erase(0, 1);
 
-	ofPtr<Player> player = findPlayer(args.conn);
 
-	// LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
-	// if the prefix is ypr then we have a yaw-pitch-roll message, parse it
-	if (msgPrefix == MESSAGE_YPR) {
-		if (!_inRoundMode) {
+    // LEAVE YPR AT TOP OF MESSAGE SWITCHING - ypr is by far the priority message
+    // if the prefix is ypr then we have a yaw-pitch-roll message, parse it
+    if (msgPrefix == MESSAGE_YPR) {
+      if (!_inRoundMode) {
         ofLogWarning() << "Ignoring YPR message in setup mode" << endl;
-			return;
-		}
+        return;
+      }
 
-		if (!player) {
+      if (!player) {
         ofLogWarning() << "YPR message received for nonexistant player" << endl;
-			return;
-		}
+        return;
+      }
 
-		//pos = msgData.find(messageDelimiter);
-		float yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
-		// msgData.erase(0, pos + 1);
-		// pos = msgData.find(messageDelimiter);
-		float pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
-		// msgData.erase(0, pos + 1);
-		float roll = ofToFloat(parts[3]); //ofToFloat(msgData);
-		notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
-	}
-	// click messages? Other?
+      //pos = msgData.find(messageDelimiter);
+      float yaw = ofToFloat(parts[1]); //ofToFloat(msgData.substr(0, pos));
+      // msgData.erase(0, pos + 1);
+      // pos = msgData.find(messageDelimiter);
+      float pitch = ofToFloat(parts[2]); //ofToFloat(msgData.substr(0, pos));
+      // msgData.erase(0, pos + 1);
+      float roll = ofToFloat(parts[3]); //ofToFloat(msgData);
+      notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
+    }
+    // click messages? Other?
 
-	if (msgPrefix == MESSAGE_NEW) {
-      /*if (_inRoundMode) {
-			ofLogWarning() << "Ignoring create player message in setup mode";
-			return;
-        }*/
-		if (player) {
-        ofLogWarning() << "Got create player message for existing player: " << *player << endl;
-			return;
-		}
-
-		player.reset(new Player(&args.conn));
-      // TODO: set player id right here ... should be in parts[0]
-      //int id___UNUSED = ofHexToInt(parts[1])
-
-      controller.connect(*player);
-
-      ofLogNotice() << "Player Created - id#" << parts[1];
-		return;
-	}
-
-	// Set color
-	if (msgPrefix == ACTION_CONFIGURE) {
+    // Set color
+    if (msgPrefix == ACTION_CONFIGURE) {
       ofColor color(
         ofHexToInt(parts[2]),
         ofHexToInt(parts[3]),
         ofHexToInt(parts[4]));
       controller.configure(*player, color);
-	}
+    }
     // Indicates that player has calibrated
-	if (msgPrefix == ACTION_CALIBRATE) {
+    if (msgPrefix == ACTION_CALIBRATE) {
       controller.calibrate(*player);
-	}
+    }
     // Player has started their game, we are free to drop their ball
-	if (msgPrefix == ACTION_START) {
+    if (msgPrefix == ACTION_START) {
       controller.start(*player);
-	}
+    }
 
-	if (msgPrefix == ACTION_QUIT) {
+    if (msgPrefix == ACTION_QUIT) {
       controller.quit(*player);
     }
-	}
+  } else {
+    if (args.message == PACKET_MESSAGE + MESSAGE_NEW) {
+      /*if (_inRoundMode) {
+      ofLogWarning() << "Ignoring create player message in setup mode";
+      return;
+      }*/
+      if (player) {
+        ofLogWarning() << "Got create player message for existing player: " << *player << endl;
+        return;
+      }
+
+      player.reset(new Player(&args.conn));
+      // TODO: set player id right here ... should be in parts[0]
+      //int id___UNUSED = ofHexToInt(parts[1])
+
+      controller.connect(player);
+
+      ofLogNotice() << "Player Created";
+      return;
+    }
+  }
 }
 
 void PlayerManager::onBroadcast(ofxLibwebsockets::Event& args){
@@ -231,7 +232,9 @@ void PlayerManager::setPlayerColor(Player& player) {
 }
 // Send 'Queued' state message to player
 void PlayerManager::setPlayerQueued(Player& player) {
-  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
+  if (player.connection()) {
+    player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
+  }
 }
 // Send 'Calibrate' state message to player
 void PlayerManager::setPlayerCalibrate(Player& player, ofColor color) {
