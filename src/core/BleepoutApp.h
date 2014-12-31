@@ -44,6 +44,7 @@ public:
   ~BleepoutApp();
   
   ofEvent<RoundStateEventArgs> roundStartedEvent;
+  ofEvent<RoundStateEventArgs> roundPlayEvent;
   ofEvent<RoundEndedEventArgs> roundEndedEvent;
   
   const RoundConfig* currentRoundConfig() const;
@@ -76,9 +77,11 @@ public:
 
 private:
   void onTryStartRound(StartRoundEventArgs& e);
+  void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundEndedEventArgs& e);
 
   void notifyRoundStarted(RoundState& state);
+  void notifyRoundPlay(RoundStateEventArgs& e);
   void notifyRoundEnded(RoundEndedEventArgs& e);
   void endRound();
 

@@ -38,17 +38,28 @@ void SpaceController::addInitialPaddles() {
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
-  
-  for (const BallSpec& ball : _state.config().balls()) {
-    addBall(ball);
-  }
-  
+}
+
+void SpaceController::resetState() {
+  removeObjects(_state.bricks());
+  removeObjects(_state.balls());
+  removeObjects(_state.walls());
+  removeObjects(_state.modifiers());
+}
+
+void SpaceController::loadBricksAndWalls() {
   for (const BrickSpec& brick : _state.config().allBricks()) {
     addBrick(brick);
   }
   
   for (const WallSpec& wall : _state.config().allWalls()) {
     addWall(wall);
+  }
+}
+
+void SpaceController::addInitialBalls() {
+  for (const BallSpec& ball : _state.config().balls()) {
+    addBall(ball);
   }
 }
 

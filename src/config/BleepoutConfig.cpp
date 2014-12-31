@@ -12,9 +12,10 @@
 #include "JsonUtil.h"
 
 BleepoutConfig::BleepoutConfig()
-: _fps(30),
-_logLevel(OF_LOG_NOTICE),
-_vsync(true) { }
+: _fps(30)
+, _logLevel(OF_LOG_NOTICE)
+, _vsync(true)
+, paddleSize(16, 8, 40) { }
 
 ofPtr<RoundConfig>
 BleepoutConfig::getRound(const std::string &name) {
@@ -55,8 +56,7 @@ void BleepoutConfig::saveJsonFile(std::string path) const {
 }
 
 RoundConfig::RoundConfig(std::string name)
-: _paddleSize(16.0f, 8.0f, 40.0f),
-_ballRadius(8.0f),
+: _ballRadius(8.0f),
 _modifierSize(9.0f, 20.0f, 9.0f),
 _brickFadeTime(0.4f),
 _modifierFadeTime(0.2f),
@@ -212,7 +212,6 @@ void RoundConfig::readJson(const JsonLoader &loader,
     return;
   loader.readVal(obj["name"], &_name, _name);
   loader.readVal(obj["startDelay"], &_startDelay);
-  loader.readVal(obj["paddleSize"], &_paddleSize);
   loader.readVal(obj["ballRadius"], &_ballRadius);
   loader.readVal(obj["brickFadeTime"], &_brickFadeTime);
   loader.readVal(obj["modifierSize"], &_modifierSize);
@@ -251,7 +250,6 @@ Json::Value RoundConfig::buildJson() const {
   Json::Value obj(Json::objectValue);
   obj["name"] = _name;
   obj["startDelay"] = _startDelay;
-  obj["paddleSize"] = toJsonVal(_paddleSize);
   obj["brickFadeTime"] = _brickFadeTime;
   obj["modifierSize"] = toJsonVal(_modifierSize);
   obj["modifierFadeTime"] = _modifierFadeTime;
@@ -329,6 +327,7 @@ void BleepoutConfig::readJson(const JsonLoader &loader, const Json::Value &obj) 
   loader.readVal(obj["logLevel"], &_logLevel);
   loader.readVal(obj["fps"], &_fps);
   loader.readVal(obj["vsync"], &_vsync);
+  loader.readVal(obj["paddleSize"], &paddleSize);
   loader.readVal(obj["syphonServerName"], &_syphonServerName);
   loader.readVal(obj["syphonAppName"], &_syphonAppName);
   loader.readVal(obj["roundStartedSound"], &roundStartedSound);
@@ -361,6 +360,7 @@ Json::Value BleepoutConfig::buildJson() const {
   obj["logLevel"] = toJsonVal(_logLevel);
   obj["fps"] = _fps;
   obj["vsync"] = _vsync;
+  obj["paddleSize"] = toJsonVal(paddleSize);
   obj["syphonServerName"] = _syphonServerName;
   obj["syphonAppName"] = _syphonAppName;
   obj["roundStartedSound"] = roundStartedSound;

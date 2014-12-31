@@ -72,6 +72,7 @@ private:
   void onPlayerYawPitchRoll(PlayerYawPitchRollEventArgs& e);
   
   void onRoundQueue(RoundStateEventArgs& e);
+  void onPlayRound(EmptyEventArgs& e);
   void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundStateEventArgs& e);
   void onTryEndRound(EndRoundEventArgs& e);
@@ -80,9 +81,9 @@ private:
   
   bool areEnoughPlayersReady() const;
   
-  bool notifyRoundQueue(RoundStateEventArgs &e);
-  bool notifyRoundPlay(RoundStateEventArgs &e);
-  bool notifyRoundEnded(RoundStateEventArgs &e);
+  void notifyRoundQueue(RoundStateEventArgs &e);
+  void notifyRoundPlay();
+  void notifyRoundEnded(RoundStateEventArgs &e);
   bool notifyTryEndRound(EndRoundEventArgs &e);
   
   void onModifierAppeared(ModifierEventArgs& e);
@@ -97,6 +98,8 @@ private:
   void endCurrentConfig();
   void loadNextConfig();
   
+  bool _playing;
+  bool _started;
   bool _paused;
   float _startTime;
   int _readyPlayers;

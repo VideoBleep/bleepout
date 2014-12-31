@@ -19,6 +19,10 @@ void LogicController::setup() {
   
 }
 
+void LogicController::resetState() {
+  _lastSpecifiedTimeLimitOffset = -1;
+}
+
 void LogicController::attachTo(SpaceController &collisions) {
   ofAddListener(collisions.collisionEvent, this,
                 &LogicController::onCollision);

@@ -83,8 +83,6 @@ void DomeRenderer::setup() {
   _cam.setRotation(0.0, 0.66);
   _cam.setupPerspective(false);
 #endif
-    
-  _extras.setup();
   
   ofLight light;
   light.setDiffuseColor(ofColor(225, 225, 255));
@@ -109,6 +107,10 @@ void DomeRenderer::setup() {
   wallMaterial.setEmissiveColor(ofColor(68, 60, 98));
   wallMaterial.setShininess(10.0);
   wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
+}
+
+void DomeRenderer::setupExtras() {
+  _extras.setup();
 }
 
 void DomeRenderer::update() {
@@ -167,27 +169,28 @@ void DomeRenderer::draw() {
   } else if (appParams.drawTrajectories) {
     drawTrajectories(_state.balls(), ofColor(180, 180, 200, 180), false);
   }
-  
-  for (auto& cw : _state.config().curvedWallSets()) {
-    float r = appParams.domeRadius + appParams.domeMargin;
-    float d = cw.width / 4.0;
-    int steps = 20;
-    
-    Sweep sweep;
-    sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
-    sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
-    sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 + d));
-    sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 - d));
-    sweep.path.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1));
-    for (int i = 0; i < steps; i++) {
-      float s = i / ((steps - 1) * 1.0);
-      sweep.path.addPoint(sphericalToCartesian(r,
-                                               lerp(cw.elevation1, cw.elevation2, s),
-                                               lerp(cw.heading1, cw.heading2, s)));
+  if (_state.hasConfig()) {
+    for (auto& cw : _state.config().curvedWallSets()) {
+      float r = appParams.domeRadius + appParams.domeMargin;
+      float d = cw.width / 4.0;
+      int steps = 20;
+      
+      Sweep sweep;
+      sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 - d));
+      sweep.startFace.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1 + d));
+      sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 + d));
+      sweep.startFace.addPoint(sphericalToCartesian(r + cw.width, cw.elevation1, cw.heading1 - d));
+      sweep.path.addPoint(sphericalToCartesian(r, cw.elevation1, cw.heading1));
+      for (int i = 0; i < steps; i++) {
+        float s = i / ((steps - 1) * 1.0);
+        sweep.path.addPoint(sphericalToCartesian(r,
+                                                 lerp(cw.elevation1, cw.elevation2, s),
+                                                 lerp(cw.heading1, cw.heading2, s)));
+      }
+      
+      sweep.generate();
+      drawGenMesh(sweep, wallMaterial, ofColor(80, 80, 90), 1.5);
     }
-    
-    sweep.generate();
-    drawGenMesh(sweep, wallMaterial, ofColor(80, 80, 90), 1.5);
   }
 
   

@@ -28,6 +28,7 @@ public:
   virtual ~AdminController();
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
+  ofEvent<EmptyEventArgs> playRoundEvent;
   ofEvent<EndRoundEventArgs> tryEndRoundEvent;
   
   void setup();
@@ -41,6 +42,7 @@ public:
 private:
   void onUIEvent(ofxUIEventArgs& e);
   void onRoundStarted(RoundStateEventArgs& e);
+  void onRoundPlay(RoundStateEventArgs& e);
   void onRoundEnded(RoundEndedEventArgs& e);
   bool tryStartRound();
   bool canStartRound();
@@ -48,6 +50,7 @@ private:
   bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
                            std::list<ofPtr<Player> > players);
   bool notifyTryEndRound();
+  void notifyPlayRound();
   
   BleepoutConfig& _appConfig;
   SetupController& _setupController;

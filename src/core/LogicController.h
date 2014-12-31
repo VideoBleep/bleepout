@@ -37,6 +37,7 @@ public:
   ofEvent<TimerEventArgs> countdownTickEvent;
   
   void setup();
+  void resetState();
   void update();
   
   void attachTo(SpaceController& collisions);
