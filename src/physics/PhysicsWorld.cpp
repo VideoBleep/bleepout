@@ -341,13 +341,12 @@ public:
   }
   
   void update(float delta) {
-      for (auto &obj : objects) {
-        if (obj->isDynamic()) {
-          obj->tick(delta);
-        }
+    for (auto &obj : objects) {
+      if (obj->isDynamic()) {
+        obj->tick(delta);
       }
-      performCollisionDetection();
     }
+    performCollisionDetection();
   }
   
   BoundingBox getObjBoundingBox(PhysicsObject* obj) {
