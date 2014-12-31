@@ -90,22 +90,22 @@ void BrickQuadsSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec
     .setStopHeading(stopHeading);
   ring.setElevation(elevation - elevationSpacing)
     .setColor(color1)
-    .setPhase(-headingSpacing)
+    .setPhase(-headingSpacing + phase)
     .setValue(2).setLives(2);
   ring.buildSpecs(config, specs);
   ring.setElevation(elevation - elevationSpacing)
     .setColor(color2)
-    .setPhase(headingSpacing)
+    .setPhase(headingSpacing + phase)
     .setValue(1).setLives(1);
   ring.buildSpecs(config, specs);
   ring.setElevation(elevation + elevationSpacing)
     .setColor(color1)
-    .setPhase(-headingSpacing)
+    .setPhase(-headingSpacing + phase)
     .setValue(2).setLives(2);
   ring.buildSpecs(config, specs);
   ring.setElevation(elevation + elevationSpacing)
     .setColor(color2)
-    .setPhase(headingSpacing)
+    .setPhase(headingSpacing + phase)
     .setValue(1).setLives(1);
   ring.buildSpecs(config, specs);
 }
@@ -305,6 +305,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(speed);
     R_JPROP(stopHeading);
     R_JPROP(modifier);
+    R_JPROP(phase);
   }
 }
 
@@ -322,6 +323,7 @@ Json::Value toJsonVal(const BrickQuadsSpec& spec) {
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
   obj["modifier"] = toJsonVal(spec.modifier);
+  obj["phase"] = spec.phase;
   return obj;
 }
 

@@ -1,0 +1,316 @@
+{
+  "ballRadius": 8,
+  "modifierSize": [
+    9,
+    16,
+    9
+  ],
+  "name": "islands",
+  "objects": [
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 0
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 72
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 144
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 216
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 288
+    },
+    {
+      "_type": "Modifier",
+      "amount": 1.5,
+      "beneficial": null,
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "duration": 5,
+      "name": "widePaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": 0.5,
+      "beneficial": false,
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "duration": 5,
+      "name": "narrowPaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": null,
+      "beneficial": null,
+      "color": [
+        255,
+        69,
+        0
+      ],
+      "duration": 20,
+      "name": "supercharge",
+      "type": "SuperchargedBall"
+    },
+    {
+      "_type": "BrickQuads",
+      "color1": [
+        255,
+        0,
+        63
+      ],
+      "color2": [
+        63,
+        0,
+        255
+      ],
+      "count": 4,
+      "elevation": 56,
+      "elevationSpacing": 2.5,
+      "headingSpacing": 5,
+      "modifier": {
+        "chance": 0.1,
+        "name": "supercharge"
+      },
+      "phase": null,
+      "size": [
+        10,
+        8,
+        14
+      ],
+      "speed": null,
+      "stopHeading": null
+    },
+    {
+      "_type": "BrickQuads",
+      "color1": [
+        127,
+        0,
+        95
+      ],
+      "color2": [
+        95,
+        0,
+        127
+      ],
+      "count": 4,
+      "elevation": 46,
+      "elevationSpacing": 2.5,
+      "headingSpacing": 5,
+      "modifier": {
+        "chance": 0.2,
+        "name": "widePaddle"
+      },
+      "phase": 30,
+      "size": [
+        10,
+        8,
+        14
+      ],
+      "speed": null,
+      "stopHeading": null
+    },
+    {
+      "_type": "BrickQuads",
+      "color1": [
+        27,
+        0,
+        195
+      ],
+      "color2": [
+        195,
+        0,
+        27
+      ],
+      "count": 4,
+      "elevation": 40,
+      "elevationSpacing": 2.5,
+      "headingSpacing": 5,
+      "modifier": null,
+      "phase": 60,
+      "size": [
+        10,
+        8,
+        14
+      ],
+      "speed": null,
+      "stopHeading": null
+    },
+    {
+      "_type": "BrickQuads",
+      "color1": [
+        255,
+        0,
+        195
+      ],
+      "color2": [
+        195,
+        0,
+        255
+      ],
+      "count": 16,
+      "elevation": 35,
+      "elevationSpacing": 1.5,
+      "headingSpacing": 2,
+      "modifier": {
+        "chance": 0.2,
+        "name": "narrowPaddle"
+      },
+      "phase": 90,
+      "size": [
+        6,
+        6,
+        8
+      ],
+      "speed": null,
+      "stopHeading": null
+    },
+    {
+      "_type": "BrickQuads",
+      "color1": [
+        255,
+        0,
+        195
+      ],
+      "color2": [
+        195,
+        0,
+        255
+      ],
+      "count": 24,
+      "elevation": 30,
+      "elevationSpacing": 1.3,
+      "headingSpacing": 2,
+      "modifier": {
+        "chance": 0.1,
+        "name": "widePaddle"
+      },
+      "phase": 120,
+      "size": [
+        6,
+        4,
+        6
+      ],
+      "speed": 0.01,
+      "stopHeading": null
+    },
+    {
+      "_type": "Wall",
+      "elevation": -10,
+      "heading": 0,
+      "isExit": true,
+      "isFloor": true,
+      "size": null,
+      "speed": 0,
+      "stopHeading": -1,
+      "visible": false
+    },
+    {
+      "_type": "RingSet",
+      "color": [
+        127,
+        0,
+        255,
+        127
+      ],
+      "count": 80,
+      "lineWidth": 3.2,
+      "radiusScale": 4.95,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          10,
+          10
+        ]
+      },
+      "spread": {
+        "changeInterval": 10,
+        "maxRate": 0.4,
+        "minRate": 0,
+        "startValue": [
+          15,
+          30,
+          20
+        ]
+      },
+      "spreadOffset": [
+        60,
+        70,
+        40
+      ]
+    },
+    {
+      "_type": "RingSet",
+      "color": [
+        255,
+        0,
+        127,
+        127
+      ],
+      "count": 20,
+      "lineWidth": 2.4,
+      "radiusScale": 1.4,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 40,
+        "maxRate": 0.55,
+        "minRate": 0,
+        "startValue": [
+          3,
+          0,
+          0
+        ]
+      },
+      "spreadOffset": [
+        0,
+        10,
+        80
+      ]
+    },
+    {
+      "_type": "Message",
+      "color": [
+        0,
+        127,
+        127
+      ],
+      "delay": 1,
+      "duration": 3,
+      "size": 25,
+      "text": "STAGE # START",
+      "trails": null
+    }
+  ],
+  "startDelay": 5
+}

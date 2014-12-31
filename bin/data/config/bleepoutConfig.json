@@ -3,6 +3,7 @@
 	"logLevel" : "Notice",
 	"rounds" : 
 	[
+	  	"config/islands.json",
 		"config/Round1.json",
 		"config/Round2.json",
 		"config/Round3.json",

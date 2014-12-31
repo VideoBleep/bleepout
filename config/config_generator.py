@@ -7,13 +7,15 @@ import round_2
 import round_3
 import round_4
 import round_5
+import islands_stage
 
 rounds = {
   "round1": round_1.generate,
   "round2": round_2.generate,
   "round3": round_3.generate,
   "round4": round_4.generate,
-  "round5": round_5.generate
+  "round5": round_5.generate,
+  "islands": islands_stage.generate
 }
 
 def generateRound(name, outdir):

@@ -91,6 +91,7 @@
         "chance": 0.2,
         "name": "widePaddle"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -119,6 +120,7 @@
         "chance": 0.1,
         "name": "supercharge"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -147,6 +149,7 @@
         "chance": 0.2,
         "name": "narrowPaddle"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -172,6 +175,7 @@
       "elevationSpacing": 1.5,
       "headingSpacing": 12,
       "modifier": null,
+      "phase": null,
       "size": [
         7,
         5,

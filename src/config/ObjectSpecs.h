@@ -158,13 +158,14 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
   float headingSpacing;
   float speed;
   float stopHeading;
+  float phase;
   int count;
   ModifierSourceSpec modifier;
   ofColor color1;
   ofColor color2;
   ofVec3f size;
   
-  BrickQuadsSpec() : speed(0), size(7, 5, 17), modifier() { }
+  BrickQuadsSpec() : speed(0), size(7, 5, 17), modifier(), phase(0) { }
   BrickQuadsSpec& copyFrom(const BrickQuadsSpec& other) {
     color1 = other.color1;
     color2 = other.color2;
@@ -176,6 +177,7 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
     speed = other.speed;
     stopHeading = other.stopHeading;
     modifier = other.modifier;
+    phase = other.phase;
     return *this;
   }
   virtual ~BrickQuadsSpec() {}

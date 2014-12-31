@@ -65,6 +65,7 @@
         "chance": 0.4,
         "name": "supercharge"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -93,6 +94,7 @@
         "chance": 0.4,
         "name": "supercharge"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -121,6 +123,7 @@
         "chance": 0.4,
         "name": "supercharge"
       },
+      "phase": null,
       "size": [
         7,
         5,
@@ -149,6 +152,7 @@
         "chance": 0.4,
         "name": "supercharge"
       },
+      "phase": null,
       "size": [
         7,
         5,
