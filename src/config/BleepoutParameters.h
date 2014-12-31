@@ -29,7 +29,6 @@ public:
   
   const BleepoutConfig& appConfig() const { return *_appConfig; }
   BleepoutConfig& appConfig() { return *_appConfig; }
-  std::deque<std::string>& queuedRoundNames() { return _queuedRoundNames; }
   
   std::list<ofPtr<RoundConfig> > getRoundQueue();
   
@@ -55,7 +54,6 @@ public:
 private:
   BleepoutConfig* _appConfig;
   std::string _currentRoundName;
-  std::deque<std::string> _queuedRoundNames;
   GameRules _rulesOverrides;
 };
 

@@ -28,7 +28,8 @@ void AudioManager::setup() {
   loadSoundSafe(_roundEndedSound, config.roundEndedSound);
   loadSoundSafe(_brickHitSound, config.brickHitSound);
   loadSoundSafe(_brickDestroyedSound, config.brickDestroyedSound);
-  loadSoundSafe(_collisionSound, config.collisionSound);
+  loadSoundSafe(_paddleHitSound, config.paddleHitSound);
+  loadSoundSafe(_wallHitSound, config.wallHitSound);
   loadSoundSafe(_modifierAppliedSound, config.modifierAppliedSound);
   loadSoundSafe(_modifierRemovedSound, config.modifierRemovedSound);
   loadSoundSafe(_ballDestroyedSound, config.ballDestroyedSound);
@@ -42,7 +43,8 @@ void AudioManager::update() {
   _roundStartedSound.setVolume(appParams.audioVolume);
   _roundEndedSound.setVolume(appParams.audioVolume);
   _brickDestroyedSound.setVolume(appParams.audioVolume);
-  _collisionSound.setVolume(appParams.audioVolume);
+  _paddleHitSound.setVolume(appParams.audioVolume);
+  _wallHitSound.setVolume(appParams.audioVolume);
   _modifierAppliedSound.setVolume(appParams.audioVolume);
   _modifierRemovedSound.setVolume(appParams.audioVolume);
   _ballDestroyedSound.setVolume(appParams.audioVolume);
@@ -69,8 +71,10 @@ void AudioManager::detachFrom(BleepoutApp &app) {
 void AudioManager::attachTo(RoundController &roundController) {
   ofAddListener(roundController.logicController().brickHitEvent,
                 this, &AudioManager::onBrickHit);
-  ofAddListener(roundController.spaceController().collisionEvent,
-                this, &AudioManager::onCollision);
+  ofAddListener(roundController.logicController().paddleHitEvent,
+                this, &AudioManager::onPaddleHit);
+  ofAddListener(roundController.logicController().wallHitEvent,
+                this, &AudioManager::onWallHit);
   ofAddListener(roundController.logicController().modifierAppliedEvent,
                 this, &AudioManager::onModifierApplied);
   ofAddListener(roundController.logicController().modifierRemovedEvent,
@@ -88,8 +92,10 @@ void AudioManager::attachTo(RoundController &roundController) {
 void AudioManager::detachFrom(RoundController &roundController) {
   ofRemoveListener(roundController.logicController().brickHitEvent,
                    this, &AudioManager::onBrickHit);
-  ofRemoveListener(roundController.spaceController().collisionEvent,
-                   this, &AudioManager::onCollision);
+  ofRemoveListener(roundController.logicController().paddleHitEvent,
+                   this, &AudioManager::onPaddleHit);
+  ofRemoveListener(roundController.logicController().wallHitEvent,
+                   this, &AudioManager::onWallHit);
   ofRemoveListener(roundController.logicController().modifierAppliedEvent,
                    this, &AudioManager::onModifierApplied);
   ofRemoveListener(roundController.logicController().modifierRemovedEvent,
@@ -119,8 +125,12 @@ void AudioManager::onBrickHit(BrickHitEventArgs &e) {
     _brickHitSound.play();
 }
 
-void AudioManager::onCollision(CollisionEventArgs &e) {
-  _collisionSound.play();
+void AudioManager::onPaddleHit(PaddleHitEventArgs &e) {
+  _paddleHitSound.play();
+}
+
+void AudioManager::onWallHit(WallHitEventArgs &e) {
+  _wallHitSound.play();
 }
 
 void AudioManager::onModifierApplied(ModifierEventArgs &e) {

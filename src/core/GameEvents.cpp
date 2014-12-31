@@ -51,6 +51,22 @@ void BrickHitEventArgs::output(std::ostream &os) const {
   os << ")";
 }
 
+void PaddleHitEventArgs::output(std::ostream &os) const {
+    os << "(";
+    outputField(os, paddle());
+    os << " ";
+    outputField(os, ball());
+    os << ")";
+}
+
+void WallHitEventArgs::output(std::ostream &os) const {
+    os << "(";
+    outputField(os, wall());
+    os << " ";
+    outputField(os, ball());
+    os << ")";
+}
+
 void ModifierEventArgs::output(std::ostream &os) const {
   os << "(";
   outputField(os, _modifier);

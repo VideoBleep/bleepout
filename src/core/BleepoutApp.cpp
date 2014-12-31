@@ -19,11 +19,12 @@ BleepoutApp::~BleepoutApp() {
 
 void BleepoutApp::setup() {
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
-  BleepoutConfig* cfg = BleepoutConfig::loadFromFile("config/bleepoutConfig.json");
-  if (!cfg) {
-    ofLogWarning() << "Unable to load config file: config/bleepoutConfig.json";
-    cfg = BleepoutConfig::createConfig();
-  }
+//  BleepoutConfig* cfg = BleepoutConfig::loadFromFile("config/bleepoutConfig.json");
+//  if (!cfg) {
+//    ofLogWarning() << "Unable to load config file: config/bleepoutConfig.json";
+//    cfg = BleepoutConfig::createConfig();
+//  }
+  BleepoutConfig* cfg = BleepoutConfig::createConfig();
   _config.reset(cfg);
   BleepoutParameters::initializeConfig(*_config);
 //  _config->saveJsonFile("config/bleepoutConfig.json");

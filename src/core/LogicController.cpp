@@ -136,6 +136,7 @@ void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
     ball.applyModifier(_state, modifierSpec);
     //... event?
   }
+  notifyPaddleHit(_state, &paddle, &ball);
 }
 
 void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
@@ -193,6 +194,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
       notifyTryEndRound(END_NO_BALLS);
     }
   }
+  notifyWallHit(_state, &wall, &ball);
 }
 
 void LogicController::respawnBall(Player *player) {
@@ -228,6 +230,16 @@ void LogicController::notifyBrickHit(RoundState& state, Brick* brick, Ball* ball
   BrickHitEventArgs e(state, brick, ball);
   ofNotifyEvent(brickHitEvent, e);
   logEvent("BrickHit", e);
+}
+void LogicController::notifyPaddleHit(RoundState& state, Paddle* paddle, Ball* ball) {
+    PaddleHitEventArgs e(state, paddle, ball);
+    ofNotifyEvent(paddleHitEvent, e);
+    logEvent("PaddleHit", e);
+}
+void LogicController::notifyWallHit(RoundState& state, Wall* wall, Ball* ball) {
+    WallHitEventArgs e(state, wall, ball);
+    ofNotifyEvent(wallHitEvent, e);
+    logEvent("WallHit", e);
 }
 void LogicController::notifyAllBricksDestroyed(RoundState& state) {
   RoundStateEventArgs e(state);

@@ -215,7 +215,7 @@ public:
   void readJson(const JsonLoader& loader, const Json::Value& obj);
   Json::Value buildJson() const;
   
-  void loadJsonFile(std::string path);
+  bool loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
   int fps() const { return _fps; }
@@ -235,7 +235,8 @@ public:
   std::string roundEndedSound;
   std::string brickHitSound;
   std::string brickDestroyedSound;
-  std::string collisionSound;
+  std::string paddleHitSound;
+  std::string wallHitSound;
   std::string modifierAppliedSound;
   std::string modifierRemovedSound;
   std::string ballDestroyedSound;
