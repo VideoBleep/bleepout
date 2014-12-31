@@ -38,6 +38,7 @@ bool Player::tryDequeueBallModifier(ModifierSpec *modifierSpec) {
     return false;
   *modifierSpec = _ballModifierQueue.front();
   _ballModifierQueue.pop_front();
+  _modifierCounts.add(modifierSpec->type, -1);
   return true;
 }
 

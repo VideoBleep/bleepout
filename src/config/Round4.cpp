@@ -21,7 +21,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
   
   std::string superchargedModName("supercharge");
   config->addModifierDef(superchargedModName, MODIFIER_SUPERCHARGED_BALL)
-    .setColor(ofColor::green)
+    .setColor(ofColor::orangeRed)
     .setDuration(20);
   
   {
@@ -88,7 +88,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setCount(12)
     .setVisible(true)
     .setIsExit(false)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(7, 5, 15));
   
   config->addBrickRing()
@@ -119,7 +119,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setLives(2)
     .setValue(2)
     .setColor(ofColor(0, 255, 127))
-    .setSpeed(0.005)
+    .setSpeed(0.15)
     .setModifier(superchargedModName, .5);
   
   config->addBrickRing()
@@ -141,7 +141,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setCount(6)
     .setVisible(true)
     .setIsExit(false)
-    .setSpeed(0.05)
+    .setSpeed(1.5)
     .setSize(ofVec3f(7, 5, 8));
   
   {
@@ -185,17 +185,10 @@ RoundConfig* RoundConfig::createRoundConfig4() {
     .setIsExit(true)
     .setVisible(false);
   
-  config->addStartMessage("VideoBleep\n presents", ofColor(255))
-    .setSize(12)
-    .setTiming(0, 3);
-  config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
-    .setSize(50)
-    .setTrails(4)
-    .setTiming(3, 4.5);
   config->addStartMessage("STAGE 4 START", ofColor(0, 255, 0))
     .setSize(25)
-    .setTiming(7.5, 2.5);
-  config->_startDelay = 10;
+    .setTiming(1, 3);
+  config->_startDelay = 5;
   
   config->addRingSet()
     .setSpin(ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0)))

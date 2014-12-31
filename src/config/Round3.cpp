@@ -95,7 +95,7 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setCount(6)
     .setSize(ofVec3f(8, 3, 25))
     .setVisible(true)
-    .setSpeed(0.007);
+    .setSpeed(0.21);
   
   // Create the floor exit wall
   float d = (appParams.domeMargin + appParams.domeRadius) * 5;
@@ -106,17 +106,10 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setIsExit(true)
     .setVisible(false);
   
-  config->addStartMessage("VideoBleep\n presents", ofColor(255))
-    .setSize(12)
-    .setTiming(0, 3);
-  config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
-    .setSize(50)
-    .setTrails(4)
-    .setTiming(3, 4.5);
   config->addStartMessage("STAGE 3 START", ofColor(0, 255, 0))
     .setSize(25)
-    .setTiming(7.5, 2.5);
-  config->_startDelay = 10;
+    .setTiming(1, 3);
+  config->_startDelay = 5;
   
   config->addRingSet()
     .setSpin(ValuePulserSpec<ofVec3f>(0, 0.3, 5.0f, ofVec3f(0)))

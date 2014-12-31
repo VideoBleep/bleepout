@@ -13,6 +13,15 @@
 
 const char GameObjectTypeTraits<Brick>::typeName[] = "brick";
 
+static std::string generateModifierName(const ModifierSourceSpec& mod) {
+  if (!mod.name.empty()) {
+    if (mod.chance >= 1 || ofRandomuf() < mod.chance) {
+      return mod.name;
+    }
+  }
+  return "";
+}
+
 Brick::Brick(const RoundConfig& config, const BrickSpec& spec)
 : GameObject(GAME_OBJECT_BRICK)
 , PhysicsObject(CollisionBox)
@@ -25,7 +34,7 @@ Brick::Brick(const RoundConfig& config, const BrickSpec& spec)
   this->setLives(spec.lives);
   this->setValue(spec.value);
   _maxLives = spec.lives;
-  _modifierName = spec.modifierName;
+  _modifierName = generateModifierName(spec.modifier);
   if (spec.speed == 0) {
     this->setPositionSpherical(appParams.domeRadius +
                                appParams.domeMargin,

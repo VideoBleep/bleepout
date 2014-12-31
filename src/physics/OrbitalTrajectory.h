@@ -38,7 +38,7 @@ public:
   PointHistory history;
   
 protected:
-  virtual void tick() override;
+  virtual void tick(float delta) override;
   
   float _r;
   

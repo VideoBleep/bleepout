@@ -38,8 +38,8 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   for (int col = 0; col < cols; col++) {
     float s = col / (float)cols;
     auto& spec = config->addCurvedBrickColumn()
-      .setEnd1(30, s * 360)
-      .setEnd2(60, s * 360 + 20)
+      .setEnd1(30, s * 360 + ((col % 2) ? 5 : -5))
+      .setEnd2(60, s * 360 + 20 + ((col % 2) ? 5 : -5))
       .setCount(rows)
       .setColor(ofColor(s * 255, 0, 255),
                 ofColor(s * 255, 255, 0))
@@ -61,19 +61,19 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setElevation(67)
     .setHeading(5)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(80);
   config->addWall()
     .setElevation(67)
     .setHeading(125)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(200);
   config->addWall()
     .setElevation(67)
     .setHeading(245)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(320);
   
   // rotating top brick rings
@@ -83,13 +83,13 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setCount(12)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(76)
     .setColor(ofColor::black)
     .setCount(10)
-    .setSpeed(-0.02)
+    .setSpeed(-0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(80)
@@ -97,14 +97,14 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setCount(8)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   // Create the floor exit wall
   float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
-    .setHeading(0)
+    .setIsFloor(true)
     .setSize(ofVec3f(d, 10, d))
     .setIsExit(true)
     .setVisible(false);

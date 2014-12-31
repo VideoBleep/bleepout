@@ -92,7 +92,7 @@ void MessageAnimation::draw() {
                color,
                _font,
                _message.size - (j * 1.5),
-               appParams.domeRadius + appParams.domeMargin * (1.25 + j * 0.1),
+               appParams.domeRadius + appParams.domeMargin * (0.75 + j * 0.15),
                15 - (j * 1.1),
                30 + i * 120);
     }

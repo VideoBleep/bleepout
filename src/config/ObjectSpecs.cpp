@@ -69,18 +69,14 @@ void BrickRingSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec>
     .setColor(color)
     .setValue(value)
     .setLives(lives)
-    .setSpeed(speed);
+    .setSpeed(speed)
+    .setModifier(modifier);
   for (int i = 0; i < count; i++) {
     float heading = i * 360 / (count * 1.0) + phase;
     BrickSpec brick = BrickSpec()
       .copyFrom(prototype)
       .setHeading(heading)
       .setStopHeading(stopHeading < 0 ? -1 : (heading + stopHeading));
-    if (!modifierName.empty()) {
-      if (modifierChance >= 1 || ofRandomuf() >= modifierChance) {
-        brick.setModifier(modifierName);
-      }
-    }
     specs->push_back(brick);
   }
 }
@@ -89,7 +85,7 @@ void BrickQuadsSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec
   BrickRingSpec ring;
   ring.setSize(size)
     .setSpeed(speed)
-    .setModifier(modifierName, modifierChance)
+    .setModifier(modifier)
     .setCount(count)
     .setStopHeading(stopHeading);
   ring.setElevation(elevation - elevationSpacing)
@@ -162,13 +158,8 @@ void CurvedWallSpec::buildSpecs(const RoundConfig &config, std::vector<WallSpec>
 
 static void applyBrickColumnStripeProperties(const CurvedBrickColumnSpec::StripeSpec& stripe, BrickSpec& brick) {
   brick.setValue(stripe.value)
-       .setLives(stripe.lives);
-  if (!stripe.modifierName.empty()) {
-    if (stripe.modifierChance >= 1 ||
-        ofRandomuf() >= stripe.modifierChance) {
-      brick.setModifier(stripe.modifierName);
-    }
-  }
+       .setLives(stripe.lives)
+       .setModifier(stripe.modifier);
 }
 
 void CurvedBrickColumnSpec::buildSpecs(const RoundConfig &config, std::vector<BrickSpec> *specs) const {
@@ -207,6 +198,25 @@ void CurvedBrickColumnSpec::buildSpecs(const RoundConfig &config, std::vector<Br
 #define R_JPROP(property) readVal(val[#property], &result->property, defaultVal.property)
 
 template<>
+void JsonLoader::readVal(const Json::Value &val, ModifierSourceSpec *result, const ModifierSourceSpec &defaultVal) const {
+  if (!assertType(val, Json::objectValue)) {
+    *result = ModifierSourceSpec(defaultVal.name,
+                                 defaultVal.chance);
+  } else {
+    readVal(val["name"], &result->name, defaultVal.name);
+    readVal(val["chance"], &result->chance, defaultVal.chance);
+  }
+}
+
+template<>
+Json::Value toJsonVal(const ModifierSourceSpec& spec) {
+  Json::Value obj(Json::objectValue);
+  obj["name"] = spec.name;
+  obj["chance"] = spec.chance;
+  return obj;
+}
+
+template<>
 void JsonLoader::readVal(const Json::Value &val,
                          BrickSpec *result,
                          const BrickSpec& defaultVal) const {
@@ -221,7 +231,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(color);
     R_JPROP(speed);
     R_JPROP(stopHeading);
-    R_JPROP(modifierName);
+    R_JPROP(modifier);
   }
 }
 
@@ -237,7 +247,7 @@ Json::Value toJsonVal(const BrickSpec& spec) {
   obj["color"] = toJsonVal(spec.color);
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
-  obj["modifierName"] = spec.modifierName;
+  obj["modifier"] = toJsonVal(spec.modifier);
   return obj;
 }
 
@@ -257,8 +267,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(phase);
     R_JPROP(speed);
     R_JPROP(stopHeading);
-    R_JPROP(modifierName);
-    R_JPROP(modifierChance);
+    R_JPROP(modifier);
   }
 }
 
@@ -275,8 +284,7 @@ Json::Value toJsonVal(const BrickRingSpec& spec) {
   obj["phase"] = spec.phase;
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
-  obj["modifierName"] = spec.modifierName;
-  obj["modifierChance"] = spec.modifierChance;
+  obj["modifier"] = toJsonVal(spec.modifier);
   return obj;
 }
 
@@ -296,8 +304,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(size);
     R_JPROP(speed);
     R_JPROP(stopHeading);
-    R_JPROP(modifierName);
-    R_JPROP(modifierChance);
+    R_JPROP(modifier);
   }
 }
 
@@ -314,8 +321,7 @@ Json::Value toJsonVal(const BrickQuadsSpec& spec) {
   obj["size"] = toJsonVal(spec.size);
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
-  obj["modifierName"] = spec.modifierName;
-  obj["modifierChance"] = spec.modifierChance;
+  obj["modifier"] = toJsonVal(spec.modifier);
   return obj;
 }
 
@@ -330,6 +336,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(heading);
     R_JPROP(size);
     R_JPROP(isExit);
+    R_JPROP(isFloor);
     R_JPROP(speed);
     R_JPROP(stopHeading);
     R_JPROP(visible);
@@ -345,6 +352,8 @@ Json::Value toJsonVal(const WallSpec& spec) {
   obj["size"] = toJsonVal(spec.size);
   if (spec.isExit)
     obj["isExit"] = spec.isExit;
+  if (spec.isFloor)
+    obj["isFloor"] = spec.isFloor;
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
   obj["visible"] = spec.visible;
@@ -394,8 +403,7 @@ void JsonLoader::readVal(const Json::Value &val,
   } else {
     R_JPROP(value);
     R_JPROP(lives);
-    R_JPROP(modifierName);
-    R_JPROP(modifierChance);
+    R_JPROP(modifier);
   }
 }
 
@@ -404,8 +412,7 @@ Json::Value toJsonVal(const CurvedBrickColumnSpec::StripeSpec& spec) {
   Json::Value obj(Json::objectValue);
   obj["value"] = spec.value;
   obj["lives"] = spec.lives;
-  obj["modifierName"] = spec.modifierName;
-  obj["modifierChance"] = spec.modifierChance;
+  obj["modifier"] = toJsonVal(spec.modifier);
   return obj;
 }
 

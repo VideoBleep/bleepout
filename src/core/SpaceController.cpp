@@ -9,6 +9,7 @@
 #include "SpaceController.h"
 #include "PhysicsUtil.h"
 #include "BleepoutParameters.h"
+#include "PhysicsUtil.h"
 
 namespace {
   
@@ -22,6 +23,7 @@ namespace {
 
 SpaceController::SpaceController(RoundState& state)
 : RoundComponent(state)
+, _lastUpdateTime(-1)
 , EventSource() {
 }
 
@@ -58,6 +60,13 @@ void SpaceController::loadBricksAndWalls() {
 }
 
 void SpaceController::addInitialBalls() {
+  for (ofPtr<Player>& player : _state.players()) {
+    BallSpec ballSpec;
+    auto paddlePos = player->paddle()->getPosition();
+    cartesianToSpherical(paddlePos, &ballSpec.elevation, &ballSpec.heading);
+    ballSpec.elevation = 30;
+    addBall(ballSpec);
+  }
   for (const BallSpec& ball : _state.config().balls()) {
     addBall(ball);
   }
@@ -99,7 +108,11 @@ void SpaceController::removeObject(PhysicsObject &object) {
 }
 
 void SpaceController::update() {
-  _world.update();
+  if (_lastUpdateTime < 0) {
+    _lastUpdateTime = _state.time - (1 / ofGetFrameRate());
+  }
+  _world.update(_state.time - _lastUpdateTime);
+  _lastUpdateTime = _state.time;
 }
 
 float paddleTrueHitFactor(const ofVec3f& paddlePos, const ofVec3f& paddleSize) {

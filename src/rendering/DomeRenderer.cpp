@@ -261,7 +261,11 @@ void DomeRenderer::drawBrick(Brick &brick) {
 }
 
 void DomeRenderer::drawPaddle(Paddle &paddle) {
-  drawBoxObject(paddle, ofColor(0, 0, 0), paddle.getColor());
+  ofColor color = paddle.getColor();
+  if (paddle.player().modifierCounts()[MODIFIER_SUPERCHARGED_BALL] > 0) {
+    color = ofColor(255, 255 * sin(_state.time * 7.5), 0);
+  }
+  drawBoxObject(paddle, ofColor(0, 0, 0), color);
 }
 
 void DomeRenderer::drawWall(Wall &wall) {
@@ -279,7 +283,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
   ofVec3f jitter = perpVec * ofRandom(-s, s) + vel.normalized() * ofRandom(-s, s);
   vel += jitter;
   
-  ofVec3f stack = pos.normalized() * 0.05 * order;
+  ofVec3f stack = pos.normalized() * 0.5 * order;
   ofVec3f tailPt = pos - vel * length + stack;
   ofVec3f headPt = pos + vel * 2.2 * width + stack;
   ofVec3f offsetVec = perpVec * 1.2 * width;
@@ -337,32 +341,31 @@ void DomeRenderer::drawBall(Ball &ball) {
     if (ot) {
       ofPushStyle();
       ofPushMatrix();
+      ofDisableLighting();
       
       ofEnableBlendMode(OF_BLENDMODE_ADD);
       
       ofSetColor(255, 255, 255, 255);
-      LineWidthAdjuster::setLineWidth(1.5);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(1.2, -0.5);
       glEnd();
       
       ofColor c = ball.getColor();
-      c.a = 172;
+      //c.a = 172;
       ofSetColor(c);
-      LineWidthAdjuster::setLineWidth(5.0);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(3.0, 0.0);
       glEnd();
       
       ofEnableBlendMode(OF_BLENDMODE_ALPHA);
       
-      c.a = 127;
+      c *= 0.5;
       ofSetColor(c);
-      LineWidthAdjuster::setLineWidth(20.0);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(7.0, 0.5);
       glEnd();
       
+      ofEnableLighting();
       ofPopMatrix();
       ofPopStyle();
       

@@ -36,7 +36,7 @@ public:
   
   void updateCollisionObject(PhysicsObject* obj);
   
-  void update();
+  void update(float deltaTime);
   
   void notifyCollision(CollisionArgs& args);
   
@@ -46,6 +46,7 @@ public:
   
 protected:
   ofPtr<PhysicsImpl> _impl;
+  float _lastUpdateTime;
 };
 
 #endif /* defined(__bleepout__PhysicsWorld__) */

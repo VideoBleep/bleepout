@@ -1,25 +1,33 @@
 #!/usr/bin/python
 
 import json
-import object_specs
+import sys
 import round_1
-# import argparse
-# import sys
+import round_2
+import round_3
+import round_4
 
-def generate():
-  appConfig = object_specs.BleepoutConfig()
-  appConfig.roundConfigs.append(round_1.generate())
-  return appConfig
+rounds = {
+  "round1": round_1.generate,
+  "round2": round_2.generate,
+  "round3": round_3.generate,
+  "round4": round_4.generate
+}
+
+def generateRound(name, filename):
+  gen = rounds[name]
+  if not gen:
+    raise RuntimeError("Unrecognized round: '" + name + "'")
+  config = gen()
+  if filename:
+    json.dump(config, file(filename), sort_keys=True, indent=2, separators=(',', ': '))
+  else:
+    print json.dumps(config, sort_keys=True, indent=2, separators=(',', ': '))
 
 def main():
-  # parser = argparse.ArgumentParser(description='Generate configuration for Bleepout')
-  # parser.add_argument('output', metavar='o', type=str)
-  # parser.add_argument('round', metavar='r', type=str)
-  # args = parser.parse_args(sys.argv)
-  # main_impl(args.output, args.round)
-  appConfig = generate()
-  print json.dumps(appConfig.build(), sort_keys=True,
-                   indent=2, separators=(',', ': '))
+  round = sys.argv[1].lower().strip()
+  generateRound(round, None)
+
 
 if __name__ == '__main__':
   main()

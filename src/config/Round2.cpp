@@ -18,22 +18,15 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));
   }
-  //...
-  config->addStartMessage("VideoBleep\n presents", ofColor(255))
-    .setSize(12)
-    .setTiming(0, 3);
-  config->addStartMessage("BLEEPOUT", ofColor(0, 120, 240))
-    .setSize(50)
-    .setTrails(4)
-    .setTiming(3, 4.5);
+  
   config->addStartMessage("STAGE 2 START", ofColor(0, 255, 255))
     .setSize(25)
-    .setTiming(7.5, 3);
-  config->_startDelay = 10;
+    .setTiming(1, 3);
+  config->_startDelay = 5;
   
   std::string superchargeModName("supercharge");
   config->addModifierDef(superchargeModName, MODIFIER_SUPERCHARGED_BALL)
-    .setColor(ofColor::green)
+    .setColor(ofColor::orangeRed)
     .setDuration(20);
   
   {
@@ -67,12 +60,12 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   config->addWallRing()
     .setElevation(25)
     .setCount(5)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(10, 10, 30));
   config->addWallRing()
     .setElevation(30)
     .setCount(5)
-    .setSpeed(0.05)
+    .setSpeed(1.5)
     .setSize(ofVec3f(10, 10, 30));
   
   config->addRingSet()

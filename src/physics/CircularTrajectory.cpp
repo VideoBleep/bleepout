@@ -34,9 +34,10 @@ void CircularTrajectory::initWithElevationHeading(float elevation, float startHe
   _circleRadius = sqrt(_position.x * _position.x + _position.z * _position.z);
   _t = 0;
   
-  _lastPosition.x = cos(_phi - _speed);
+  float s = _speed / ofGetFrameRate();
+  _lastPosition.x = cos(_phi - s);
   _lastPosition.y = _height;
-  _lastPosition.z = sin(_phi - _speed);
+  _lastPosition.z = sin(_phi - s);
 }
 
 void CircularTrajectory::setPosition(const ofVec3f& position) {
@@ -49,7 +50,7 @@ float CircularTrajectory::getRotation() const {
   return 360 - ((_phi + _t) * 180.0 / PI);
 }
 
-void CircularTrajectory::tick() {
+void CircularTrajectory::tick(float delta) {
   
   float heading = (_phi + _t) * 180.0 / PI;
   if (_stopHeading > 0 &&
@@ -60,7 +61,8 @@ void CircularTrajectory::tick() {
       }
   
   _lastPosition = _position;
-  _t += _startHeading < _stopHeading ? _speed : -_speed;
+  float s = _speed * delta;
+  _t += _startHeading < _stopHeading ? s : -s;
   _position.x = _circleRadius * cos(_phi + _t);
   _position.z = _circleRadius * sin(_phi + _t);
   
