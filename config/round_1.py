@@ -4,7 +4,6 @@ import random
 def generate():
   config = {
     "name": "Round1asdf",
-    "paddleSize": (16, 8, 40),
     "ballRadius": 8,
     "modifierSize": (9, 16, 9),
     "rules": {
