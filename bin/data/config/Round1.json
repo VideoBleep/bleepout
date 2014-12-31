@@ -42,7 +42,8 @@
         255
       ],
       "duration": 5,
-      "name": "widePaddle"
+      "name": "widePaddle",
+      "type": "PaddleWidth"
     },
     {
       "_type": "Modifier",
@@ -54,7 +55,8 @@
         0
       ],
       "duration": 5,
-      "name": "narrowPaddle"
+      "name": "narrowPaddle",
+      "type": "PaddleWidth"
     },
     {
       "_type": "CurvedBrickColumn",

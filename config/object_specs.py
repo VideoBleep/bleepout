@@ -168,6 +168,7 @@ def createModifier(type = None,
                    color = None,
                    beneficial = None):
   return dict(_type = "Modifier",
+              type = type,
               name = name,
               amount = amount,
               duration = duration,

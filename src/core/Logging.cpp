@@ -69,6 +69,7 @@ void Brick::output(std::ostream &os) const {
   os << ", lives:" << lives();
   if (maxLives() > 1)
     os << "/" << maxLives();
+  os << ", modifier:" << (_modifierName.empty()? "()": ("'" + _modifierName + "'"));
   os << ", ";
   outputPhysicsObjectFields(os, *this);
   os << "}";

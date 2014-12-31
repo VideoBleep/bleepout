@@ -42,7 +42,8 @@
         0
       ],
       "duration": 20,
-      "name": "supercharge"
+      "name": "supercharge",
+      "type": "SuperchargedBall"
     },
     {
       "_type": "BrickQuads",
@@ -573,8 +574,5 @@
       ]
     }
   ],
-  "rules": {
-    "ballsRespawn": true
-  },
   "startDelay": 5
 }

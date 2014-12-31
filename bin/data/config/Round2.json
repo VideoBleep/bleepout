@@ -42,7 +42,8 @@
         0
       ],
       "duration": 20,
-      "name": "supercharge"
+      "name": "supercharge",
+      "type": "SuperchargedBall"
     },
     {
       "_type": "CurvedBrickColumn",

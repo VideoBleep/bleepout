@@ -6,9 +6,6 @@ def generate():
     "name": "Round4",
     "ballRadius": 8,
     "modifierSize": (9, 16, 9),
-    "rules": {
-      "ballsRespawn": True
-    },
     "objects": []
   }
   objects = config["objects"]
