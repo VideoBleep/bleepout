@@ -40,6 +40,7 @@ struct AdminUIControls {
   ofxUITextInput* syphonAppName;
   ofxUITextInput* syphonServerName;
 #endif
+  ofxUIButton* addTestPlayer;
   ofxUIButton* startRound;
   ofxUIButton* playRound;
   ofxUIButton* endRound;
@@ -116,6 +117,7 @@ void AdminController::setup() {
 #endif
   _controls->audioVolume = _gui->addSlider("Audio Volume", 0, 1, &appParams.audioVolume);
   
+  _controls->addTestPlayer = _gui->addButton("Add Test Player", false);
   _controls->reloadConfig = _gui->addButton("Reload Config", false);
   
   ofAddListener(_gui->newGUIEvent, this,
@@ -247,7 +249,16 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->reloadConfig &&
              _controls->reloadConfig->getValue()) {
     reloadConfig();
+  } else if (e.widget == _controls->addTestPlayer &&
+             _controls->addTestPlayer->getValue()) {
+    addTestPlayer();
   }
+}
+
+void AdminController::addTestPlayer() {
+  Player* player = new Player();
+  player->setColor(ofColor::green);
+  _lobby.push_back(ofPtr<Player>(player));
 }
 
 bool AdminController::tryStartRound() {
@@ -298,16 +309,4 @@ void AdminController::handlePlayerConnected(PlayerEventArgs& e) {
 void AdminController::reloadConfig() {
   _appConfig.loadJsonFile("config/bleepoutConfig.json");
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
