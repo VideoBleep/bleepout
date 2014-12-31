@@ -93,7 +93,7 @@ def generate():
   superCharge = createModifier(name= "supercharge",
                               type= "SuperchargedBall",
                               duration= 20,
-                              color= [0, 255, 0])
+                              color= [255, 69, 0])
 
   objects += [superCharge]
 

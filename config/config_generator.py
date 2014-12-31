@@ -5,11 +5,13 @@ import sys
 import round_1
 import round_2
 import round_3
+import round_4
 
 rounds = {
   "round1": round_1.generate,
   "round2": round_2.generate,
-  "round3": round_3.generate
+  "round3": round_3.generate,
+  "round4": round_4.generate
 }
 
 def generateRound(name, filename):
