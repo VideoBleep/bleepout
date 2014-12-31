@@ -17,8 +17,11 @@ AudioManager::AudioManager() { }
 
 static inline void loadSoundSafe(ofSoundPlayer& sound,
                                  const std::string& file) {
-  if (!file.empty())
+  if (!file.empty()) {
     sound.loadSound(file);
+    // overlapped sounds mix better with multiplay on, but it results in some sounds being stuck on
+    sound.setMultiPlay(false);
+  }
 }
 
 void AudioManager::setup() {
@@ -119,10 +122,11 @@ void AudioManager::onRoundEnded(RoundEndedEventArgs &e) {
 }
 
 void AudioManager::onBrickHit(BrickHitEventArgs &e) {
-  if (!e.brick()->alive())
+  if (e.brick()->lives() == 1) {
     _brickDestroyedSound.play();
-  else
-    _brickHitSound.play();
+  } else {
+    //_brickHitSound.play();
+  }
 }
 
 void AudioManager::onPaddleHit(PaddleHitEventArgs &e) {
@@ -130,7 +134,7 @@ void AudioManager::onPaddleHit(PaddleHitEventArgs &e) {
 }
 
 void AudioManager::onWallHit(WallHitEventArgs &e) {
-  _wallHitSound.play();
+  //_wallHitSound.play();
 }
 
 void AudioManager::onModifierApplied(ModifierEventArgs &e) {

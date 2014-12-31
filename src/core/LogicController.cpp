@@ -142,6 +142,9 @@ void LogicController::onBallHitPaddle(Ball& ball, Paddle& paddle) {
 void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
   Player* player = ball.player();
   if (player) {
+    if (brick.alive()) {
+      notifyBrickHit(_state, &brick, &ball);
+    }
     brick.adjustLives(-1);
     if (!brick.alive()) {
       brick.kill();
@@ -167,7 +170,6 @@ void LogicController::onBallHitBrick(Ball& ball, Brick& brick) {
       }
     }
   }
-  notifyBrickHit(_state, &brick, &ball);
 }
 
 void LogicController::onBallHitWall(Ball& ball, Wall& wall) {

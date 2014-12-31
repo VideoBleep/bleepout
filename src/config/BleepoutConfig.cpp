@@ -31,15 +31,15 @@ BleepoutConfig* BleepoutConfig::createConfig() {
   config->_syphonServerName = "Composition";
   config->_syphonAppName = "Arena";
   
-  config->roundStartedSound = "";
-  config->roundEndedSound = "";
-  config->brickHitSound = "";
-  config->brickDestroyedSound = "";
-  config->paddleHitSound = "";
-  config->wallHitSound = "";
-  config->modifierAppliedSound = "";
-  config->modifierRemovedSound = "";
-  config->ballDestroyedSound = "";
+  config->roundStartedSound = "sounds/StageStart.wav";
+  config->roundEndedSound = "sounds/StageEnd.wav";
+  config->brickHitSound = "sounds/BrickHit.wav";
+  config->brickDestroyedSound = "sounds/BrickDest.wav";
+  config->paddleHitSound = "sounds/PaddleHit.wav";
+  config->wallHitSound = "sounds/WallHit.wav";
+  config->modifierAppliedSound = "sounds/PowerupOn.wav";
+  config->modifierRemovedSound = "sounds/PowerupOff.wav";
+  config->ballDestroyedSound = "sounds/BallDie.wav";
   config->playerLivesChangedSound = "";
   config->playerLostSound = "";
   config->countdownTimerTickSound = "";
