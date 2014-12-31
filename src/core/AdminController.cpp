@@ -62,6 +62,7 @@ struct AdminUIControls {
   ofxUINumberDialer* timeLimit;
   ofxUIToggle* pause;
   ofxUILabel* inRound;
+  ofxUILabel* lobbyCount;
   ofxUIToggle* exitsEnabled;
   ofxUIToggle* overrideBallsRespawn;
   ofxUIToggle* ballsRespawn;
@@ -132,6 +133,7 @@ void AdminController::setup() {
   _gui->addSpacer();
   _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
+  _controls->lobbyCount = _gui->addLabel("Players in lobby: 0");
   _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
   
   const auto& allRoundNames = appParams.queuedRoundNames();
@@ -256,6 +258,7 @@ void AdminController::update() {
   _gui->update();
   _gui->setPosition(ofGetWidth() - uiWidth - 10, 0);
   _gui->setHeight(ofGetHeight());
+  _controls->lobbyCount->setLabel("Players in lobby: " + ofToString(_setupController.lobby().size()));
 }
 
 void AdminController::draw() {
@@ -320,7 +323,7 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 }
 
 bool AdminController::tryStartRound() {
-  if (_setupController.canStartRound()) {
+  if (!_setupController.canStartRound()) {
     return false;
   }
   auto& appParams = BleepoutParameters::get();

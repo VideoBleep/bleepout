@@ -19,12 +19,10 @@
 
 class SetupController : public EventSource {
 public:
-  SetupController(const BleepoutConfig& appConfig);
+  SetupController();
   virtual ~SetupController() {}
   void setup();
   void update();
-  void draw();
-  void keyPressed(int key);
   bool canStartRound() const;
   
   ofEvent<StartRoundEventArgs> tryStartRoundEvent;
@@ -38,17 +36,8 @@ public:
 
 private:
 
-	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game
 	std::list<ofPtr<Player> > _lobby;
-  std::list<ofPtr<Player> > _roundPlayers;
-
-	// ConnectedPlayers is all current players
-	std::list<ofPtr<Player> > _connectedPlayers;
-  
-  
-  const BleepoutConfig& _appConfig;
-  ofPtr<RoundConfig> _roundConfig;
 };
 
 #endif /* defined(__bleepout__SetupController__) */

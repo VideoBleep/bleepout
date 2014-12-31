@@ -36,7 +36,7 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
-  _setupController.reset(new SetupController(*_config));
+  _setupController.reset(new SetupController());
   _setupController->setup();
   ofAddListener(_setupController->tryStartRoundEvent, this,
                 &BleepoutApp::onTryStartRound);
@@ -105,8 +105,6 @@ void BleepoutApp::draw() {
   
   if (_roundController) {
     _roundController->draw();
-  } else if (_setupController) {
-    _setupController->draw();
   }
   
 #ifndef RADOME
@@ -201,8 +199,6 @@ void BleepoutApp::keyPressed(int key) {
   _adminController->keyPressed(key);
   if (_roundController) {
     _roundController->keyPressed(key);
-  } else if (_setupController) {
-    _setupController->keyPressed(key);
   }
 }
 
