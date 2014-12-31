@@ -217,11 +217,98 @@ def createRingSet(spin = None,
               color = color)
 
 class ValueRotator:
-  def __init__(self, *vals):
-    self.vals = vals
+  def __init__(self, vals):
+    if not vals or len(vals) == 1 and not vals[0]:
+      self.vals = []
+    else:
+      self.vals = vals
     self.i = 0
 
   def next(self):
+    if not self.vals:
+      return None
     val = self.vals[self.i % len(self.vals)]
     self.i += 1
     return val
+
+def _wrapValRotator(vals):
+  if isinstance(vals, ValueRotator):
+    return vals
+  return ValueRotator(vals)
+
+def generateBrickBlob(centerElevation, centerHeading,
+                      hSpacingWide = 4.6, hSpacingNarrow = 4.4,
+                      colors = None, lives = None, modifiers = None,
+                      size = None):
+  colors = _wrapValRotator(colors)
+  lives = _wrapValRotator(lives)
+  modifiers = _wrapValRotator(modifiers)
+  size = size if size else [5, 5, 10]
+  objects = []
+  for h in range(-1, 1):
+    heading = centerHeading + (h * hSpacingWide)
+    elevation = centerElevation + 8
+    objects += [
+      createBrick(elevation=elevation,
+                  heading=heading,
+                  size=size,
+                  color=colors.next(),
+                  speed=0,
+                  value=1,
+                  lives=lives.next(),
+                  modifier=modifiers.next())
+    ]
+  for e in range(3, 6, 2):
+    for h in range(-2, 2):
+      heading = centerHeading + (h * hSpacingWide)
+      elevation = centerElevation + e
+      objects += [
+        createBrick(elevation=elevation,
+                    heading=heading,
+                    size=size,
+                    color=colors.next(),
+                    speed=0,
+                    value=1,
+                    lives=lives.next(),
+                    modifier=modifiers.next())
+      ]
+  for h in range(-3, 3):
+    heading = centerHeading + (h * hSpacingNarrow)
+    elevation = centerElevation
+    objects += [
+      createBrick(elevation=elevation,
+                  heading=heading,
+                  size=size,
+                  color=colors.next(),
+                  speed=0,
+                  value=1,
+                  lives=lives.next(),
+                  modifier=modifiers.next())
+    ]
+  for h in range(-2, 2):
+    heading = centerHeading + (h * hSpacingNarrow)
+    elevation = centerElevation - 3
+    objects += [
+      createBrick(elevation=elevation,
+                  heading=heading,
+                  size=size,
+                  color=colors.next(),
+                  speed=0,
+                  value=1,
+                  lives=lives.next(),
+                  modifier=modifiers.next())
+    ]
+  for h in range(-1, 1):
+    heading = centerHeading + (h * hSpacingWide)
+    elevation = centerElevation - 6
+    objects += [
+      createBrick(elevation=elevation,
+                  heading=heading,
+                  size=size,
+                  color=colors.next(),
+                  speed=0,
+                  value=1,
+                  lives=lives.next(),
+                  modifier=modifiers.next())
+    ]
+  return objects

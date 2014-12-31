@@ -30,93 +30,30 @@ def generate():
 
   objects += [widePaddle, narrowPaddle, superCharge]
 
-  def addBrickBlob(centerElevation, centerHeading, objects=objects):
-    colors = ValueRotator(
-      [164, 2, 253],
-      [0, 253, 170],
-      [255, 139, 0])
-    lives = ValueRotator(
-      1,
-      2,
-      1
-    )
-    for h in range(-1, 1):
-      heading = centerHeading + (h * 4.6)
-      elevation = centerElevation + 8
-      objects += [
-        createBrick(elevation=elevation,
-                    heading=heading,
-                    size=[5, 5, 10],
-                    color=colors.next(),
-                    speed=0,
-                    value=1,
-                    lives=lives.next())
-      ]
-    for e in range(3, 6, 2):
-      for h in range(-2, 2):
-        heading = centerHeading + (h * 4.6)
-        elevation = centerElevation + e
-        objects += [
-          createBrick(elevation=elevation,
-                      heading=heading,
-                      size=[5, 5, 10],
-                      color=colors.next(),
-                      speed=0,
-                      value=1,
-                      lives=lives.next())
-        ]
-    for h in range(-3, 3):
-      heading = centerHeading + (h * 4.4)
-      elevation = centerElevation
-      objects += [
-        createBrick(elevation=elevation,
-                    heading=heading,
-                    size=[5, 5, 10],
-                    color=colors.next(),
-                    speed=0,
-                    value=1,
-                    lives=lives.next())
-      ]
-    for h in range(-2, 2):
-      heading = centerHeading + (h * 4.4)
-      elevation = centerElevation - 3
-      objects += [
-        createBrick(elevation=elevation,
-                    heading=heading,
-                    size=[5, 5, 10],
-                    color=colors.next(),
-                    speed=0,
-                    value=1,
-                    lives=lives.next())
-      ]
-    for h in range(-1, 1):
-      heading = centerHeading + (h * 4.6)
-      elevation = centerElevation - 6
-      objects += [
-        createBrick(elevation=elevation,
-                    heading=heading,
-                    size=[5, 5, 10],
-                    color=colors.next(),
-                    speed=0,
-                    value=1,
-                    lives=lives.next())
-      ]
-
-
+  colors=[[164, 2, 253],
+          [0, 253, 170],
+          [255, 139, 0]]
+  lives=[1,
+         2,
+         1]
+  modifiers=[{"name":narrowPaddle["name"], "chance":0.1},
+             None,
+             {"name":widePaddle["name"], "chance":0.2}]
   for e in range(6):
-    addBrickBlob(30, e * 60)
-  for e in range(6):
-    addBrickBlob(50, 30 + e * 60)
-
-  # objects += [
-  #   createBrickRing(elevation=72,
-  #                   color=[0, 0, 0],
-  #                   count=12,
-  #                   value=2,
-  #                   lives=2,
-  #                   speed=0.6,
-  #                   size=[7, 5, 17])
-  # ]
+    objects += generateBrickBlob(30, e * 60,
+                                 colors=colors,
+                                 lives=lives,
+                                 modifiers=modifiers,
+                                 size=[5, 5, 10],
+                                 hSpacingNarrow=4.4,
+                                 hSpacingWide=4.6)
+    objects += generateBrickBlob(50, 30 + e * 60,
+                                 colors=colors,
+                                 lives=lives,
+                                 modifiers=modifiers,
+                                 size=[5, 4, 6],
+                                 hSpacingNarrow=4.8,
+                                 hSpacingWide=5)
 
   # create the floor exit wall
   objects.append(createFloor(True))
