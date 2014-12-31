@@ -14,7 +14,7 @@ def generate():
   objects = config["objects"]
 
   for i in range(5):
-    objects.append(createBall(30, random.uniform(0, 360)))
+    objects.append(createBall(30, i * (360 / 5)))
 
   superCharge = createModifier(name= "supercharge",
                               type= "SuperchargedBall",
@@ -69,13 +69,20 @@ def generate():
 
   # background ring sets
   objects += [
-    createRingSet(spin=createValuePulser(0, 0.01, 10, [0,0,0]),
-                  spread=createValuePulser(0.2, 0.5, 10, [0.3, 0.3, 0.3]),
+    createRingSet(spin=createValuePulser(0, 0.01, 10, [0,0,30]),
+                  spread=createValuePulser(0.2, 0.5, 10, [0.3, 10, 0.3]),
                   spreadOffset=[50, 90, 0],
                   count=80,
                   radiusScale=2.3,
-                  lineWidth=2.3,
-                  color=[0, 0, 255, 63])
+                  lineWidth=1.3,
+                  color=[0, 0, 255, 127]),
+    createRingSet(spin=createValuePulser(0, 0.3, 8, [0,20,0]),
+                  spread=createValuePulser(0.2, 0.7, 8, [10, 0.3, 20]),
+                  spreadOffset=[50, 90, 0],
+                  count=80,
+                  radiusScale=4.3,
+                  lineWidth=1.3,
+                  color=[0, 255, 127, 127])
   ]
 
 

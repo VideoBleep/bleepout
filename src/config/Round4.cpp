@@ -16,7 +16,7 @@ RoundConfig* RoundConfig::createRoundConfig4() {
   config->_modifierSize.set(9, 16, 9);
   
   for (int i = 0; i < 5; i++) {
-    config->addBall(BallSpec(30, ofRandom(360)));
+    config->addBall(BallSpec(30, i * (360 / 5)));
   }
   
   std::string superchargedModName("supercharge");
@@ -52,22 +52,6 @@ RoundConfig* RoundConfig::createRoundConfig4() {
       .setCount(3)
       .setHeadingSpacing(12);
   }
-  
-  config->addBrickRing()
-    .setElevation(85)
-    .setCount(24)
-    .setSize(ofVec3f(7, 5, 4))
-    .setColor(ofColor(0, 63, 255));
-  config->addBrickRing()
-    .setElevation(90)
-    .setCount(24)
-    .setSize(ofVec3f(7, 5, 4))
-    .setColor(ofColor(0, 63, 255));
-  config->addBrickRing()
-    .setElevation(80)
-    .setCount(24)
-    .setSize(ofVec3f(7, 5, 4))
-    .setColor(ofColor(0, 63, 255));
   
   config->addBrickRing()
     .setElevation(60)

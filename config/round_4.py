@@ -3,7 +3,7 @@ import random
 
 def generate():
   config = {
-    "name": "Round4zzzzz",
+    "name": "Round4",
     "ballRadius": 8,
     "modifierSize": (9, 16, 9),
     "rules": {
@@ -14,7 +14,7 @@ def generate():
   objects = config["objects"]
 
   for i in range(5):
-    objects.append(createBall(30, random.uniform(0, 360)))
+    objects.append(createBall(30, i * (360 / 5)))
 
   superCharge = createModifier(name= "supercharge",
                               type= "SuperchargedBall",
@@ -63,18 +63,6 @@ def generate():
   ]
 
   objects += [
-    createBrickRing(elevation=85,
-                    count=24,
-                    size=[7, 5, 4],
-                    color=[0, 63, 255]),
-    createBrickRing(elevation=90,
-                    count=24,
-                    size=[7, 5, 4],
-                    color=[0, 63, 255]),
-    createBrickRing(elevation=80,
-                    count=24,
-                    size=[7, 5, 4],
-                    color=[0, 63, 255]),
     createBrickRing(elevation=60,
                     count=24,
                     color=[0, 0, 192],
@@ -185,22 +173,22 @@ def generate():
                   spreadOffset=[20, 20, 20],
                   count=30,
                   radiusScale=1.95,
-                  lineWidth=1.2,
-                  color=[0, 255, 0, 63]),
+                  lineWidth=2.2,
+                  color=[0, 255, 0, 95]),
     createRingSet(spin=createValuePulser(0, 0.4, 5, [0,0,0]),
                   spread=createValuePulser(0, 0.5, 40, [0,0,0]),
                   spreadOffset=[60,60,60],
                   count=60,
                   radiusScale=2.3,
                   lineWidth=1.4,
-                  color=[0, 255, 63, 63]),
+                  color=[0, 255, 63, 95]),
     createRingSet(spin=createValuePulser(0, 0.2, 10, [0.2,0.2,0.2]),
                   spread=createValuePulser(0.01, 0.16, 15, [0.1,0.1,0.1]),
                   spreadOffset=[60,60,60],
                   count=50,
                   radiusScale=2,
                   lineWidth=.9,
-                  color=[0, 127, 255, 64])
+                  color=[0, 127, 255, 95])
   ]
 
 

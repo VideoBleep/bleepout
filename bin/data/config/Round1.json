@@ -10,27 +10,27 @@
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 166.97645513673254
+      "heading": 0
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 295.76758175675485
+      "heading": 72
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 87.63108662774684
+      "heading": 144
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 32.827397257590974
+      "heading": 216
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 84.19734917016581
+      "heading": 288
     },
     {
       "_type": "Modifier",
@@ -761,31 +761,32 @@
       "trails": null
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         0,
         255,
-        63
+        127
       ],
       "count": 30,
-      "lineWidth": 1.2,
-      "radiusScale": 1.95,
+      "lineWidth": 2.2,
+      "radiusScale": 3.95,
       "spin": {
         "changeInterval": 5,
-        "maxRate": 0.3,
+        "maxRate": 0.1,
         "minRate": 0,
         "startValue": [
           0,
-          0,
+          10,
           0
         ]
       },
       "spread": {
-        "changeInterval": 10,
+        "changeInterval": 50,
         "maxRate": 0.1,
         "minRate": 0,
         "startValue": [
-          20,
+          10,
           20,
           20
         ]
@@ -797,18 +798,19 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         255,
         255,
-        63
+        127
       ],
-      "count": null,
+      "count": 20,
       "lineWidth": 1.4,
       "radiusScale": 2.3,
       "spin": {
         "changeInterval": 5,
-        "maxRate": 0.4,
+        "maxRate": 0.3,
         "minRate": 0,
         "startValue": [
           0,
@@ -818,7 +820,7 @@
       },
       "spread": {
         "changeInterval": 40,
-        "maxRate": 0.5,
+        "maxRate": 0.25,
         "minRate": 0,
         "startValue": [
           0,
@@ -833,14 +835,15 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         127,
         172,
         255,
-        63
+        127
       ],
       "count": 50,
-      "lineWidth": 0.9,
+      "lineWidth": 1.9,
       "radiusScale": 2,
       "spin": {
         "changeInterval": 5,
@@ -848,7 +851,7 @@
         "minRate": 0,
         "startValue": [
           0,
-          0,
+          30,
           0
         ]
       },
@@ -858,7 +861,7 @@
         "minRate": 0.01,
         "startValue": [
           0,
-          0,
+          50,
           0
         ]
       },

@@ -5,32 +5,32 @@
     16,
     9
   ],
-  "name": "Round4zzzzz",
+  "name": "Round4",
   "objects": [
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 59.58612369825859
+      "heading": 0
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 28.02130667592641
+      "heading": 72
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 91.48741096140654
+      "heading": 144
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 261.9274635485355
+      "heading": 216
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 292.7194287610155
+      "heading": 288
     },
     {
       "_type": "Modifier",
@@ -155,69 +155,6 @@
       ],
       "speed": null,
       "stopHeading": null
-    },
-    {
-      "_type": "BrickRing",
-      "color": [
-        0,
-        63,
-        255
-      ],
-      "count": 24,
-      "elevation": 85,
-      "lives": null,
-      "modifier": null,
-      "phase": null,
-      "size": [
-        7,
-        5,
-        4
-      ],
-      "speed": null,
-      "stopHeading": null,
-      "value": null
-    },
-    {
-      "_type": "BrickRing",
-      "color": [
-        0,
-        63,
-        255
-      ],
-      "count": 24,
-      "elevation": 90,
-      "lives": null,
-      "modifier": null,
-      "phase": null,
-      "size": [
-        7,
-        5,
-        4
-      ],
-      "speed": null,
-      "stopHeading": null,
-      "value": null
-    },
-    {
-      "_type": "BrickRing",
-      "color": [
-        0,
-        63,
-        255
-      ],
-      "count": 24,
-      "elevation": 80,
-      "lives": null,
-      "modifier": null,
-      "phase": null,
-      "size": [
-        7,
-        5,
-        4
-      ],
-      "speed": null,
-      "stopHeading": null,
-      "value": null
     },
     {
       "_type": "BrickRing",
@@ -525,14 +462,15 @@
       "trails": null
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         255,
         0,
-        63
+        95
       ],
       "count": 30,
-      "lineWidth": 1.2,
+      "lineWidth": 2.2,
       "radiusScale": 1.95,
       "spin": {
         "changeInterval": 5,
@@ -561,11 +499,12 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         255,
         63,
-        63
+        95
       ],
       "count": 60,
       "lineWidth": 1.4,
@@ -597,11 +536,12 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         127,
         255,
-        64
+        95
       ],
       "count": 50,
       "lineWidth": 0.9,

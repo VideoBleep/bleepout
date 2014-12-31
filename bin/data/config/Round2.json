@@ -10,27 +10,27 @@
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 279.09066806078874
+      "heading": 0
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 169.1377360877506
+      "heading": 72
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 255.79114611261366
+      "heading": 144
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 55.73422269149258
+      "heading": 216
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 85.8138979534625
+      "heading": 288
     },
     {
       "_type": "Modifier",
@@ -729,14 +729,15 @@
       "trails": null
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         0,
         255,
-        63
+        127
       ],
       "count": 80,
-      "lineWidth": 2.3,
+      "lineWidth": 1.3,
       "radiusScale": 2.3,
       "spin": {
         "changeInterval": 10,
@@ -745,7 +746,7 @@
         "startValue": [
           0,
           0,
-          0
+          30
         ]
       },
       "spread": {
@@ -754,8 +755,45 @@
         "minRate": 0.2,
         "startValue": [
           0.3,
-          0.3,
+          10,
           0.3
+        ]
+      },
+      "spreadOffset": [
+        50,
+        90,
+        0
+      ]
+    },
+    {
+      "_type": "RingSet",
+      "color": [
+        0,
+        255,
+        127,
+        127
+      ],
+      "count": 80,
+      "lineWidth": 1.3,
+      "radiusScale": 4.3,
+      "spin": {
+        "changeInterval": 8,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          20,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 8,
+        "maxRate": 0.7,
+        "minRate": 0.2,
+        "startValue": [
+          10,
+          0.3,
+          20
         ]
       },
       "spreadOffset": [

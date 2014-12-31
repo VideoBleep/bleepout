@@ -14,7 +14,7 @@ def generate():
   objects = config["objects"]
 
   for i in range(5):
-    objects.append(createBall(30, random.uniform(0, 360)))
+    objects.append(createBall(30, i * (360 / 5)))
 
 
   quadsColor1 = [0, 255, 0]
@@ -119,21 +119,21 @@ def generate():
                   count=30,
                   radiusScale=1.95,
                   lineWidth=1.2,
-                  color=[0, 255, 0, 63]),
+                  color=[0, 255, 0, 127]),
     createRingSet(spin=createValuePulser(0, 0.4, 5, [0,0,0]),
                   spread=createValuePulser(0, 0.5, 40, [0,0,0]),
                   spreadOffset=[60,60,60],
                   count=60,
                   radiusScale=2.3,
                   lineWidth=1.4,
-                  color=[0, 255, 63, 63]),
-    createRingSet(spin=createValuePulser(0, 0.2, 10, [0.2,0.2,0.2]),
-                  spread=createValuePulser(0.01, 0.16, 15, [0.1,0.1,0.1]),
-                  spreadOffset=[60,60,60],
-                  count=50,
-                  radiusScale=2,
+                  color=[0, 255, 63, 127]),
+    createRingSet(spin=createValuePulser(0, 0.2, 10, [0.2,4.2,0.2]),
+                  spread=createValuePulser(0.01, 0.16, 15, [2.1,6,0.1]),
+                  spreadOffset=[60,10,20],
+                  count=100,
+                  radiusScale=5,
                   lineWidth=.9,
-                  color=[0, 127, 255, 64])
+                  color=[0, 127, 255, 95])
   ]
 
 

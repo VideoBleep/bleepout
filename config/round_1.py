@@ -11,7 +11,7 @@ def generate():
   objects = config["objects"]
 
   for i in range(5):
-    objects.append(createBall(30, random.uniform(0, 360)))
+    objects.append(createBall(30, i * (360 / 5)))
 
   widePaddle = createModifier(name= "widePaddle",
                               type= "PaddleWidth",
@@ -121,26 +121,27 @@ def generate():
 
   # background ring sets
   objects += [
-    createRingSet(spin=createValuePulser(0, 0.3, 5, [0,0,0]),
-                  spread=createValuePulser(0, 0.1, 10, [20, 20, 20]),
+    createRingSet(spin=createValuePulser(0, 0.1, 5, [0,10,0]),
+                  spread=createValuePulser(0, 0.1, 50, [10, 20, 20]),
                   spreadOffset=[20, 20, 20],
                   count=30,
-                  radiusScale=1.95,
-                  lineWidth=1.2,
-                  color=[0, 0, 255, 63]),
-    createRingSet(spin=createValuePulser(0, 0.4, 5, [0, 0, 0]),
-                  spread=createValuePulser(0, 0.5, 40, [0, 0, 0]),
+                  radiusScale=3.95,
+                  lineWidth=2.2,
+                  color=[0, 0, 255, 127]),
+    createRingSet(spin=createValuePulser(0, 0.3, 5, [0, 0, 0]),
+                  spread=createValuePulser(0, 0.25, 40, [0, 0, 0]),
                   spreadOffset=[60, 60, 60],
                   radiusScale=2.3,
                   lineWidth=1.4,
-                  color=[0, 255, 255, 63]),
-    createRingSet(spin=createValuePulser(0, 0.2, 5, [0, 0, 0]),
-                  spread=createValuePulser(0.01, 0.16, 10, [0, 0, 0]),
+                  count=20,
+                  color=[0, 255, 255, 127]),
+    createRingSet(spin=createValuePulser(0, 0.2, 5, [0, 30, 0]),
+                  spread=createValuePulser(0.01, 0.16, 10, [0, 50, 0]),
                   spreadOffset=[60, 60, 60],
                   count=50,
                   radiusScale=2,
-                  lineWidth=0.9,
-                  color=[127, 172, 255, 63])
+                  lineWidth=1.9,
+                  color=[127, 172, 255, 127])
   ]
 
 

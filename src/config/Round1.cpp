@@ -16,7 +16,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   config->_modifierSize.set(9.0f, 16.0f, 9.0f);
   
   for (int i = 0; i < 5; i ++) {
-    config->addBall(BallSpec(30, ofRandom(360)));
+    config->addBall(BallSpec(30, i * (360 / 5)));
   }
   
   std::string widePaddleName("widePaddle");

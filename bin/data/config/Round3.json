@@ -10,27 +10,27 @@
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 80.83900246387584
+      "heading": 0
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 336.3648056405072
+      "heading": 72
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 301.2938769303538
+      "heading": 144
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 65.08924339091085
+      "heading": 216
     },
     {
       "_type": "Ball",
       "elevation": 30,
-      "heading": 262.02218253768524
+      "heading": 288
     },
     {
       "_type": "BrickQuads",
@@ -295,11 +295,12 @@
       "trails": null
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         255,
         0,
-        63
+        127
       ],
       "count": 30,
       "lineWidth": 1.2,
@@ -331,11 +332,12 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         255,
         63,
-        63
+        127
       ],
       "count": 60,
       "lineWidth": 1.4,
@@ -367,22 +369,23 @@
       ]
     },
     {
+      "_type": "RingSet",
       "color": [
         0,
         127,
         255,
-        64
+        95
       ],
-      "count": 50,
+      "count": 100,
       "lineWidth": 0.9,
-      "radiusScale": 2,
+      "radiusScale": 5,
       "spin": {
         "changeInterval": 10,
         "maxRate": 0.2,
         "minRate": 0,
         "startValue": [
           0.2,
-          0.2,
+          4.2,
           0.2
         ]
       },
@@ -391,15 +394,15 @@
         "maxRate": 0.16,
         "minRate": 0.01,
         "startValue": [
-          0.1,
-          0.1,
+          2.1,
+          6,
           0.1
         ]
       },
       "spreadOffset": [
         60,
-        60,
-        60
+        10,
+        20
       ]
     }
   ],
