@@ -63,6 +63,7 @@ _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
 _name(name),
 _startDelay(0),
+ballSpeed(0.6),
 countdownTimerPeriod(10) { }
 
 template<>
@@ -213,6 +214,7 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readVal(obj["name"], &_name, _name);
   loader.readVal(obj["startDelay"], &_startDelay);
   loader.readVal(obj["ballRadius"], &_ballRadius);
+  loader.readVal(obj["ballSpeed"], &ballSpeed);
   loader.readVal(obj["brickFadeTime"], &_brickFadeTime);
   loader.readVal(obj["modifierSize"], &_modifierSize);
   loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
@@ -250,22 +252,13 @@ Json::Value RoundConfig::buildJson() const {
   Json::Value obj(Json::objectValue);
   obj["name"] = _name;
   obj["startDelay"] = _startDelay;
+  obj["ballRadius"] = _ballRadius;
+  obj["ballSpeed"] = ballSpeed;
   obj["brickFadeTime"] = _brickFadeTime;
   obj["modifierSize"] = toJsonVal(_modifierSize);
   obj["modifierFadeTime"] = _modifierFadeTime;
   obj["ballSpawnedFadeTime"] = _ballSpawnedFadeTime;
   obj["rules"] = _rules.buildJson();
-//  obj["balls"] = toJsonArr(_balls);
-//  obj["bricks"] = toJsonArr(_bricks);
-//  obj["brickRings"] = toJsonArr(_brickRings);
-//  obj["curvedBrickColumns"] = toJsonArr(_curvedBrickColumns);
-//  obj["brickQuads"] = toJsonArr(_brickQuads);
-//  obj["walls"] = toJsonArr(_walls);
-//  obj["wallRings"] = toJsonArr(_wallRings);
-//  obj["curvedWallSets"] = toJsonArr(_curvedWallSets);
-//  obj["modifierDefs"] = valuesToJsonObj(_modifierDefs);
-//  obj["startMessages"] = toJsonArr(_startMessages);
-//  obj["ringSets"] = toJsonArr(_ringSets);
   Json::Value specsArr(Json::arrayValue);
   addToJsonArr(&specsArr, _balls);
   addToJsonArr(&specsArr, _bricks);
@@ -295,8 +288,11 @@ static RoundConfig* loadRoundFromObj(const JsonLoader& loader,
 RoundConfig* RoundConfig::loadFromFile(std::string path) {
   JsonLoader loader;
   Json::Value obj;
-  if (!loader.readFile(path, &obj))
+  if (!loader.readFile(path, &obj)) {
+    ofLogWarning() << "unable to load round from file: " << path;
     return NULL;
+  }
+  ofLogWarning() << "loading round from file: " << path;
   return loadRoundFromObj(loader, obj);
 }
 

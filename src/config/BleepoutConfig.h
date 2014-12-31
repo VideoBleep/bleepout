@@ -65,7 +65,6 @@ public:
   void readJson(const JsonLoader& loader, const Json::Value& obj);
   Json::Value buildJson() const;
   
-  void loadJsonFile(std::string path);
   void saveJsonFile(std::string path) const;
   
   const std::string& name() const { return _name; }
@@ -177,6 +176,7 @@ public:
   GameRules& rules() { return _rules; }
   
   float countdownTimerPeriod;
+  float ballSpeed;
   
   std::string filepath;
 private:

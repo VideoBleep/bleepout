@@ -18,15 +18,13 @@
 // parameters are things that can change, whereas config is fixed
 class BleepoutParameters {
 private:
-  static BleepoutParameters *_instance;
+  static BleepoutParameters _instance;
   BleepoutParameters(void);
   void initConfig(BleepoutConfig& appConfig);
 public:
-  static void initialize();
   static void initializeConfig(BleepoutConfig& appConfig);
-  static void cleanup();
   static inline BleepoutParameters& get() {
-    return *_instance;
+    return _instance;
   }
   
   const BleepoutConfig& appConfig() const { return *_appConfig; }

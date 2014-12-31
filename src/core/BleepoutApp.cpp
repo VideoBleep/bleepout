@@ -15,11 +15,9 @@ BleepoutApp::BleepoutApp()
 , EventSource() { }
 
 BleepoutApp::~BleepoutApp() {
-  BleepoutParameters::cleanup();
 }
 
 void BleepoutApp::setup() {
-  BleepoutParameters::initialize();
   enableLogging(OF_LOG_NOTICE); // this is only for app-level events
   BleepoutConfig* cfg = BleepoutConfig::loadFromFile("config/bleepoutConfig.json");
   if (!cfg) {
