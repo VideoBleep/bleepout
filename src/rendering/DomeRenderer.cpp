@@ -13,6 +13,7 @@
 #include "BleepoutConfig.h"
 #include "BleepoutParameters.h"
 
+
 namespace {
   
   template<typename T>
@@ -141,7 +142,7 @@ void DomeRenderer::draw() {
   ofSetColor(80, 80, 110);
   ofNoFill();
   ofRotateX(90);
-  ofSetLineWidth(1.5);
+  LineWidthAdjuster::setLineWidth(1.5);
   ofCircle(0, 0, 0, appParams.domeRadius);
   
   ofPopStyle();
@@ -205,7 +206,7 @@ void DomeRenderer::drawGenMesh(const GenMesh& gm, ofMaterial& mat, const ofColor
   mat.end();
   
   ofSetColor(edgeColor);
-  ofSetLineWidth(lineWidth);
+  LineWidthAdjuster::setLineWidth(lineWidth);
     
 #ifndef RADOME
   ofTranslate(_cam.getLookAtDir().normalized() * -0.2);
@@ -269,7 +270,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
   ofVec3f jitter = perpVec * ofRandom(-s, s) + vel.normalized() * ofRandom(-s, s);
   vel += jitter;
   
-  ofVec3f stack = pos.normalized() * 0.01 * order;
+  ofVec3f stack = pos.normalized() * 0.05 * order;
   ofVec3f tailPt = pos - vel * length + stack;
   ofVec3f headPt = pos + vel * 2.2 * width + stack;
   ofVec3f offsetVec = perpVec * 1.2 * width;
@@ -299,7 +300,7 @@ void DomeRenderer::drawBall(Ball &ball) {
     ofTranslate(ball.getPosition());
     ofRotateX(360 * ball.getTrajectory()->getTime());
     ofRotateY(45);
-    ofSetLineWidth(8.0);
+    LineWidthAdjuster::setLineWidth(8.0);
     if (ball.player() != NULL) {
       ofFill();
       ofSetColor(ball.getColor());
@@ -331,7 +332,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       ofEnableBlendMode(OF_BLENDMODE_ADD);
       
       ofSetColor(255, 255, 255, 255);
-      ofSetLineWidth(1.5);
+      LineWidthAdjuster::setLineWidth(1.5);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -339,7 +340,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       ofColor c = ball.getColor();
       c.a = 172;
       ofSetColor(c);
-      ofSetLineWidth(5.0);
+      LineWidthAdjuster::setLineWidth(5.0);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -348,7 +349,7 @@ void DomeRenderer::drawBall(Ball &ball) {
       
       c.a = 127;
       ofSetColor(c);
-      ofSetLineWidth(20.0);
+      LineWidthAdjuster::setLineWidth(20.0);
       glBegin(GL_LINE_STRIP);
       ot->history.emitPoints();
       glEnd();
@@ -388,7 +389,7 @@ void DomeRenderer::drawModifier(Modifier &modifier) {
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);
     ofNoFill();
-    ofSetLineWidth(2.5);
+    LineWidthAdjuster::setLineWidth(2.5);
     ofSetColor(modifier.spec().color);
     drawTetrahedron(ofVec3f::zero(), r);
     drawTetrahedron(ofVec3f::zero(), -r);

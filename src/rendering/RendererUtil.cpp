@@ -25,7 +25,7 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   // Edge lines
   ofNoFill();
   ofDisableLighting();
-  ofSetLineWidth(lineWidth);
+  LineWidthAdjuster::setLineWidth(lineWidth);
   ofSetColor(edgeColor);
   ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
   
