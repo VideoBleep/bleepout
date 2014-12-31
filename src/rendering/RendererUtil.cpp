@@ -8,6 +8,10 @@
 
 #include "RendererUtil.h"
 
+#ifndef RADOME
+float LineWidthAdjuster::factor = 1.0;
+#endif
+
 void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, ofMaterial* pMat /*= NULL*/, float lineWidth /*= 1.5*/, bool alphaBlending /*= false*/) {
   ofPushMatrix();
   ofPushStyle();
@@ -27,7 +31,8 @@ void drawBoxObject(PhysicsObject& object, ofColor edgeColor, ofColor fillColor, 
   ofDisableLighting();
   LineWidthAdjuster::setLineWidth(lineWidth);
   ofSetColor(edgeColor);
-  ofDrawBox(ofVec3f::zero(), dims.x + 0.1, dims.y + 0.1, dims.z + 0.1);
+  float f = 0.07 * LineWidthAdjuster::factor;
+  ofDrawBox(ofVec3f::zero(), dims.x + f, dims.y + f, dims.z + f);
   
   // Faces
   ofEnableLighting();

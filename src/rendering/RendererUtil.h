@@ -18,6 +18,7 @@
 class LineWidthAdjuster {
 public:
   static void setLineWidth(float f) { ofSetLineWidth(f); }
+  static float factor;
 };
 #endif
 
