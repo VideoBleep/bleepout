@@ -226,16 +226,16 @@ void PlayerManager::notifyPlayerYawPitchRoll(Player* player,
 	SEND STATE MESSAGES TO PLAYER
 */
 // Send 'Select Color' state message to player
-void PlayerManager::setPlayerColor(Player& player, ofColor color) {
-  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR + messageDelimiter + ofToHex(color.getHex()));
+void PlayerManager::setPlayerColor(Player& player) {
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_COLOR);
 }
 // Send 'Queued' state message to player
 void PlayerManager::setPlayerQueued(Player& player) {
   if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_QUEUED);
 }
 // Send 'Calibrate' state message to player
-void PlayerManager::setPlayerCalibrate(Player& player) {
-  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION);
+void PlayerManager::setPlayerCalibrate(Player& player, ofColor color) {
+  if (player.connection()) player.connection()->send(std::string(PACKET_MESSAGE) + STATE_CALIBRATION + messageDelimiter + ofToHex(color.getHex()));
 }
 // Send game 'Ready' state message to player 
 void PlayerManager::setPlayerReady(Player& player) {
