@@ -10,6 +10,7 @@
 #include "RoundManager.h"
 #include "BleepoutParameters.h"
 #include <ofMain.h>
+#include <math.h>
 
 SetupController::SetupController(const BleepoutConfig& appConfig)
 : _appConfig(appConfig)
