@@ -126,7 +126,7 @@ def generate():
   ]
   # messages
   objects += [
-    createMessage(text="STAGE 5 START",
+    createMessage(text="STAGE # START",
                   color=[0, 27, 255],
                   size=25,
                   delay=1,

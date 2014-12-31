@@ -246,8 +246,27 @@ RoundAnimationManager::~RoundAnimationManager() {
   ofRemoveListener(_roundController.ballSpawnedEvent, this, &RoundAnimationManager::onBallSpawned);
 }
 
-void RoundAnimationManager::addMessage(const MessageSpec &message) {
-  addAnimation(new MessageAnimation(message, _messageFont));
+static std::string ReplaceString(std::string subject,
+                                 const std::string& search,
+                                 const std::string& replace) {
+  size_t pos = 0;
+  while((pos = subject.find(search, pos)) != std::string::npos) {
+    subject.replace(pos, search.length(), replace);
+    pos += replace.length();
+  }
+  return subject;
+}
+
+void RoundAnimationManager::addMessage(const MessageSpec &message,
+                                       int stageNumber) {
+  MessageSpec modifiedMessage = message;
+  if (stageNumber != -1) {
+    modifiedMessage.text = ReplaceString(modifiedMessage.text,
+                                         "#",
+                                         ofToString(stageNumber));
+  }
+  
+  addAnimation(new MessageAnimation(modifiedMessage, _messageFont));
 }
 
 void RoundAnimationManager::onBrickHit(BrickHitEventArgs &e) {
@@ -280,7 +299,7 @@ void RoundAnimationManager::onCountdownTick(TimerEventArgs &e) {
   int time = static_cast<int>(e.remainingTime());
   addMessage(MessageSpec("Time: " + ofToString(time), ofColor(255, 0, 0))
              .setSize(10)
-             .setTiming(0, 0.9));
+             .setTiming(0, 0.9), -1);
 }
 
 void RoundAnimationManager::attachTo(LogicController &roundEvents) {

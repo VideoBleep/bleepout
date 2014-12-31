@@ -59,7 +59,7 @@ def generate():
 
   # messages
   objects += [
-    createMessage(text="STAGE 2 START",
+    createMessage(text="STAGE # START",
                   color=[0, 255, 255],
                   size=25,
                   delay=1,

@@ -27,6 +27,7 @@ RoundController::RoundController(std::list<ofPtr<RoundConfig> > configs,
 , _started(false)
 , _ending(false)
 , _readyPlayers(0)
+, _stageNumber(0)
 , EventSource() {
 }
 
@@ -62,6 +63,7 @@ void RoundController::onPlayRound(EmptyEventArgs &e) {
 
 void RoundController::loadNextConfig() {
   endCurrentConfig();
+  _stageNumber++;
   _config = _queuedConfigs.front();
   _queuedConfigs.pop_front();
   _startTime = ofGetElapsedTimef();
@@ -81,7 +83,7 @@ void RoundController::loadNextConfig() {
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config->startMessages()) {
-    _animationManager->addMessage(msg);
+    _animationManager->addMessage(msg, _stageNumber);
   }
   _started = false;
   

@@ -111,7 +111,7 @@ def generate():
                   trails=4,
                   delay=3,
                   duration=4.5),
-    createMessage(text="STAGE 1 START",
+    createMessage(text="STAGE # START",
                   color=[0, 255, 0],
                   size=25,
                   delay=7.5,

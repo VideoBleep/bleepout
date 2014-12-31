@@ -115,6 +115,7 @@ private:
   Pulser _cullDeadObjectsPulser;
   bool _ending;
   RoundEndReason _endReason;
+  int _stageNumber;
 };
 
 #endif /* defined(__bleepout__RoundController__) */

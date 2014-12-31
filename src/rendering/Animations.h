@@ -44,7 +44,7 @@ public:
   void attachTo(LogicController& roundEvents);
   void detachFrom(LogicController& roundEvents);
   
-  void addMessage(const MessageSpec& message);
+  void addMessage(const MessageSpec& message, int stageNumber);
   
 private:
   void addAnimation(AnimationObject* animation);
