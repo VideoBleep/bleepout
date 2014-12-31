@@ -33,6 +33,45 @@
       "heading": 288
     },
     {
+      "_type": "Modifier",
+      "amount": 1.5,
+      "beneficial": null,
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "duration": 5,
+      "name": "widePaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": 0.5,
+      "beneficial": false,
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "duration": 5,
+      "name": "narrowPaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": null,
+      "beneficial": null,
+      "color": [
+        255,
+        69,
+        0
+      ],
+      "duration": 20,
+      "name": "supercharge",
+      "type": "SuperchargedBall"
+    },
+    {
       "_type": "BrickQuads",
       "color1": [
         0,
@@ -48,7 +87,10 @@
       "elevation": 45,
       "elevationSpacing": 1.5,
       "headingSpacing": 4,
-      "modifier": null,
+      "modifier": {
+        "chance": 0.2,
+        "name": "widePaddle"
+      },
       "size": [
         7,
         5,
@@ -73,7 +115,10 @@
       "elevation": 55,
       "elevationSpacing": 1.5,
       "headingSpacing": 4,
-      "modifier": null,
+      "modifier": {
+        "chance": 0.1,
+        "name": "supercharge"
+      },
       "size": [
         7,
         5,
@@ -98,7 +143,10 @@
       "elevation": 65,
       "elevationSpacing": 1.5,
       "headingSpacing": 8,
-      "modifier": null,
+      "modifier": {
+        "chance": 0.2,
+        "name": "narrowPaddle"
+      },
       "size": [
         7,
         5,
@@ -257,19 +305,6 @@
       "speed": 0.21,
       "stopHeading": null,
       "visible": null
-    },
-    {
-      "_type": "Modifier",
-      "amount": null,
-      "beneficial": null,
-      "color": [
-        255,
-        69,
-        0
-      ],
-      "duration": 20,
-      "name": "supercharge",
-      "type": "SuperchargedBall"
     },
     {
       "_type": "Wall",

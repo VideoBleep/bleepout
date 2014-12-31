@@ -16,6 +16,25 @@ def generate():
   for i in range(5):
     objects.append(createBall(30, i * (360 / 5)))
 
+  widePaddle = createModifier(name= "widePaddle",
+                              type= "PaddleWidth",
+                              amount= 1.5,
+                              duration= 5,
+                              color= [0, 0, 255])
+  narrowPaddle = createModifier(name= "narrowPaddle",
+                                type= "PaddleWidth",
+                                amount= .5,
+                                duration= 5,
+                                color= [255, 0, 0],
+                                beneficial= False)
+
+  superCharge = createModifier(name= "supercharge",
+                              type= "SuperchargedBall",
+                              duration= 20,
+                              color= [255, 69, 0])
+
+  objects += [widePaddle, narrowPaddle, superCharge]
+
 
   quadsColor1 = [0, 255, 0]
   quadsColor2 = [0, 127, 127]
@@ -27,21 +46,24 @@ def generate():
                      elevation=45,
                      elevationSpacing=1.5,
                      count=12,
-                     headingSpacing=4),
+                     headingSpacing=4,
+                     modifier= {"name": widePaddle["name"], "chance": .2}),
     createBrickQuads(color1=quadsColor1,
                      color2=quadsColor2,
                      size=quadsSize,
                      elevation=55,
                      elevationSpacing=1.5,
                      count=12,
-                     headingSpacing=4),
+                     headingSpacing=4,
+                     modifier= {"name": superCharge["name"], "chance": .1}),
     createBrickQuads(color1=quadsColor1,
                      color2=quadsColor2,
                      size=quadsSize,
                      elevation=65,
                      elevationSpacing=1.5,
                      count=3,
-                     headingSpacing=8),
+                     headingSpacing=8,
+                     modifier= {"name": narrowPaddle["name"], "chance": .2}),
     createBrickQuads(color1=quadsColor1,
                      color2=quadsColor2,
                      size=quadsSize,
@@ -89,13 +111,6 @@ def generate():
                    size=[8, 3, 25],
                    speed=0.21)
   ]
-
-  superCharge = createModifier(name= "supercharge",
-                              type= "SuperchargedBall",
-                              duration= 20,
-                              color= [255, 69, 0])
-
-  objects += [superCharge]
 
 
   # create the floor exit wall
