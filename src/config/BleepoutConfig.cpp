@@ -63,7 +63,7 @@ _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
 _name(name),
 _startDelay(0),
-ballSpeed(0.02),
+ballSpeed(0.6),
 countdownTimerPeriod(10) { }
 
 template<>
