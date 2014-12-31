@@ -23,6 +23,8 @@ public:
   
   ofEvent<BallOwnerChangedEventArgs> ballOwnerChangedEvent;
   ofEvent<BrickHitEventArgs> brickHitEvent;
+  ofEvent<PaddleHitEventArgs> paddleHitEvent;
+  ofEvent<WallHitEventArgs> wallHitEvent;
   ofEvent<RoundStateEventArgs> allBricksDestroyedEvent;
   ofEvent<PlayerStateEventArgs > playerScoreChangedEvent;
   ofEvent<BallStateEventArgs> ballDestroyedEvent;
@@ -48,6 +50,8 @@ public:
 private:
   void notifyBallOwnerChanged(RoundState& state, Ball* ball, Player* player, Player* previousPlayer);
   void notifyBrickHit(RoundState& state, Brick* brick, Ball* ball);
+  void notifyPaddleHit(RoundState& state, Paddle* paddle, Ball* ball);
+  void notifyWallHit(RoundState& state, Wall* wall, Ball* ball);
   void notifyAllBricksDestroyed(RoundState& state);
   void notifyPlayerScoreChanged(RoundState& state, Player* player);
   void notifyBallDestroyed(RoundState& state, Ball* ball);

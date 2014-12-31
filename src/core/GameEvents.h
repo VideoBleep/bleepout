@@ -121,6 +121,44 @@ private:
   Ball* _ball;
 };
 
+class PaddleHitEventArgs : public RoundStateEventArgs {
+public:
+    PaddleHitEventArgs(RoundState& state, Paddle* paddle, Ball* ball)
+    : RoundStateEventArgs(state)
+    , _paddle(paddle), _ball(ball) { }
+    
+    virtual ~PaddleHitEventArgs() {}
+    
+    Paddle* paddle() { return _paddle; }
+    const Paddle* paddle() const { return _paddle; }
+    Ball* ball() { return _ball; }
+    const Ball* ball() const { return _ball; }
+    
+    virtual void output(std::ostream& os) const override;
+private:
+    Paddle* _paddle;
+    Ball* _ball;
+};
+
+class WallHitEventArgs : public RoundStateEventArgs {
+public:
+    WallHitEventArgs(RoundState& state, Wall* wall, Ball* ball)
+    : RoundStateEventArgs(state)
+    , _wall(wall), _ball(ball) { }
+    
+    virtual ~WallHitEventArgs() {}
+    
+    Wall* wall() { return _wall; }
+    const Wall* wall() const { return _wall; }
+    Ball* ball() { return _ball; }
+    const Ball* ball() const { return _ball; }
+    
+    virtual void output(std::ostream& os) const override;
+private:
+    Wall* _wall;
+    Ball* _ball;
+};
+
 class ModifierEventArgs
 : public RoundStateEventArgs {
 public:

@@ -235,7 +235,8 @@ public:
   std::string roundEndedSound;
   std::string brickHitSound;
   std::string brickDestroyedSound;
-  std::string collisionSound;
+  std::string paddleHitSound;
+  std::string wallHitSound;
   std::string modifierAppliedSound;
   std::string modifierRemovedSound;
   std::string ballDestroyedSound;
