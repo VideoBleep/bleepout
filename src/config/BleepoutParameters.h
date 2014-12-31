@@ -52,6 +52,7 @@ public:
   float domeRadius;
   float domeMargin;
   int minReadyPlayers;
+  float ballSpeedMultiplier;
 private:
   BleepoutConfig* _appConfig;
   std::string _currentRoundName;

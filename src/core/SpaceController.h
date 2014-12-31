@@ -51,6 +51,7 @@ public:
 private:
   void addBrick(const BrickSpec& brickSpec);
   void addWall(const WallSpec& wallSpec);
+  void updateBallSpeeds();
 
   void onCollision(CollisionArgs &cdata);
 
@@ -59,6 +60,7 @@ private:
 private:
   PhysicsWorld _world;
   float _lastUpdateTime;
+  float _lastBallSpeedModifier;
 };
 
 #endif /* defined(__bleepout__SpaceController__) */

@@ -24,6 +24,7 @@ namespace {
 SpaceController::SpaceController(RoundState& state)
 : RoundComponent(state)
 , _lastUpdateTime(-1)
+, _lastBallSpeedModifier(-1)
 , EventSource() {
 }
 
@@ -40,6 +41,7 @@ void SpaceController::addInitialPaddles() {
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
+  updateBallSpeeds();
 }
 
 void SpaceController::resetState() {
@@ -47,6 +49,14 @@ void SpaceController::resetState() {
   removeObjects(_state.balls());
   removeObjects(_state.walls());
   removeObjects(_state.modifiers());
+}
+
+void SpaceController::updateBallSpeeds() {
+  for (auto& ball : _state.balls()) {
+    if (ball && ball->alive()) {
+      ball->updateSpeed();
+    }
+  }
 }
 
 void SpaceController::loadBricksAndWalls() {
@@ -113,6 +123,10 @@ void SpaceController::update() {
   }
   _world.update(_state.time - _lastUpdateTime);
   _lastUpdateTime = _state.time;
+  float ballSpeed = BleepoutParameters::get().ballSpeedMultiplier;
+  if (ballSpeed != _lastBallSpeedModifier) {
+    updateBallSpeeds();
+  }
 }
 
 float paddleTrueHitFactor(const ofVec3f& paddlePos, const ofVec3f& paddleSize) {

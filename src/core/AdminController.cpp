@@ -34,6 +34,7 @@ struct AdminUIControls {
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
   ofxUIButton* addManyBalls;
+  ofxUISlider* ballSpeedMultiplier;
 #ifdef ENABLE_SYPHON
   ofxUIToggle* enableSyphon;
 #endif
@@ -93,6 +94,7 @@ void AdminController::setup() {
   _controls->timeLimit->setDisplayLabel(true);
   
   _controls->pause = _gui->addLabelToggle("Pause", &appParams.paused);
+  _controls->ballSpeedMultiplier = _gui->addSlider("Ball Speed", 0.01, 3.0, &appParams.ballSpeedMultiplier);
   _controls->exitsEnabled = _gui->addLabelToggle("Exits Enabled", &appParams.exitsEnabled);
   
   _controls->ballsRespawn = _gui->addLabelToggle("Balls Respawn", &appParams.ballsRespawn);
