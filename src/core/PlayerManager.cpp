@@ -100,7 +100,7 @@ void PlayerManager::onIdle(ofxLibwebsockets::Event& args){
 
 // THIS BADLY NEEDS REFACTORING, it only grows from here... but maybe not today.
 void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
-  ofLogNotice() << "got message " << args.message << endl;
+  ofLogVerbose() << "got message " << args.message << endl;
 
   // PING (heartbeat)
   if (args.message == PACKET_PING) {
@@ -183,8 +183,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
       }
 
       player.reset(new Player(&args.conn));
-      // TODO: set player id right here ... should be in parts[0]
-      //int id___UNUSED = ofHexToInt(parts[1])
+      _players.push_back(player);
 
       controller.connect(player);
 
@@ -206,7 +205,8 @@ void PlayerManager::gotMessage(ofMessage msg){
 ofPtr<Player> PlayerManager::findPlayer(ofxLibwebsockets::Connection& conn) {
 	// find player by comparing connection
 	for (const ofPtr<Player>& p : _players) {
-		if (*(p->connection()) == conn) {
+
+    if (*(p->connection()) == conn) {
 			return p;
 		}
 	}
