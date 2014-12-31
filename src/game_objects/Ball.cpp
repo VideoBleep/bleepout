@@ -26,7 +26,7 @@ Ball::Ball(const RoundConfig& config, const BallSpec& spec)
   this->setSize(ofVec3f(config.ballRadius()));
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
-  t->setSpeed(0.03);
+  t->setSpeed(config.ballSpeed);
   t->initWithTwoPoints(spec.elevation, spec.heading, -14,
                        spec.heading + ofRandom(-45, 45));
   this->setTrajectory(t);

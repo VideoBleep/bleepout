@@ -176,6 +176,7 @@ public:
   GameRules& rules() { return _rules; }
   
   float countdownTimerPeriod;
+  float ballSpeed;
   
   std::string filepath;
 private:

@@ -63,6 +63,7 @@ _modifierFadeTime(0.2f),
 _ballSpawnedFadeTime(0.2f),
 _name(name),
 _startDelay(0),
+ballSpeed(0.02),
 countdownTimerPeriod(10) { }
 
 template<>
@@ -213,6 +214,7 @@ void RoundConfig::readJson(const JsonLoader &loader,
   loader.readVal(obj["name"], &_name, _name);
   loader.readVal(obj["startDelay"], &_startDelay);
   loader.readVal(obj["ballRadius"], &_ballRadius);
+  loader.readVal(obj["ballSpeed"], &ballSpeed);
   loader.readVal(obj["brickFadeTime"], &_brickFadeTime);
   loader.readVal(obj["modifierSize"], &_modifierSize);
   loader.readVal(obj["modifierFadeTime"], &_modifierFadeTime);
@@ -250,6 +252,8 @@ Json::Value RoundConfig::buildJson() const {
   Json::Value obj(Json::objectValue);
   obj["name"] = _name;
   obj["startDelay"] = _startDelay;
+  obj["ballRadius"] = _ballRadius;
+  obj["ballSpeed"] = ballSpeed;
   obj["brickFadeTime"] = _brickFadeTime;
   obj["modifierSize"] = toJsonVal(_modifierSize);
   obj["modifierFadeTime"] = _modifierFadeTime;
