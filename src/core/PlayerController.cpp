@@ -54,17 +54,16 @@ PlayerController::PlayerController(SetupController& setup)
 
 // Player connected
 // 1.[CONNECT] Client - New Player > PlayerController::connect
-void PlayerController::connect(Player& player) {
-  ofPtr<Player> p(&player);
-	_setup.lobby().push_back(p);
+void PlayerController::connect(ofPtr<Player> player) {
+	_setup.lobby().push_back(player);
 	
 	// TODO: Set player state to 'select color'
   // Send message to player that they are in the select color state
   // 2.[SETCOLOR] PlayerManager::setPlayerColor < Select Color -
-  PlayerManager::setPlayerColor(player, ofColor::red);
+  //PlayerManager::setPlayerColor(player, ofColor::red);
 
 	// TODO: Remove this... For now: Set player to Queued. 
-  this->queue(player);
+  this->queue(*(player.get()));
 };
 
 // Player has entered the 'lobby'. Called by PlayerController::configure()
@@ -85,7 +84,7 @@ void PlayerController::calibrate(Player& player) {
 		4. Once user clicks the action button (calibrate), allow them to control the object and move it to the location they want to play in
 		5. Player clicks 'start' once ready
 	*/
-  PlayerManager::setPlayerCalibrate(player);
+  //PlayerManager::setPlayerCalibrate(player);
 };
 
 // Player is calibrated
