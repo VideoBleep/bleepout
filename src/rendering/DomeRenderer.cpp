@@ -82,8 +82,6 @@ void DomeRenderer::setup() {
   _cam.setRotation(0.0, 0.66);
   _cam.setupPerspective(false);
 #endif
-    
-  _extras.setup();
   
   ofLight light;
   light.setDiffuseColor(ofColor(225, 225, 255));
@@ -104,6 +102,10 @@ void DomeRenderer::setup() {
   wallMaterial.setEmissiveColor(ofColor(68, 60, 98));
   wallMaterial.setShininess(10.0);
   wallMaterial.setSpecularColor(ofColor(98, 98, 160, 255));
+}
+
+void DomeRenderer::setupExtras() {
+  _extras.setup();
 }
 
 void DomeRenderer::update() {

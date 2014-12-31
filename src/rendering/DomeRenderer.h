@@ -20,6 +20,7 @@ public:
   DomeRenderer(RoundState& state);
   virtual ~DomeRenderer() {}
   virtual void setup() override;
+  virtual void setupExtras() override;
   virtual void update() override;
   virtual void draw() override;
 

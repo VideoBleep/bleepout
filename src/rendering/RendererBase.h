@@ -20,6 +20,7 @@ public:
   virtual ~RendererBase() {}
   
   virtual void setup() {}
+  virtual void setupExtras() {}
   virtual void attachTo(LogicController& roundEvents) {}
   virtual void detachFrom(LogicController& roundEvents) {}
   

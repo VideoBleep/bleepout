@@ -34,6 +34,7 @@ RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   endCurrentConfig();
+  _renderer.reset();
 }
 
 void RoundController::endCurrentConfig() {
@@ -49,7 +50,6 @@ void RoundController::endCurrentConfig() {
   _logicController.reset();
   _spaceController.reset();
   _animationManager.reset();
-  _renderer.reset();
   _config.reset();
 }
 
@@ -87,8 +87,7 @@ void RoundController::loadNextConfig() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer(_state));
-  _renderer->setup();
+  _renderer->setupExtras();
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config->startMessages()) {
@@ -105,6 +104,9 @@ void RoundController::setup() {
   
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofAddListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
+  
+  _renderer.reset(new DomeRenderer(_state));
+  _renderer->setup();
   
   // create paddles...!!!@#!@#!
   
