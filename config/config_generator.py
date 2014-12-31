@@ -8,6 +8,7 @@ import round_3
 import round_4
 import round_5
 import islands_stage
+import blobs
 
 rounds = {
   "round1": round_1.generate,
@@ -15,7 +16,8 @@ rounds = {
   "round3": round_3.generate,
   "round4": round_4.generate,
   "round5": round_5.generate,
-  "islands": islands_stage.generate
+  "islands": islands_stage.generate,
+  "blobs": blobs.generate
 }
 
 def generateRound(name, outdir):

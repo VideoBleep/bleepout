@@ -1,0 +1,5454 @@
+{
+  "ballRadius": 8,
+  "modifierSize": [
+    9,
+    16,
+    9
+  ],
+  "name": "blobs",
+  "objects": [
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 0
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 72
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 144
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 216
+    },
+    {
+      "_type": "Ball",
+      "elevation": 10,
+      "heading": 288
+    },
+    {
+      "_type": "Modifier",
+      "amount": 1.5,
+      "beneficial": null,
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "duration": 5,
+      "name": "widePaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": 0.5,
+      "beneficial": false,
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "duration": 5,
+      "name": "narrowPaddle",
+      "type": "PaddleWidth"
+    },
+    {
+      "_type": "Modifier",
+      "amount": null,
+      "beneficial": null,
+      "color": [
+        255,
+        69,
+        0
+      ],
+      "duration": 20,
+      "name": "supercharge",
+      "type": "SuperchargedBall"
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": -4.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 0.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": -9.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": -4.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 0.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 4.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": -9.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": -4.6,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 0.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 4.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": -13.200000000000001,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": -8.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": -4.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 0.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 4.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 8.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": -8.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": -4.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 0.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 4.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": -4.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 0.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": 55.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 60.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 50.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": 55.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 60.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 64.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 50.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": 55.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 60.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 64.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 46.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 51.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 55.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 60.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 64.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 68.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 51.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": 55.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 60.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 64.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": 55.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 60.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": 115.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 120.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 110.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": 115.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 120.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 124.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 110.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": 115.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 120.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 124.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 106.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 111.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 115.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 120.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 124.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 128.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 111.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": 115.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 120.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 124.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": 115.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 120.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": 175.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 180.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 170.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": 175.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 180.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 184.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 170.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": 175.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 180.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 184.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 166.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 171.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 175.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 180.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 184.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 188.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 171.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": 175.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 180.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 184.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": 175.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 180.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": 235.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 240.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 230.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": 235.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 240.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 244.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 230.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": 235.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 240.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 244.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 226.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 231.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 235.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 240.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 244.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 248.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 231.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": 235.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 240.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 244.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": 235.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 240.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 38,
+      "heading": 295.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 38,
+      "heading": 300.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 290.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 33,
+      "heading": 295.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 33,
+      "heading": 300.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 33,
+      "heading": 304.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 290.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 35,
+      "heading": 295.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 35,
+      "heading": 300.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 35,
+      "heading": 304.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 286.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 291.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 295.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 30,
+      "heading": 300.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 30,
+      "heading": 304.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 30,
+      "heading": 308.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 291.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 27,
+      "heading": 295.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 27,
+      "heading": 300.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 27,
+      "heading": 304.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 24,
+      "heading": 295.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 24,
+      "heading": 300.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 25.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 30.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 20.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 25.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 30.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 34.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 20.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 25.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 30.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 34.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 16.799999999999997,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 21.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 25.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 30.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 34.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 38.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 21.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 25.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 30.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 34.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 25.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 30.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 85.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 90.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 80.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 85.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 90.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 94.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 80.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 85.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 90.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 94.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 76.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 81.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 85.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 90.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 94.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 98.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 81.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 85.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 90.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 94.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 85.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 90.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 145.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 150.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 140.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 145.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 150.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 154.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 140.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 145.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 150.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 154.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 136.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 141.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 145.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 150.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 154.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 158.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 141.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 145.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 150.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 154.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 145.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 150.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 205.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 210.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 200.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 205.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 210.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 214.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 200.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 205.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 210.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 214.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 196.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 201.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 205.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 210.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 214.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 218.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 201.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 205.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 210.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 214.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 205.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 210.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 265.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 270.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 260.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 265.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 270.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 274.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 260.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 265.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 270.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 274.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 256.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 261.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 265.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 270.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 274.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 278.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 261.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 265.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 270.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 274.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 265.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 270.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 58,
+      "heading": 325.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 58,
+      "heading": 330.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 320.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 53,
+      "heading": 325.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 53,
+      "heading": 330.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 53,
+      "heading": 334.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 320.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 55,
+      "heading": 325.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 55,
+      "heading": 330.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 55,
+      "heading": 334.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 316.8,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 321.2,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 325.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 50,
+      "heading": 330.0,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 50,
+      "heading": 334.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 50,
+      "heading": 338.8,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 321.2,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 47,
+      "heading": 325.6,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 47,
+      "heading": 330.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        0,
+        253,
+        170
+      ],
+      "elevation": 47,
+      "heading": 334.4,
+      "lives": 2,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        255,
+        139,
+        0
+      ],
+      "elevation": 44,
+      "heading": 325.4,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Brick",
+      "color": [
+        164,
+        2,
+        253
+      ],
+      "elevation": 44,
+      "heading": 330.0,
+      "lives": 1,
+      "modifier": null,
+      "size": [
+        5,
+        5,
+        10
+      ],
+      "speed": 0,
+      "stopHeading": null,
+      "value": 1
+    },
+    {
+      "_type": "Wall",
+      "elevation": -10,
+      "heading": 0,
+      "isExit": true,
+      "isFloor": true,
+      "size": null,
+      "speed": 0,
+      "stopHeading": -1,
+      "visible": false
+    },
+    {
+      "_type": "RingSet",
+      "color": [
+        127,
+        0,
+        255,
+        127
+      ],
+      "count": 80,
+      "lineWidth": 3.2,
+      "radiusScale": 4.95,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          10,
+          10
+        ]
+      },
+      "spread": {
+        "changeInterval": 10,
+        "maxRate": 0.4,
+        "minRate": 0,
+        "startValue": [
+          15,
+          30,
+          20
+        ]
+      },
+      "spreadOffset": [
+        60,
+        70,
+        40
+      ]
+    },
+    {
+      "_type": "RingSet",
+      "color": [
+        255,
+        0,
+        127,
+        127
+      ],
+      "count": 20,
+      "lineWidth": 2.4,
+      "radiusScale": 1.4,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 40,
+        "maxRate": 0.55,
+        "minRate": 0,
+        "startValue": [
+          3,
+          0,
+          0
+        ]
+      },
+      "spreadOffset": [
+        0,
+        10,
+        80
+      ]
+    },
+    {
+      "_type": "Message",
+      "color": [
+        255,
+        0,
+        127
+      ],
+      "delay": 1,
+      "duration": 3,
+      "size": 25,
+      "text": "STAGE # START",
+      "trails": null
+    }
+  ],
+  "startDelay": 5
+}

@@ -8,6 +8,7 @@
 		"config/Round2.json",
 		"config/Round3.json",
 		"config/Round4.json",
+	  	"config/blobs.json",
 		"config/Round5.json"
 	],
 	"syphonAppName" : "Arena",

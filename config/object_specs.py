@@ -215,3 +215,13 @@ def createRingSet(spin = None,
               radiusScale = radiusScale,
               lineWidth = lineWidth,
               color = color)
+
+class ValueRotator:
+  def __init__(self, *vals):
+    self.vals = vals
+    self.i = 0
+
+  def next(self):
+    val = self.vals[self.i % len(self.vals)]
+    self.i += 1
+    return val
