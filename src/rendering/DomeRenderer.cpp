@@ -201,7 +201,6 @@ void DomeRenderer::drawGenMesh(const GenMesh& gm, ofMaterial& mat, const ofColor
 #else
   ofTranslate(gm.mesh->getVertex(0).normalized() * -0.2);
 #endif
-  glEnable(GL_CULL_FACE);
   gm.outline->draw();
 }
 
