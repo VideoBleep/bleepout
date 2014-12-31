@@ -182,6 +182,7 @@ void LogicController::onBallHitWall(Ball& ball, Wall& wall) {
       notifyPlayerLivesChanged(_state, player);
       if (!player->alive()) {
         notifyPlayerLost(_state, player);
+        player->isPlaying = false;
       }
     }
     if (BleepoutParameters::get().rules().ballsRespawn()) {

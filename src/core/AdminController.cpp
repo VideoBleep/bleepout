@@ -62,6 +62,7 @@ struct AdminUIControls {
   ofxUIToggle* pause;
   ofxUILabel* inRound;
   ofxUILabel* lobbyCount;
+  ofxUILabel* roundPlayersCount;
   ofxUIToggle* exitsEnabled;
   ofxUIToggle* overrideBallsRespawn;
   ofxUIToggle* ballsRespawn;
@@ -131,7 +132,8 @@ void AdminController::setup() {
   _gui->addSpacer();
   _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
-  _controls->lobbyCount = _gui->addLabel("Players in lobby: 0");
+  _controls->lobbyCount = _gui->addLabel("Lobby players: 0");
+  _controls->roundPlayersCount = _gui->addLabel("Round players: 0");
   _gui->addLabel("Round Queue", OFX_UI_FONT_MEDIUM);
   
   const auto& allRoundNames = appParams.queuedRoundNames();
@@ -256,7 +258,14 @@ void AdminController::update() {
   _gui->update();
   _gui->setPosition(ofGetWidth() - uiWidth - 10, 0);
   _gui->setHeight(ofGetHeight());
-  _controls->lobbyCount->setLabel("Players in lobby: " + ofToString(_lobby.size()));
+  _controls->lobbyCount->setLabel("Lobby players: " + ofToString(_lobby.size()));
+  std::string rplayersText = "Round players: ";
+  if (_roundState) {
+    rplayersText += ofToString(_roundState->players().size());
+  } else {
+    rplayersText += "-";
+  }
+  _controls->roundPlayersCount->setLabel(rplayersText);
 }
 
 void AdminController::draw() {
@@ -329,6 +338,7 @@ bool AdminController::tryStartRound() {
   std::list<ofPtr<RoundConfig> > rounds = BleepoutParameters::get().getRoundQueue();
   if (notifyTryStartRound(rounds, players)) {
     _controls->updateQueueSlots(appParams);
+    _lobby.clear();
   }
   return true;
 }

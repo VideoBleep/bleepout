@@ -131,12 +131,17 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
     // if the prefix is ypr then we have a yaw-pitch-roll message, parse it
     if (msgPrefix == MESSAGE_YPR) {
       if (!_inRoundMode) {
-        ofLogWarning() << "Ignoring YPR message in setup mode" << endl;
+        ofLogWarning() << "Ignoring YPR message in setup mode";
         return;
       }
 
       if (!player) {
-        ofLogWarning() << "YPR message received for nonexistant player" << endl;
+        ofLogWarning() << "YPR message received for nonexistant player";
+        return;
+      }
+      
+      if (!player->isPlaying || !player->alive()) {
+        ofLogVerbose() << "Ignoring YPR message from player that isn't playing yet or is dead";
         return;
       }
 
@@ -148,11 +153,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
       // msgData.erase(0, pos + 1);
       float roll = ofToFloat(parts[3]); //ofToFloat(msgData);
       notifyPlayerYawPitchRoll(player.get(), yaw, pitch, roll);
-    }
-    // click messages? Other?
-
-    // Set color
-    if (msgPrefix == ACTION_CONFIGURE) {
+    } else if (msgPrefix == ACTION_CONFIGURE) {    // Set color
       ofColor color(
         ofHexToInt(parts[2]),
         ofHexToInt(parts[3]),
@@ -178,7 +179,7 @@ void PlayerManager::onMessage(ofxLibwebsockets::Event& args) {
       return;
       }*/
       if (player) {
-        ofLogWarning() << "Got create player message for existing player: " << *player << endl;
+        ofLogWarning() << "Got create player message for existing player: " << *player;
         return;
       }
 
