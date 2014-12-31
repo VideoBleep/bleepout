@@ -14,7 +14,6 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   RoundConfig* config = new RoundConfig("Round1");
   config->_ballRadius = 8.0f;
   config->_modifierSize.set(9.0f, 16.0f, 9.0f);
-  config->_rules.setBallsRespawn(true);
   
   for (int i = 0; i < 5; i ++) {
     config->addBall(BallSpec(30, ofRandom(360)));

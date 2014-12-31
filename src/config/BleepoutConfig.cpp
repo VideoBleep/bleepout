@@ -105,19 +105,16 @@ std::vector<WallSpec> RoundConfig::allWalls() const {
 GameRules::GameRules()
 : _backup(NULL)
 , _timeLimit()
-, _playersCanLoseLives()
-, _ballsRespawn() { }
+, _playersCanLoseLives() { }
 
 GameRules::GameRules(const GameRules& other)
 : _backup(other._backup)
 , _timeLimit(other._timeLimit)
-, _playersCanLoseLives(other._playersCanLoseLives)
-, _ballsRespawn(other._ballsRespawn) { }
+, _playersCanLoseLives(other._playersCanLoseLives) { }
 
 GameRules& GameRules::copyFrom(const GameRules &other) {
   _timeLimit = other._timeLimit;
   _playersCanLoseLives = other._playersCanLoseLives;
-  _ballsRespawn = other._ballsRespawn;
   return *this;
 }
 
@@ -129,24 +126,18 @@ bool GameRules::playersCanLoseLives() const {
   return _playersCanLoseLives.get(_backup ? &_backup->_playersCanLoseLives : NULL, false);
 }
 
-bool GameRules::ballsRespawn() const {
-  return _ballsRespawn.get(_backup ? &_backup->_ballsRespawn : NULL, false);
-}
-
 void GameRules::readJson(const JsonLoader &loader,
                          const Json::Value &obj) {
   if (!loader.assertType(obj, Json::objectValue))
     return;
   loader.readVal(obj["timeLimit"], &_timeLimit);
   loader.readVal(obj["playersCanLoseLives"], &_playersCanLoseLives);
-  loader.readVal(obj["ballsRespawn"], &_ballsRespawn);
 }
 
 Json::Value GameRules::buildJson() const {
   Json::Value obj(Json::objectValue);
   obj["timeLimit"] = toJsonVal(_timeLimit);
   obj["playersCanLoseLives"] = toJsonVal(_playersCanLoseLives);
-  obj["ballsRespawn"] = toJsonVal(_ballsRespawn);
   return obj;
 }
 

@@ -38,6 +38,7 @@ public:
   bool inRound;
   bool paused;
   bool exitsEnabled;
+  bool ballsRespawn;
   bool debugGraphics;
   bool drawTrajectories;
   bool drawComets;
