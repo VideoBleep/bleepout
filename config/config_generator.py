@@ -20,8 +20,10 @@ def generateRound(name, outdir):
   if not gen:
     raise RuntimeError("Unrecognized round: '" + name + "'")
   config = gen()
-  filename = outdir + '/' + name + '.json'
-  json.dump(config, file(filename), sort_keys=True, indent=2, separators=(',', ': '))
+  filename = outdir.rstrip('/') + '/' + name + '.json'
+  print 'generating round "%s" -> %s...' % (name, filename)
+  with open(filename, 'w') as f:
+    json.dump(config, f, sort_keys=True, indent=2, separators=(',', ': '))
 
 def main():
   args = sys.argv[1:]
@@ -29,6 +31,7 @@ def main():
   if not outdir:
     print "usage: config_generator.py OUTPUT_DIR [round1] [round2] etc"
     exit(1)
+  print 'outputting to directory: %s' % (outdir,)
   if len(args) == 1:
     for name in rounds:
       generateRound(name, outdir)
