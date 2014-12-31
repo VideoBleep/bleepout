@@ -37,9 +37,6 @@ public:
   void handlePlayerConnected(PlayerEventArgs& e);
 
 private:
-  bool notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs,
-                           std::list<ofPtr<Player> > players);
-  bool tryStartRound();
 
 	//ofPtr<PlayerManager> _playerManager;
 	// Lobby is the list of players queued for the game

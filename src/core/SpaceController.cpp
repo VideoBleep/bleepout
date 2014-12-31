@@ -9,6 +9,7 @@
 #include "SpaceController.h"
 #include "PhysicsUtil.h"
 #include "BleepoutParameters.h"
+#include "PhysicsUtil.h"
 
 namespace {
   
@@ -38,17 +39,35 @@ void SpaceController::addInitialPaddles() {
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
-  
-  for (const BallSpec& ball : _state.config().balls()) {
-    addBall(ball);
-  }
-  
+}
+
+void SpaceController::resetState() {
+  removeObjects(_state.bricks());
+  removeObjects(_state.balls());
+  removeObjects(_state.walls());
+  removeObjects(_state.modifiers());
+}
+
+void SpaceController::loadBricksAndWalls() {
   for (const BrickSpec& brick : _state.config().allBricks()) {
     addBrick(brick);
   }
   
   for (const WallSpec& wall : _state.config().allWalls()) {
     addWall(wall);
+  }
+}
+
+void SpaceController::addInitialBalls() {
+  for (ofPtr<Player>& player : _state.players()) {
+    BallSpec ballSpec;
+    auto paddlePos = player->paddle()->getPosition();
+    cartesianToSpherical(paddlePos, &ballSpec.elevation, &ballSpec.heading);
+    ballSpec.elevation = 30;
+    addBall(ballSpec);
+  }
+  for (const BallSpec& ball : _state.config().balls()) {
+    addBall(ball);
   }
 }
 

@@ -27,6 +27,10 @@ public:
   void drawDebug();
   
   void addInitialPaddles();
+  void loadBricksAndWalls();
+  void addInitialBalls();
+  
+  void resetState();
   
   Ball& addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);
@@ -34,6 +38,13 @@ public:
   void setUpModifier(Modifier& modifier,
                      Brick& spawnerBrick);
   void removeObject(PhysicsObject& object);
+  
+  template<typename Seq>
+  void removeObjects(Seq& objects) {
+    for (auto& obj : objects) {
+      removeObject(*obj);
+    }
+  }
   
   const char* eventSourceName() const override { return "SpaceController"; }
 

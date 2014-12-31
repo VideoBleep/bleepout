@@ -23,6 +23,8 @@ RoundController::RoundController(std::list<ofPtr<RoundConfig> > configs,
 , _state(players)
 , _playerManager(playerManager)
 , _timedActions(true)
+, _playing(false)
+, _started(false)
 , _ending(false)
 , _readyPlayers(0)
 , EventSource() {
@@ -32,11 +34,14 @@ RoundController::~RoundController() {
   ofRemoveListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofRemoveListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   endCurrentConfig();
+  _renderer.reset();
+  _logicController.reset();
 }
 
 void RoundController::endCurrentConfig() {
   if (!_config)
     return;
+  _spaceController->resetState();
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofRemoveListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
@@ -44,11 +49,15 @@ void RoundController::endCurrentConfig() {
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
   _timedActions.clear();
-  _logicController.reset();
-  _spaceController.reset();
   _animationManager.reset();
-  _renderer.reset();
   _config.reset();
+}
+
+void RoundController::onPlayRound(EmptyEventArgs &e) {
+  if (!_config) {
+    loadNextConfig();
+    _playing = true;
+  }
 }
 
 void RoundController::loadNextConfig() {
@@ -58,11 +67,9 @@ void RoundController::loadNextConfig() {
   _startTime = ofGetElapsedTimef();
   _state.initialize(_config);
   
-  _spaceController.reset(new SpaceController(_state));
-  _logicController.reset(new LogicController(_state));
   _animationManager.reset(new RoundAnimationManager(*this));
-  _spaceController->setup();
-  _logicController->setup();
+  _spaceController->loadBricksAndWalls();
+  _logicController->resetState();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofAddListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
@@ -70,13 +77,15 @@ void RoundController::loadNextConfig() {
   _animationManager->attachTo(*_logicController);
   _logicController->attachTo(*_spaceController);
   
-  _renderer.reset(new DomeRenderer(_state));
-  _renderer->setup();
+  _renderer->setupExtras();
   _renderer->attachTo(*_logicController);
   
   for (auto& msg : _config->startMessages()) {
     _animationManager->addMessage(msg);
   }
+  _started = false;
+  
+  notifyRoundPlay();
 }
 
 void RoundController::setup() {
@@ -85,17 +94,40 @@ void RoundController::setup() {
   ofAddListener(_playerManager.playerYawPitchRollEvent, this, &RoundController::onPlayerYawPitchRoll);
   ofAddListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   
-  loadNextConfig();
+  _renderer.reset(new DomeRenderer(_state));
+  _renderer->setup();
+  
+  _spaceController.reset(new SpaceController(_state));
+  _spaceController->setup();
+  _logicController.reset(new LogicController(_state));
+  _logicController->setup();
+  
+  // create paddles...!!!@#!@#!
+  _spaceController->addInitialPaddles();
+  unsigned char hue = 0;
+  unsigned char hueStep = (unsigned char)(255.0 / _state.players().size());
+  for (auto& player : _state.players()) {
+    ofColor color = ofColor::fromHsb(hue, 255, 200);
+    player->setColor(color);
+    PlayerManager::setPlayerCalibrate(*player, color);
+    hue += hueStep;
+  }
+  
+  //  loadNextConfig();
 }
 
 void RoundController::attachTo(AdminController &adminController) {
   ofAddListener(adminController.tryEndRoundEvent,
                 this, &RoundController::onTryEndRound);
+  ofAddListener(adminController.playRoundEvent, this,
+                &RoundController::onPlayRound);
 }
 
 void RoundController::detachFrom(AdminController &adminController) {
   ofRemoveListener(adminController.tryEndRoundEvent,
                    this, &RoundController::onTryEndRound);
+  ofRemoveListener(adminController.playRoundEvent, this,
+                   &RoundController::onPlayRound);
 }
 
 void RoundController::draw() {
@@ -105,13 +137,14 @@ void RoundController::draw() {
 template<typename T>
 static void removeDeadPhysicalObjects(GameObjectCollection<T>& objects,
                                       SpaceController& spaceController) {
-  for (auto& obj : objects.extractDeadObjects()) {
-    spaceController.removeObject(*obj);
-    obj.reset();
-  }
+  auto deadObjects = objects.extractDeadObjects();
+  spaceController.removeObjects(deadObjects);
 }
 
 void RoundController::update() {
+  if (!_playing) {
+    return;
+  }
   auto& appParams = BleepoutParameters::get();
   if (_paused && !appParams.paused) {
     _startTime = ofGetElapsedTimef() - _state.time;
@@ -122,10 +155,10 @@ void RoundController::update() {
     return;
   _state.time = ofGetElapsedTimef() - _startTime;
   
-  if (_state.time >= _config->startDelay()) {
-    if (_state.paddles().size() == 0) {
-      ofLogNotice() << "Initial Paddle Create";
-      _spaceController->addInitialPaddles();
+  if (!_started) {
+    if (_state.time >= _config->startDelay()) {
+      _spaceController->addInitialBalls();
+      _started = true;
     }
   }
   
@@ -187,6 +220,12 @@ void RoundController::notifyRoundEnded(RoundResults &results) {
   logEvent("RoundEnded", e);
   // after this notification is sent off, the roundcontroller ceases to exist!
   ofNotifyEvent(roundEndedEvent, e);
+}
+
+void RoundController::notifyRoundPlay() {
+  RoundStateEventArgs e(_state);
+  logEvent("RoundPlay", e);
+  ofNotifyEvent(roundPlayEvent, e);
 }
 
 RoundResults RoundController::buildRoundResults(RoundEndReason reason) {

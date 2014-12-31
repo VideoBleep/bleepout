@@ -140,6 +140,8 @@ void BleepoutApp::onTryStartRound(StartRoundEventArgs &e) {
   _roundController->setup();
   ofAddListener(_roundController->roundEndedEvent, this,
                 &BleepoutApp::onRoundEnded);
+  ofAddListener(_roundController->roundPlayEvent, this,
+                &BleepoutApp::onRoundPlay);
   //ofAddListener(_roundController->roundQueueEvent, _playerController.get(),
   //              &PlayerController::onRoundQueue);
   _audioManager->attachTo(*_roundController);
@@ -156,18 +158,30 @@ const RoundConfig* BleepoutApp::currentRoundConfig() const {
 
 void BleepoutApp::onRoundEnded(RoundEndedEventArgs &e) {
   _playerManager->setIsInRound(false);
-  ofRemoveListener(_roundController->roundEndedEvent, this, &BleepoutApp::onRoundEnded);
+  ofRemoveListener(_roundController->roundEndedEvent, this,
+                   &BleepoutApp::onRoundEnded);
   //ofRemoveListener(_roundController->roundQueueEvent, _playerController.get(), &PlayerController::onRoundQueue);
+  ofRemoveListener(_roundController->roundPlayEvent, this,
+                   &BleepoutApp::onRoundPlay);
   _audioManager->detachFrom(*_roundController);
   _roundController->detachFrom(*_adminController);
   _roundController.reset();
   notifyRoundEnded(e);
 }
 
+void BleepoutApp::onRoundPlay(RoundStateEventArgs &e) {
+  notifyRoundPlay(e);
+}
+
 void BleepoutApp::notifyRoundStarted(RoundState &state) {
   RoundStateEventArgs e(state);
   ofNotifyEvent(roundStartedEvent, e);
   logEvent("RoundStarted", e);
+}
+
+void BleepoutApp::notifyRoundPlay(RoundStateEventArgs& e) {
+  ofNotifyEvent(roundPlayEvent, e);
+  logEvent("RoundPlay", e);
 }
 
 void BleepoutApp::notifyRoundEnded(RoundEndedEventArgs& e) {
