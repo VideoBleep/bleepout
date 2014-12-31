@@ -67,6 +67,8 @@ public:
   
   void incrementModifierCount(ModifierType type);
   
+  bool isPlaying;
+  
 private:
   void init();
   

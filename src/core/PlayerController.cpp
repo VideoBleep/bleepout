@@ -45,8 +45,9 @@
 #include "PlayerManager.h"
 #include "GameEvents.h"
 #include "Logging.h"
+#include "AdminController.h"
 
-PlayerController::PlayerController(SetupController& setup)
+PlayerController::PlayerController(AdminController& setup)
 	: _setup(setup) 
 {
 
@@ -110,6 +111,8 @@ void PlayerController::start(Player& player) {
 // Player has quit. Called by player.
 void PlayerController::quit(Player& player) {
 	// TODO: What happens here? Delete the paddle? Set player state to quit?
+  player.kill();
+  player.isPlaying = false;
 };
 
 // Player's playtime is up. Evaluated at round end.

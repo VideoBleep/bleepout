@@ -341,32 +341,31 @@ void DomeRenderer::drawBall(Ball &ball) {
     if (ot) {
       ofPushStyle();
       ofPushMatrix();
+      ofDisableLighting();
       
       ofEnableBlendMode(OF_BLENDMODE_ADD);
       
       ofSetColor(255, 255, 255, 255);
-      LineWidthAdjuster::setLineWidth(1.5);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(1.2, -0.5);
       glEnd();
       
       ofColor c = ball.getColor();
-      c.a = 172;
+      //c.a = 172;
       ofSetColor(c);
-      LineWidthAdjuster::setLineWidth(5.0);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(3.0, 0.0);
       glEnd();
       
       ofEnableBlendMode(OF_BLENDMODE_ALPHA);
       
-      c.a = 127;
+      c *= 0.5;
       ofSetColor(c);
-      LineWidthAdjuster::setLineWidth(20.0);
-      glBegin(GL_LINE_STRIP);
-      ot->history.emitPoints();
+      glBegin(GL_QUAD_STRIP);
+      ot->history.emitQuadStrip(7.0, 0.5);
       glEnd();
       
+      ofEnableLighting();
       ofPopMatrix();
       ofPopStyle();
       

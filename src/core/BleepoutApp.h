@@ -16,7 +16,6 @@
 #include "BleepoutConfig.h"
 #include "RendererBase.h"
 #include "Common.h"
-#include "SetupController.h"
 #include "GameEvents.h"
 #include "AdminController.h"
 #include "AudioManager.h"
@@ -88,7 +87,6 @@ private:
   ofPtr<BleepoutConfig> _config;
   ofPtr<PlayerManager> _playerManager;
   ofPtr<PlayerController> _playerController;
-  ofPtr<SetupController> _setupController;
   ofPtr<RoundController> _roundController;
   ofPtr<AdminController> _adminController;
   ofPtr<AudioManager> _audioManager;

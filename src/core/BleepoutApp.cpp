@@ -36,12 +36,7 @@ void BleepoutApp::setup() {
   ofSetVerticalSync(_config->vsync());
   ofSetBackgroundAuto(false);
   
-  _setupController.reset(new SetupController(*_config));
-  _setupController->setup();
-  ofAddListener(_setupController->tryStartRoundEvent, this,
-                &BleepoutApp::onTryStartRound);
-  
-  _adminController.reset(new AdminController(*_setupController));
+  _adminController.reset(new AdminController());
   _adminController->setup();
   _adminController->attachTo(*this);
   ofAddListener(_adminController->tryStartRoundEvent, this, &BleepoutApp::onTryStartRound);
@@ -50,19 +45,19 @@ void BleepoutApp::setup() {
   _audioManager->setup();
   _audioManager->attachTo(*this);
 
-  _playerController.reset(new PlayerController(*_setupController));
+  _playerController.reset(new PlayerController(*_adminController));
   
   _playerManager.reset(new PlayerManager(*this, *_playerController));
   _playerManager->setup();
   // Temporary, I believe
   Player* testPlayer = new Player();
   testPlayer->setColor(ofColor::green);
-  _setupController->lobby().push_back(ofPtr<Player>(testPlayer));
+  _adminController->lobby().push_back(ofPtr<Player>(testPlayer));
 //  _playerManager->addPlayer();
   
   
   // Handle playerCreate event
-  ofAddListener(_playerController->playerConnectedEvent, _setupController.get(), &SetupController::handlePlayerConnected);
+  ofAddListener(_playerController->playerConnectedEvent, _adminController.get(), &AdminController::handlePlayerConnected);
   //ofAddListener(_playerController->playerAddedEvent, _setupController.get(), &SetupController::handlePlayerAdded);
   
   _animationManager.reset(new AppAnimationManager(*this));
@@ -87,8 +82,6 @@ void BleepoutApp::update() {
   _audioManager->update();
   if (_roundController) {
     _roundController->update();
-  } else if (_setupController) {
-    _setupController->update();
   }
   _timedActions.update(ofGetElapsedTimef());
 }
@@ -105,8 +98,6 @@ void BleepoutApp::draw() {
   
   if (_roundController) {
     _roundController->draw();
-  } else if (_setupController) {
-    _setupController->draw();
   }
   
 #ifndef RADOME
@@ -201,8 +192,6 @@ void BleepoutApp::keyPressed(int key) {
   _adminController->keyPressed(key);
   if (_roundController) {
     _roundController->keyPressed(key);
-  } else if (_setupController) {
-    _setupController->keyPressed(key);
   }
 }
 

@@ -10,7 +10,6 @@
 		125506CD3E5F428AAFE5CC65 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F399B91E98DC31CDA6DDACB4 /* ofxTCPManager.cpp */; };
 		320111C31A427FA500EFCC35 /* Modifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C11A427FA500EFCC35 /* Modifier.cpp */; };
 		320111C91A428F6B00EFCC35 /* ObjectSpecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */; };
-		3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3205CA341A412FDC0030EE68 /* SetupController.cpp */; };
 		32269B7B1A4A861400EF6DE4 /* RoundComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B791A4A861400EF6DE4 /* RoundComponent.cpp */; };
 		32269B9B1A4CA55A00EF6DE4 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */; };
 		32269BA11A4DD18200EF6DE4 /* AudioManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32269B9F1A4DD18200EF6DE4 /* AudioManager.cpp */; };
@@ -186,8 +185,6 @@
 		320111C21A427FA500EFCC35 /* Modifier.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = Modifier.h; sourceTree = "<group>"; tabWidth = 2; };
 		320111C71A428F6B00EFCC35 /* ObjectSpecs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectSpecs.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		320111C81A428F6B00EFCC35 /* ObjectSpecs.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = ObjectSpecs.h; sourceTree = "<group>"; tabWidth = 2; };
-		3205CA341A412FDC0030EE68 /* SetupController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = SetupController.cpp; sourceTree = "<group>"; tabWidth = 2; };
-		3205CA351A412FDC0030EE68 /* SetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SetupController.h; sourceTree = "<group>"; tabWidth = 2; };
 		32269B791A4A861400EF6DE4 /* RoundComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = RoundComponent.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		32269B7A1A4A861400EF6DE4 /* RoundComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = RoundComponent.h; sourceTree = "<group>"; tabWidth = 2; };
 		32269B991A4CA55A00EF6DE4 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; tabWidth = 2; };
@@ -926,8 +923,6 @@
 				5BB4E5B61A400F500047F957 /* SpaceController.h */,
 				5BB4E5B71A400F500047F957 /* Timing.cpp */,
 				5BB4E5B81A400F500047F957 /* Timing.h */,
-				3205CA351A412FDC0030EE68 /* SetupController.h */,
-				3205CA341A412FDC0030EE68 /* SetupController.cpp */,
 				3257518F1A48F83B00CC375A /* AdminController.cpp */,
 				325751901A48F83B00CC375A /* AdminController.h */,
 				32269B791A4A861400EF6DE4 /* RoundComponent.cpp */,
@@ -1323,7 +1318,6 @@
 				5BB4E5F81A400F500047F957 /* DomeRenderer.cpp in Sources */,
 				86135253DC7909CA8590E157 /* Protocol.cpp in Sources */,
 				5BB4E60D1A42BE1A0047F957 /* Geometry.cpp in Sources */,
-				3205CA361A412FDC0030EE68 /* SetupController.cpp in Sources */,
 				325751861A48F63C00CC375A /* ofxUIWidget.cpp in Sources */,
 				325751761A48F63C00CC375A /* ofxUIRangeSlider.cpp in Sources */,
 				6D73A566CFEC0B462FE6E43C /* Reactor.cpp in Sources */,

@@ -25,6 +25,7 @@ void Player::init() {
   _paddle = NULL;
   _score = 0;
   _lives = 3;
+  isPlaying = false;
   _color.setHsb(ofRandom(255), 255, 200);
 }
 
