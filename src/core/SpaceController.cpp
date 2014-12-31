@@ -38,7 +38,13 @@ void SpaceController::addInitialPaddles() {
 void SpaceController::setup() {
   _world.setup();
   ofAddListener(_world.collisionEvent, this, &SpaceController::onCollision);
-  
+}
+
+void SpaceController::resetState() {
+  _world.setup();
+}
+
+void SpaceController::loadBricksAndWalls() {
   for (const BrickSpec& brick : _state.config().allBricks()) {
     addBrick(brick);
   }

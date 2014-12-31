@@ -27,7 +27,10 @@ public:
   void drawDebug();
   
   void addInitialPaddles();
+  void loadBricksAndWalls();
   void addInitialBalls();
+  
+  void resetState();
   
   Ball& addBall(const BallSpec& ballSpec);
   void addPaddle(float heading, Player* player);

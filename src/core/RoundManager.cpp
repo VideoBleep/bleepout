@@ -35,11 +35,13 @@ RoundController::~RoundController() {
   ofRemoveListener(_playerManager.controller.playerReadyEvent, this, &RoundController::onPlayerReady);
   endCurrentConfig();
   _renderer.reset();
+  _logicController.reset();
 }
 
 void RoundController::endCurrentConfig() {
   if (!_config)
     return;
+  _spaceController->resetState();
   ofRemoveListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofRemoveListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofRemoveListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
@@ -47,8 +49,6 @@ void RoundController::endCurrentConfig() {
   _renderer->detachFrom(*_logicController);
   _animationManager->detachFrom(*_logicController);
   _timedActions.clear();
-  _logicController.reset();
-  _spaceController.reset();
   _animationManager.reset();
   _config.reset();
 }
@@ -67,11 +67,9 @@ void RoundController::loadNextConfig() {
   _startTime = ofGetElapsedTimef();
   _state.initialize(_config);
   
-  _spaceController.reset(new SpaceController(_state));
-  _logicController.reset(new LogicController(_state));
   _animationManager.reset(new RoundAnimationManager(*this));
-  _spaceController->setup();
-  _logicController->setup();
+  _spaceController->loadBricksAndWalls();
+  _logicController->resetState();
   ofAddListener(_logicController->tryEndRoundEvent, this, &RoundController::onTryEndRound);
   ofAddListener(_logicController->modifierAppearedEvent, this, &RoundController::onModifierAppeared);
   ofAddListener(_logicController->trySpawnBallEvent, this, &RoundController::onTrySpawnBall);
@@ -100,6 +98,11 @@ void RoundController::setup() {
   _renderer.reset(new DomeRenderer(_state));
   _renderer->setup();
   
+  _spaceController.reset(new SpaceController(_state));
+  _spaceController->setup();
+  _logicController.reset(new LogicController(_state));
+  _logicController->setup();
+  
   // create paddles...!!!@#!@#!
   unsigned char hue = 0;
   unsigned char hueStep = (unsigned char)(255.0 / _state.players().size());
@@ -110,7 +113,7 @@ void RoundController::setup() {
     hue += hueStep;
   }
   
-//  loadNextConfig();
+  //  loadNextConfig();
 }
 
 void RoundController::attachTo(AdminController &adminController) {
