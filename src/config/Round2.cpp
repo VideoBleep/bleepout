@@ -67,12 +67,12 @@ RoundConfig* RoundConfig::createRoundConfig2() {
   config->addWallRing()
     .setElevation(25)
     .setCount(5)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(10, 10, 30));
   config->addWallRing()
     .setElevation(30)
     .setCount(5)
-    .setSpeed(0.05)
+    .setSpeed(1.5)
     .setSize(ofVec3f(10, 10, 30));
   
   config->addRingSet()

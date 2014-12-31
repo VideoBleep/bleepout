@@ -23,6 +23,7 @@ namespace {
 
 SpaceController::SpaceController(RoundState& state)
 : RoundComponent(state)
+, _lastUpdateTime(-1)
 , EventSource() {
 }
 
@@ -107,7 +108,11 @@ void SpaceController::removeObject(PhysicsObject &object) {
 }
 
 void SpaceController::update() {
-  _world.update();
+  if (_lastUpdateTime < 0) {
+    _lastUpdateTime = _state.time - (1 / ofGetFrameRate());
+  }
+  _world.update(_state.time - _lastUpdateTime);
+  _lastUpdateTime = _state.time;
 }
 
 float paddleTrueHitFactor(const ofVec3f& paddlePos, const ofVec3f& paddleSize) {

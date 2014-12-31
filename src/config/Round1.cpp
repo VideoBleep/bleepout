@@ -61,19 +61,19 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setElevation(67)
     .setHeading(5)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(80);
   config->addWall()
     .setElevation(67)
     .setHeading(125)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(200);
   config->addWall()
     .setElevation(67)
     .setHeading(245)
     .setSize(ofVec3f(10, 10, 30))
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setStopHeading(320);
   
   // rotating top brick rings
@@ -83,13 +83,13 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setCount(12)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(76)
     .setColor(ofColor::black)
     .setCount(10)
-    .setSpeed(-0.02)
+    .setSpeed(-0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   config->addBrickRing()
     .setElevation(80)
@@ -97,7 +97,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
     .setCount(8)
     .setValue(2)
     .setLives(2)
-    .setSpeed(0.02)
+    .setSpeed(0.6)
     .setSize(ofVec3f(7.0f, 5.0f, 17.0f));
   
   // Create the floor exit wall

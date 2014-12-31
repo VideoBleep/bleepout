@@ -183,11 +183,11 @@ public:
     delete bt_collision_configuration;
   }
   
-  void update() {
+  void update(float delta) {
     for (auto const &it : objectMap) {
       auto obj = it.first;
       if (obj->isDynamic()) {
-        obj->tick();
+        obj->tick(delta);
       }
     }
     performCollisionDetection();
@@ -340,13 +340,14 @@ public:
     }
   }
   
-  void update() {
-    for (auto &obj : objects) {
-      if (obj->isDynamic()) {
-        obj->tick();
+  void update(float delta) {
+      for (auto &obj : objects) {
+        if (obj->isDynamic()) {
+          obj->tick(delta);
+        }
       }
+      performCollisionDetection();
     }
-    performCollisionDetection();
   }
   
   BoundingBox getObjBoundingBox(PhysicsObject* obj) {
@@ -421,9 +422,9 @@ void PhysicsWorld::removeObject(PhysicsObject* obj) {
   }
 }
 
-void PhysicsWorld::update() {
+void PhysicsWorld::update(float deltaTime) {
   if (_impl.get()) {
-    _impl->update();
+    _impl->update(deltaTime);
   }
 }
 

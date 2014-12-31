@@ -1,6 +1,6 @@
 
 {
-	"fps" : 30,
+	"fps" : 60,
 	"logLevel" : "Notice",
 	"rounds" : 
 	[

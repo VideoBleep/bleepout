@@ -95,7 +95,7 @@ RoundConfig* RoundConfig::createRoundConfig3() {
     .setCount(6)
     .setSize(ofVec3f(8, 3, 25))
     .setVisible(true)
-    .setSpeed(0.007);
+    .setSpeed(0.21);
   
   // Create the floor exit wall
   float d = (appParams.domeMargin + appParams.domeRadius) * 5;

@@ -58,6 +58,7 @@ private:
 
 private:
   PhysicsWorld _world;
+  float _lastUpdateTime;
 };
 
 #endif /* defined(__bleepout__SpaceController__) */
