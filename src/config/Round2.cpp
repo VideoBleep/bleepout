@@ -12,7 +12,6 @@
 RoundConfig* RoundConfig::createRoundConfig2() {
   const auto& appParams = BleepoutParameters::get();
   RoundConfig* config = new RoundConfig("Round2");
-  config->_paddleSize.set(16.0f, 8.0f, 40.0f);
   config->_ballRadius = 8.0f;
   config->_modifierSize.set(9.0f, 16.0f, 9.0f);
   

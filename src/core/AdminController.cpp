@@ -77,6 +77,7 @@ struct AdminUIControls {
   ofxUITextInput* syphonServerName;
 #endif
   ofxUIButton* startRound;
+  ofxUIButton* playRound;
   ofxUIButton* endRound;
   ofxUILabel* remainingTime;
   ofxUISlider* audioVolume;
@@ -125,8 +126,8 @@ void AdminController::setup() {
   _gui = new ofxUICanvas(totalWidth - uiWidth - 10, 0,
                          uiWidth, totalHeight);
   _gui->setColorBack(ofColor(0, 0, 0, 63));
-  
-  _gui->addLabel("BLEEPOUT ADMIN", OFX_UI_FONT_LARGE);
+  _gui->setFont("GUI/Exo-Regular.ttf", true, true, false, 0.0, OFX_UI_FONT_RESOLUTION);
+  _gui->addLabel("BLEEPOUT", OFX_UI_FONT_LARGE);
   _gui->addSpacer();
   _controls->inRound = _gui->addLabel("Not in round", OFX_UI_FONT_MEDIUM);
   _controls->remainingTime = _gui->addLabel("Time: ", OFX_UI_FONT_MEDIUM);
@@ -144,6 +145,7 @@ void AdminController::setup() {
   }
   
   _controls->startRound = _gui->addButton("Start Round", false);
+  _controls->playRound = _gui->addButton("Play Round", false);
   _controls->endRound = _gui->addButton("End Round", false);
   
   _gui->addSpacer();
@@ -185,6 +187,8 @@ void AdminController::setup() {
 void AdminController::attachTo(BleepoutApp &app) {
   ofAddListener(app.roundStartedEvent, this,
                 &AdminController::onRoundStarted);
+  ofAddListener(app.roundPlayEvent, this,
+                &AdminController::onRoundPlay);
   ofAddListener(app.roundEndedEvent, this,
                 &AdminController::onRoundEnded);
 }
@@ -192,11 +196,19 @@ void AdminController::attachTo(BleepoutApp &app) {
 void AdminController::detachFrom(BleepoutApp &app) {
   ofRemoveListener(app.roundEndedEvent, this,
                    &AdminController::onRoundEnded);
+  ofRemoveListener(app.roundPlayEvent, this,
+                   &AdminController::onRoundPlay);
   ofRemoveListener(app.roundStartedEvent, this,
                    &AdminController::onRoundStarted);
 }
 
 void AdminController::onRoundStarted(RoundStateEventArgs &e) {
+  _controls->inRound->setLabel("Sort of in round...");
+  BleepoutParameters::get().inRound = true;
+  _roundState = &e.state();
+}
+
+void AdminController::onRoundPlay(RoundStateEventArgs &e) {
   _controls->inRound->setLabel("In round: " + e.state().config().name());
   BleepoutParameters::get().inRound = true;
   _roundState = &e.state();
@@ -286,6 +298,9 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
   } else if (e.widget == _controls->startRound &&
              _controls->startRound->getValue()) {
     tryStartRound();
+  } else if (e.widget == _controls->playRound &&
+             _controls->playRound->getValue()) {
+    notifyPlayRound();
   } else if (e.widget == _controls->endRound &&
              _controls->endRound->getValue()) {
     tryEndRound();
@@ -326,6 +341,12 @@ bool AdminController::notifyTryStartRound(std::list<ofPtr<RoundConfig> > configs
   ofNotifyEvent(tryStartRoundEvent, e);
   logEvent("TryStartRound", e);
   return e.handled();
+}
+
+void AdminController::notifyPlayRound() {
+  EmptyEventArgs e;
+  ofNotifyEvent(playRoundEvent, e);
+  logEvent("PlayRound", e);
 }
 
 bool AdminController::notifyTryEndRound() {

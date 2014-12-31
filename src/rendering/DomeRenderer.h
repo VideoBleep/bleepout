@@ -20,6 +20,7 @@ public:
   DomeRenderer(RoundState& state);
   virtual ~DomeRenderer() {}
   virtual void setup() override;
+  virtual void setupExtras() override;
   virtual void update() override;
   virtual void draw() override;
 
@@ -44,7 +45,8 @@ protected:
     
   RendererExtras _extras;
   
-  vector<ofLight> lights;
+  vector<ofLight> movingLights;
+  vector<ofLight> staticLights;
   ofMaterial wallMaterial;
 };
 

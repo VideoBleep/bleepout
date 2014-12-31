@@ -196,11 +196,7 @@ void BallSpawnedAnimation::output(std::ostream &os) const {
      << "}";
 }
 
-#ifdef RADOME
 static const char messageFontName[] = "GUI/PixelSplitter-Bold.ttf";
-#else
-static const char messageFontName[] = "PixelSplitter-Bold.ttf";
-#endif
 
 AppAnimationManager::AppAnimationManager(BleepoutApp& app)
 : _app(app), _messageFont() {

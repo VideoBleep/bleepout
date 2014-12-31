@@ -7,6 +7,7 @@
 //
 
 #include "RendererExtras.h"
+#include "RendererUtil.h"
 #include <ofMain.h>
 #include "Timing.h"
 #include "Animations.h"
@@ -48,7 +49,7 @@ public:
     ofPushStyle();
     
     ofNoFill();
-    ofSetLineWidth(_lineWidth);
+    LineWidthAdjuster::setLineWidth(_lineWidth);
     ofSetColor(_color);
     
     _spinPulser.update(state.time);

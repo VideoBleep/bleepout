@@ -70,7 +70,6 @@ public:
   const std::string& name() const { return _name; }
   
   float startDelay() const { return _startDelay; }
-  const ofVec3f& paddleSize() const { return _paddleSize; }
   float ballRadius() const { return _ballRadius; }
   float brickFadeTime() const { return _brickFadeTime; }
   ofVec3f modifierSize() const { return _modifierSize; }
@@ -184,7 +183,6 @@ private:
   
   std::string _name;
   float _startDelay;
-  ofVec3f _paddleSize;
   float _ballRadius;
   float _brickFadeTime;
   ofVec3f _modifierSize;
@@ -243,6 +241,7 @@ public:
   std::string playerLivesChangedSound;
   std::string playerLostSound;
   std::string countdownTimerTickSound;
+  ofVec3f paddleSize;
 private:
   int _fps;
   ofLogLevel _logLevel;
