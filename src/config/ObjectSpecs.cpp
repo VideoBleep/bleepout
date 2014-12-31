@@ -336,6 +336,7 @@ void JsonLoader::readVal(const Json::Value &val,
     R_JPROP(heading);
     R_JPROP(size);
     R_JPROP(isExit);
+    R_JPROP(isFloor);
     R_JPROP(speed);
     R_JPROP(stopHeading);
     R_JPROP(visible);
@@ -351,6 +352,8 @@ Json::Value toJsonVal(const WallSpec& spec) {
   obj["size"] = toJsonVal(spec.size);
   if (spec.isExit)
     obj["isExit"] = spec.isExit;
+  if (spec.isFloor)
+    obj["isFloor"] = spec.isFloor;
   obj["speed"] = spec.speed;
   obj["stopHeading"] = spec.stopHeading;
   obj["visible"] = spec.visible;

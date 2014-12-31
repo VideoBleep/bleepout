@@ -20,16 +20,20 @@ Wall::Wall(const RoundConfig& config, const WallSpec& spec)
   thisGameObject = this;
   _isExit = spec.isExit;
   _visible = spec.visible;
+  float d = appParams.domeMargin + appParams.domeRadius;
   this->setPositionSpherical(appParams.domeRadius + appParams.domeMargin, spec.elevation, spec.heading);
-  this->setSize(spec.size);
+  if (spec.isFloor) {
+    this->setSize(ofVec3f(d, 10, d));
+  } else {
+    this->setSize(spec.size);
+  }
   if (spec.speed == 0) {
     this->setPositionSpherical(appParams.domeRadius +
                                appParams.domeMargin,
                                spec.elevation,
                                spec.heading);
   } else {
-    this->setTrajectory(new CircularTrajectory(appParams.domeRadius +
-                                               appParams.domeMargin,
+    this->setTrajectory(new CircularTrajectory(d,
                                                spec.speed,
                                                spec.elevation,
                                                spec.heading,

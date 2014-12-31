@@ -64,6 +64,7 @@ def createBrickQuads(elevation = 0,
               size = size)
 
 def createWall(isExit = False,
+               isFloor = False,
                visible = True,
                elevation = 30,
                heading = 0,
@@ -72,12 +73,20 @@ def createWall(isExit = False,
                size = None):
   return dict(_type = "Wall",
               isExit = isExit,
+              isFloor = isFloor,
               visible = visible,
               elevation = elevation,
               heading = heading,
               speed = speed,
               stopHeading = stopHeading,
               size = size)
+
+def createFloor(isExit = False,
+                elevation = -10):
+  return createWall(isExit= isExit,
+                    isFloor= True,
+                    visible= False,
+                    elevation= elevation)
 
 def createWallRing(isExit = False,
                    visible = True,

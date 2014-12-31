@@ -212,6 +212,7 @@ struct BrickQuadsSpec : public SpecGenerator<BrickSpec> {
 
 struct WallSpec {
   bool isExit;
+  bool isFloor;
   bool visible;
   float elevation;
   float heading;
@@ -219,12 +220,13 @@ struct WallSpec {
   float stopHeading;
   ofVec3f size;
   
-  WallSpec() : speed(0), stopHeading(-1), isExit(false), visible(true) { }
+  WallSpec() : speed(0), stopHeading(-1), isExit(false), isFloor(false), visible(true) { }
   WallSpec& copyFrom(const WallSpec& other) {
     elevation = other.elevation;
     heading = other.heading;
     size = other.size;
     isExit = other.isExit;
+    isFloor = other.isFloor;
     speed = other.speed;
     stopHeading = other.stopHeading;
     visible = other.visible;
@@ -234,6 +236,13 @@ struct WallSpec {
   WallSpec& setHeading(float h) { heading = h; return *this; }
   WallSpec& setSize(ofVec3f s) { size = s; return *this; }
   WallSpec& setIsExit(bool e) { isExit = e; return *this; }
+  WallSpec& setIsFloor(bool f) {
+    isFloor = f;
+    if (f) {
+      visible = false;
+    }
+    return *this;
+  }
   WallSpec& setVisible(bool v) { visible = v; return *this; }
   WallSpec& setSpeed(float s) { speed = s; return *this; }
   WallSpec& setStopHeading(float s) { stopHeading = s; return *this; }

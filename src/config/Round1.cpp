@@ -105,7 +105,7 @@ RoundConfig* RoundConfig::createRoundConfig1() {
   float d = (appParams.domeMargin + appParams.domeRadius) * 5;
   config->addWall()
     .setElevation(-10)
-    .setHeading(0)
+    .setIsFloor(true)
     .setSize(ofVec3f(d, 10, d))
     .setIsExit(true)
     .setVisible(false);
