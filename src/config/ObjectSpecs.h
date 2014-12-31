@@ -408,12 +408,12 @@ struct MessageSpec {
   float delay;
   float duration;
   
-  MessageSpec() {}
+  MessageSpec() : text(""), size(10), trails(0), delay(0), duration(3) {}
   MessageSpec(std::string txt, ofColor c, float s, int trl, float del, float dur)
   : text(txt), color(c), size(s), trails(trl)
   , delay(del), duration(dur) { }
   MessageSpec(std::string txt, ofColor c)
-  : text(txt), color(c), trails(0) { }
+  : text(txt), color(c), size(10), trails(0), delay(0), duration(3) { }
   MessageSpec& setSize(float s) { size = s; return *this; }
   MessageSpec& setTrails(int t) { trails = t; return *this; }
   MessageSpec& setTiming(float del, float dur) {
