@@ -1,0 +1,23 @@
+{
+	"fps" : 60,
+	"logLevel" : "Notice",
+	"rounds" : 
+	[
+		"config/Round1.json",
+		"config/Round2.json",
+		"config/Round3.json",
+		"config/Round4.json"
+	],
+	"syphonAppName" : "Arena",
+	"syphonServerName" : "Composition",
+	"vsync" : true,
+	"roundStartedSound" : "sounds/StageStart.wav",
+	"roundEndedSound" : "sounds/StageEnd.wav",
+	"brickHitSound" : "sounds/BrickHit.wav",
+	"brickDestroyedSound" : "sounds/BrickDest.wav",
+	"paddleHitSound" : "sounds/PaddleHit.wav",
+	"wallHitSound" : "sounds/WallHit.wav",
+	"modifierAppliedSound" : "sounds/PowerupOn.wav",
+	"modifierRemovedSound" : "sounds/PowerupOff.wav",
+	"ballDestroyedSound" : "sounds/BallDie.wav"
+}

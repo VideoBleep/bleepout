@@ -1,756 +1,772 @@
-
 {
-	"ballSpawnedFadeTime" : 0.2000000029802322,
-	"brickFadeTime" : 0.4000000059604645,
-	"modifierFadeTime" : 0.2000000029802322,
-	"modifierRadius" : 9.0,
-	"name" : "Round2",
-	"objects" : 
-	[
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 217.0700988769531
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 57.13029479980469
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 68.87071990966797
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 110.1879348754883
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 88.57353973388672
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 0.0,
-			"heading2" : 39.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 20.0,
-			"heading2" : 59.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 40.0,
-			"heading2" : 79.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 60.0,
-			"heading2" : 99.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 80.0,
-			"heading2" : 119.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 100.0000076293945,
-			"heading2" : 139.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 120.0,
-			"heading2" : 159.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 140.0,
-			"heading2" : 179.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 160.0,
-			"heading2" : 199.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 180.0,
-			"heading2" : 219.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 200.0000152587891,
-			"heading2" : 239.0000152587891,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 220.0,
-			"heading2" : 259.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 240.0,
-			"heading2" : 279.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 260.0,
-			"heading2" : 299.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 280.0,
-			"heading2" : 319.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 300.0,
-			"heading2" : 339.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 320.0,
-			"heading2" : 359.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 255, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 14,
-			"elevation1" : 35.0,
-			"elevation2" : 75.0,
-			"heading1" : 340.0,
-			"heading2" : 379.0,
-			"phase" : 0.0,
-			"size" : [ 5.0, 2.0, 10.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "supercharge",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "Wall",
-			"elevation" : -10.0,
-			"heading" : 0.0,
-			"isExit" : true,
-			"size" : [ 850.0, 10.0, 850.0 ],
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"visible" : false
-		},
-		
-		{
-			"_type" : "WallRing",
-			"count" : 5,
-			"elevation" : 25.0,
-			"phase" : 0.0,
-			"size" : [ 10.0, 10.0, 30.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : -1.0,
-			"visible" : true
-		},
-		
-		{
-			"_type" : "WallRing",
-			"count" : 5,
-			"elevation" : 30.0,
-			"phase" : 0.0,
-			"size" : [ 10.0, 10.0, 30.0 ],
-			"speed" : 0.05000000074505806,
-			"stopHeading" : -1.0,
-			"visible" : true
-		},
-		
-		{
-			"_type" : "Modifier",
-			"amount" : 0.0,
-			"color" : [ 0, 255, 0 ],
-			"duration" : 20.0,
-			"name" : "supercharge",
-			"type" : "SuperchargedBall"
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 255, 255, 255 ],
-			"delay" : 0.0,
-			"duration" : 3.0,
-			"size" : 12.0,
-			"text" : "VideoBleep\n presents",
-			"trails" : 0
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 0, 120, 240 ],
-			"delay" : 3.0,
-			"duration" : 4.50,
-			"size" : 50.0,
-			"text" : "BLEEPOUT",
-			"trails" : 4
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 0, 255, 255 ],
-			"delay" : 7.50,
-			"duration" : 3.0,
-			"size" : 25.0,
-			"text" : "STAGE 2 START",
-			"trails" : 0
-		},
-		
-		{
-			"_type" : "RingSet",
-			"color" : [ 0, 0, 255, 63 ],
-			"count" : 80,
-			"lineWidth" : 2.299999952316284,
-			"radiusScale" : 2.299999952316284,
-			"spin" : 
-			{
-				"changeInterval" : 10.0,
-				"maxRate" : 0.009999999776482582,
-				"minRate" : 0.0,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spread" : 
-			{
-				"changeInterval" : 10.0,
-				"maxRate" : 0.50,
-				"minRate" : 0.2000000029802322,
-				"startValue" : [ 0.3000000119209290, 0.3000000119209290, 0.3000000119209290 ]
-			},
-			"spreadOffset" : [ 50.0, 90.0, 0.0 ]
-		}
-	],
-	"paddleSize" : [ 16.0, 8.0, 40.0 ],
-	"rules" : 
-	{
-		"ballsRespawn" : null,
-		"playersCanLoseLives" : null,
-		"timeLimit" : null
-	},
-	"startDelay" : 10.0
+  "ballRadius": 8,
+  "modifierSize": [
+    9,
+    16,
+    9
+  ],
+  "name": "Round2omg",
+  "objects": [
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 279.09066806078874
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 169.1377360877506
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 255.79114611261366
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 55.73422269149258
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 85.8138979534625
+    },
+    {
+      "_type": "Modifier",
+      "amount": null,
+      "beneficial": null,
+      "color": [
+        255,
+        69,
+        0
+      ],
+      "duration": 20,
+      "name": "supercharge"
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": -5.0,
+      "heading2": 16.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 25.0,
+      "heading2": 36.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 35.0,
+      "heading2": 56.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 65.0,
+      "heading2": 76.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 75.0,
+      "heading2": 96.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 105.0,
+      "heading2": 116.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 115.0,
+      "heading2": 136.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 145.0,
+      "heading2": 156.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 155.0,
+      "heading2": 176.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 185.0,
+      "heading2": 196.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 195.0,
+      "heading2": 216.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 225.00000000000003,
+      "heading2": 236.00000000000003,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 235.0,
+      "heading2": 256.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 265.0,
+      "heading2": 276.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 275.0,
+      "heading2": 296.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 305.0,
+      "heading2": 316.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 315.0,
+      "heading2": 336.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        255,
+        0
+      ],
+      "count": 14,
+      "elevation1": 35,
+      "elevation2": 75,
+      "heading1": 345.0,
+      "heading2": 356.0,
+      "phase": null,
+      "size": [
+        5,
+        2,
+        10
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "supercharge"
+        }
+      },
+      "stripe3": {}
+    },
+    {
+      "_type": "WallRing",
+      "count": 5,
+      "elevation": 25,
+      "isExit": null,
+      "phase": null,
+      "size": [
+        10,
+        10,
+        30
+      ],
+      "speed": 0.6,
+      "stopHeading": null,
+      "visible": null
+    },
+    {
+      "_type": "WallRing",
+      "count": 5,
+      "elevation": 30,
+      "isExit": null,
+      "phase": null,
+      "size": [
+        10,
+        10,
+        30
+      ],
+      "speed": 1.5,
+      "stopHeading": null,
+      "visible": null
+    },
+    {
+      "_type": "Wall",
+      "elevation": -10,
+      "heading": 0,
+      "isExit": true,
+      "isFloor": true,
+      "size": null,
+      "speed": 0,
+      "stopHeading": -1,
+      "visible": false
+    },
+    {
+      "_type": "Message",
+      "color": [
+        0,
+        255,
+        255
+      ],
+      "delay": 1,
+      "duration": 3,
+      "size": 25,
+      "text": "STAGE 2 START",
+      "trails": null
+    },
+    {
+      "color": [
+        0,
+        0,
+        255,
+        63
+      ],
+      "count": 80,
+      "lineWidth": 2.3,
+      "radiusScale": 2.3,
+      "spin": {
+        "changeInterval": 10,
+        "maxRate": 0.01,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 10,
+        "maxRate": 0.5,
+        "minRate": 0.2,
+        "startValue": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      },
+      "spreadOffset": [
+        50,
+        90,
+        0
+      ]
+    }
+  ],
+  "rules": {
+    "ballsRespawn": true
+  },
+  "startDelay": 5
 }

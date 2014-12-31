@@ -1,736 +1,873 @@
-
 {
-	"ballSpawnedFadeTime" : 0.2000000029802322,
-	"brickFadeTime" : 0.4000000059604645,
-	"modifierFadeTime" : 0.2000000029802322,
-	"modifierRadius" : 9.0,
-	"name" : "Round1",
-	"objects" : 
-	[
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 119.36816406250
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 300.7104187011719
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 359.9494934082031
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 230.9569549560547
-		},
-		
-		{
-			"_type" : "Ball",
-			"elevation" : 30.0,
-			"heading" : 173.5763092041016
-		},
-		
-		{
-			"_type" : "BrickRing",
-			"color" : [ 0, 0, 0 ],
-			"count" : 12,
-			"elevation" : 72.0,
-			"lives" : 2,
-			"modifierChance" : 10.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : -1.0,
-			"value" : 2
-		},
-		
-		{
-			"_type" : "BrickRing",
-			"color" : [ 0, 0, 0 ],
-			"count" : 10,
-			"elevation" : 76.0,
-			"lives" : 1,
-			"modifierChance" : 5.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : -0.01999999955296516,
-			"stopHeading" : -1.0,
-			"value" : 1
-		},
-		
-		{
-			"_type" : "BrickRing",
-			"color" : [ 0, 0, 0 ],
-			"count" : 8,
-			"elevation" : 80.0,
-			"lives" : 2,
-			"modifierChance" : 5.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : -1.0,
-			"value" : 2
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 0, 0, 255 ],
-			"color2" : [ 0, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 0.0,
-			"heading2" : 20.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 21, 0, 255 ],
-			"color2" : [ 21, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 30.0,
-			"heading2" : 50.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 42, 0, 255 ],
-			"color2" : [ 42, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 60.0,
-			"heading2" : 80.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 63, 0, 255 ],
-			"color2" : [ 63, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 90.0,
-			"heading2" : 110.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 85, 0, 255 ],
-			"color2" : [ 85, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 120.0,
-			"heading2" : 140.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 106, 0, 255 ],
-			"color2" : [ 106, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 150.0,
-			"heading2" : 170.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 127, 0, 255 ],
-			"color2" : [ 127, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 180.0,
-			"heading2" : 200.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 148, 0, 255 ],
-			"color2" : [ 148, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 210.0,
-			"heading2" : 230.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 170, 0, 255 ],
-			"color2" : [ 170, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 240.0,
-			"heading2" : 260.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 191, 0, 255 ],
-			"color2" : [ 191, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 270.0,
-			"heading2" : 290.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 212, 0, 255 ],
-			"color2" : [ 212, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 300.0,
-			"heading2" : 320.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "CurvedBrickColumn",
-			"color1" : [ 233, 0, 255 ],
-			"color2" : [ 233, 255, 0 ],
-			"count" : 10,
-			"elevation1" : 30.0,
-			"elevation2" : 60.0,
-			"heading1" : 330.0,
-			"heading2" : 350.0,
-			"phase" : 0.0,
-			"size" : [ 7.0, 5.0, 17.0 ],
-			"speed" : 0.0,
-			"stopHeading" : 0.0,
-			"stripe1" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.0,
-				"value" : 1
-			},
-			"stripe2" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.3000000119209290,
-				"modifierName" : "widePaddle",
-				"value" : 2
-			},
-			"stripe3" : 
-			{
-				"lives" : 1,
-				"modifierChance" : 0.2000000029802322,
-				"modifierName" : "narrowPaddle",
-				"value" : 1
-			}
-		},
-		
-		{
-			"_type" : "Wall",
-			"elevation" : 67.0,
-			"heading" : 5.0,
-			"size" : [ 10.0, 10.0, 30.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : 80.0,
-			"visible" : true
-		},
-		
-		{
-			"_type" : "Wall",
-			"elevation" : 67.0,
-			"heading" : 125.0,
-			"size" : [ 10.0, 10.0, 30.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : 200.0,
-			"visible" : true
-		},
-		
-		{
-			"_type" : "Wall",
-			"elevation" : 67.0,
-			"heading" : 245.0,
-			"size" : [ 10.0, 10.0, 30.0 ],
-			"speed" : 0.01999999955296516,
-			"stopHeading" : 320.0,
-			"visible" : true
-		},
-		
-		{
-			"_type" : "Wall",
-			"elevation" : -10.0,
-			"heading" : 0.0,
-			"isExit" : true,
-			"size" : [ 850.0, 10.0, 850.0 ],
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"visible" : false
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 62.0,
-			"heading1" : 15.0,
-			"heading2" : 45.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 68.0,
-			"heading1" : 75.0,
-			"heading2" : 105.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 62.0,
-			"heading1" : 135.0,
-			"heading2" : 165.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 68.0,
-			"heading1" : 195.0,
-			"heading2" : 225.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 62.0,
-			"heading1" : 255.0,
-			"heading2" : 285.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "CurvedWall",
-			"elevation1" : 30.0,
-			"elevation2" : 68.0,
-			"heading1" : 315.0,
-			"heading2" : 345.0,
-			"speed" : 0.0,
-			"stopHeading" : -1.0,
-			"width" : 10.0
-		},
-		
-		{
-			"_type" : "Modifier",
-			"amount" : 0.50,
-			"color" : [ 255, 0, 0 ],
-			"duration" : 5.0,
-			"name" : "narrowPaddle",
-			"type" : "PaddleWidth",
-			"beneficial" : false
-		},
-		
-		{
-			"_type" : "Modifier",
-			"amount" : 1.50,
-			"color" : [ 0, 0, 255 ],
-			"duration" : 5.0,
-			"name" : "widePaddle",
-			"type" : "PaddleWidth"
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 255, 255, 255 ],
-			"delay" : 0.0,
-			"duration" : 3.0,
-			"size" : 12.0,
-			"text" : "VideoBleep\n presents",
-			"trails" : 0
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 0, 120, 240 ],
-			"delay" : 3.0,
-			"duration" : 4.50,
-			"size" : 50.0,
-			"text" : "BLEEPOUT",
-			"trails" : 4
-		},
-		
-		{
-			"_type" : "Message",
-			"color" : [ 0, 255, 0 ],
-			"delay" : 7.50,
-			"duration" : 2.50,
-			"size" : 25.0,
-			"text" : "STAGE 1 START",
-			"trails" : 0
-		},
-		
-		{
-			"_type" : "RingSet",
-			"color" : [ 0, 0, 255, 63 ],
-			"count" : 30,
-			"lineWidth" : 1.200000047683716,
-			"radiusScale" : 1.950000047683716,
-			"spin" : 
-			{
-				"changeInterval" : 5.0,
-				"maxRate" : 0.3000000119209290,
-				"minRate" : 0.0,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spread" : 
-			{
-				"changeInterval" : 10.0,
-				"maxRate" : 0.1000000014901161,
-				"minRate" : 0.0,
-				"startValue" : [ 20.0, 20.0, 20.0 ]
-			},
-			"spreadOffset" : [ 20.0, 20.0, 20.0 ]
-		},
-		
-		{
-			"_type" : "RingSet",
-			"color" : [ 0, 255, 255, 63 ],
-			"count" : 60,
-			"lineWidth" : 1.399999976158142,
-			"radiusScale" : 2.299999952316284,
-			"spin" : 
-			{
-				"changeInterval" : 5.0,
-				"maxRate" : 0.4000000059604645,
-				"minRate" : 0.0,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spread" : 
-			{
-				"changeInterval" : 40.0,
-				"maxRate" : 0.50,
-				"minRate" : 0.0,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spreadOffset" : [ 60.0, 60.0, 60.0 ]
-		},
-		
-		{
-			"_type" : "RingSet",
-			"color" : [ 127, 172, 255, 63 ],
-			"count" : 50,
-			"lineWidth" : 0.8999999761581421,
-			"radiusScale" : 2.0,
-			"spin" : 
-			{
-				"changeInterval" : 5.0,
-				"maxRate" : 0.2000000029802322,
-				"minRate" : 0.0,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spread" : 
-			{
-				"changeInterval" : 10.0,
-				"maxRate" : 0.1599999964237213,
-				"minRate" : 0.009999999776482582,
-				"startValue" : [ 0.0, 0.0, 0.0 ]
-			},
-			"spreadOffset" : [ 60.0, 60.0, 60.0 ]
-		}
-	],
-	"paddleSize" : [ 16.0, 8.0, 40.0 ],
-	"rules" : 
-	{
-		"ballsRespawn" : true,
-		"playersCanLoseLives" : null,
-		"timeLimit" : null
-	},
-	"startDelay" : 10.0
+  "ballRadius": 8,
+  "modifierSize": [
+    9,
+    16,
+    9
+  ],
+  "name": "Round1asdf",
+  "objects": [
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 166.97645513673254
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 295.76758175675485
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 87.63108662774684
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 32.827397257590974
+    },
+    {
+      "_type": "Ball",
+      "elevation": 30,
+      "heading": 84.19734917016581
+    },
+    {
+      "_type": "Modifier",
+      "amount": 1.5,
+      "beneficial": null,
+      "color": [
+        0,
+        0,
+        255
+      ],
+      "duration": 5,
+      "name": "widePaddle"
+    },
+    {
+      "_type": "Modifier",
+      "amount": 0.5,
+      "beneficial": false,
+      "color": [
+        255,
+        0,
+        0
+      ],
+      "duration": 5,
+      "name": "narrowPaddle"
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        0.0,
+        0,
+        255
+      ],
+      "color2": [
+        0.0,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": -5.0,
+      "heading2": 15.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        21.25,
+        0,
+        255
+      ],
+      "color2": [
+        21.25,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 35.0,
+      "heading2": 55.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        42.5,
+        0,
+        255
+      ],
+      "color2": [
+        42.5,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 55.0,
+      "heading2": 75.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        63.75,
+        0,
+        255
+      ],
+      "color2": [
+        63.75,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 95.0,
+      "heading2": 115.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        85.0,
+        0,
+        255
+      ],
+      "color2": [
+        85.0,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 115.0,
+      "heading2": 135.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        106.25,
+        0,
+        255
+      ],
+      "color2": [
+        106.25,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 155.0,
+      "heading2": 175.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        127.5,
+        0,
+        255
+      ],
+      "color2": [
+        127.5,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 175.0,
+      "heading2": 195.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        148.75,
+        0,
+        255
+      ],
+      "color2": [
+        148.75,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 215.0,
+      "heading2": 235.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        170.0,
+        0,
+        255
+      ],
+      "color2": [
+        170.0,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 235.0,
+      "heading2": 255.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        191.25,
+        0,
+        255
+      ],
+      "color2": [
+        191.25,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 275.0,
+      "heading2": 295.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        212.5,
+        0,
+        255
+      ],
+      "color2": [
+        212.5,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 295.0,
+      "heading2": 315.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedBrickColumn",
+      "color1": [
+        233.75,
+        0,
+        255
+      ],
+      "color2": [
+        233.75,
+        255,
+        0
+      ],
+      "count": 10,
+      "elevation1": 30,
+      "elevation2": 60,
+      "heading1": 335.0,
+      "heading2": 355.0,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": null,
+      "stopHeading": null,
+      "stripe1": {},
+      "stripe2": {
+        "lives": 2,
+        "modifier": {
+          "chance": 0.3,
+          "name": "widePaddle"
+        }
+      },
+      "stripe3": {
+        "modifier": {
+          "chance": 0.2,
+          "name": "narrowPaddle"
+        }
+      }
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 62,
+      "heading1": 15,
+      "heading2": 45,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 68,
+      "heading1": 75,
+      "heading2": 105,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 62,
+      "heading1": 135,
+      "heading2": 165,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 68,
+      "heading1": 195,
+      "heading2": 225,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 62,
+      "heading1": 255,
+      "heading2": 285,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "CurvedWall",
+      "elevation1": 30,
+      "elevation2": 68,
+      "heading1": 315,
+      "heading2": 345,
+      "isExit": false,
+      "speed": null,
+      "stopHeading": null,
+      "width": 10
+    },
+    {
+      "_type": "Wall",
+      "elevation": 67,
+      "heading": 5,
+      "isExit": false,
+      "isFloor": false,
+      "size": [
+        10,
+        10,
+        30
+      ],
+      "speed": 0.6,
+      "stopHeading": 80,
+      "visible": true
+    },
+    {
+      "_type": "Wall",
+      "elevation": 67,
+      "heading": 125,
+      "isExit": false,
+      "isFloor": false,
+      "size": [
+        10,
+        10,
+        30
+      ],
+      "speed": 0.6,
+      "stopHeading": 200,
+      "visible": true
+    },
+    {
+      "_type": "Wall",
+      "elevation": 67,
+      "heading": 245,
+      "isExit": false,
+      "isFloor": false,
+      "size": [
+        10,
+        10,
+        30
+      ],
+      "speed": 0.6,
+      "stopHeading": 320,
+      "visible": true
+    },
+    {
+      "_type": "BrickRing",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "count": 12,
+      "elevation": 72,
+      "lives": 2,
+      "modifier": null,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": 0.6,
+      "stopHeading": null,
+      "value": 2
+    },
+    {
+      "_type": "BrickRing",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "count": 10,
+      "elevation": 76,
+      "lives": null,
+      "modifier": null,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": -0.6,
+      "stopHeading": null,
+      "value": null
+    },
+    {
+      "_type": "BrickRing",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "count": 8,
+      "elevation": 80,
+      "lives": null,
+      "modifier": null,
+      "phase": null,
+      "size": [
+        7,
+        5,
+        17
+      ],
+      "speed": 0.6,
+      "stopHeading": null,
+      "value": 2
+    },
+    {
+      "_type": "Wall",
+      "elevation": -10,
+      "heading": 0,
+      "isExit": true,
+      "isFloor": true,
+      "size": null,
+      "speed": 0,
+      "stopHeading": -1,
+      "visible": false
+    },
+    {
+      "_type": "Message",
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "delay": null,
+      "duration": 3,
+      "size": 12,
+      "text": "VideoBleep\n presents",
+      "trails": null
+    },
+    {
+      "_type": "Message",
+      "color": [
+        0,
+        120,
+        240
+      ],
+      "delay": 3,
+      "duration": 4.5,
+      "size": 50,
+      "text": "BLEEPOUT",
+      "trails": 4
+    },
+    {
+      "_type": "Message",
+      "color": [
+        0,
+        255,
+        0
+      ],
+      "delay": 7.5,
+      "duration": 2.5,
+      "size": 25,
+      "text": "STAGE 1 START",
+      "trails": null
+    },
+    {
+      "color": [
+        0,
+        0,
+        255,
+        63
+      ],
+      "count": 30,
+      "lineWidth": 1.2,
+      "radiusScale": 1.95,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.3,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 10,
+        "maxRate": 0.1,
+        "minRate": 0,
+        "startValue": [
+          20,
+          20,
+          20
+        ]
+      },
+      "spreadOffset": [
+        20,
+        20,
+        20
+      ]
+    },
+    {
+      "color": [
+        0,
+        255,
+        255,
+        63
+      ],
+      "count": null,
+      "lineWidth": 1.4,
+      "radiusScale": 2.3,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.4,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 40,
+        "maxRate": 0.5,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spreadOffset": [
+        60,
+        60,
+        60
+      ]
+    },
+    {
+      "color": [
+        127,
+        172,
+        255,
+        63
+      ],
+      "count": 50,
+      "lineWidth": 0.9,
+      "radiusScale": 2,
+      "spin": {
+        "changeInterval": 5,
+        "maxRate": 0.2,
+        "minRate": 0,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spread": {
+        "changeInterval": 10,
+        "maxRate": 0.16,
+        "minRate": 0.01,
+        "startValue": [
+          0,
+          0,
+          0
+        ]
+      },
+      "spreadOffset": [
+        60,
+        60,
+        60
+      ]
+    }
+  ],
+  "startDelay": 10
 }
