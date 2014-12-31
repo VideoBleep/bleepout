@@ -87,7 +87,7 @@ def generate():
     createWallRing(elevation=35,
                    count=6,
                    size=[8, 3, 25],
-                   speed=0.007)
+                   speed=0.21)
   ]
 
   superCharge = createModifier(name= "supercharge",

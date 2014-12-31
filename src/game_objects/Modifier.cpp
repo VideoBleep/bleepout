@@ -48,7 +48,7 @@ void Modifier::setup(const RoundConfig &config,
   this->setSize(ofVec3f(config.modifierSize()));
   auto t = new OrbitalTrajectory();
   t->setRadius(appParams.domeRadius + appParams.domeMargin);
-  t->setSpeed(0.02);
+  t->setSpeed(0.6);
   float heading;
   float elevation1;
   cartesianToSpherical(spawner.getPosition(), &elevation1, &heading);

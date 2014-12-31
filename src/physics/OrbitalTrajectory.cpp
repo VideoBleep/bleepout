@@ -26,7 +26,8 @@ void OrbitalTrajectory::initWithTwoPoints(ofVec3f start, ofVec3f through) {
   _w = _u.getCrossed(_v).getCrossed(_u).normalized();
   _t = 0;
   _position = _u * _r;
-  _lastPosition = _r * (_u * cos(-_speed) + _w * sin(-_speed));
+  float s = _speed / ofGetFrameRate();
+  _lastPosition = _r * (_u * cos(-s) + _w * sin(-s));
 }
 
 void OrbitalTrajectory::initWithTwoPoints(float elevation1, float heading1, float elevation2, float heading2) {
@@ -37,9 +38,9 @@ void OrbitalTrajectory::setPosition(const ofVec3f& position) {
   initWithTwoPoints(position, _v);
 }
 
-void OrbitalTrajectory::tick() {
+void OrbitalTrajectory::tick(float delta) {
   _lastPosition = _position;
-  _t += _speed;
+  _t += _speed * delta;
   _position = _r * (_u * cos(_t) + _w * sin(_t));
   
   history.push(_position);

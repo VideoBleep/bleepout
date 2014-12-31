@@ -36,7 +36,7 @@ public:
 protected:
   friend class PhysicsObject;
   
-  virtual void tick() = 0;
+  virtual void tick(float delta) = 0;
   
   float _t;
   float _speed;

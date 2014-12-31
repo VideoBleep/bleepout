@@ -71,6 +71,7 @@ struct AdminUIControls {
   ofxUIToggle* drawExtras;
   ofxUIToggle* allLasers;
   ofxUIButton* addBall;
+  ofxUIButton* addManyBalls;
 #ifdef ENABLE_SYPHON
   ofxUIToggle* enableSyphon;
   ofxUITextInput* syphonAppName;
@@ -171,6 +172,7 @@ void AdminController::setup() {
   _controls->drawExtras = _gui->addLabelToggle("Draw Extras", &appParams.drawExtras);
   _controls->allLasers = _gui->addLabelToggle("All Lasers", &appParams.allLasers);
   _controls->addBall = _gui->addButton("Add Ball", false);
+  _controls->addManyBalls = _gui->addButton("Add Many Balls", false);
 #ifdef ENABLE_SYPHON
   _controls->enableSyphon = _gui->addLabelToggle("Syphon", &appParams.enableSyphon);
   _controls->syphonAppName = _gui->addTextInput("Syphon App", appParams.syphonAppName);
@@ -281,6 +283,8 @@ void AdminController::onUIEvent(ofxUIEventArgs &e) {
 #endif
   if (e.widget == _controls->addBall && _controls->addBall->getValue()) {
     appParams.ballsToAdd++;
+  } else if (e.widget == _controls->addManyBalls && _controls->addManyBalls->getValue()) {
+    appParams.ballsToAdd += 20;
   } else if (e.widget == _controls->timeLimitToggle ||
              e.widget == _controls->timeLimit) {
     if (_controls->timeLimitToggle->getValue()) {

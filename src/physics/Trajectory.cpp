@@ -9,7 +9,7 @@
 #include "Trajectory.h"
 
 Trajectory::Trajectory()
-: _speed(0.02)
+: _speed(0.6)
 , _t(0)
 {
 }

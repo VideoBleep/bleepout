@@ -19,7 +19,7 @@ def generate():
   superCharge = createModifier(name= "supercharge",
                               type= "SuperchargedBall",
                               duration= 20,
-                              color= [0, 255, 0])
+                              color= [255, 69, 0])
 
   objects += [superCharge]
 
@@ -46,11 +46,11 @@ def generate():
   objects += [
     createWallRing(elevation=25,
                    count=5,
-                   speed=0.02,
+                   speed=0.6,
                    size=[10, 10, 30]),
     createWallRing(elevation=30,
                    count=5,
-                   speed=0.05,
+                   speed=1.5,
                    size=[10, 10, 30])
   ]
 

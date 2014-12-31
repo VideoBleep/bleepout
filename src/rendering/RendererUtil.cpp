@@ -52,10 +52,18 @@ void drawText(const std::string& text, ofColor color, ofTrueTypeFont& font, floa
   
   ofDisableLighting();
   
+#ifndef RADOME
   ofVec3f pos = sphericalToCartesian(radius, elevation, heading);
   ofTranslate(pos);
   ofRotateY(360 - heading - 90);
   ofRotateX(elevation);
+#else
+  // Work around weird text flip in Radome cube map
+  ofVec3f pos = sphericalToCartesian(radius, elevation - 20, heading);
+  ofTranslate(-pos);
+  ofRotateY(180 - heading - 90);
+  ofRotateX(180 + elevation);
+#endif
   
   float scale = size/(font.getSize() * 1.0);
   ofScale(scale, scale);

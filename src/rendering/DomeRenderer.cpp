@@ -261,7 +261,11 @@ void DomeRenderer::drawBrick(Brick &brick) {
 }
 
 void DomeRenderer::drawPaddle(Paddle &paddle) {
-  drawBoxObject(paddle, ofColor(0, 0, 0), paddle.getColor());
+  ofColor color = paddle.getColor();
+  if (paddle.player().modifierCounts()[MODIFIER_SUPERCHARGED_BALL] > 0) {
+    color = ofColor(255, 255 * sin(_state.time * 7.5), 0);
+  }
+  drawBoxObject(paddle, ofColor(0, 0, 0), color);
 }
 
 void DomeRenderer::drawWall(Wall &wall) {
@@ -279,7 +283,7 @@ void drawCometTail(Ball& ball, float width, float length, int order, const ofCol
   ofVec3f jitter = perpVec * ofRandom(-s, s) + vel.normalized() * ofRandom(-s, s);
   vel += jitter;
   
-  ofVec3f stack = pos.normalized() * 0.05 * order;
+  ofVec3f stack = pos.normalized() * 0.5 * order;
   ofVec3f tailPt = pos - vel * length + stack;
   ofVec3f headPt = pos + vel * 2.2 * width + stack;
   ofVec3f offsetVec = perpVec * 1.2 * width;

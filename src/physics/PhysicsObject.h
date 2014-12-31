@@ -55,7 +55,7 @@ public:
   ofVec3f getVelocity() const;
   
   bool isDynamic() const { return trajectory != NULL; }
-  virtual void tick();
+  virtual void tick(float delta);
   
   Trajectory* getTrajectory() { return trajectory.get(); }
   void setTrajectory(Trajectory* t);

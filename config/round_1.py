@@ -63,17 +63,17 @@ def generate():
     createWall(elevation=67,
                heading=5,
                size=[10, 10, 30],
-               speed=0.02,
+               speed=0.6,
                stopHeading=80),
     createWall(elevation=67,
                heading=125,
                size=[10, 10, 30],
-               speed=0.02,
+               speed=0.6,
                stopHeading=200),
     createWall(elevation=67,
                heading=245,
                size=[10, 10, 30],
-               speed=0.02,
+               speed=0.6,
                stopHeading=320)
   ]
 
@@ -84,18 +84,18 @@ def generate():
                     count=12,
                     value=2,
                     lives=2,
-                    speed=0.02,
+                    speed=0.6,
                     size=[7, 5, 17]),
     createBrickRing(elevation=76,
                     color=[0, 0, 0],
                     count=10,
-                    speed=-0.02,
+                    speed=-0.6,
                     size=[7, 5, 17]),
     createBrickRing(elevation=80,
                     color=[0, 0, 0],
                     count=8,
                     value=2,
-                    speed=0.02,
+                    speed=0.6,
                     size=[7, 5, 17])
   ]
 

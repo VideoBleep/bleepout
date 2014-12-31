@@ -110,9 +110,9 @@ ofVec3f PhysicsObject::getVelocity() const {
   }
 }
 
-void PhysicsObject::tick() {
+void PhysicsObject::tick(float delta) {
   if (isDynamic()) {
-    trajectory->tick();
+    trajectory->tick(delta);
     updateBoundingBox();
   }
   if (world) {
